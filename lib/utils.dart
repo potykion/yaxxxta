@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 /// Форматирует дюрейшн без нулей впереди и без миллисекунд, типа 1:02:03
 String formatDuration(Duration duration) => [
       duration.inHours > 0 ? duration.inHours : null,
@@ -10,3 +12,6 @@ String formatDuration(Duration duration) => [
         .entries
         .map((e) => e.key == 0 ? e.value : e.value.toString().padLeft(2, "0"))
         .join(":");
+
+
+String formatTime(DateTime time) => DateFormat.Hm().format(time);

@@ -45,22 +45,14 @@ class HabitRepeat {
   });
 
   /// Строка прогресса: 4 / 10, 1:00 / 2:00
-  get progressStr {
-    if (type == HabitType.time) {
-      var currentValueDur = Duration(seconds: currentValue.toInt());
-      var goalValueDue = Duration(seconds: goalValue.toInt());
-      return "${formatDuration(currentValueDur)} / ${formatDuration(goalValueDue)}";
-    }
-    if (type == HabitType.repeats) {
-      return "${currentValue.toInt()} / ${goalValue.toInt()}";
-    }
-    throw "Хз как быть с type=$type";
-  }
+  get progressStr =>
+      HabitPerformValue(currentValue: currentValue, goalValue: goalValue)
+          .format(type);
 
   /// Процент прогресса: 0.5
   get progressPercentage => min(currentValue, goalValue) / goalValue;
 
-  get performTimeStr => DateFormat.Hm().format(performTime);
+  get performTimeStr => formatTime(performTime);
 
   get isSingle => type == HabitType.repeats && this.goalValue.toInt() == 1;
 }
@@ -72,4 +64,42 @@ enum HabitType {
 
   /// На повторы
   repeats,
+}
+
+class HabitHistoryEntry {
+  final DateTime datetime;
+  final double value;
+
+  HabitHistoryEntry({this.datetime, this.value});
+
+  format(HabitType type) =>
+      HabitPerformValue(currentValue: this.value).format(type);
+}
+
+class HabitPerformValue {
+  final double currentValue;
+  final double goalValue;
+
+  HabitPerformValue({this.currentValue, this.goalValue});
+
+  format(HabitType type) {
+    if (type == HabitType.time) {
+      if (goalValue != null) {
+        var currentValueDur = Duration(seconds: currentValue.toInt());
+        var goalValueDue = Duration(seconds: goalValue.toInt());
+        return "${formatDuration(currentValueDur)} / ${formatDuration(goalValueDue)}";
+      } else {
+        var currentValueDur = Duration(seconds: currentValue.toInt());
+        return formatDuration(currentValueDur);
+      }
+    }
+    if (type == HabitType.repeats) {
+      if (goalValue != null) {
+        return "${currentValue.toInt()} / ${goalValue.toInt()}";
+      } else {
+        return currentValue.toInt().toString();
+      }
+    }
+    throw "Хз как быть с type=$type";
+  }
 }
