@@ -34,20 +34,18 @@ class _HabitCardState extends State<HabitCard> {
 
   @override
   Widget build(BuildContext context) => PaddedContainerCard(children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 5),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.baseline,
-            children: [
-              BiggerText(text: title),
-              SizedBox(width: 5),
-              if (repeat.performTime != null)
-                SmallerText(text: repeat.performTimeStr),
-              Spacer(),
-              if (!isSingleRepeat) SmallerText(text: repeatCounter)
-            ],
-          ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.baseline,
+          children: [
+            BiggerText(text: title),
+            SizedBox(width: 5),
+            if (repeat.performTime != null)
+              SmallerText(text: repeat.performTimeStr),
+            Spacer(),
+            if (!isSingleRepeat) SmallerText(text: repeatCounter)
+          ],
         ),
+        SizedBox(height: 5),
         HabitProgressControl(
           progressPercentage: repeat.progressPercentage,
           progressStr: repeat.progressStr,

@@ -39,6 +39,7 @@ class HabitDetailsPage extends StatelessWidget {
             PaddedContainerCard(
               children: [
                 BiggerText(text: "Сегодня"),
+                SizedBox(height: 5),
                 HabitProgressControl(
                   progressPercentage: 0.3,
                   progressStr: "3 / 10",
@@ -49,14 +50,12 @@ class HabitDetailsPage extends StatelessWidget {
             ),
             PaddedContainerCard(
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: BiggerText(text: "История"),
-                ),
+                BiggerText(text: "История"),
+                SizedBox(height: 5),
                 DateScroll(),
                 for (var e in [
-                  HabitHistoryEntry(
-                      datetime: DateTime(2020, 17, 11, 11), value: 60)
+                  HabitHistoryEntry(datetime: DateTime(2020, 17, 11, 11), value: 60),
+                  HabitHistoryEntry(datetime: DateTime(2020, 17, 11, 12), value: 60),
                 ])
                   Padding(
                     padding: const EdgeInsets.all(5),
