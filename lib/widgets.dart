@@ -190,7 +190,7 @@ class HabitProgressControl extends StatelessWidget {
           ),
           if (!isSingleRepeat)
             Positioned(
-              child: SmallerText(text: progressStr, black: true),
+              child: SmallerText(text: progressStr, dark: true),
               right: 20,
             )
         ],
@@ -199,9 +199,11 @@ class HabitProgressControl extends StatelessWidget {
 
 class SmallerText extends StatelessWidget {
   final String text;
-  final bool black;
+  final bool dark;
+  final bool light;
 
-  const SmallerText({Key key, this.text, this.black = false}) : super(key: key);
+  const SmallerText({Key key, this.text, this.dark = false, this.light = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -209,7 +211,11 @@ class SmallerText extends StatelessWidget {
       text,
       style: TextStyle(
         fontWeight: FontWeight.bold,
-        color: black ? CustomColors.almostBlack : CustomColors.grey,
+        color: dark
+            ? CustomColors.almostBlack
+            : light
+                ? CustomColors.lightGrey
+                : CustomColors.grey,
         fontSize: 14,
       ),
     );
@@ -246,4 +252,144 @@ class BiggestText extends StatelessWidget {
           color: CustomColors.almostBlack,
         ),
       );
+}
+
+class TextInput extends StatefulWidget {
+  @override
+  _TextInputState createState() => _TextInputState();
+}
+
+class _TextInputState extends State<TextInput> {
+  TextEditingController tec = TextEditingController(text: "ass");
+
+  @override
+  Widget build(BuildContext context) => TextFormField(
+        controller: tec,
+        decoration: InputDecoration(
+          fillColor: CustomColors.lightGrey,
+          border: OutlineInputBorder(
+            borderSide: BorderSide(width: 0, style: BorderStyle.none),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          filled: true,
+          contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        ),
+        cursorColor: CustomColors.almostBlack,
+        style: TextStyle(
+          fontSize: 18,
+          color: CustomColors.almostBlack,
+        ),
+      );
+}
+
+class HabitTypeInput extends StatefulWidget {
+  final HabitType initial;
+  final Function(HabitType habitType) change;
+
+  const HabitTypeInput({
+    Key key,
+    @required this.initial,
+    @required this.change,
+  }) : super(key: key);
+
+  @override
+  _HabitTypeInputState createState() => _HabitTypeInputState();
+}
+
+class _HabitTypeInputState extends State<HabitTypeInput> {
+  HabitType selectedHabitType;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedHabitType = widget.initial;
+  }
+
+  @override
+  Widget build(BuildContext context) => Column(
+        children: [
+          buildHabitTypeRadio(HabitType.time),
+          SizedBox(height: 5),
+          buildHabitTypeRadio(HabitType.repeats),
+        ],
+      );
+
+  buildHabitTypeRadio(HabitType habitType) {
+    String biggerText;
+    String smallerText;
+    if (habitType == HabitType.time) {
+      biggerText = "На время";
+      smallerText = "Например, 10 мин. в день";
+    }
+    if (habitType == HabitType.repeats) {
+      biggerText = "На повторы";
+      smallerText = "Например, 2 раза в день";
+    }
+
+    var changeHabitType = () {
+      setState(() => selectedHabitType = habitType);
+      widget.change(selectedHabitType);
+    };
+
+    return Selectable(
+      biggerText: biggerText,
+      smallerText: smallerText,
+      initial: selectedHabitType == habitType,
+      onSelected: () => changeHabitType(),
+      prefix: Radio(
+        value: habitType,
+        groupValue: selectedHabitType,
+        onChanged: (_) => changeHabitType(),
+        activeColor: CustomColors.almostBlack,
+      ),
+    );
+  }
+}
+
+class Selectable extends StatelessWidget {
+  final String biggerText;
+  final String smallerText;
+  final bool initial;
+  final Function onSelected;
+  final Widget prefix;
+
+  const Selectable({
+    Key key,
+    this.biggerText,
+    this.smallerText,
+    this.initial,
+    this.onSelected,
+    this.prefix,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: GestureDetector(
+        onTap: () => onSelected(),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: initial ? CustomColors.blue : CustomColors.lightGrey,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Row(
+              children: [
+                if (prefix != null) prefix,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    BiggerText(text: biggerText),
+                    SmallerText(text: smallerText, light: initial)
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }

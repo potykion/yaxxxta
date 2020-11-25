@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:yaxxxta/pages/details.dart';
+import 'package:yaxxxta/pages/edit.dart';
 import 'package:yaxxxta/theme.dart';
 
 import 'pages/list.dart';
@@ -14,7 +15,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => GetMaterialApp(
         // home: HabitListPage(),
-        home: HabitDetailsPage(),
+        // home: HabitDetailsPage(),
+        home: HabitEditPage(),
         theme: buildTheme(context),
       );
 }

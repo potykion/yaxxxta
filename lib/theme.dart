@@ -12,6 +12,7 @@ abstract class CustomColors {
   static Color purple = Color(0xffBDB2FF);
   static Color pink = Color(0xffFFC6FF);
   static Color almostBlack = Color(0xff3D3A4B);
+  static Color lightGrey = Color(0xffFAFAFA);
   static Color grey = Color(0xffBCBCBC);
 }
 

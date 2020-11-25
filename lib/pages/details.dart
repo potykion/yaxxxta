@@ -62,12 +62,12 @@ class HabitDetailsPage extends StatelessWidget {
                     child: Row(children: [
                       SmallerText(
                         text: formatTime(e.datetime),
-                        black: true,
+                        dark: true,
                       ),
                       Spacer(),
                       SmallerText(
                         text: "+ ${e.format(HabitType.time)}",
-                        black: true,
+                        dark: true,
                       )
                     ]),
                   )
