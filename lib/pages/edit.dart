@@ -3,8 +3,11 @@ import 'package:yaxxxta/view_models.dart';
 import 'package:yaxxxta/widgets.dart';
 
 class HabitEditPage extends StatelessWidget {
+  get hasId => false;
+
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context) =>
+      Scaffold(
         body: ListView(
           children: [
             PaddedContainerCard(
@@ -16,11 +19,19 @@ class HabitEditPage extends StatelessWidget {
             ),
             PaddedContainerCard(
               children: [
-                BiggerText(text: "Тип"),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.baseline,
+                  children: [
+                    BiggerText(text: "Тип"),
+                    Spacer(),
+                    if (hasId) SmallerText(text: "нельзя изменить")
+                  ],
+                ),
                 SizedBox(height: 5),
                 HabitTypeInput(
                   initial: HabitType.repeats,
-                  change: (type) {},
+                  change: (type) => print(type),
+                  setBefore: hasId,
                 ),
               ],
             )

@@ -285,11 +285,13 @@ class _TextInputState extends State<TextInput> {
 class HabitTypeInput extends StatefulWidget {
   final HabitType initial;
   final Function(HabitType habitType) change;
+  final bool setBefore;
 
   const HabitTypeInput({
     Key key,
     @required this.initial,
     @required this.change,
+    this.setBefore = false,
   }) : super(key: key);
 
   @override
@@ -308,9 +310,11 @@ class _HabitTypeInputState extends State<HabitTypeInput> {
   @override
   Widget build(BuildContext context) => Column(
         children: [
-          buildHabitTypeRadio(HabitType.time),
-          SizedBox(height: 5),
-          buildHabitTypeRadio(HabitType.repeats),
+          if (!widget.setBefore || widget.setBefore && widget.initial == HabitType.time)
+            buildHabitTypeRadio(HabitType.time),
+          if (!widget.setBefore) SizedBox(height: 5),
+          if (!widget.setBefore || widget.setBefore && widget.initial == HabitType.repeats)
+            buildHabitTypeRadio(HabitType.repeats),
         ],
       );
 
