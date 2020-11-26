@@ -33,6 +33,10 @@ class HabitEditPage extends StatelessWidget {
                   change: (type) => print(type),
                   setBefore: hasId,
                 ),
+                HabitRepeatDuringDayCheckbox(
+                  initial: false,
+                  change: (selected) {},
+                )
               ],
             )
           ],

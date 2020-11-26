@@ -341,7 +341,7 @@ class _HabitTypeInputState extends State<HabitTypeInput> {
       biggerText: biggerText,
       smallerText: smallerText,
       initial: selectedHabitType == habitType,
-      onSelected: () => changeHabitType(),
+      onSelected: (_) => changeHabitType(),
       prefix: Radio(
         value: habitType,
         groupValue: selectedHabitType,
@@ -396,7 +396,7 @@ class _SelectableState extends State<Selectable> {
     return SizedBox(
       width: double.infinity,
       child: GestureDetector(
-        onTap: () => widget.onSelected(),
+        onTap: () => toggleSelected(),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
@@ -411,7 +411,11 @@ class _SelectableState extends State<Selectable> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     BiggerText(text: widget.biggerText),
-                    SmallerText(text: widget.smallerText, light: selected)
+                    SmallerText(
+                      text: widget.smallerText,
+                      light: widget.selectedColor != widget.unselectedColor &&
+                          selected,
+                    )
                   ],
                 )
               ],
@@ -424,6 +428,52 @@ class _SelectableState extends State<Selectable> {
 
   toggleSelected() {
     setState(() => selected = !selected);
-    widget.onSelected();
+    widget.onSelected(selected);
+  }
+}
+
+class HabitRepeatDuringDayCheckbox extends StatefulWidget {
+  final bool initial;
+  final Function change;
+
+  const HabitRepeatDuringDayCheckbox({Key key, this.initial, this.change})
+      : super(key: key);
+
+  @override
+  _HabitRepeatDuringDayCheckboxState createState() =>
+      _HabitRepeatDuringDayCheckboxState();
+}
+
+class _HabitRepeatDuringDayCheckboxState
+    extends State<HabitRepeatDuringDayCheckbox> {
+  bool selected;
+
+  @override
+  void initState() {
+    super.initState();
+    selected = widget.initial;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Selectable(
+      biggerText: "Повторы в течение дня",
+      smallerText: "Например, 10 мин. 2 раза в день",
+      prefix: Checkbox(
+        onChanged: (newSelected) => setSelected(newSelected),
+        value: selected,
+        activeColor: CustomColors.yellow,
+        checkColor: CustomColors.almostBlack,
+      ),
+      initial: selected,
+      onSelected: (newSelected) => setSelected(newSelected),
+      selectedColor: Colors.white,
+      unselectedColor: Colors.white,
+    );
+  }
+
+  setSelected(bool selected) {
+    setState(() => this.selected = selected);
+    widget.change(this.selected);
   }
 }
