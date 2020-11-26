@@ -310,10 +310,12 @@ class _HabitTypeInputState extends State<HabitTypeInput> {
   @override
   Widget build(BuildContext context) => Column(
         children: [
-          if (!widget.setBefore || widget.setBefore && widget.initial == HabitType.time)
+          if (!widget.setBefore ||
+              widget.setBefore && widget.initial == HabitType.time)
             buildHabitTypeRadio(HabitType.time),
           if (!widget.setBefore) SizedBox(height: 5),
-          if (!widget.setBefore || widget.setBefore && widget.initial == HabitType.repeats)
+          if (!widget.setBefore ||
+              widget.setBefore && widget.initial == HabitType.repeats)
             buildHabitTypeRadio(HabitType.repeats),
         ],
       );
@@ -350,12 +352,14 @@ class _HabitTypeInputState extends State<HabitTypeInput> {
   }
 }
 
-class Selectable extends StatelessWidget {
+class Selectable extends StatefulWidget {
   final String biggerText;
   final String smallerText;
   final bool initial;
   final Function onSelected;
   final Widget prefix;
+  final Color selectedColor;
+  final Color unselectedColor;
 
   const Selectable({
     Key key,
@@ -364,29 +368,50 @@ class Selectable extends StatelessWidget {
     this.initial,
     this.onSelected,
     this.prefix,
+    this.selectedColor = CustomColors.blue,
+    this.unselectedColor = CustomColors.lightGrey,
   }) : super(key: key);
+
+  @override
+  _SelectableState createState() => _SelectableState();
+}
+
+class _SelectableState extends State<Selectable> {
+  bool selected;
+
+  @override
+  void initState() {
+    super.initState();
+    selected = widget.initial;
+  }
+
+  @override
+  void didUpdateWidget(covariant Selectable oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    selected = widget.initial;
+  }
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
       child: GestureDetector(
-        onTap: () => onSelected(),
+        onTap: () => widget.onSelected(),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            color: initial ? CustomColors.blue : CustomColors.lightGrey,
+            color: selected ? widget.selectedColor : widget.unselectedColor,
           ),
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Row(
               children: [
-                if (prefix != null) prefix,
+                if (widget.prefix != null) widget.prefix,
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    BiggerText(text: biggerText),
-                    SmallerText(text: smallerText, light: initial)
+                    BiggerText(text: widget.biggerText),
+                    SmallerText(text: widget.smallerText, light: selected)
                   ],
                 )
               ],
@@ -395,5 +420,10 @@ class Selectable extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  toggleSelected() {
+    setState(() => selected = !selected);
+    widget.onSelected();
   }
 }
