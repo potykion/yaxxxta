@@ -255,12 +255,16 @@ class BiggestText extends StatelessWidget {
 }
 
 class TextInput extends StatefulWidget {
+  final Widget suffix;
+
+  const TextInput({Key key, this.suffix}) : super(key: key);
+
   @override
   _TextInputState createState() => _TextInputState();
 }
 
 class _TextInputState extends State<TextInput> {
-  TextEditingController tec = TextEditingController(text: "ass");
+  TextEditingController tec = TextEditingController();
 
   @override
   Widget build(BuildContext context) => TextFormField(
@@ -273,6 +277,7 @@ class _TextInputState extends State<TextInput> {
           ),
           filled: true,
           contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+          suffixIcon: widget.suffix,
         ),
         cursorColor: CustomColors.almostBlack,
         style: TextStyle(
@@ -475,5 +480,59 @@ class _HabitRepeatDuringDayCheckboxState
   setSelected(bool selected) {
     setState(() => this.selected = selected);
     widget.change(this.selected);
+  }
+}
+
+class SimpleButton extends StatelessWidget {
+  final String text;
+  final Function onTap;
+
+  const SimpleButton({Key key, this.text, this.onTap}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: CustomColors.yellow,
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(10),
+            onTap: onTap,
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: BiggerText(text: text),
+            ),
+          ),
+        ),
+      );
+}
+
+class SimpleChip extends StatelessWidget {
+  final String text;
+  final bool selected;
+  final Function(bool selected) change;
+  final Color color;
+  final EdgeInsetsGeometry padding;
+
+  const SimpleChip({
+    Key key,
+    this.text,
+    this.selected,
+    this.change,
+    this.color = CustomColors.red,
+    this.padding = const EdgeInsets.all(10),
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ChoiceChip(
+      selectedColor: color,
+      label: Text(text, style: TextStyle(color: CustomColors.almostBlack)),
+      onSelected: change,
+      selected: selected,
+      padding: padding,
+    );
   }
 }
