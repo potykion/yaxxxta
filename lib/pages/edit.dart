@@ -189,8 +189,41 @@ class HabitEditPage extends StatelessWidget {
                 SizedBox(height: 5),
                 TextInput(),
               ],
-            )
+            ),
+            PaddedContainerCard(
+              children: [
+                BiggerText(text: "Периодичность"),
+                SizedBox(height: 5),
+                Row(
+                  children: [
+                    Flexible(child: TextInput()),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: PeriodTypeSelect(),
+                      flex: 3,
+                    )
+                  ],
+                ),
+              ],
+            ),
+            SizedBox(height: 60)
           ],
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: SizedBox(
+            width: double.infinity,
+            child: FloatingActionButton.extended(
+              onPressed: () {},
+              label: Text("Сохранить"),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              backgroundColor: CustomColors.yellow,
+              foregroundColor: CustomColors.almostBlack,
+            ),
+          ),
         ),
       );
 

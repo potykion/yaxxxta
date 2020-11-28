@@ -103,3 +103,14 @@ class HabitPerformValue {
     throw "Хз как быть с type=$type";
   }
 }
+
+enum HabitPeriodType { Day, Week, Month }
+
+extension FormatHabitPeriodType on HabitPeriodType {
+  String format() {
+    if (this == HabitPeriodType.Day) return "День";
+    if (this == HabitPeriodType.Week) return "Неделя";
+    if (this == HabitPeriodType.Month) return "Месяц";
+    throw "FormatHabitPeriodType.format on ${this}";
+  }
+}

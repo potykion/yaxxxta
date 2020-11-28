@@ -536,3 +536,36 @@ class SimpleChip extends StatelessWidget {
     );
   }
 }
+
+class PeriodTypeSelect extends StatefulWidget {
+  @override
+  _PeriodTypeSelectState createState() => _PeriodTypeSelectState();
+}
+
+class _PeriodTypeSelectState extends State<PeriodTypeSelect> {
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButtonFormField(
+      decoration: InputDecoration(
+        fillColor: CustomColors.lightGrey,
+        border: OutlineInputBorder(
+          borderSide: BorderSide(width: 0, style: BorderStyle.none),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        filled: true,
+        contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      ),
+
+      value: HabitPeriodType.Day,
+      items: [HabitPeriodType.Day, HabitPeriodType.Week, HabitPeriodType.Month]
+          .map(
+            (pt) => DropdownMenuItem<HabitPeriodType>(
+              child: Text(pt.format()),
+              value: pt,
+            ),
+          )
+          .toList(),
+      onChanged: (_) {},
+    );
+  }
+}
