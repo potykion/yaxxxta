@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_listview/infinite_listview.dart';
@@ -254,17 +253,61 @@ class BiggestText extends StatelessWidget {
       );
 }
 
-class TextInput extends StatefulWidget {
+class TextInput<T> extends StatefulWidget {
+  final T initial;
+  final void Function(dynamic value) change;
   final Widget suffix;
 
-  const TextInput({Key key, this.suffix}) : super(key: key);
+  const TextInput({
+    Key key,
+    @required this.initial,
+    @required this.change,
+    this.suffix,
+  }) : super(key: key);
 
   @override
-  _TextInputState createState() => _TextInputState();
+  _TextInputState<T> createState() => _TextInputState<T>();
 }
 
-class _TextInputState extends State<TextInput> {
+class _TextInputState<T> extends State<TextInput> {
   TextEditingController tec = TextEditingController();
+
+  bool get isNumberInput => T == double || T == int;
+
+  @override
+  void initState() {
+    super.initState();
+    setTecValue();
+    tec.addListener(
+      () {
+        var value = isNumberInput
+            ? (T == double
+                    ? double.tryParse(tec.text)
+                    : int.tryParse(tec.text)) ??
+                0
+            : tec.text;
+        if (widget.initial != value) {
+          widget.change(value);
+        }
+      },
+    );
+  }
+
+  @override
+  void didUpdateWidget(covariant TextInput oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    setTecValue();
+  }
+
+  setTecValue() {
+    if (isNumberInput) {
+      // todo 1.0 > 1
+      //  1.01 > 1.01
+      //  2.20 > 2.2
+      //  3.5545 > 3.55
+    }
+    tec.text = widget.initial.toString();
+  }
 
   @override
   Widget build(BuildContext context) => TextFormField(
@@ -278,7 +321,9 @@ class _TextInputState extends State<TextInput> {
           filled: true,
           contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
           suffixIcon: widget.suffix,
+          suffixIconConstraints: BoxConstraints(minHeight: 30, minWidth: 30),
         ),
+        keyboardType: isNumberInput ? TextInputType.number : TextInputType.text,
         cursorColor: CustomColors.almostBlack,
         style: TextStyle(
           fontSize: 18,
@@ -290,6 +335,8 @@ class _TextInputState extends State<TextInput> {
 class HabitTypeInput extends StatefulWidget {
   final HabitType initial;
   final Function(HabitType habitType) change;
+
+  /// Если true, то прячит остальные типы привычек
   final bool setBefore;
 
   const HabitTypeInput({
@@ -538,11 +585,26 @@ class SimpleChip extends StatelessWidget {
 }
 
 class PeriodTypeSelect extends StatefulWidget {
+  final HabitPeriodType initial;
+  final Function(HabitPeriodType type) change;
+
+  const PeriodTypeSelect(
+      {Key key, @required this.initial, @required this.change})
+      : super(key: key);
+
   @override
   _PeriodTypeSelectState createState() => _PeriodTypeSelectState();
 }
 
 class _PeriodTypeSelectState extends State<PeriodTypeSelect> {
+  HabitPeriodType type;
+
+  @override
+  void initState() {
+    super.initState();
+    type = widget.initial;
+  }
+
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField(
@@ -555,8 +617,7 @@ class _PeriodTypeSelectState extends State<PeriodTypeSelect> {
         filled: true,
         contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       ),
-
-      value: HabitPeriodType.day,
+      value: type,
       items: [HabitPeriodType.day, HabitPeriodType.week, HabitPeriodType.month]
           .map(
             (pt) => DropdownMenuItem<HabitPeriodType>(
@@ -565,7 +626,58 @@ class _PeriodTypeSelectState extends State<PeriodTypeSelect> {
             ),
           )
           .toList(),
-      onChanged: (_) {},
+      onChanged: (v) {
+        setState(() => type = v);
+        widget.change(v);
+      },
+    );
+  }
+}
+
+class WeekdaysPicker extends StatefulWidget {
+  final List<Weekday> initial;
+  final Function(List<Weekday> w) change;
+
+  const WeekdaysPicker({Key key, @required this.initial, @required this.change})
+      : super(key: key);
+
+  @override
+  _WeekdaysPickerState createState() => _WeekdaysPickerState();
+}
+
+class _WeekdaysPickerState extends State<WeekdaysPicker> {
+  List<Weekday> weekdays;
+
+  @override
+  void initState() {
+    super.initState();
+    weekdays = widget.initial;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: Weekday.values
+          .map(
+            (w) => SimpleChip(
+              text: w.format(),
+              selected: weekdays.contains(w),
+              change: (selected) {
+                setState(() {
+                  if (selected) {
+                    weekdays.add(w);
+                  } else {
+                    weekdays.remove(w);
+                  }
+                });
+                widget.change(weekdays);
+              },
+              color: CustomColors.yellow,
+              padding: EdgeInsets.all(5),
+            ),
+          )
+          .toList(),
     );
   }
 }

@@ -137,7 +137,40 @@ class HabitWriteVM {
   /// Периодичность
   HabitPeriod habitPeriod;
 
-  HabitWriteVM({this.title, this.type, this.isUpdate});
+  HabitWriteVM({
+    this.title = "",
+    this.type = HabitType.time,
+    this.isUpdate = false,
+    this.dailyRepeatsEnabled = false,
+    this.goalValue = 0,
+    this.dailyRepeats = 1,
+    habitPeriod,
+  }) : habitPeriod = habitPeriod ?? HabitPeriod();
+
+  double get goalValueHours => (goalValue / 3600).floorToDouble();
+
+  double get goalValueMinutes => ((goalValue - goalValueHours * 3600)  / 60).floorToDouble();
+
+  double get goalValueSeconds =>
+      goalValue - goalValueHours * 3600 - goalValueMinutes * 60;
+
+  setGoalValueHours(double hours) =>
+      goalValue = hours * 3600 + goalValueMinutes * 60 + goalValueSeconds;
+
+  setGoalValueMinutes(double minutes) =>
+      goalValue = goalValueHours + 60 * minutes + goalValueSeconds;
+
+  setGoalValueSeconds(double seconds) =>
+      goalValue = goalValueHours + goalValueMinutes + seconds;
+
+  increaseGoalValueByPercent() {
+    goalValue = num.parse((goalValue * 1.01).toStringAsFixed(2));
+  }
+
+  increaseDailyRepeatsByPercent() {
+    dailyRepeats = double.parse((dailyRepeats * 1.01).toStringAsFixed(2));
+  }
+
 }
 
 /// Периодичность
@@ -165,6 +198,14 @@ class HabitPeriod {
 
   /// Если false, то {periodValue} = 1; иначе можно задавать {periodValue} > 1
   bool isCustom;
+
+  HabitPeriod({
+    this.type = HabitPeriodType.day,
+    this.periodValue = 1,
+    this.weekdays = const [],
+    this.monthDay = 1,
+    this.isCustom = false,
+  });
 }
 
 /// День недели
@@ -189,4 +230,16 @@ enum Weekday {
 
   /// Воскресенье
   sunday,
+}
+
+extension FormatWeekday on Weekday {
+  format() {
+    if (this == Weekday.monday) return "Пн";
+    if (this == Weekday.tuesday) return "Вт";
+    if (this == Weekday.wednesday) return "Ср";
+    if (this == Weekday.thursday) return "Чт";
+    if (this == Weekday.friday) return "Пт";
+    if (this == Weekday.saturday) return "Сб";
+    if (this == Weekday.sunday) return "Вс";
+  }
 }

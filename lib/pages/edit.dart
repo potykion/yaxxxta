@@ -6,8 +6,13 @@ import 'package:yaxxxta/theme.dart';
 import 'package:yaxxxta/view_models.dart';
 import 'package:yaxxxta/widgets.dart';
 
-class HabitEditPage extends StatelessWidget {
-  get hasId => false;
+class HabitEditPage extends StatefulWidget {
+  @override
+  _HabitEditPageState createState() => _HabitEditPageState();
+}
+
+class _HabitEditPageState extends State<HabitEditPage> {
+  HabitWriteVM vm = HabitWriteVM();
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -17,7 +22,10 @@ class HabitEditPage extends StatelessWidget {
               children: [
                 BiggerText(text: "Название"),
                 SizedBox(height: 5),
-                TextInput(),
+                TextInput(
+                  initial: vm.title,
+                  change: (t) => setState(() => vm.title = t),
+                ),
               ],
             ),
             PaddedContainerCard(
@@ -27,85 +35,148 @@ class HabitEditPage extends StatelessWidget {
                   children: [
                     BiggerText(text: "Тип"),
                     Spacer(),
-                    if (hasId) SmallerText(text: "нельзя изменить")
+                    if (vm.isUpdate) SmallerText(text: "нельзя изменить")
                   ],
                 ),
                 SizedBox(height: 5),
                 HabitTypeInput(
-                  initial: HabitType.repeats,
-                  change: (type) => print(type),
-                  setBefore: hasId,
+                  initial: vm.type,
+                  change: (type) => setState(() => vm.type = type),
+                  setBefore: vm.isUpdate,
                 ),
                 HabitRepeatDuringDayCheckbox(
-                  initial: false,
-                  change: (selected) {},
+                  initial: vm.dailyRepeatsEnabled,
+                  change: (selected) =>
+                      setState(() => vm.dailyRepeatsEnabled = selected),
                 )
               ],
             ),
-            PaddedContainerCard(
-              children: [
-                BiggerText(text: "Продолжительность"),
-                SizedBox(height: 5),
-                Row(
-                  // mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Expanded(
-                      child: TextInput(
-                        suffix: buildTimeSuffix("ч"),
+            if (vm.type == HabitType.time)
+              PaddedContainerCard(
+                children: [
+                  BiggerText(text: "Продолжительность"),
+                  SizedBox(height: 5),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextInput<double>(
+                          suffix: buildTimeSuffix("ч"),
+                          initial: vm.goalValueHours,
+                          change: (h) => setState(
+                            () => vm.setGoalValueHours(h),
+                          ),
+                        ),
                       ),
-                    ),
-                    SizedBox(width: 10),
-                    Expanded(child: TextInput(suffix: buildTimeSuffix("мин"))),
-                    SizedBox(width: 10),
-                    Expanded(child: TextInput(suffix: buildTimeSuffix("сек"))),
-                  ],
-                ),
-                SizedBox(height: 5),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SimpleButton(text: "+ 1 %", onTap: () {}),
-                    SimpleButton(text: "+ 1 сек", onTap: () {}),
-                    SimpleButton(text: "+ 1 мин", onTap: () {}),
-                    SimpleButton(text: "+ 1 ч", onTap: () {}),
-                  ],
-                ),
-              ],
-            ),
-            PaddedContainerCard(
-              children: [
-                BiggerText(text: "Число повторений за раз"),
-                SizedBox(height: 5),
-                TextInput(),
-                SizedBox(height: 5),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SimpleButton(text: "+ 1 %", onTap: () {}),
-                    SimpleButton(text: "+ 1", onTap: () {}),
-                    SimpleButton(text: "+ 10", onTap: () {}),
-                    SimpleButton(text: "+ 100", onTap: () {}),
-                  ],
-                )
-              ],
-            ),
-            PaddedContainerCard(
-              children: [
-                BiggerText(text: "Число повторений за день"),
-                SizedBox(height: 5),
-                TextInput(),
-                SizedBox(height: 5),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SimpleButton(text: "+ 1 %", onTap: () {}),
-                    SimpleButton(text: "+ 1", onTap: () {}),
-                    SimpleButton(text: "+ 10", onTap: () {}),
-                    SimpleButton(text: "+ 100", onTap: () {}),
-                  ],
-                )
-              ],
-            ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: TextInput<double>(
+                          suffix: buildTimeSuffix("мин"),
+                          initial: vm.goalValueMinutes,
+                          change: (m) =>
+                              setState(() => vm.setGoalValueMinutes(m)),
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: TextInput<double>(
+                          suffix: buildTimeSuffix("сек"),
+                          initial: vm.goalValueSeconds,
+                          change: (s) =>
+                              setState(() => vm.setGoalValueSeconds(s)),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 5),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SimpleButton(
+                        text: "+ 1 %",
+                        onTap: () => setState(() => vm.increaseGoalValueByPercent()),
+                      ),
+                      SimpleButton(
+                        text: "+ 1 сек",
+                        onTap: () => setState(() => vm.goalValue += 1),
+                      ),
+                      SimpleButton(
+                        text: "+ 1 мин",
+                        onTap: () => setState(() => vm.goalValue += 1 * 60),
+                      ),
+                      SimpleButton(
+                        text: "+ 1 ч",
+                        onTap: () => setState(() => vm.goalValue += 1 * 3600),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            if (vm.type == HabitType.repeats)
+              PaddedContainerCard(
+                children: [
+                  BiggerText(text: "Число повторений за раз"),
+                  SizedBox(height: 5),
+                  TextInput<double>(
+                    initial: vm.goalValue,
+                    change: (v) => setState(() => vm.goalValue = v),
+                  ),
+                  SizedBox(height: 5),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SimpleButton(
+                        text: "+ 1 %",
+                        onTap: () => setState(() => vm.increaseGoalValueByPercent()),
+                      ),
+                      SimpleButton(
+                        text: "+ 1",
+                        onTap: () => setState(() => vm.goalValue += 1),
+                      ),
+                      SimpleButton(
+                        text: "+ 10",
+                        onTap: () => setState(() => vm.goalValue += 10),
+                      ),
+                      SimpleButton(
+                        text: "+ 100",
+                        onTap: () => setState(() => vm.goalValue += 100),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            if (vm.dailyRepeatsEnabled)
+              PaddedContainerCard(
+                children: [
+                  BiggerText(text: "Число повторений за день"),
+                  SizedBox(height: 5),
+                  TextInput<double>(
+                    initial: vm.dailyRepeats,
+                    change: (r) => setState(() => vm.dailyRepeats = r),
+                  ),
+                  SizedBox(height: 5),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SimpleButton(
+                        text: "+ 1 %",
+                        onTap: () => setState(() => vm.increaseDailyRepeatsByPercent()),
+                      ),
+                      SimpleButton(
+                        text: "+ 1",
+                        onTap: () => setState(() => vm.dailyRepeats += 1),
+                      ),
+                      SimpleButton(
+                        text: "+ 10",
+                        onTap: () => setState(() => vm.dailyRepeats += 10),
+                      ),
+                      SimpleButton(
+                        text: "+ 100",
+                        onTap: () => setState(() => vm.dailyRepeats += 1000),
+                      ),
+                    ],
+                  )
+                ],
+              ),
             PaddedContainerCard(
               children: [
                 BiggerText(text: "Периодичность"),
@@ -114,98 +185,94 @@ class HabitEditPage extends StatelessWidget {
                   spacing: 10,
                   children: [
                     SimpleChip(
-                        text: "Ежедневная", selected: true, change: (_) {}),
+                      text: "Ежедневная",
+                      selected: vm.habitPeriod.type == HabitPeriodType.day,
+                      change: (_) => setState(() {
+                        vm.habitPeriod.type = HabitPeriodType.day;
+                        vm.habitPeriod.isCustom = false;
+                      }),
+                    ),
                     SimpleChip(
-                        text: "Еженедельная", selected: false, change: (_) {}),
+                      text: "Еженедельная",
+                      selected: vm.habitPeriod.type == HabitPeriodType.week,
+                      change: (_) => setState(() {
+                        vm.habitPeriod.type = HabitPeriodType.week;
+                        vm.habitPeriod.isCustom = false;
+                      }),
+                    ),
                     SimpleChip(
-                        text: "Ежемесячная", selected: false, change: (_) {}),
-                    SimpleChip(text: "Другая", selected: false, change: (_) {}),
+                      text: "Ежемесячная",
+                      selected: vm.habitPeriod.type == HabitPeriodType.month,
+                      change: (_) => setState(() {
+                        vm.habitPeriod.type = HabitPeriodType.month;
+                        vm.habitPeriod.isCustom = false;
+                      }),
+                    ),
+                    SimpleChip(
+                      text: "Другая",
+                      selected: false,
+                      change: (_) =>
+                          setState(() => vm.habitPeriod.isCustom = true),
+                    ),
                   ],
                 )
               ],
             ),
-            PaddedContainerCard(
-              children: [
-                BiggerText(text: "Дни выполнения"),
-                SizedBox(height: 5),
-                Wrap(
-                  spacing: 5,
-                  children: [
-                    SimpleChip(
-                        text: "Пн",
-                        selected: true,
-                        change: (_) {},
-                        color: CustomColors.yellow,
-                        padding: EdgeInsets.all(5)),
-                    SimpleChip(
-                        text: "Вт",
-                        selected: false,
-                        change: (_) {},
-                        color: CustomColors.yellow,
-                        padding: EdgeInsets.all(5)),
-                    SimpleChip(
-                        text: "Ср",
-                        selected: false,
-                        change: (_) {},
-                        color: CustomColors.yellow,
-                        padding: EdgeInsets.all(5)),
-                    SimpleChip(
-                        text: "Чт",
-                        selected: false,
-                        change: (_) {},
-                        color: CustomColors.yellow,
-                        padding: EdgeInsets.all(5)),
-                    SimpleChip(
-                        text: "Пт",
-                        selected: false,
-                        change: (_) {},
-                        color: CustomColors.yellow,
-                        padding: EdgeInsets.all(5)),
-                    SimpleChip(
-                        text: "Сб",
-                        selected: false,
-                        change: (_) {},
-                        color: CustomColors.yellow,
-                        padding: EdgeInsets.all(5)),
-                    SimpleChip(
-                        text: "Вс",
-                        selected: false,
-                        change: (_) {},
-                        color: CustomColors.yellow,
-                        padding: EdgeInsets.all(5)),
-                  ],
-                )
-              ],
-            ),
-            PaddedContainerCard(
-              children: [
-                Row(
-                  children: [
-                    BiggerText(text: "День выполнения"),
-                    Spacer(),
-                    SmallerText(text: "1 .. 31"),
-                  ],
-                ),
-                SizedBox(height: 5),
-                TextInput(),
-              ],
-            ),
-            PaddedContainerCard(
-              children: [
-                BiggerText(text: "Периодичность"),
-                SizedBox(height: 5),
-                Row(
-                  children: [
-                    Flexible(child: TextInput()),
-                    SizedBox(width: 10),
-                    Expanded(
-                      child: PeriodTypeSelect(),
-                      flex: 3,
-                    )
-                  ],
-                ),
-              ],
-            ),
+            if (vm.habitPeriod.isCustom)
+              PaddedContainerCard(
+                children: [
+                  BiggerText(text: "Периодичность"),
+                  SizedBox(height: 5),
+                  Row(
+                    children: [
+                      Flexible(
+                          child: TextInput<int>(
+                        initial: vm.habitPeriod.periodValue,
+                        change: (v) =>
+                            setState(() => vm.habitPeriod.periodValue = v),
+                      )),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: PeriodTypeSelect(
+                          initial: vm.habitPeriod.type,
+                          change: (t) =>
+                              setState(() => vm.habitPeriod.type = t),
+                        ),
+                        flex: 3,
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            if (vm.habitPeriod.type == HabitPeriodType.week)
+              PaddedContainerCard(
+                children: [
+                  BiggerText(text: "Дни выполнения"),
+                  SizedBox(height: 5),
+                  WeekdaysPicker(
+                    initial: vm.habitPeriod.weekdays,
+                    change: (ws) =>
+                        setState(() => vm.habitPeriod.weekdays = ws),
+                  )
+                ],
+              ),
+            if (vm.habitPeriod.type == HabitPeriodType.month)
+              PaddedContainerCard(
+                children: [
+                  Row(
+                    children: [
+                      BiggerText(text: "День выполнения"),
+                      Spacer(),
+                      SmallerText(text: "1 .. 31"),
+                    ],
+                  ),
+                  SizedBox(height: 5),
+                  TextInput<int>(
+                    initial: vm.habitPeriod.monthDay,
+                    change: (d) => setState(() => vm.habitPeriod.monthDay = d),
+                  ),
+                ],
+              ),
             SizedBox(height: 60)
           ],
         ),
@@ -227,8 +294,9 @@ class HabitEditPage extends StatelessWidget {
         ),
       );
 
-  Padding buildTimeSuffix(String text) => Padding(
-        padding: const EdgeInsets.only(top: 12),
-        child: Text(text, textAlign: TextAlign.center),
-      );
+  // Widget buildTimeSuffix(String text) => Padding(
+  //       padding: const EdgeInsets.only(top: 12),
+  //       child: Text(text, textAlign: TextAlign.center),
+  //     );
+  Widget buildTimeSuffix(String text) => Text(text, textAlign: TextAlign.center);
 }
