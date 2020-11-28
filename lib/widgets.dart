@@ -556,8 +556,8 @@ class _PeriodTypeSelectState extends State<PeriodTypeSelect> {
         contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       ),
 
-      value: HabitPeriodType.Day,
-      items: [HabitPeriodType.Day, HabitPeriodType.Week, HabitPeriodType.Month]
+      value: HabitPeriodType.day,
+      items: [HabitPeriodType.day, HabitPeriodType.week, HabitPeriodType.month]
           .map(
             (pt) => DropdownMenuItem<HabitPeriodType>(
               child: Text(pt.format()),

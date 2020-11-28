@@ -216,7 +216,7 @@ class HabitEditPage extends StatelessWidget {
             width: double.infinity,
             child: FloatingActionButton.extended(
               onPressed: () {},
-              label: Text("Сохранить"),
+              label: SmallerText(text: "Сохранить", dark: true),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),
               ),

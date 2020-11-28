@@ -104,13 +104,89 @@ class HabitPerformValue {
   }
 }
 
-enum HabitPeriodType { Day, Week, Month }
+enum HabitPeriodType { day, week, month }
 
 extension FormatHabitPeriodType on HabitPeriodType {
   String format() {
-    if (this == HabitPeriodType.Day) return "День";
-    if (this == HabitPeriodType.Week) return "Неделя";
-    if (this == HabitPeriodType.Month) return "Месяц";
+    if (this == HabitPeriodType.day) return "День";
+    if (this == HabitPeriodType.week) return "Неделя";
+    if (this == HabitPeriodType.month) return "Месяц";
     throw "FormatHabitPeriodType.format on ${this}";
   }
+}
+
+class HabitWriteVM {
+  /// Название
+  String title;
+
+  /// Тип
+  HabitType type;
+
+  /// Если true, то привычка создана и редактируется; иначе создается новая привычка
+  bool isUpdate;
+
+  /// Повторы в течение дня включены
+  bool dailyRepeatsEnabled;
+
+  /// Продолжительность / число повторений за раз
+  double goalValue;
+
+  /// Число повторений за день
+  double dailyRepeats;
+
+  /// Периодичность
+  HabitPeriod habitPeriod;
+
+  HabitWriteVM({this.title, this.type, this.isUpdate});
+}
+
+/// Периодичность
+/// Ежедневная периодичность:
+///   - 1 раз в день
+///   - 1 раз в 2 дня
+/// Еженедельная периодичность:
+///   - 1 раз в 1 неделю
+///   - 2 раза в неделю (пн, вт)
+///   - 1 раз в 2 недели
+/// Ежемесячная периодичность:
+///   - каждое 10 число месяца
+class HabitPeriod {
+  HabitPeriodType type;
+
+  /// 1 раз в {periodValue} дней / недель / месяцев
+  int periodValue;
+
+  /// [type=HabitPeriodType.week] Дни выполнения (пн, вт)
+  /// Аналог "Число повторений за день" для недель
+  List<Weekday> weekdays;
+
+  /// [type=HabitPeriodType.month] День выполнения
+  int monthDay;
+
+  /// Если false, то {periodValue} = 1; иначе можно задавать {periodValue} > 1
+  bool isCustom;
+}
+
+/// День недели
+enum Weekday {
+  /// Понедельник
+  monday,
+
+  /// Вторник
+  tuesday,
+
+  /// Среда
+  wednesday,
+
+  /// Четверг
+  thursday,
+
+  /// Пятница
+  friday,
+
+  /// Суббота
+  saturday,
+
+  /// Воскресенье
+  sunday,
 }
