@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:validators/sanitizers.dart';
 
 /// Форматирует дюрейшн без нулей впереди и без миллисекунд, типа 1:02:03
 String formatDuration(Duration duration) => [
@@ -15,3 +16,5 @@ String formatDuration(Duration duration) => [
 
 
 String formatTime(DateTime time) => DateFormat.Hm().format(time);
+
+String formatDouble(double number) => rtrim(rtrim(number.toStringAsFixed(2), "0"), ".");

@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_listview/infinite_listview.dart';
+import 'package:yaxxxta/utils.dart';
 import 'package:yaxxxta/view_models.dart';
 
 import 'theme.dart';
@@ -286,7 +287,7 @@ class _TextInputState<T> extends State<TextInput> {
                     : int.tryParse(tec.text)) ??
                 0
             : tec.text;
-        if (widget.initial != value) {
+        if (formatDouble(widget.initial) != formatDouble(value)) {
           widget.change(value);
         }
       },
@@ -301,12 +302,10 @@ class _TextInputState<T> extends State<TextInput> {
 
   setTecValue() {
     if (isNumberInput) {
-      // todo 1.0 > 1
-      //  1.01 > 1.01
-      //  2.20 > 2.2
-      //  3.5545 > 3.55
+      tec.text = formatDouble(widget.initial);
+    } else {
+      tec.text = widget.initial.toString();
     }
-    tec.text = widget.initial.toString();
   }
 
   @override
@@ -321,7 +320,7 @@ class _TextInputState<T> extends State<TextInput> {
           filled: true,
           contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
           suffixIcon: widget.suffix,
-          suffixIconConstraints: BoxConstraints(minHeight: 30, minWidth: 30),
+          suffixIconConstraints: BoxConstraints(minHeight: 25, minWidth: 40),
         ),
         keyboardType: isNumberInput ? TextInputType.number : TextInputType.text,
         cursorColor: CustomColors.almostBlack,
