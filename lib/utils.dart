@@ -17,4 +17,4 @@ String formatDuration(Duration duration) => [
 
 String formatTime(DateTime time) => DateFormat.Hm().format(time);
 
-String formatDouble(double number) => rtrim(rtrim(number.toStringAsFixed(2), "0"), ".");
+String formatDouble(num number) => rtrim(rtrim(number.toStringAsFixed(2), "0"), ".");

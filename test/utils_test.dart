@@ -12,6 +12,7 @@ main() {
 
   test("Флрматирование дабла", () {
     expect(formatDouble(1.0), "1");
+    expect(formatDouble(1), "1");
     expect(formatDouble(10), "10");
     expect(formatDouble(1.01), "1.01");
     expect(formatDouble(2.20), "2.2");

@@ -281,14 +281,18 @@ class _TextInputState<T> extends State<TextInput> {
     setTecValue();
     tec.addListener(
       () {
-        var value = isNumberInput
-            ? (T == double
-                    ? double.tryParse(tec.text)
-                    : int.tryParse(tec.text)) ??
-                0
-            : tec.text;
-        if (formatDouble(widget.initial) != formatDouble(value)) {
-          widget.change(value);
+        if (isNumberInput) {
+          var value = T == double
+                  ? (double.tryParse(tec.text) ?? 0.0)
+                  : (int.tryParse(tec.text) ?? 0);
+          if (formatDouble(widget.initial) != formatDouble(value)) {
+            widget.change(value);
+          }
+        } else {
+          var value = tec.text;
+          if (widget.initial != value) {
+            widget.change(value);
+          }
         }
       },
     );
@@ -306,6 +310,10 @@ class _TextInputState<T> extends State<TextInput> {
     } else {
       tec.text = widget.initial.toString();
     }
+
+    // ставим курсор в конец инпута
+    tec.selection =
+        TextSelection.fromPosition(TextPosition(offset: tec.text.length));
   }
 
   @override

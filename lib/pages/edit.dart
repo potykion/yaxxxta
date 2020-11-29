@@ -41,7 +41,10 @@ class _HabitEditPageState extends State<HabitEditPage> {
                 SizedBox(height: 5),
                 HabitTypeInput(
                   initial: vm.type,
-                  change: (type) => setState(() => vm.type = type),
+                  change: (type) => setState(() {
+                    vm.type = type;
+                    vm.goalValue = 0;
+                  }),
                   setBefore: vm.isUpdate,
                 ),
                 HabitRepeatDuringDayCheckbox(
@@ -93,7 +96,8 @@ class _HabitEditPageState extends State<HabitEditPage> {
                     children: [
                       SimpleButton(
                         text: "+ 1 %",
-                        onTap: () => setState(() => vm.increaseGoalValueByPercent()),
+                        onTap: () =>
+                            setState(() => vm.increaseGoalValueByPercent()),
                       ),
                       SimpleButton(
                         text: "+ 1 сек",
@@ -126,7 +130,8 @@ class _HabitEditPageState extends State<HabitEditPage> {
                     children: [
                       SimpleButton(
                         text: "+ 1 %",
-                        onTap: () => setState(() => vm.increaseGoalValueByPercent()),
+                        onTap: () =>
+                            setState(() => vm.increaseGoalValueByPercent()),
                       ),
                       SimpleButton(
                         text: "+ 1",
@@ -159,7 +164,8 @@ class _HabitEditPageState extends State<HabitEditPage> {
                     children: [
                       SimpleButton(
                         text: "+ 1 %",
-                        onTap: () => setState(() => vm.increaseDailyRepeatsByPercent()),
+                        onTap: () =>
+                            setState(() => vm.increaseDailyRepeatsByPercent()),
                       ),
                       SimpleButton(
                         text: "+ 1",
@@ -186,7 +192,8 @@ class _HabitEditPageState extends State<HabitEditPage> {
                   children: [
                     SimpleChip(
                       text: "Ежедневная",
-                      selected: vm.habitPeriod.type == HabitPeriodType.day,
+                      selected: !vm.habitPeriod.isCustom &&
+                          vm.habitPeriod.type == HabitPeriodType.day,
                       change: (_) => setState(() {
                         vm.habitPeriod.type = HabitPeriodType.day;
                         vm.habitPeriod.isCustom = false;
@@ -194,7 +201,8 @@ class _HabitEditPageState extends State<HabitEditPage> {
                     ),
                     SimpleChip(
                       text: "Еженедельная",
-                      selected: vm.habitPeriod.type == HabitPeriodType.week,
+                      selected: !vm.habitPeriod.isCustom &&
+                          vm.habitPeriod.type == HabitPeriodType.week,
                       change: (_) => setState(() {
                         vm.habitPeriod.type = HabitPeriodType.week;
                         vm.habitPeriod.isCustom = false;
@@ -202,7 +210,8 @@ class _HabitEditPageState extends State<HabitEditPage> {
                     ),
                     SimpleChip(
                       text: "Ежемесячная",
-                      selected: vm.habitPeriod.type == HabitPeriodType.month,
+                      selected: !vm.habitPeriod.isCustom &&
+                          vm.habitPeriod.type == HabitPeriodType.month,
                       change: (_) => setState(() {
                         vm.habitPeriod.type = HabitPeriodType.month;
                         vm.habitPeriod.isCustom = false;
@@ -210,7 +219,7 @@ class _HabitEditPageState extends State<HabitEditPage> {
                     ),
                     SimpleChip(
                       text: "Другая",
-                      selected: false,
+                      selected: vm.habitPeriod.isCustom,
                       change: (_) =>
                           setState(() => vm.habitPeriod.isCustom = true),
                     ),
@@ -282,7 +291,9 @@ class _HabitEditPageState extends State<HabitEditPage> {
           child: SizedBox(
             width: double.infinity,
             child: FloatingActionButton.extended(
-              onPressed: () {},
+              onPressed: () {
+                var s = "As";
+              },
               label: SmallerText(text: "Сохранить", dark: true),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),
@@ -294,9 +305,7 @@ class _HabitEditPageState extends State<HabitEditPage> {
         ),
       );
 
-  // Widget buildTimeSuffix(String text) => Padding(
-  //       padding: const EdgeInsets.only(top: 12),
-  //       child: Text(text, textAlign: TextAlign.center),
-  //     );
-  Widget buildTimeSuffix(String text) => Text(text, textAlign: TextAlign.center);
+
+  Widget buildTimeSuffix(String text) =>
+      Text(text, textAlign: TextAlign.center);
 }

@@ -149,7 +149,8 @@ class HabitWriteVM {
 
   double get goalValueHours => (goalValue / 3600).floorToDouble();
 
-  double get goalValueMinutes => ((goalValue - goalValueHours * 3600)  / 60).floorToDouble();
+  double get goalValueMinutes =>
+      ((goalValue - goalValueHours * 3600) / 60).floorToDouble();
 
   double get goalValueSeconds =>
       goalValue - goalValueHours * 3600 - goalValueMinutes * 60;
@@ -170,7 +171,6 @@ class HabitWriteVM {
   increaseDailyRepeatsByPercent() {
     dailyRepeats = double.parse((dailyRepeats * 1.01).toStringAsFixed(2));
   }
-
 }
 
 /// Периодичность
@@ -202,10 +202,10 @@ class HabitPeriod {
   HabitPeriod({
     this.type = HabitPeriodType.day,
     this.periodValue = 1,
-    this.weekdays = const [],
+    weekdays,
     this.monthDay = 1,
     this.isCustom = false,
-  });
+  }) : weekdays = weekdays ?? [];
 }
 
 /// День недели
