@@ -159,10 +159,10 @@ class HabitWriteVM {
       goalValue = hours * 3600 + goalValueMinutes * 60 + goalValueSeconds;
 
   setGoalValueMinutes(double minutes) =>
-      goalValue = goalValueHours + 60 * minutes + goalValueSeconds;
+      goalValue = goalValueHours * 3600 + minutes * 60 + goalValueSeconds;
 
   setGoalValueSeconds(double seconds) =>
-      goalValue = goalValueHours + goalValueMinutes + seconds;
+      goalValue = goalValueHours * 3600 + goalValueMinutes * 60 + seconds;
 
   increaseGoalValueByPercent() {
     goalValue = num.parse((goalValue * 1.01).toStringAsFixed(2));

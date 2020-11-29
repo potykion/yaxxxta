@@ -26,4 +26,15 @@ main() {
     expect(vm.goalValueMinutes, 1);
     expect(vm.goalValueSeconds, 12.36);
   });
+
+  test("Установка секунд после установки минут", () {
+    var vm = HabitWriteVM();
+
+    vm.goalValue += 1 * 60;
+    vm.goalValue += 36;
+    vm.setGoalValueSeconds(3);
+
+    expect(vm.goalValueMinutes, 1);
+    expect(vm.goalValueSeconds, 3);
+  });
 }
