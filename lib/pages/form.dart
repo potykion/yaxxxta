@@ -5,6 +5,7 @@ import 'package:yaxxxta/theme.dart';
 import 'package:yaxxxta/widgets.dart';
 
 import '../models.dart';
+import '../routes.dart';
 
 class HabitFormPage extends StatefulWidget {
   @override
@@ -12,7 +13,13 @@ class HabitFormPage extends StatefulWidget {
 }
 
 class _HabitFormPageState extends State<HabitFormPage> {
-  Habit vm = Habit();
+  Habit vm;
+
+  @override
+  void initState() {
+    super.initState();
+    vm = Get.find<HabitRepo>().get(Get.arguments as int) ?? Habit();
+  }
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -293,11 +300,11 @@ class _HabitFormPageState extends State<HabitFormPage> {
             child: FloatingActionButton.extended(
               onPressed: () async {
                 if (vm.isUpdate) {
-                  //  todo
+                  await Get.find<HabitRepo>().update(vm);
                 } else {
-                  vm.id = await Get.find<HabitRepo>().insert(vm);
-                  Get.toNamed("/list");
+                  await Get.find<HabitRepo>().insert(vm);
                 }
+                Get.toNamed(Routes.list);
               },
               label: SmallerText(text: "Сохранить", dark: true),
               shape: RoundedRectangleBorder(
