@@ -39,11 +39,23 @@ dependencies:
   # стринговые утилиты
   validators: ^2.0.1
 
+  # json (де)сериализация
+  json_serializable: ^3.5.0
 
+  # nosql
+  hive: ^1.4.4+1
+  hive_flutter: ^0.3.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  # кодген
+  build_runner:
+
+  # кодген бд
+  hive_generator: ^0.8.2
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

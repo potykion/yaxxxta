@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 abstract class CustomColors {
@@ -16,8 +15,8 @@ abstract class CustomColors {
   static const Color grey = const Color(0xffBCBCBC);
 }
 
-buildTheme(context) => ThemeData(
-  textTheme: GoogleFonts.montserratTextTheme(
-    Theme.of(context).textTheme,
-  ),
-);
+ThemeData buildTheme(BuildContext context) => ThemeData(
+      textTheme: GoogleFonts.montserratTextTheme(
+        Theme.of(context).textTheme,
+      ),
+    );

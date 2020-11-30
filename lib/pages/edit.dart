@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:yaxxxta/db.dart';
 import 'package:yaxxxta/theme.dart';
-import 'package:yaxxxta/theme.dart';
-import 'package:yaxxxta/theme.dart';
-import 'package:yaxxxta/theme.dart';
-import 'package:yaxxxta/view_models.dart';
 import 'package:yaxxxta/widgets.dart';
 
-class HabitEditPage extends StatefulWidget {
+import '../models.dart';
+
+class HabitFormPage extends StatefulWidget {
   @override
-  _HabitEditPageState createState() => _HabitEditPageState();
+  _HabitFormPageState createState() => _HabitFormPageState();
 }
 
-class _HabitEditPageState extends State<HabitEditPage> {
-  HabitWriteVM vm = HabitWriteVM();
+class _HabitFormPageState extends State<HabitFormPage> {
+  Habit vm = Habit();
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -291,8 +291,13 @@ class _HabitEditPageState extends State<HabitEditPage> {
           child: SizedBox(
             width: double.infinity,
             child: FloatingActionButton.extended(
-              onPressed: () {
-                var s = "As";
+              onPressed: () async {
+                if (vm.isUpdate) {
+                  //  todo
+                } else {
+                  vm.id = await Get.find<HabitRepo>().insert(vm);
+                  Get.toNamed("/list");
+                }
               },
               label: SmallerText(text: "Сохранить", dark: true),
               shape: RoundedRectangleBorder(
@@ -304,7 +309,6 @@ class _HabitEditPageState extends State<HabitEditPage> {
           ),
         ),
       );
-
 
   Widget buildTimeSuffix(String text) =>
       Text(text, textAlign: TextAlign.center);

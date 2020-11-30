@@ -5,6 +5,8 @@ import 'package:yaxxxta/utils.dart';
 import 'package:yaxxxta/view_models.dart';
 import 'package:yaxxxta/widgets.dart';
 
+import '../models.dart';
+
 class HabitDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(

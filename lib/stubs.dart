@@ -1,5 +1,7 @@
 import 'package:yaxxxta/view_models.dart';
 
+import 'models.dart';
+
 var vms = [
   HabitVM(
     title: "Планочка",

@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:yaxxxta/view_models.dart';
+import 'package:yaxxxta/models.dart';
 
 main() {
   test("Увеличение продолжительности на 1 час, 1 мин, 1 сек", () {
-    var vm = HabitWriteVM();
+    var vm = Habit();
 
     vm.goalValue += 1;
     vm.goalValue += 1 * 60;
@@ -15,7 +15,7 @@ main() {
   });
 
   test("Увеличение продолжительности на 1 час и 2 %", () {
-    var vm = HabitWriteVM();
+    var vm = Habit();
 
     vm.goalValue += 1 * 3600;
     vm.increaseGoalValueByPercent();
@@ -28,7 +28,7 @@ main() {
   });
 
   test("Установка секунд после установки минут", () {
-    var vm = HabitWriteVM();
+    var vm = Habit();
 
     vm.goalValue += 1 * 60;
     vm.goalValue += 36;

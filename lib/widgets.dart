@@ -6,6 +6,7 @@ import 'package:infinite_listview/infinite_listview.dart';
 import 'package:yaxxxta/utils.dart';
 import 'package:yaxxxta/view_models.dart';
 
+import 'models.dart';
 import 'theme.dart';
 
 class HabitCard extends StatefulWidget {
