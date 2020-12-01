@@ -32,7 +32,7 @@ class Habit {
     this.dailyRepeatsEnabled = false,
     this.goalValue = 0,
     this.dailyRepeats = 1,
-    habitPeriod,
+    HabitPeriod habitPeriod,
   }) : habitPeriod = habitPeriod ?? HabitPeriod();
 
   /// Если true, то привычка создана и редактируется; иначе создается новая привычка
@@ -63,9 +63,9 @@ class Habit {
     dailyRepeats = double.parse((dailyRepeats * 1.01).toStringAsFixed(2));
   }
 
-  factory Habit.fromJson(Map<String, dynamic> json) => _$HabitFromJson(json);
+  factory Habit.fromJson(Map json) => _$HabitFromJson(json);
 
-  Map<String, dynamic> toJson() => _$HabitToJson(this);
+  Map toJson() => _$HabitToJson(this);
 }
 
 /// Периодичность
@@ -98,15 +98,15 @@ class HabitPeriod {
   HabitPeriod({
     this.type = HabitPeriodType.day,
     this.periodValue = 1,
-    weekdays,
+    List<Weekday> weekdays,
     this.monthDay = 1,
     this.isCustom = false,
   }) : weekdays = weekdays ?? [];
 
-  factory HabitPeriod.fromJson(Map<String, dynamic> json) =>
+  factory HabitPeriod.fromJson(Map json) =>
       _$HabitPeriodFromJson(json);
 
-  Map<String, dynamic> toJson() => _$HabitPeriodToJson(this);
+  Map toJson() => _$HabitPeriodToJson(this);
 }
 
 /// День недели

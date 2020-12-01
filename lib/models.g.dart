@@ -14,7 +14,9 @@ Habit _$HabitFromJson(Map json) {
     dailyRepeatsEnabled: json['dailyRepeatsEnabled'] as bool,
     goalValue: (json['goalValue'] as num)?.toDouble(),
     dailyRepeats: (json['dailyRepeats'] as num)?.toDouble(),
-    habitPeriod: json['habitPeriod'],
+    habitPeriod: json['habitPeriod'] == null
+        ? null
+        : HabitPeriod.fromJson(json['habitPeriod'] as Map),
   );
 }
 
@@ -69,7 +71,9 @@ HabitPeriod _$HabitPeriodFromJson(Map json) {
   return HabitPeriod(
     type: _$enumDecodeNullable(_$HabitPeriodTypeEnumMap, json['type']),
     periodValue: json['periodValue'] as int,
-    weekdays: json['weekdays'],
+    weekdays: (json['weekdays'] as List)
+        ?.map((e) => _$enumDecodeNullable(_$WeekdayEnumMap, e))
+        ?.toList(),
     monthDay: json['monthDay'] as int,
     isCustom: json['isCustom'] as bool,
   );

@@ -18,7 +18,9 @@ class _HabitFormPageState extends State<HabitFormPage> {
   @override
   void initState() {
     super.initState();
-    vm = Get.find<HabitRepo>().get(Get.arguments as int) ?? Habit();
+    vm = Get.arguments != null
+        ? Get.find<HabitRepo>().get(Get.arguments  as int)
+        : Habit();
   }
 
   @override

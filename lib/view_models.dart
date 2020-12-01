@@ -20,6 +20,17 @@ class HabitVM {
   final List<HabitRepeat> repeats;
 
   HabitVM({this.title, this.repeats});
+
+  factory HabitVM.fromHabit(Habit habit) => HabitVM(
+        title: habit.title,
+        repeats: List.generate(
+          habit.dailyRepeats.ceil(),
+          (index) => HabitRepeat(
+            type: habit.type,
+            goalValue: habit.goalValue
+          ),
+        ),
+      );
 }
 
 /// Очередное выполнение привычки
@@ -39,7 +50,7 @@ class HabitRepeat {
   HabitRepeat({
     this.performTime,
     this.type,
-    this.currentValue,
+    this.currentValue = 0,
     this.goalValue,
   });
 
@@ -55,8 +66,6 @@ class HabitRepeat {
 
   get isSingle => type == HabitType.repeats && this.goalValue.toInt() == 1;
 }
-
-
 
 class HabitHistoryEntry {
   final DateTime datetime;
@@ -95,5 +104,3 @@ class HabitPerformValue {
     throw "Хз как быть с type=$type";
   }
 }
-
-

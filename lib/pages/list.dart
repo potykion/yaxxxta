@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:yaxxxta/stubs.dart';
+import 'package:yaxxxta/view_models.dart';
 import 'package:yaxxxta/widgets.dart';
+
+import '../db.dart';
 
 class HabitListPage extends StatelessWidget {
   @override
@@ -18,7 +22,7 @@ class HabitListPage extends StatelessWidget {
         ),
         body: ListView(
           children: [
-            for (var vm in vms)
+            for (var vm in Get.find<HabitRepo>().list().map((h) => HabitVM.fromHabit(h)))
               SizedBox(
                 height: 130,
                 child: PageView.builder(

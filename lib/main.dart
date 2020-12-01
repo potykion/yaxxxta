@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => GetMaterialApp(
         routes: routes,
-        initialRoute: "/form",
+        initialRoute: Routes.list,
         theme: buildTheme(context),
       );
 }
