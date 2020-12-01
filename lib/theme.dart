@@ -1,20 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+/// Кастомные цвета
 abstract class CustomColors {
-  static const Color red = const Color(0xffFFADAD);
-  static const Color orange = const Color(0xffFFD6A5);
-  static const Color yellow = const Color(0xffFDFFB6);
-  static const Color green = const Color(0xffCAFFBF);
-  static const Color cyan = const Color(0xff9BF6FF);
-  static const Color blue = const Color(0xffA0C4FF);
-  static const Color purple = const Color(0xffBDB2FF);
-  static const Color pink = const Color(0xffFFC6FF);
-  static const Color almostBlack = const Color(0xff3D3A4B);
-  static const Color lightGrey = const Color(0xffFAFAFA);
-  static const Color grey = const Color(0xffBCBCBC);
+  /// Красный
+  static const Color red = Color(0xffFFADAD);
+
+  /// Оранжевый
+  static const Color orange = Color(0xffFFD6A5);
+
+  /// Желтый
+  static const Color yellow = Color(0xffFDFFB6);
+
+  /// Зеленый
+  static const Color green = Color(0xffCAFFBF);
+
+  /// Голубой
+  static const Color cyan = Color(0xff9BF6FF);
+
+  /// Синий
+  static const Color blue = Color(0xffA0C4FF);
+
+  /// Фиолетовый
+  static const Color purple = Color(0xffBDB2FF);
+
+  /// Розовый
+  static const Color pink = Color(0xffFFC6FF);
+
+  /// Почти черный
+  static const Color almostBlack = Color(0xff3D3A4B);
+
+  /// Легкий серый
+  static const Color lightGrey = Color(0xffFAFAFA);
+
+  /// Серый
+  static const Color grey = Color(0xffBCBCBC);
 }
 
+/// Создает тему приложухи
 ThemeData buildTheme(BuildContext context) => ThemeData(
       textTheme: GoogleFonts.montserratTextTheme(
         Theme.of(context).textTheme,

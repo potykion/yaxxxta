@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:yaxxxta/models.dart';
 
-main() {
+void main() {
   test("Увеличение продолжительности на 1 час, 1 мин, 1 сек", () {
     var vm = Habit();
 

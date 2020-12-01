@@ -3,16 +3,21 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_listview/infinite_listview.dart';
-import 'package:yaxxxta/utils.dart';
-import 'package:yaxxxta/view_models.dart';
 
 import 'models.dart';
 import 'theme.dart';
+import 'utils.dart';
+import 'view_models.dart';
 
+/// Карточка привычки
 class HabitCard extends StatefulWidget {
+  /// Вью-моделька привычки
   final HabitVM vm;
+
+  /// Индекс повтора привычки в течение дня
   final int repeatIndex;
 
+  /// Создает карточку
   const HabitCard({
     Key key,
     this.vm,
@@ -24,13 +29,13 @@ class HabitCard extends StatefulWidget {
 }
 
 class _HabitCardState extends State<HabitCard> {
-  get title => widget.vm.title;
+  String get title => widget.vm.title;
 
   HabitRepeat get repeat => widget.vm.repeats[widget.repeatIndex];
 
-  get isSingleRepeat => widget.vm.repeats.length == 1;
+  bool get isSingleRepeat => widget.vm.repeats.length == 1;
 
-  get repeatCounter =>
+  String get repeatCounter =>
       "${widget.repeatIndex + 1} / ${widget.vm.repeats.length}";
 
   @override
@@ -56,9 +61,13 @@ class _HabitCardState extends State<HabitCard> {
       ]);
 }
 
+/// Карточка-контейнер с отступами
 class PaddedContainerCard extends StatelessWidget {
+  /// Дети :)
+  /// Содержимое контейнера
   final List<Widget> children;
 
+  /// Создает карточку
   const PaddedContainerCard({Key key, this.children}) : super(key: key);
 
   @override
@@ -80,14 +89,19 @@ class PaddedContainerCard extends StatelessWidget {
       );
 }
 
+/// Ячейка выбора даты
 class DatePickerItem extends StatelessWidget {
+  /// Дата
   final DateTime date;
+
+  /// Цвет
   final Color color;
 
+  /// Создает ячейку
   const DatePickerItem({Key key, this.date, this.color = Colors.white})
       : super(key: key);
 
-  get dateStr => "${date.day}.\n${date.month}";
+  String get _dateStr => "${date.day}.\n${date.month}";
 
   @override
   Widget build(BuildContext context) {
@@ -96,12 +110,12 @@ class DatePickerItem extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: this.color,
+          color: color,
         ),
         width: 50,
         child: Center(
           child: Text(
-            dateStr,
+            _dateStr,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
@@ -110,12 +124,13 @@ class DatePickerItem extends StatelessWidget {
   }
 }
 
-class DateScroll extends StatefulWidget {
+/// Выбор даты
+class DatePicker extends StatefulWidget {
   @override
-  _DateScrollState createState() => _DateScrollState();
+  _DatePickerState createState() => _DatePickerState();
 }
 
-class _DateScrollState extends State<DateScroll> {
+class _DatePickerState extends State<DatePicker> {
   int selectedIndex = 0;
 
   /// Сдвигаем лист-вью на половину экрана + 3 паддинга по 10,
@@ -145,12 +160,21 @@ class _DateScrollState extends State<DateScroll> {
       );
 }
 
+/// Контрол для изменения прогресса привычки
 class HabitProgressControl extends StatelessWidget {
+  /// Процент прогресса
   final double progressPercentage;
+
+  /// Прогресс в виде строки (например, 1 / 3, 0 / 1:00)
   final String progressStr;
+
+  /// Тип привычки
   final HabitType type;
+
+  /// Флаг, определяющий один ли раз нужно выполнить привычку
   final bool isSingleRepeat;
 
+  /// Создает контрол
   const HabitProgressControl(
       {Key key,
       this.progressPercentage,
@@ -198,11 +222,18 @@ class HabitProgressControl extends StatelessWidget {
       );
 }
 
+/// Текст поменьше
 class SmallerText extends StatelessWidget {
+  /// Текст
   final String text;
+
+  /// Темный текст (по умолчанию серый)
   final bool dark;
+
+  /// Светлый текст (по умолчанию серый)
   final bool light;
 
+  /// Создает текст
   const SmallerText({Key key, this.text, this.dark = false, this.light = false})
       : super(key: key);
 
@@ -223,9 +254,12 @@ class SmallerText extends StatelessWidget {
   }
 }
 
+/// Текст побольше
 class BiggerText extends StatelessWidget {
+  /// Текст
   final String text;
 
+  /// Создает текст
   const BiggerText({Key key, this.text}) : super(key: key);
 
   @override
@@ -239,9 +273,12 @@ class BiggerText extends StatelessWidget {
       );
 }
 
+/// Большуший текст
 class BiggestText extends StatelessWidget {
+  /// Текст
   final String text;
 
+  /// Создает текст
   const BiggestText({Key key, this.text}) : super(key: key);
 
   @override
@@ -255,11 +292,19 @@ class BiggestText extends StatelessWidget {
       );
 }
 
+/// Инпут для ввода текста, чисел
 class TextInput<T> extends StatefulWidget {
+  /// Начальное значение инпута
   final T initial;
+
+  /// Событие изменения значения инпута
   final void Function(dynamic value) change;
+
+  /// Виджет, который показывать на конце инпута
+  /// Например обозначения
   final Widget suffix;
 
+  /// Создает инпут
   const TextInput({
     Key key,
     @required this.initial,
@@ -284,9 +329,9 @@ class _TextInputState<T> extends State<TextInput> {
       () {
         if (isNumberInput) {
           var value = T == double
-                  ? (double.tryParse(tec.text) ?? 0.0)
-                  : (int.tryParse(tec.text) ?? 0);
-          if (formatDouble(widget.initial) != formatDouble(value)) {
+              ? (double.tryParse(tec.text) ?? 0.0)
+              : (int.tryParse(tec.text) ?? 0);
+          if (formatDouble(widget.initial as num) != formatDouble(value)) {
             widget.change(value);
           }
         } else {
@@ -305,9 +350,9 @@ class _TextInputState<T> extends State<TextInput> {
     setTecValue();
   }
 
-  setTecValue() {
+  void setTecValue() {
     if (isNumberInput) {
-      tec.text = formatDouble(widget.initial);
+      tec.text = formatDouble(widget.initial as num);
     } else {
       tec.text = widget.initial.toString();
     }
@@ -340,14 +385,19 @@ class _TextInputState<T> extends State<TextInput> {
       );
 }
 
-class HabitTypeInput extends StatefulWidget {
+/// Радио-групп типа привычки
+class HabitTypeRadioGroup extends StatefulWidget {
+  /// Начальный тип привычки
   final HabitType initial;
+
+  /// Событие смены типа привычки
   final Function(HabitType habitType) change;
 
   /// Если true, то прячит остальные типы привычек
   final bool setBefore;
 
-  const HabitTypeInput({
+  /// Создает инпут
+  const HabitTypeRadioGroup({
     Key key,
     @required this.initial,
     @required this.change,
@@ -355,10 +405,10 @@ class HabitTypeInput extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _HabitTypeInputState createState() => _HabitTypeInputState();
+  _HabitTypeRadioGroupState createState() => _HabitTypeRadioGroupState();
 }
 
-class _HabitTypeInputState extends State<HabitTypeInput> {
+class _HabitTypeRadioGroupState extends State<HabitTypeRadioGroup> {
   HabitType selectedHabitType;
 
   @override
@@ -380,7 +430,7 @@ class _HabitTypeInputState extends State<HabitTypeInput> {
         ],
       );
 
-  buildHabitTypeRadio(HabitType habitType) {
+  Selectable buildHabitTypeRadio(HabitType habitType) {
     String biggerText;
     String smallerText;
     if (habitType == HabitType.time) {
@@ -392,35 +442,48 @@ class _HabitTypeInputState extends State<HabitTypeInput> {
       smallerText = "Например, 2 раза в день";
     }
 
-    var changeHabitType = () {
-      setState(() => selectedHabitType = habitType);
-      widget.change(selectedHabitType);
-    };
-
     return Selectable(
       biggerText: biggerText,
       smallerText: smallerText,
       initial: selectedHabitType == habitType,
-      onSelected: (_) => changeHabitType(),
-      prefix: Radio(
+      onSelected: (_) => changeHabitType(habitType),
+      prefix: Radio<HabitType>(
         value: habitType,
         groupValue: selectedHabitType,
-        onChanged: (_) => changeHabitType(),
+        onChanged: (_) => changeHabitType(habitType),
         activeColor: CustomColors.almostBlack,
       ),
     );
   }
+
+  void changeHabitType(HabitType habitType) {
+    setState(() => selectedHabitType = habitType);
+    widget.change(selectedHabitType);
+  }
 }
 
+/// Виджет выбора из нескольких вариантов
 class Selectable extends StatefulWidget {
+  /// Большой текст
   final String biggerText;
+
+  /// Маленький текст
   final String smallerText;
+
+  /// Начальное значение выбранности
   final bool initial;
-  final Function onSelected;
+
+  /// Событие выбора или снятия выбора
+  final Function(bool selected) onSelected;
+
+  /// Виджет отображаемый перед выбором, например радио или чекбокс
   final Widget prefix;
+  /// Цвет выбора
   final Color selectedColor;
+  /// Цвет отсутствия выбора
   final Color unselectedColor;
 
+  /// Создает выбор
   const Selectable({
     Key key,
     this.biggerText,
@@ -456,7 +519,7 @@ class _SelectableState extends State<Selectable> {
     return SizedBox(
       width: double.infinity,
       child: GestureDetector(
-        onTap: () => toggleSelected(),
+        onTap: toggleSelected,
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
@@ -486,16 +549,20 @@ class _SelectableState extends State<Selectable> {
     );
   }
 
-  toggleSelected() {
+  void toggleSelected() {
     setState(() => selected = !selected);
     widget.onSelected(selected);
   }
 }
 
+/// Чекбокс определяющий повторять ли привычку в течение дня
 class HabitRepeatDuringDayCheckbox extends StatefulWidget {
+  /// Начальное значение выбора чекбокса
   final bool initial;
-  final Function change;
+  /// Событие смены выбора чекбокса
+  final Function(bool selected) change;
 
+  /// Создает чекбокс
   const HabitRepeatDuringDayCheckbox({Key key, this.initial, this.change})
       : super(key: key);
 
@@ -520,28 +587,34 @@ class _HabitRepeatDuringDayCheckboxState
       biggerText: "Повторы в течение дня",
       smallerText: "Например, 10 мин. 2 раза в день",
       prefix: Checkbox(
-        onChanged: (newSelected) => setSelected(newSelected),
+        onChanged: setSelected,
         value: selected,
         activeColor: CustomColors.yellow,
         checkColor: CustomColors.almostBlack,
       ),
       initial: selected,
-      onSelected: (newSelected) => setSelected(newSelected),
+      onSelected: setSelected,
       selectedColor: Colors.white,
       unselectedColor: Colors.white,
     );
   }
 
-  setSelected(bool selected) {
+  // ignore: avoid_positional_boolean_parameters
+  void setSelected(bool selected) {
     setState(() => this.selected = selected);
     widget.change(this.selected);
   }
 }
 
+/// Обычная кнопочка
 class SimpleButton extends StatelessWidget {
+  /// Текст кнопки
   final String text;
-  final Function onTap;
 
+  /// Событие нажатия на кнопку
+  final void Function() onTap;
+
+  /// Создает кнопку
   const SimpleButton({Key key, this.text, this.onTap}) : super(key: key);
 
   @override
@@ -564,13 +637,24 @@ class SimpleButton extends StatelessWidget {
       );
 }
 
+/// Обычный чип
 class SimpleChip extends StatelessWidget {
+  /// Текст чипа
   final String text;
+
+  /// Выбран ли чип
   final bool selected;
+
+  /// Событие смены выбранности чипа
   final Function(bool selected) change;
+
+  /// Цвет чипа
   final Color color;
+
+  /// Отступы чипа
   final EdgeInsetsGeometry padding;
 
+  /// Создает чип
   const SimpleChip({
     Key key,
     this.text,
@@ -592,19 +676,24 @@ class SimpleChip extends StatelessWidget {
   }
 }
 
-class PeriodTypeSelect extends StatefulWidget {
+/// Селект выбора типа периода привычки
+class HabitPeriodTypeSelect extends StatefulWidget {
+  /// Начальное значение типа периода привычки
   final HabitPeriodType initial;
+
+  /// Событие смены типа периода привычки
   final Function(HabitPeriodType type) change;
 
-  const PeriodTypeSelect(
+  /// Создает селект
+  const HabitPeriodTypeSelect(
       {Key key, @required this.initial, @required this.change})
       : super(key: key);
 
   @override
-  _PeriodTypeSelectState createState() => _PeriodTypeSelectState();
+  _HabitPeriodTypeSelectState createState() => _HabitPeriodTypeSelectState();
 }
 
-class _PeriodTypeSelectState extends State<PeriodTypeSelect> {
+class _HabitPeriodTypeSelectState extends State<HabitPeriodTypeSelect> {
   HabitPeriodType type;
 
   @override
@@ -614,38 +703,43 @@ class _PeriodTypeSelectState extends State<PeriodTypeSelect> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return DropdownButtonFormField(
-      decoration: InputDecoration(
-        fillColor: CustomColors.lightGrey,
-        border: OutlineInputBorder(
-          borderSide: BorderSide(width: 0, style: BorderStyle.none),
-          borderRadius: BorderRadius.circular(15),
+  Widget build(BuildContext context) =>
+      DropdownButtonFormField<HabitPeriodType>(
+        decoration: InputDecoration(
+          fillColor: CustomColors.lightGrey,
+          border: OutlineInputBorder(
+            borderSide: BorderSide(width: 0, style: BorderStyle.none),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          filled: true,
+          contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
         ),
-        filled: true,
-        contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-      ),
-      value: type,
-      items: [HabitPeriodType.day, HabitPeriodType.week, HabitPeriodType.month]
-          .map(
-            (pt) => DropdownMenuItem<HabitPeriodType>(
-              child: Text(pt.format()),
-              value: pt,
-            ),
-          )
-          .toList(),
-      onChanged: (v) {
-        setState(() => type = v);
-        widget.change(v);
-      },
-    );
-  }
+        value: type,
+        items:
+            [HabitPeriodType.day, HabitPeriodType.week, HabitPeriodType.month]
+                .map(
+                  (pt) => DropdownMenuItem<HabitPeriodType>(
+                    child: Text(pt.format()),
+                    value: pt,
+                  ),
+                )
+                .toList(),
+        onChanged: (v) {
+          setState(() => type = v);
+          widget.change(v);
+        },
+      );
 }
 
+/// Пикер дней недели
 class WeekdaysPicker extends StatefulWidget {
+  /// Изначально выбранные дни недели
   final List<Weekday> initial;
+
+  /// Событие изменения дней недели
   final Function(List<Weekday> w) change;
 
+  /// Создает пикер
   const WeekdaysPicker({Key key, @required this.initial, @required this.change})
       : super(key: key);
 

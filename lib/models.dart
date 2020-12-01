@@ -2,6 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'models.g.dart';
 
+/// Привычка
 @JsonSerializable()
 class Habit {
   /// Айдишник
@@ -25,6 +26,7 @@ class Habit {
   /// Периодичность
   HabitPeriod habitPeriod;
 
+  /// Создает привычку
   Habit({
     this.id,
     this.title = "",
@@ -35,36 +37,47 @@ class Habit {
     HabitPeriod habitPeriod,
   }) : habitPeriod = habitPeriod ?? HabitPeriod();
 
-  /// Если true, то привычка создана и редактируется; иначе создается новая привычка
+  /// Если true, то привычка создана и редактируется;
+  /// иначе создается новая привычка
   bool get isUpdate => id != null;
 
+  /// Выводит часы продолжительности привычки
   double get goalValueHours => (goalValue / 3600).floorToDouble();
 
+  /// Выводит минуты продолжительности привычки
   double get goalValueMinutes =>
       ((goalValue - goalValueHours * 3600) / 60).floorToDouble();
 
+  /// Выводит секунды продолжительности привычки
   double get goalValueSeconds =>
       goalValue - goalValueHours * 3600 - goalValueMinutes * 60;
 
-  setGoalValueHours(double hours) =>
+  /// Устанавливает часы продолжительности привычки
+  void setGoalValueHours(double hours) =>
       goalValue = hours * 3600 + goalValueMinutes * 60 + goalValueSeconds;
 
-  setGoalValueMinutes(double minutes) =>
+  /// Устанавливает минуты продолжительности привычки
+  void setGoalValueMinutes(double minutes) =>
       goalValue = goalValueHours * 3600 + minutes * 60 + goalValueSeconds;
 
-  setGoalValueSeconds(double seconds) =>
+  /// Устанавливает секунды продолжительности привычки
+  void setGoalValueSeconds(double seconds) =>
       goalValue = goalValueHours * 3600 + goalValueMinutes * 60 + seconds;
 
-  increaseGoalValueByPercent() {
-    goalValue = num.parse((goalValue * 1.01).toStringAsFixed(2));
+  /// Увеличивает продолжительность привычки на 1%
+  void increaseGoalValueByPercent() {
+    goalValue = double.parse((goalValue * 1.01).toStringAsFixed(2));
   }
 
-  increaseDailyRepeatsByPercent() {
+  /// Увеличивает кол-во повторов в течение дня на 1%
+  void increaseDailyRepeatsByPercent() {
     dailyRepeats = double.parse((dailyRepeats * 1.01).toStringAsFixed(2));
   }
 
+  /// Создает привычку из джсона
   factory Habit.fromJson(Map json) => _$HabitFromJson(json);
 
+  /// Конвертит привычку в джсон
   Map toJson() => _$HabitToJson(this);
 }
 
@@ -80,6 +93,7 @@ class Habit {
 ///   - каждое 10 число месяца
 @JsonSerializable()
 class HabitPeriod {
+  /// Тип периодичности
   HabitPeriodType type;
 
   /// 1 раз в {periodValue} дней / недель / месяцев
@@ -95,6 +109,7 @@ class HabitPeriod {
   /// Если false, то {periodValue} = 1; иначе можно задавать {periodValue} > 1
   bool isCustom;
 
+  /// Создает периодичность привычки
   HabitPeriod({
     this.type = HabitPeriodType.day,
     this.periodValue = 1,
@@ -103,9 +118,10 @@ class HabitPeriod {
     this.isCustom = false,
   }) : weekdays = weekdays ?? [];
 
-  factory HabitPeriod.fromJson(Map json) =>
-      _$HabitPeriodFromJson(json);
+  /// Создает периодичность привычки из словаря
+  factory HabitPeriod.fromJson(Map json) => _$HabitPeriodFromJson(json);
 
+  /// Конвертит периодичность привычки в словарь
   Map toJson() => _$HabitPeriodToJson(this);
 }
 
@@ -133,8 +149,10 @@ enum Weekday {
   sunday,
 }
 
+/// Форматирует день недели
 extension FormatWeekday on Weekday {
-  format() {
+  /// Форматирует день недели
+  String format() {
     if (this == Weekday.monday) return "Пн";
     if (this == Weekday.tuesday) return "Вт";
     if (this == Weekday.wednesday) return "Ср";
@@ -142,12 +160,25 @@ extension FormatWeekday on Weekday {
     if (this == Weekday.friday) return "Пт";
     if (this == Weekday.saturday) return "Сб";
     if (this == Weekday.sunday) return "Вс";
+    throw "Failed to format: $this";
   }
 }
 
-enum HabitPeriodType { day, week, month }
+/// Тип периодичности
+enum HabitPeriodType {
+  /// Ежедневно
+  day,
 
+  /// Еженедельно
+  week,
+
+  /// Ежемесячно
+  month,
+}
+
+/// Форматирует тип периода привычки
 extension FormatHabitPeriodType on HabitPeriodType {
+  /// Форматирует тип периода привычки
   String format() {
     if (this == HabitPeriodType.day) return "День";
     if (this == HabitPeriodType.week) return "Неделя";

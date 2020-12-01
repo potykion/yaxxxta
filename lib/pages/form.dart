@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:yaxxxta/db.dart';
-import 'package:yaxxxta/theme.dart';
-import 'package:yaxxxta/widgets.dart';
 
+import '../db.dart';
 import '../models.dart';
 import '../routes.dart';
+import '../theme.dart';
+import '../widgets.dart';
 
+/// Страница с формой создания/редактирования привычки
 class HabitFormPage extends StatefulWidget {
   @override
   _HabitFormPageState createState() => _HabitFormPageState();
@@ -19,7 +20,7 @@ class _HabitFormPageState extends State<HabitFormPage> {
   void initState() {
     super.initState();
     vm = Get.arguments != null
-        ? Get.find<HabitRepo>().get(Get.arguments  as int)
+        ? Get.find<HabitRepo>().get(Get.arguments as int)
         : Habit();
   }
 
@@ -33,7 +34,7 @@ class _HabitFormPageState extends State<HabitFormPage> {
                 SizedBox(height: 5),
                 TextInput(
                   initial: vm.title,
-                  change: (t) => setState(() => vm.title = t),
+                  change: (dynamic t) => setState(() => vm.title = t as String),
                 ),
               ],
             ),
@@ -48,7 +49,7 @@ class _HabitFormPageState extends State<HabitFormPage> {
                   ],
                 ),
                 SizedBox(height: 5),
-                HabitTypeInput(
+                HabitTypeRadioGroup(
                   initial: vm.type,
                   change: (type) => setState(() {
                     vm.type = type;
@@ -74,8 +75,8 @@ class _HabitFormPageState extends State<HabitFormPage> {
                         child: TextInput<double>(
                           suffix: buildTimeSuffix("ч"),
                           initial: vm.goalValueHours,
-                          change: (h) => setState(
-                            () => vm.setGoalValueHours(h),
+                          change: (dynamic h) => setState(
+                            () => vm.setGoalValueHours(h as double),
                           ),
                         ),
                       ),
@@ -84,8 +85,9 @@ class _HabitFormPageState extends State<HabitFormPage> {
                         child: TextInput<double>(
                           suffix: buildTimeSuffix("мин"),
                           initial: vm.goalValueMinutes,
-                          change: (m) =>
-                              setState(() => vm.setGoalValueMinutes(m)),
+                          change: (dynamic m) => setState(
+                            () => vm.setGoalValueMinutes(m as double),
+                          ),
                         ),
                       ),
                       SizedBox(width: 10),
@@ -93,8 +95,8 @@ class _HabitFormPageState extends State<HabitFormPage> {
                         child: TextInput<double>(
                           suffix: buildTimeSuffix("сек"),
                           initial: vm.goalValueSeconds,
-                          change: (s) =>
-                              setState(() => vm.setGoalValueSeconds(s)),
+                          change: (dynamic s) => setState(
+                              () => vm.setGoalValueSeconds(s as double)),
                         ),
                       ),
                     ],
@@ -131,7 +133,8 @@ class _HabitFormPageState extends State<HabitFormPage> {
                   SizedBox(height: 5),
                   TextInput<double>(
                     initial: vm.goalValue,
-                    change: (v) => setState(() => vm.goalValue = v),
+                    change: (dynamic v) =>
+                        setState(() => vm.goalValue = v as double),
                   ),
                   SizedBox(height: 5),
                   Row(
@@ -165,7 +168,8 @@ class _HabitFormPageState extends State<HabitFormPage> {
                   SizedBox(height: 5),
                   TextInput<double>(
                     initial: vm.dailyRepeats,
-                    change: (r) => setState(() => vm.dailyRepeats = r),
+                    change: (dynamic r) =>
+                        setState(() => vm.dailyRepeats = r as double),
                   ),
                   SizedBox(height: 5),
                   Row(
@@ -246,12 +250,12 @@ class _HabitFormPageState extends State<HabitFormPage> {
                       Flexible(
                           child: TextInput<int>(
                         initial: vm.habitPeriod.periodValue,
-                        change: (v) =>
-                            setState(() => vm.habitPeriod.periodValue = v),
+                        change: (dynamic v) => setState(
+                            () => vm.habitPeriod.periodValue = v as int),
                       )),
                       SizedBox(width: 10),
                       Expanded(
-                        child: PeriodTypeSelect(
+                        child: HabitPeriodTypeSelect(
                           initial: vm.habitPeriod.type,
                           change: (t) =>
                               setState(() => vm.habitPeriod.type = t),
@@ -287,7 +291,8 @@ class _HabitFormPageState extends State<HabitFormPage> {
                   SizedBox(height: 5),
                   TextInput<int>(
                     initial: vm.habitPeriod.monthDay,
-                    change: (d) => setState(() => vm.habitPeriod.monthDay = d),
+                    change: (dynamic d) =>
+                        setState(() => vm.habitPeriod.monthDay = d as int),
                   ),
                 ],
               ),
@@ -306,7 +311,7 @@ class _HabitFormPageState extends State<HabitFormPage> {
                 } else {
                   await Get.find<HabitRepo>().insert(vm);
                 }
-                Get.toNamed(Routes.list);
+                Get.toNamed<void>(Routes.list);
               },
               label: SmallerText(text: "Сохранить", dark: true),
               shape: RoundedRectangleBorder(

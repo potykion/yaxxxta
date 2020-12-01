@@ -1,12 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:yaxxxta/theme.dart';
-import 'package:yaxxxta/utils.dart';
-import 'package:yaxxxta/view_models.dart';
-import 'package:yaxxxta/widgets.dart';
 
 import '../models.dart';
+import '../theme.dart';
+import '../utils.dart';
+import '../view_models.dart';
+import '../widgets.dart';
 
+/// Страничка с инфой о привычке
 class HabitDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -54,10 +54,16 @@ class HabitDetailsPage extends StatelessWidget {
               children: [
                 BiggerText(text: "История"),
                 SizedBox(height: 5),
-                DateScroll(),
+                DatePicker(),
                 for (var e in [
-                  HabitHistoryEntry(datetime: DateTime(2020, 17, 11, 11), value: 60),
-                  HabitHistoryEntry(datetime: DateTime(2020, 17, 11, 12), value: 60),
+                  HabitHistoryEntry(
+                    datetime: DateTime(2020, 17, 11, 11),
+                    value: 60,
+                  ),
+                  HabitHistoryEntry(
+                    datetime: DateTime(2020, 17, 11, 12),
+                    value: 60,
+                  ),
                 ])
                   Padding(
                     padding: const EdgeInsets.all(5),

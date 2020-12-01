@@ -2,16 +2,22 @@ import 'package:hive/hive.dart';
 
 import 'models.dart';
 
+/// Репо для работы с привычками
 class HabitRepo {
-  final Box hiveBox;
+  final Box<Map> _hiveBox;
 
-  HabitRepo(this.hiveBox);
+  /// Создает репо
+  HabitRepo(this._hiveBox);
 
-  Future<int> insert(Habit habit) => hiveBox.add(habit.toJson());
+  /// Вставляет привычку в бд, возвращая айди
+  Future<int> insert(Habit habit) => _hiveBox.add(habit.toJson());
 
-  List<Habit> list() => hiveBox.values.map((h) => Habit.fromJson(h)).toList();
+  /// Выводит список привычек
+  List<Habit> list() => _hiveBox.values.map((h) => Habit.fromJson(h)).toList();
 
-  Habit get(int id) => Habit.fromJson(hiveBox.getAt(id))..id = id;
+  /// Получает привычку по айди
+  Habit get(int id) => Habit.fromJson(_hiveBox.getAt(id))..id = id;
 
-  Future<void> update(Habit habit) => hiveBox.putAt(habit.id, habit.toJson());
+  /// Обновляет привычку в бд
+  Future<void> update(Habit habit) => _hiveBox.putAt(habit.id, habit.toJson());
 }

@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:yaxxxta/pages/details.dart';
-import 'package:yaxxxta/pages/form.dart';
-import 'package:yaxxxta/pages/list.dart';
 
+import 'pages/details.dart';
+import 'pages/form.dart';
+import 'pages/list.dart';
+
+// ignore: avoid_classes_with_only_static_members
+/// Роуты
 abstract class Routes {
+  /// Список привычек
   static final String list = "/list";
+
+  /// Страница инфы о привычке
   static final String details = "/details";
+
+  /// Страница редактирования/создания привычки
   static final String form = "/form";
 }
 
+/// Маппинг роутов в страницы
 final Map<String, Widget Function(BuildContext context)> routes = {
   Routes.list: (_) => HabitListPage(),
   Routes.details: (_) => HabitDetailsPage(),

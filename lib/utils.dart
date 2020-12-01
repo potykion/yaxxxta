@@ -14,7 +14,11 @@ String formatDuration(Duration duration) => [
         .map((e) => e.key == 0 ? e.value : e.value.toString().padLeft(2, "0"))
         .join(":");
 
-
+/// Форматирует время (20:43)
 String formatTime(DateTime time) => DateFormat.Hm().format(time);
 
-String formatDouble(num number) => rtrim(rtrim(number.toStringAsFixed(2), "0"), ".");
+/// Форматирует дабл
+/// 1.023 > 1.02
+/// 1.00 > 1
+String formatDouble(num number) =>
+    rtrim(rtrim(number.toStringAsFixed(2), "0"), ".");

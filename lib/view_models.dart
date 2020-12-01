@@ -4,14 +4,17 @@ import 'utils.dart';
 
 /// Ячейка в списке дат, показываюшая прогресс за дату
 class DateStatusVM {
+  /// Дата
   final DateTime date;
 
   /// 0, 1 для простоты
   final double donePercentage;
 
+  /// Создает ячейку
   DateStatusVM(this.date, this.donePercentage);
 }
 
+/// Вью-моделька привычки
 class HabitVM {
   /// Название
   final String title;
@@ -19,16 +22,15 @@ class HabitVM {
   /// Повторы (15 мин / раз 2 раза в день)
   final List<HabitRepeat> repeats;
 
+  /// Создает вм
   HabitVM({this.title, this.repeats});
 
+  /// Создает вм из привычки
   factory HabitVM.fromHabit(Habit habit) => HabitVM(
         title: habit.title,
         repeats: List.generate(
           habit.dailyRepeats.ceil(),
-          (index) => HabitRepeat(
-            type: habit.type,
-            goalValue: habit.goalValue
-          ),
+          (index) => HabitRepeat(type: habit.type, goalValue: habit.goalValue),
         ),
       );
 }
@@ -47,6 +49,7 @@ class HabitRepeat {
   /// Тип
   final HabitType type;
 
+  /// Создает выполнение
   HabitRepeat({
     this.performTime,
     this.type,
@@ -55,35 +58,49 @@ class HabitRepeat {
   });
 
   /// Строка прогресса: 4 / 10, 1:00 / 2:00
-  get progressStr =>
+  String get progressStr =>
       HabitPerformValue(currentValue: currentValue, goalValue: goalValue)
           .format(type);
 
   /// Процент прогресса: 0.5
-  get progressPercentage => min(currentValue, goalValue) / goalValue;
+  double get progressPercentage => min(currentValue, goalValue) / goalValue;
 
-  get performTimeStr => formatTime(performTime);
+  /// Время выпалнения привычки в виде строки
+  String get performTimeStr => formatTime(performTime);
 
-  get isSingle => type == HabitType.repeats && this.goalValue.toInt() == 1;
+  /// Нужно ли выполнить привычку один раз
+  bool get isSingle => type == HabitType.repeats && goalValue.toInt() == 1;
 }
 
+/// Запись о выполнении привычки в прошлом
 class HabitHistoryEntry {
+  /// Дата
   final DateTime datetime;
+
+  /// Изменеие значения привычки
   final double value;
 
+  /// Создает запись
   HabitHistoryEntry({this.datetime, this.value});
 
-  format(HabitType type) =>
-      HabitPerformValue(currentValue: this.value).format(type);
+  /// Форматирует значение записи
+  String format(HabitType type) =>
+      HabitPerformValue(currentValue: value).format(type);
 }
 
+/// Прогресс привычки
 class HabitPerformValue {
+  /// Текущее значение
   final double currentValue;
+
+  /// Желаемое значение
   final double goalValue;
 
+  /// Создает прогресс
   HabitPerformValue({this.currentValue, this.goalValue});
 
-  format(HabitType type) {
+  /// Форматирует прогресс
+  String format(HabitType type) {
     if (type == HabitType.time) {
       if (goalValue != null) {
         var currentValueDur = Duration(seconds: currentValue.toInt());
