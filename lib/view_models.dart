@@ -38,16 +38,16 @@ class HabitVM {
 /// Очередное выполнение привычки
 class HabitRepeat {
   /// Текущее значение (4 раза из 10)
-  final double currentValue;
+  double currentValue;
 
   /// Норматив (10 раз)
-  final double goalValue;
+  double goalValue;
 
   /// Время выполнения
-  final DateTime performTime;
+  DateTime performTime;
 
   /// Тип
-  final HabitType type;
+  HabitType type;
 
   /// Создает выполнение
   HabitRepeat({

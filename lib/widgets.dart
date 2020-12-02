@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_listview/infinite_listview.dart';
+import 'package:yaxxxta/push.dart';
 
 import 'models.dart';
 import 'theme.dart';
@@ -53,10 +55,7 @@ class _HabitCardState extends State<HabitCard> {
         ),
         SizedBox(height: 5),
         HabitProgressControl(
-          progressPercentage: repeat.progressPercentage,
-          progressStr: repeat.progressStr,
-          type: repeat.type,
-          isSingleRepeat: repeat.isSingle,
+          initialHabitRepeat: repeat,
         )
       ]);
 }
@@ -161,27 +160,33 @@ class _DatePickerState extends State<DatePicker> {
 }
 
 /// Контрол для изменения прогресса привычки
-class HabitProgressControl extends StatelessWidget {
-  /// Процент прогресса
-  final double progressPercentage;
-
-  /// Прогресс в виде строки (например, 1 / 3, 0 / 1:00)
-  final String progressStr;
-
-  /// Тип привычки
-  final HabitType type;
-
-  /// Флаг, определяющий один ли раз нужно выполнить привычку
-  final bool isSingleRepeat;
+class HabitProgressControl extends StatefulWidget {
+  /// Очередное выполнение привычки
+  final HabitRepeat initialHabitRepeat;
 
   /// Создает контрол
-  const HabitProgressControl(
-      {Key key,
-      this.progressPercentage,
-      this.progressStr,
-      this.type,
-      this.isSingleRepeat})
+  const HabitProgressControl({Key key, this.initialHabitRepeat})
       : super(key: key);
+
+  @override
+  _HabitProgressControlState createState() => _HabitProgressControlState();
+}
+
+class _HabitProgressControlState extends State<HabitProgressControl> {
+  HabitRepeat habitRepeat;
+  Timer timer;
+
+  @override
+  void initState() {
+    super.initState();
+    habitRepeat = widget.initialHabitRepeat;
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) => Stack(
@@ -192,10 +197,10 @@ class HabitProgressControl extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(15),
               child: LinearProgressIndicator(
-                value: progressPercentage,
+                value: habitRepeat.progressPercentage,
                 backgroundColor: Color(0xffFAFAFA),
                 valueColor: AlwaysStoppedAnimation<Color>(CustomColors.green
-                    .withAlpha((progressPercentage * 255).toInt())),
+                    .withAlpha((habitRepeat.progressPercentage * 255).toInt())),
               ),
             ),
           ),
@@ -204,18 +209,35 @@ class HabitProgressControl extends StatelessWidget {
               color: Colors.transparent,
               child: IconButton(
                 splashRadius: 20,
-                icon: type == HabitType.time
-                    ? Icon(Icons.play_arrow)
+                icon: habitRepeat.type == HabitType.time
+                    ? (timer != null && timer.isActive
+                        ? Icon(Icons.pause)
+                        : Icon(Icons.play_arrow))
                     : Icon(Icons.done),
                 onPressed: () {
-                  //  todo type == HabitType.time / repeats
+                  if (timer != null && timer.isActive) {
+                    setState(() {
+                      timer.cancel();
+                    });
+                  } else {
+                    setState(() =>
+                        timer = Timer.periodic(Duration(seconds: 1), (timer) {
+                          setState(() => habitRepeat.currentValue++);
+                          if (habitRepeat.currentValue ==
+                              habitRepeat.goalValue) {
+                            Get.find<NotificationSender>()
+                                .send(title: "Время закончилось!");
+                            timer.cancel();
+                          }
+                        }));
+                  }
                 },
               ),
             ),
           ),
-          if (!isSingleRepeat)
+          if (!habitRepeat.isSingle)
             Positioned(
-              child: SmallerText(text: progressStr, dark: true),
+              child: SmallerText(text: habitRepeat.progressStr, dark: true),
               right: 20,
             )
         ],
@@ -478,8 +500,10 @@ class Selectable extends StatefulWidget {
 
   /// Виджет отображаемый перед выбором, например радио или чекбокс
   final Widget prefix;
+
   /// Цвет выбора
   final Color selectedColor;
+
   /// Цвет отсутствия выбора
   final Color unselectedColor;
 
@@ -559,6 +583,7 @@ class _SelectableState extends State<Selectable> {
 class HabitRepeatDuringDayCheckbox extends StatefulWidget {
   /// Начальное значение выбора чекбокса
   final bool initial;
+
   /// Событие смены выбора чекбокса
   final Function(bool selected) change;
 

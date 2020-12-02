@@ -42,12 +42,8 @@ class HabitDetailsPage extends StatelessWidget {
               children: [
                 BiggerText(text: "Сегодня"),
                 SizedBox(height: 5),
-                HabitProgressControl(
-                  progressPercentage: 0.3,
-                  progressStr: "3 / 10",
-                  type: HabitType.repeats,
-                  isSingleRepeat: false,
-                ),
+                // HabitProgressControl(
+                // ),
               ],
             ),
             PaddedContainerCard(

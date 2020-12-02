@@ -46,6 +46,9 @@ dependencies:
   hive: ^1.4.4+1
   hive_flutter: ^0.3.1
 
+  # пуши
+  flutter_local_notifications: ^3.0.1+6
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
