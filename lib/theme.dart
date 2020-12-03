@@ -39,6 +39,7 @@ abstract class CustomColors {
 
 /// Создает тему приложухи
 ThemeData buildTheme(BuildContext context) => ThemeData(
+      accentColor: CustomColors.yellow,
       textTheme: GoogleFonts.montserratTextTheme(
         Theme.of(context).textTheme,
       ),

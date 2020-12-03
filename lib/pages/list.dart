@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:yaxxxta/theme.dart';
 
 import '../db.dart';
+import '../routes.dart';
 import '../view_models.dart';
 import '../widgets.dart';
 
@@ -34,6 +36,25 @@ class HabitListPage extends StatelessWidget {
                   itemCount: vm.repeats.length,
                 ),
               )
+          ],
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add, size: 50),
+          onPressed: () => Get.toNamed<void>(Routes.form),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          selectedItemColor: CustomColors.almostBlack,
+          unselectedItemColor: CustomColors.grey,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.today),
+              label: "Календарь",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: "Настройки",
+            ),
           ],
         ),
       );
