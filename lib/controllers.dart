@@ -1,11 +1,15 @@
 import 'package:riverpod/riverpod.dart';
 import 'package:yaxxxta/view_models.dart';
 
+import 'db.dart';
+
 // todo init HabitListController
 class HabitListController extends StateNotifier<List<HabitVM>> {
-  HabitListController([List<HabitVM> habitVMList]) : super(habitVMList ?? []);
+  final HabitRepo repo;
 
-  Future<void> loadHabits() async {
+  HabitListController(this.repo) : super([]);
+
+  void loadHabits() {
     // todo грузим привычки
     // todo грузим перфоминги
     // todo собираем вью-модельки

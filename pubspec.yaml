@@ -49,8 +49,9 @@ dependencies:
   # пуши
   flutter_local_notifications: ^3.0.1+6
 
-  # стейт-менеджмент, диай
-  flutter_riverpod: ^0.12.1
+  # стейт-менеджмент, диай, сахарок
+  flutter_hooks: ^0.14.0
+  hooks_riverpod: ^0.12.1
 
   # дата-классы
   freezed_annotation:
