@@ -49,6 +49,13 @@ dependencies:
   # пуши
   flutter_local_notifications: ^3.0.1+6
 
+  # стейт-менеджмент, диай
+  flutter_riverpod: ^0.12.1
+
+  # дата-классы
+  freezed_annotation:
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -61,6 +68,9 @@ dev_dependencies:
 
   # линтер
   effective_dart: ^1.3.0
+
+  # кодогенерация датаклассов
+  freezed:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

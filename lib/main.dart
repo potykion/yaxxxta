@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/all.dart';
 import 'package:get/get.dart';
-
 
 import 'deps.dart';
 import 'routes.dart';
@@ -8,7 +8,7 @@ import 'theme.dart';
 
 void main() async {
   await initDeps();
-  runApp(MyApp());
+  runApp(ProviderScope(child: MyApp()));
 }
 
 /// Приложуха

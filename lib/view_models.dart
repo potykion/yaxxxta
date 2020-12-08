@@ -1,6 +1,10 @@
 import 'dart:math';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
 import 'models.dart';
 import 'utils.dart';
+
+part 'view_models.freezed.dart';
 
 /// Ячейка в списке дат, показываюшая прогресс за дату
 class DateStatusVM {
@@ -15,47 +19,49 @@ class DateStatusVM {
 }
 
 /// Вью-моделька привычки
-class HabitVM {
-  /// Название
-  final String title;
+@freezed
+abstract class HabitVM with _$HabitVM {
+  @Assert("repeats.length >= 1", "Повторов должно быть >= 1")
+  factory HabitVM({
+    int id,
 
-  /// Повторы (15 мин / раз 2 раза в день)
-  final List<HabitRepeat> repeats;
+    /// Название
+    String title,
 
-  /// Создает вм
-  HabitVM({this.title, this.repeats});
+    /// Повторы (15 мин / раз 2 раза в день)
+    List<HabitRepeatVM> repeats,
+  }) = _HabitVM;
 
   /// Создает вм из привычки
   factory HabitVM.fromHabit(Habit habit) => HabitVM(
+        id: habit.id,
         title: habit.title,
         repeats: List.generate(
           habit.dailyRepeats.ceil(),
-          (index) => HabitRepeat(type: habit.type, goalValue: habit.goalValue),
+          (index) =>
+              HabitRepeatVM(type: habit.type, goalValue: habit.goalValue),
         ),
       );
 }
 
 /// Очередное выполнение привычки
-class HabitRepeat {
-  /// Текущее значение (4 раза из 10)
-  double currentValue;
+@freezed
+abstract class HabitRepeatVM implements _$HabitRepeatVM {
+  const HabitRepeatVM._();
 
-  /// Норматив (10 раз)
-  double goalValue;
+  factory HabitRepeatVM({
+    /// Текущее значение (4 раза из 10)
+    @Default(0) double currentValue,
 
-  /// Время выполнения
-  DateTime performTime;
+    /// Норматив (10 раз)
+    double goalValue,
 
-  /// Тип
-  HabitType type;
+    /// Время выполнения
+    DateTime performTime,
 
-  /// Создает выполнение
-  HabitRepeat({
-    this.performTime,
-    this.type,
-    this.currentValue = 0,
-    this.goalValue,
-  });
+    /// Тип
+    HabitType type,
+  }) = _HabitRepeatVM;
 
   /// Строка прогресса: 4 / 10, 1:00 / 2:00
   String get progressStr =>

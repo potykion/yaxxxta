@@ -1,7 +1,9 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:yaxxxta/controllers.dart';
 import 'package:yaxxxta/push.dart';
 import 'db.dart';
 
@@ -24,3 +26,5 @@ Future<void> initDeps() async {
   Get.put(HabitRepo(Get.find(tag: 'habits')));
   Get.put(NotificationSender(flutterLocalNotificationsPlugin));
 }
+
+var habitListControllerProvider = Provider((_) => HabitListController());

@@ -33,7 +33,7 @@ class HabitCard extends StatefulWidget {
 class _HabitCardState extends State<HabitCard> {
   String get title => widget.vm.title;
 
-  HabitRepeat get repeat => widget.vm.repeats[widget.repeatIndex];
+  HabitRepeatVM get repeat => widget.vm.repeats[widget.repeatIndex];
 
   bool get isSingleRepeat => widget.vm.repeats.length == 1;
 
@@ -162,7 +162,7 @@ class _DatePickerState extends State<DatePicker> {
 /// Контрол для изменения прогресса привычки
 class HabitProgressControl extends StatefulWidget {
   /// Очередное выполнение привычки
-  final HabitRepeat initialHabitRepeat;
+  final HabitRepeatVM initialHabitRepeat;
 
   /// Создает контрол
   const HabitProgressControl({Key key, this.initialHabitRepeat})
@@ -173,7 +173,7 @@ class HabitProgressControl extends StatefulWidget {
 }
 
 class _HabitProgressControlState extends State<HabitProgressControl> {
-  HabitRepeat habitRepeat;
+  HabitRepeatVM habitRepeat;
   Timer timer;
 
   @override

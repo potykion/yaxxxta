@@ -195,3 +195,17 @@ enum HabitType {
   /// На повторы
   repeats,
 }
+
+class HabitPerforming {
+  final int habitId;
+  final DateTime dateTime;
+  final int repeatIndex;
+  final double performValue;
+
+  HabitPerforming({
+    this.habitId,
+    this.dateTime,
+    this.repeatIndex,
+    this.performValue,
+  });
+}

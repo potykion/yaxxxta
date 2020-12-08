@@ -1,17 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:yaxxxta/theme.dart';
 
 import '../db.dart';
+import '../deps.dart';
 import '../routes.dart';
 import '../view_models.dart';
 import '../widgets.dart';
 
 /// Страница списка привычек
-class HabitListPage extends StatelessWidget {
+class HabitListPage extends ConsumerWidget  {
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context, watch) {
+    var controller = watch(habitListControllerProvider);
+
+    return Scaffold(
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(120),
           child: Column(
@@ -24,9 +29,7 @@ class HabitListPage extends StatelessWidget {
         ),
         body: ListView(
           children: [
-            for (var vm in Get.find<HabitRepo>()
-                .list()
-                .map((h) => HabitVM.fromHabit(h)))
+            for (var vm in controller.state)
               SizedBox(
                 height: 130,
                 child: PageView.builder(
@@ -58,4 +61,5 @@ class HabitListPage extends StatelessWidget {
           ],
         ),
       );
+  }
 }
