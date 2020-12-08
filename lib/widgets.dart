@@ -215,22 +215,22 @@ class _HabitProgressControlState extends State<HabitProgressControl> {
                         : Icon(Icons.play_arrow))
                     : Icon(Icons.done),
                 onPressed: () {
-                  if (timer != null && timer.isActive) {
-                    setState(() {
-                      timer.cancel();
-                    });
-                  } else {
-                    setState(() =>
-                        timer = Timer.periodic(Duration(seconds: 1), (timer) {
-                          setState(() => habitRepeat.currentValue++);
-                          if (habitRepeat.currentValue ==
-                              habitRepeat.goalValue) {
-                            Get.find<NotificationSender>()
-                                .send(title: "Время закончилось!");
-                            timer.cancel();
-                          }
-                        }));
-                  }
+                  // if (timer != null && timer.isActive) {
+                  //   setState(() {
+                  //     timer.cancel();
+                  //   });
+                  // } else {
+                  //   setState(() =>
+                  //       timer = Timer.periodic(Duration(seconds: 1), (timer) {
+                  //         setState(() => habitRepeat.currentValue++);
+                  //         if (habitRepeat.currentValue ==
+                  //             habitRepeat.goalValue) {
+                  //           Get.find<NotificationSender>()
+                  //               .send(title: "Время закончилось!");
+                  //           timer.cancel();
+                  //         }
+                  //       }));
+                  // }
                 },
               ),
             ),
