@@ -1,41 +1,37 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'models.g.dart';
 
+part 'models.freezed.dart';
+
 /// Привычка
-@JsonSerializable()
-class Habit {
-  /// Айдишник
-  int id;
+@freezed
+abstract class Habit with _$Habit {
+  const Habit._();
 
-  /// Название
-  String title;
+  const factory Habit({
+    /// Айдишник
+    int id,
 
-  /// Тип
-  HabitType type;
+    /// Название
+    @Default("") String title,
 
-  /// Повторы в течение дня включены
-  bool dailyRepeatsEnabled;
+    /// Тип
+    @Default(HabitType.time) HabitType type,
 
-  /// Продолжительность / число повторений за раз
-  double goalValue;
+    /// Повторы в течение дня включены
+    @Default(false) bool dailyRepeatsEnabled,
 
-  /// Число повторений за день
-  double dailyRepeats;
+    /// Продолжительность / число повторений за раз
+    @Default(0) double goalValue,
 
-  /// Периодичность
-  HabitPeriod habitPeriod;
+    /// Число повторений за день
+    @Default(1) double dailyRepeats,
 
-  /// Создает привычку
-  Habit({
-    this.id,
-    this.title = "",
-    this.type = HabitType.time,
-    this.dailyRepeatsEnabled = false,
-    this.goalValue = 0,
-    this.dailyRepeats = 1,
-    HabitPeriod habitPeriod,
-  }) : habitPeriod = habitPeriod ?? HabitPeriod();
+    /// Периодичность
+    @required HabitPeriod habitPeriod,
+  }) = _Habit;
 
   /// Если true, то привычка создана и редактируется;
   /// иначе создается новая привычка
@@ -53,32 +49,28 @@ class Habit {
       goalValue - goalValueHours * 3600 - goalValueMinutes * 60;
 
   /// Устанавливает часы продолжительности привычки
-  void setGoalValueHours(double hours) =>
-      goalValue = hours * 3600 + goalValueMinutes * 60 + goalValueSeconds;
+  Habit setGoalValueHours(double hours) => copyWith(
+      goalValue: hours * 3600 + goalValueMinutes * 60 + goalValueSeconds);
 
   /// Устанавливает минуты продолжительности привычки
-  void setGoalValueMinutes(double minutes) =>
-      goalValue = goalValueHours * 3600 + minutes * 60 + goalValueSeconds;
+  Habit setGoalValueMinutes(double minutes) => copyWith(
+      goalValue: goalValueHours * 3600 + minutes * 60 + goalValueSeconds);
 
   /// Устанавливает секунды продолжительности привычки
-  void setGoalValueSeconds(double seconds) =>
-      goalValue = goalValueHours * 3600 + goalValueMinutes * 60 + seconds;
+  Habit setGoalValueSeconds(double seconds) => copyWith(
+      goalValue: goalValueHours * 3600 + goalValueMinutes * 60 + seconds);
 
   /// Увеличивает продолжительность привычки на 1%
-  void increaseGoalValueByPercent() {
-    goalValue = double.parse((goalValue * 1.01).toStringAsFixed(2));
-  }
+  Habit increaseGoalValueByPercent() =>
+      copyWith(goalValue: double.parse((goalValue * 1.01).toStringAsFixed(2)));
 
   /// Увеличивает кол-во повторов в течение дня на 1%
-  void increaseDailyRepeatsByPercent() {
-    dailyRepeats = double.parse((dailyRepeats * 1.01).toStringAsFixed(2));
-  }
+  Habit increaseDailyRepeatsByPercent() => copyWith(
+      dailyRepeats: double.parse((dailyRepeats * 1.01).toStringAsFixed(2)));
 
   /// Создает привычку из джсона
-  factory Habit.fromJson(Map json) => _$HabitFromJson(json);
-
-  /// Конвертит привычку в джсон
-  Map toJson() => _$HabitToJson(this);
+  factory Habit.fromJson(Map json) =>
+      _$HabitFromJson(Map<String, dynamic>.from(json));
 }
 
 /// Периодичность
@@ -91,38 +83,31 @@ class Habit {
 ///   - 1 раз в 2 недели
 /// Ежемесячная периодичность:
 ///   - каждое 10 число месяца
-@JsonSerializable()
-class HabitPeriod {
-  /// Тип периодичности
-  HabitPeriodType type;
-
-  /// 1 раз в {periodValue} дней / недель / месяцев
-  int periodValue;
-
-  /// [type=HabitPeriodType.week] Дни выполнения (пн, вт)
-  /// Аналог "Число повторений за день" для недель
-  List<Weekday> weekdays;
-
-  /// [type=HabitPeriodType.month] День выполнения
-  int monthDay;
-
-  /// Если false, то {periodValue} = 1; иначе можно задавать {periodValue} > 1
-  bool isCustom;
-
+@freezed
+abstract class HabitPeriod with _$HabitPeriod {
   /// Создает периодичность привычки
-  HabitPeriod({
-    this.type = HabitPeriodType.day,
-    this.periodValue = 1,
-    List<Weekday> weekdays,
-    this.monthDay = 1,
-    this.isCustom = false,
-  }) : weekdays = weekdays ?? [];
+
+  const factory HabitPeriod({
+    /// Тип периодичности
+    @Default(HabitPeriodType.day) HabitPeriodType type,
+
+    /// 1 раз в {periodValue} дней / недель / месяцев
+    @Default(1) int periodValue,
+
+    /// [type=HabitPeriodType.week] Дни выполнения (пн, вт)
+    /// Аналог "Число повторений за день" для недель
+    @Default(const <Weekday>[]) List<Weekday> weekdays,
+
+    /// [type=HabitPeriodType.month] День выполнения
+    @Default(1) int monthDay,
+
+    /// Если false, то {periodValue} = 1; иначе можно задавать {periodValue} > 1
+    @Default(false) bool isCustom,
+  }) = _HabitPeriod;
 
   /// Создает периодичность привычки из словаря
-  factory HabitPeriod.fromJson(Map json) => _$HabitPeriodFromJson(json);
-
-  /// Конвертит периодичность привычки в словарь
-  Map toJson() => _$HabitPeriodToJson(this);
+  factory HabitPeriod.fromJson(Map json) =>
+      _$HabitPeriodFromJson(Map<String, dynamic>.from(json));
 }
 
 /// День недели

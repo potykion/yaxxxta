@@ -10,6 +10,7 @@ class HabitListController extends StateNotifier<List<HabitVM>> {
   HabitListController(this.repo) : super([]);
 
   void loadHabits() {
+    print("loadHabits");
     state = repo.list().map((h) => HabitVM.fromHabit(h)).toList();
   }
 

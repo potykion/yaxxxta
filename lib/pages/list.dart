@@ -53,7 +53,7 @@ class HabitListPage extends HookWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add, size: 50),
-        onPressed: () => Get.toNamed<void>(Routes.form),
+        onPressed: () => Navigator.of(context).pushNamed(Routes.form),
       ),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: CustomColors.almostBlack,

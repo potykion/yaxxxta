@@ -69,7 +69,8 @@ abstract class HabitRepeatVM implements _$HabitRepeatVM {
           .format(type);
 
   /// Процент прогресса: 0.5
-  double get progressPercentage => min(currentValue, goalValue) / goalValue;
+  double get progressPercentage =>
+      goalValue == 0 ? 0 : (min(currentValue, goalValue) / goalValue);
 
   /// Время выпалнения привычки в виде строки
   String get performTimeStr => formatTime(performTime);

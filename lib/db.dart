@@ -16,7 +16,7 @@ class HabitRepo {
   List<Habit> list() => _hiveBox.values.map((h) => Habit.fromJson(h)).toList();
 
   /// Получает привычку по айди
-  Habit get(int id) => Habit.fromJson(_hiveBox.getAt(id))..id = id;
+  Habit get(int id) => Habit.fromJson(_hiveBox.getAt(id)).copyWith(id: id);
 
   /// Обновляет привычку в бд
   Future<void> update(Habit habit) => _hiveBox.putAt(habit.id, habit.toJson());

@@ -6,21 +6,22 @@ part of 'models.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Habit _$HabitFromJson(Map json) {
-  return Habit(
+_$_Habit _$_$_HabitFromJson(Map json) {
+  return _$_Habit(
     id: json['id'] as int,
-    title: json['title'] as String,
-    type: _$enumDecodeNullable(_$HabitTypeEnumMap, json['type']),
-    dailyRepeatsEnabled: json['dailyRepeatsEnabled'] as bool,
-    goalValue: (json['goalValue'] as num)?.toDouble(),
-    dailyRepeats: (json['dailyRepeats'] as num)?.toDouble(),
+    title: json['title'] as String ?? '',
+    type: _$enumDecodeNullable(_$HabitTypeEnumMap, json['type']) ??
+        HabitType.time,
+    dailyRepeatsEnabled: json['dailyRepeatsEnabled'] as bool ?? false,
+    goalValue: (json['goalValue'] as num)?.toDouble() ?? 0,
+    dailyRepeats: (json['dailyRepeats'] as num)?.toDouble() ?? 1,
     habitPeriod: json['habitPeriod'] == null
         ? null
         : HabitPeriod.fromJson(json['habitPeriod'] as Map),
   );
 }
 
-Map<String, dynamic> _$HabitToJson(Habit instance) => <String, dynamic>{
+Map<String, dynamic> _$_$_HabitToJson(_$_Habit instance) => <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
       'type': _$HabitTypeEnumMap[instance.type],
@@ -67,19 +68,21 @@ const _$HabitTypeEnumMap = {
   HabitType.repeats: 'repeats',
 };
 
-HabitPeriod _$HabitPeriodFromJson(Map json) {
-  return HabitPeriod(
-    type: _$enumDecodeNullable(_$HabitPeriodTypeEnumMap, json['type']),
-    periodValue: json['periodValue'] as int,
+_$_HabitPeriod _$_$_HabitPeriodFromJson(Map json) {
+  return _$_HabitPeriod(
+    type: _$enumDecodeNullable(_$HabitPeriodTypeEnumMap, json['type']) ??
+        HabitPeriodType.day,
+    periodValue: json['periodValue'] as int ?? 1,
     weekdays: (json['weekdays'] as List)
-        ?.map((e) => _$enumDecodeNullable(_$WeekdayEnumMap, e))
-        ?.toList(),
-    monthDay: json['monthDay'] as int,
-    isCustom: json['isCustom'] as bool,
+            ?.map((e) => _$enumDecodeNullable(_$WeekdayEnumMap, e))
+            ?.toList() ??
+        [],
+    monthDay: json['monthDay'] as int ?? 1,
+    isCustom: json['isCustom'] as bool ?? false,
   );
 }
 
-Map<String, dynamic> _$HabitPeriodToJson(HabitPeriod instance) =>
+Map<String, dynamic> _$_$_HabitPeriodToJson(_$_HabitPeriod instance) =>
     <String, dynamic>{
       'type': _$HabitPeriodTypeEnumMap[instance.type],
       'periodValue': instance.periodValue,

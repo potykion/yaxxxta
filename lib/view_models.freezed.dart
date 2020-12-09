@@ -104,7 +104,8 @@ class __$HabitVMCopyWithImpl<$Res> extends _$HabitVMCopyWithImpl<$Res>
 
 /// @nodoc
 class _$_HabitVM implements _HabitVM {
-  _$_HabitVM({this.id, this.title, this.repeats});
+  _$_HabitVM({this.id, this.title, this.repeats})
+      : assert(repeats.length >= 1, 'Повторов должно быть >= 1');
 
   @override
   final int id;
