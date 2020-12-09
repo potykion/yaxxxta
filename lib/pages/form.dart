@@ -14,11 +14,11 @@ class HabitFormPage extends HookWidget {
   Widget build(BuildContext context) {
     var repo = useProvider(habitRepoProvider);
 
-    var vm = useState(
+    final vm = useState(
       Get.arguments != null
           ? repo.get(Get.arguments as int)
           : Habit(habitPeriod: HabitPeriod()),
-    ).value;
+    );
 
     return Scaffold(
       body: ListView(
@@ -28,8 +28,9 @@ class HabitFormPage extends HookWidget {
               BiggerText(text: "Название"),
               SizedBox(height: 5),
               TextInput(
-                initial: vm.title,
-                change: (dynamic t) => vm = vm.copyWith(title: t as String),
+                initial: vm.value.title,
+                change: (dynamic t) =>
+                    vm.value = vm.value.copyWith(title: t as String),
               ),
             ],
           ),
@@ -40,23 +41,24 @@ class HabitFormPage extends HookWidget {
                 children: [
                   BiggerText(text: "Тип"),
                   Spacer(),
-                  if (vm.isUpdate) SmallerText(text: "нельзя изменить")
+                  if (vm.value.isUpdate) SmallerText(text: "нельзя изменить")
                 ],
               ),
               SizedBox(height: 5),
               HabitTypeRadioGroup(
-                initial: vm.type,
-                change: (type) => vm = vm.copyWith(type: type, goalValue: 0),
-                setBefore: vm.isUpdate,
+                initial: vm.value.type,
+                change: (type) =>
+                    vm.value = vm.value.copyWith(type: type, goalValue: 0),
+                setBefore: vm.value.isUpdate,
               ),
               HabitRepeatDuringDayCheckbox(
-                initial: vm.dailyRepeatsEnabled,
+                initial: vm.value.dailyRepeatsEnabled,
                 change: (selected) =>
-                    vm = vm.copyWith(dailyRepeatsEnabled: selected),
+                    vm.value = vm.value.copyWith(dailyRepeatsEnabled: selected),
               )
             ],
           ),
-          if (vm.type == HabitType.time)
+          if (vm.value.type == HabitType.time)
             PaddedContainerCard(
               children: [
                 BiggerText(text: "Продолжительность"),
@@ -66,27 +68,27 @@ class HabitFormPage extends HookWidget {
                     Expanded(
                       child: TextInput<double>(
                         suffix: Text("ч", textAlign: TextAlign.center),
-                        initial: vm.goalValueHours,
+                        initial: vm.value.goalValueHours,
                         change: (dynamic h) =>
-                            vm.setGoalValueHours(h as double),
+                            vm.value = vm.value.setGoalValueHours(h as double),
                       ),
                     ),
                     SizedBox(width: 10),
                     Expanded(
                       child: TextInput<double>(
                         suffix: Text("мин", textAlign: TextAlign.center),
-                        initial: vm.goalValueMinutes,
-                        change: (dynamic m) =>
-                            vm.setGoalValueMinutes(m as double),
+                        initial: vm.value.goalValueMinutes,
+                        change: (dynamic m) => vm.value =
+                            vm.value.setGoalValueMinutes(m as double),
                       ),
                     ),
                     SizedBox(width: 10),
                     Expanded(
                       child: TextInput<double>(
                         suffix: Text("сек", textAlign: TextAlign.center),
-                        initial: vm.goalValueSeconds,
-                        change: (dynamic s) =>
-                            vm.setGoalValueSeconds(s as double),
+                        initial: vm.value.goalValueSeconds,
+                        change: (dynamic s) => vm.value =
+                            vm.value.setGoalValueSeconds(s as double),
                       ),
                     ),
                   ],
@@ -97,36 +99,37 @@ class HabitFormPage extends HookWidget {
                   children: [
                     SimpleButton(
                       text: "+ 1 %",
-                      onTap: () => vm.increaseGoalValueByPercent(),
+                      onTap: () =>
+                          vm.value = vm.value.increaseGoalValueByPercent(),
                     ),
                     SimpleButton(
                       text: "+ 1 сек",
-                      onTap: () =>
-                          vm = vm.copyWith(goalValue: vm.goalValue + 1),
+                      onTap: () => vm.value =
+                          vm.value.copyWith(goalValue: vm.value.goalValue + 1),
                     ),
                     SimpleButton(
                       text: "+ 1 мин",
-                      onTap: () =>
-                          vm = vm.copyWith(goalValue: vm.goalValue + 1 * 60),
+                      onTap: () => vm.value = vm.value
+                          .copyWith(goalValue: vm.value.goalValue + 1 * 60),
                     ),
                     SimpleButton(
                       text: "+ 1 ч",
-                      onTap: () =>
-                          vm = vm.copyWith(goalValue: vm.goalValue + 1 * 3600),
+                      onTap: () => vm.value = vm.value
+                          .copyWith(goalValue: vm.value.goalValue + 1 * 3600),
                     ),
                   ],
                 ),
               ],
             ),
-          if (vm.type == HabitType.repeats)
+          if (vm.value.type == HabitType.repeats)
             PaddedContainerCard(
               children: [
                 BiggerText(text: "Число повторений за раз"),
                 SizedBox(height: 5),
                 TextInput<double>(
-                  initial: vm.goalValue,
+                  initial: vm.value.goalValue,
                   change: (dynamic v) =>
-                      vm = vm.copyWith(goalValue: v as double),
+                      vm.value = vm.value.copyWith(goalValue: v as double),
                 ),
                 SizedBox(height: 5),
                 Row(
@@ -134,36 +137,37 @@ class HabitFormPage extends HookWidget {
                   children: [
                     SimpleButton(
                       text: "+ 1 %",
-                      onTap: () => vm.increaseGoalValueByPercent(),
+                      onTap: () =>
+                          vm.value = vm.value.increaseGoalValueByPercent(),
                     ),
                     SimpleButton(
                       text: "+ 1",
-                      onTap: () =>
-                          vm = vm.copyWith(goalValue: vm.goalValue + 1),
+                      onTap: () => vm.value =
+                          vm.value.copyWith(goalValue: vm.value.goalValue + 1),
                     ),
                     SimpleButton(
                       text: "+ 10",
-                      onTap: () =>
-                          vm = vm.copyWith(goalValue: vm.goalValue + 10),
+                      onTap: () => vm.value =
+                          vm.value.copyWith(goalValue: vm.value.goalValue + 10),
                     ),
                     SimpleButton(
                       text: "+ 100",
-                      onTap: () =>
-                          vm = vm.copyWith(goalValue: vm.goalValue + 100),
+                      onTap: () => vm.value = vm.value
+                          .copyWith(goalValue: vm.value.goalValue + 100),
                     ),
                   ],
                 )
               ],
             ),
-          if (vm.dailyRepeatsEnabled)
+          if (vm.value.dailyRepeatsEnabled)
             PaddedContainerCard(
               children: [
                 BiggerText(text: "Число повторений за день"),
                 SizedBox(height: 5),
                 TextInput<double>(
-                  initial: vm.dailyRepeats,
+                  initial: vm.value.dailyRepeats,
                   change: (dynamic r) =>
-                      vm = vm.copyWith(dailyRepeats: r as double),
+                      vm.value = vm.value.copyWith(dailyRepeats: r as double),
                 ),
                 SizedBox(height: 5),
                 Row(
@@ -171,22 +175,22 @@ class HabitFormPage extends HookWidget {
                   children: [
                     SimpleButton(
                       text: "+ 1 %",
-                      onTap: () => vm.increaseDailyRepeatsByPercent(),
+                      onTap: () => vm.value.increaseDailyRepeatsByPercent(),
                     ),
                     SimpleButton(
                       text: "+ 1",
-                      onTap: () =>
-                          vm = vm.copyWith(dailyRepeats: vm.dailyRepeats + 1),
+                      onTap: () => vm.value = vm.value
+                          .copyWith(dailyRepeats: vm.value.dailyRepeats + 1),
                     ),
                     SimpleButton(
                       text: "+ 10",
-                      onTap: () =>
-                          vm = vm.copyWith(dailyRepeats: vm.dailyRepeats + 10),
+                      onTap: () => vm.value = vm.value
+                          .copyWith(dailyRepeats: vm.value.dailyRepeats + 10),
                     ),
                     SimpleButton(
                       text: "+ 100",
-                      onTap: () =>
-                          vm = vm.copyWith(dailyRepeats: vm.dailyRepeats + 100),
+                      onTap: () => vm.value = vm.value
+                          .copyWith(dailyRepeats: vm.value.dailyRepeats + 100),
                     ),
                   ],
                 )
@@ -201,43 +205,44 @@ class HabitFormPage extends HookWidget {
                 children: [
                   SimpleChip(
                     text: "Ежедневная",
-                    selected: !vm.habitPeriod.isCustom &&
-                        vm.habitPeriod.type == HabitPeriodType.day,
-                    change: (_) => vm = vm.copyWith(
-                      habitPeriod: vm.habitPeriod
+                    selected: !vm.value.habitPeriod.isCustom &&
+                        vm.value.habitPeriod.type == HabitPeriodType.day,
+                    change: (_) => vm.value = vm.value.copyWith(
+                      habitPeriod: vm.value.habitPeriod
                           .copyWith(type: HabitPeriodType.day, isCustom: false),
                     ),
                   ),
                   SimpleChip(
                     text: "Еженедельная",
-                    selected: !vm.habitPeriod.isCustom &&
-                        vm.habitPeriod.type == HabitPeriodType.week,
-                    change: (_) => vm = vm.copyWith(
-                      habitPeriod: vm.habitPeriod.copyWith(
+                    selected: !vm.value.habitPeriod.isCustom &&
+                        vm.value.habitPeriod.type == HabitPeriodType.week,
+                    change: (_) => vm.value = vm.value.copyWith(
+                      habitPeriod: vm.value.habitPeriod.copyWith(
                           type: HabitPeriodType.week, isCustom: false),
                     ),
                   ),
                   SimpleChip(
                     text: "Ежемесячная",
-                    selected: !vm.habitPeriod.isCustom &&
-                        vm.habitPeriod.type == HabitPeriodType.month,
-                    change: (_) => vm = vm.copyWith(
-                      habitPeriod: vm.habitPeriod.copyWith(
+                    selected: !vm.value.habitPeriod.isCustom &&
+                        vm.value.habitPeriod.type == HabitPeriodType.month,
+                    change: (_) => vm.value = vm.value.copyWith(
+                      habitPeriod: vm.value.habitPeriod.copyWith(
                           type: HabitPeriodType.month, isCustom: false),
                     ),
                   ),
                   SimpleChip(
                     text: "Другая",
-                    selected: vm.habitPeriod.isCustom,
-                    change: (_) => vm = vm.copyWith(
-                      habitPeriod: vm.habitPeriod.copyWith(isCustom: true),
+                    selected: vm.value.habitPeriod.isCustom,
+                    change: (_) => vm.value = vm.value.copyWith(
+                      habitPeriod:
+                          vm.value.habitPeriod.copyWith(isCustom: true),
                     ),
                   ),
                 ],
               )
             ],
           ),
-          if (vm.habitPeriod.isCustom)
+          if (vm.value.habitPeriod.isCustom)
             PaddedContainerCard(
               children: [
                 BiggerText(text: "Периодичность"),
@@ -246,17 +251,18 @@ class HabitFormPage extends HookWidget {
                   children: [
                     Flexible(
                         child: TextInput<int>(
-                      initial: vm.habitPeriod.periodValue,
-                      change: (dynamic v) => vm = vm.copyWith(
-                          habitPeriod:
-                              vm.habitPeriod.copyWith(periodValue: v as int)),
+                      initial: vm.value.habitPeriod.periodValue,
+                      change: (dynamic v) => vm.value = vm.value.copyWith(
+                          habitPeriod: vm.value.habitPeriod
+                              .copyWith(periodValue: v as int)),
                     )),
                     SizedBox(width: 10),
                     Expanded(
                       child: HabitPeriodTypeSelect(
-                        initial: vm.habitPeriod.type,
-                        change: (t) => vm = vm.copyWith(
-                            habitPeriod: vm.habitPeriod.copyWith(type: t)),
+                        initial: vm.value.habitPeriod.type,
+                        change: (t) => vm.value = vm.value.copyWith(
+                            habitPeriod:
+                                vm.value.habitPeriod.copyWith(type: t)),
                       ),
                       flex: 3,
                     )
@@ -264,19 +270,19 @@ class HabitFormPage extends HookWidget {
                 ),
               ],
             ),
-          if (vm.habitPeriod.type == HabitPeriodType.week)
+          if (vm.value.habitPeriod.type == HabitPeriodType.week)
             PaddedContainerCard(
               children: [
                 BiggerText(text: "Дни выполнения"),
                 SizedBox(height: 5),
                 WeekdaysPicker(
-                  initial: vm.habitPeriod.weekdays,
-                  change: (ws) => vm = vm.copyWith(
-                      habitPeriod: vm.habitPeriod.copyWith(weekdays: ws)),
+                  initial: vm.value.habitPeriod.weekdays,
+                  change: (ws) => vm.value = vm.value.copyWith(
+                      habitPeriod: vm.value.habitPeriod.copyWith(weekdays: ws)),
                 )
               ],
             ),
-          if (vm.habitPeriod.type == HabitPeriodType.month)
+          if (vm.value.habitPeriod.type == HabitPeriodType.month)
             PaddedContainerCard(
               children: [
                 Row(
@@ -288,9 +294,10 @@ class HabitFormPage extends HookWidget {
                 ),
                 SizedBox(height: 5),
                 TextInput<int>(
-                  initial: vm.habitPeriod.monthDay,
-                  change: (dynamic d) => vm = vm.copyWith(
-                      habitPeriod: vm.habitPeriod.copyWith(monthDay: d as int)),
+                  initial: vm.value.habitPeriod.monthDay,
+                  change: (dynamic d) => vm.value = vm.value.copyWith(
+                      habitPeriod:
+                          vm.value.habitPeriod.copyWith(monthDay: d as int)),
                 ),
               ],
             ),
@@ -304,10 +311,10 @@ class HabitFormPage extends HookWidget {
           width: double.infinity,
           child: FloatingActionButton.extended(
             onPressed: () async {
-              if (vm.isUpdate) {
-                await context.read(habitRepoProvider).update(vm);
+              if (vm.value.isUpdate) {
+                await context.read(habitRepoProvider).update(vm.value);
               } else {
-                await context.read(habitRepoProvider).insert(vm);
+                await context.read(habitRepoProvider).insert(vm.value);
               }
               Navigator.of(context).pushNamed(Routes.list);
             },
