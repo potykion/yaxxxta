@@ -778,7 +778,7 @@ class _WeekdaysPickerState extends State<WeekdaysPicker> {
   @override
   void initState() {
     super.initState();
-    weekdays = widget.initial;
+    weekdays = List.of(widget.initial);
   }
 
   @override
