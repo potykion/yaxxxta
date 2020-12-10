@@ -8,19 +8,35 @@ import '../routes.dart';
 import '../theme.dart';
 import '../widgets.dart';
 
+var _vmState = StateProvider.autoDispose((ref) {
+  if (Get.arguments != null) {
+    return ref.watch(habitRepoProvider).get(Get.arguments as int);
+  }
+
+  return Habit(habitPeriod: HabitPeriod());
+});
+
+var _error = Provider.autoDispose((ref) {
+  Habit habit = ref.watch(_vmState).state;
+
+  if (habit.goalValue <= 0)
+    return habit.type == HabitType.repeats
+        ? "Число повторений должно быть > 0"
+        : "Продолжительность должна быть > 0";
+
+  return "";
+});
+
 /// Страница с формой создания/редактирования привычки
 class HabitFormPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    var repo = context.read(habitRepoProvider);
+    var vmState = useProvider(_vmState);
+    var vm = vmState.state;
+    // var setVm = (Habit newVm) => vmState.state = newVm;
+    var setVm = (Habit newVm) => context.read(_vmState).state = newVm;
 
-    final vmState = useState(
-      Get.arguments != null
-          ? repo.get(Get.arguments as int)
-          : Habit(habitPeriod: HabitPeriod()),
-    );
-    var vm = vmState.value;
-    var setVm = (Habit newVm) => vmState.value = newVm;
+    var error = useProvider(_error);
 
     return Scaffold(
       body: ListView(
@@ -48,7 +64,7 @@ class HabitFormPage extends HookWidget {
               SizedBox(height: 5),
               HabitTypeRadioGroup(
                 initial: vm.type,
-                change: (type) => setVm(vm.copyWith(type: type, goalValue: 0)),
+                change: (type) => setVm(vm.copyWith(type: type, goalValue: 1)),
                 setBefore: vm.isUpdate,
               ),
               HabitRepeatDuringDayCheckbox(
@@ -312,15 +328,17 @@ class HabitFormPage extends HookWidget {
         child: SizedBox(
           width: double.infinity,
           child: FloatingActionButton.extended(
-            onPressed: () async {
-              if (vm.isUpdate) {
-                await context.read(habitRepoProvider).update(vm);
-              } else {
-                await context.read(habitRepoProvider).insert(vm);
-              }
-              Navigator.of(context).pushNamed(Routes.list);
-            },
-            label: SmallerText(text: "Сохранить", dark: true),
+            onPressed: error.isEmpty
+                ? () async {
+                    await context
+                        .read(habitListControllerProvider)
+                        .createOrUpdateHabit(vm);
+                    Navigator.of(context).pop();
+                    // Navigator.of(context).pushNamed(Routes.list);
+                  }
+                : null,
+            label: SmallerText(
+                text: error.isEmpty ? "Сохранить" : error, dark: true),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15),
             ),

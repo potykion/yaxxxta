@@ -22,7 +22,7 @@ class _$HabitTearOff {
       String title = "",
       HabitType type = HabitType.time,
       bool dailyRepeatsEnabled = false,
-      double goalValue = 0,
+      double goalValue = 1,
       double dailyRepeats = 1,
       @required HabitPeriod habitPeriod}) {
     return _Habit(
@@ -199,7 +199,7 @@ class _$_Habit extends _Habit {
       this.title = "",
       this.type = HabitType.time,
       this.dailyRepeatsEnabled = false,
-      this.goalValue = 0,
+      this.goalValue = 1,
       this.dailyRepeats = 1,
       @required this.habitPeriod})
       : assert(title != null),

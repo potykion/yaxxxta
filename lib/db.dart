@@ -13,7 +13,12 @@ class HabitRepo {
   Future<int> insert(Habit habit) => _hiveBox.add(habit.toJson());
 
   /// Выводит список привычек
-  List<Habit> list() => _hiveBox.values.map((h) => Habit.fromJson(h)).toList();
+  List<Habit> list() => _hiveBox.values
+      .toList()
+      .asMap()
+      .entries
+      .map((e) => Habit.fromJson(e.value).copyWith(id: e.key))
+      .toList();
 
   /// Получает привычку по айди
   Habit get(int id) => Habit.fromJson(_hiveBox.getAt(id)).copyWith(id: id);

@@ -24,7 +24,7 @@ abstract class Habit with _$Habit {
     @Default(false) bool dailyRepeatsEnabled,
 
     /// Продолжительность / число повторений за раз
-    @Default(0) double goalValue,
+    @Default(1) double goalValue,
 
     /// Число повторений за день
     @Default(1) double dailyRepeats,

@@ -1,4 +1,5 @@
 import 'package:riverpod/riverpod.dart';
+import 'package:yaxxxta/models.dart';
 import 'package:yaxxxta/view_models.dart';
 
 import 'db.dart';
@@ -30,5 +31,14 @@ class HabitListController extends StateNotifier<List<HabitVM>> {
         else
           vm,
     ];
+  }
+
+  void createOrUpdateHabit(Habit habit) async {
+    if (habit.isUpdate) {
+      await repo.update(habit);
+    } else {
+      habit = habit.copyWith(id: await repo.insert(habit));
+    }
+    state = [...state, HabitVM.fromHabit(habit)];
   }
 }

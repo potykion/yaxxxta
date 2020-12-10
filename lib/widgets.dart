@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_listview/infinite_listview.dart';
 import 'package:yaxxxta/push.dart';
+import 'package:yaxxxta/routes.dart';
 
 import 'models.dart';
 import 'theme.dart';
@@ -41,23 +42,27 @@ class _HabitCardState extends State<HabitCard> {
       "${widget.repeatIndex + 1} / ${widget.vm.repeats.length}";
 
   @override
-  Widget build(BuildContext context) => PaddedContainerCard(children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.baseline,
-          children: [
-            BiggerText(text: title),
-            SizedBox(width: 5),
-            if (repeat.performTime != null)
-              SmallerText(text: repeat.performTimeStr),
-            Spacer(),
-            if (!isSingleRepeat) SmallerText(text: repeatCounter)
-          ],
-        ),
-        SizedBox(height: 5),
-        HabitProgressControl(
-          initialHabitRepeat: repeat,
-        )
-      ]);
+  Widget build(BuildContext context) => GestureDetector(
+        onTap: () => Navigator.of(context)
+            .pushNamed(Routes.form, arguments: widget.vm.id),
+        child: PaddedContainerCard(children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.baseline,
+            children: [
+              BiggerText(text: title),
+              SizedBox(width: 5),
+              if (repeat.performTime != null)
+                SmallerText(text: repeat.performTimeStr),
+              Spacer(),
+              if (!isSingleRepeat) SmallerText(text: repeatCounter)
+            ],
+          ),
+          SizedBox(height: 5),
+          HabitProgressControl(
+            initialHabitRepeat: repeat,
+          )
+        ]),
+      );
 }
 
 /// Карточка-контейнер с отступами
@@ -256,8 +261,12 @@ class SmallerText extends StatelessWidget {
   final bool light;
 
   /// Создает текст
-  const SmallerText({Key key, this.text, this.dark = false, this.light = false})
-      : super(key: key);
+  const SmallerText({
+    Key key,
+    this.text,
+    this.dark = false,
+    this.light = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
