@@ -4,7 +4,6 @@ import 'package:yaxxxta/view_models.dart';
 
 import 'db.dart';
 
-// todo init HabitListController
 class HabitListController extends StateNotifier<List<HabitVM>> {
   final HabitRepo repo;
 
@@ -33,7 +32,7 @@ class HabitListController extends StateNotifier<List<HabitVM>> {
     ];
   }
 
-  void createOrUpdateHabit(Habit habit) async {
+  Future<void> createOrUpdateHabit(Habit habit) async {
     if (habit.isUpdate) {
       await repo.update(habit);
     } else {

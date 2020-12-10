@@ -27,6 +27,10 @@ Provider<Box<Map>> hiveBoxProvider = Provider((_) => Hive.box<Map>("habits"));
 Provider<HabitRepo> habitRepoProvider = Provider(
   (ref) => HabitRepo(ref.watch(hiveBoxProvider)),
 );
-Provider<HabitListController> habitListControllerProvider = Provider(
-  (ref) => HabitListController(ref.watch(habitRepoProvider)),
+var habitListControllerProvider = StateNotifierProvider(
+  (ref) {
+    var controller = HabitListController(ref.watch(habitRepoProvider));
+    controller.loadHabits();
+    return controller;
+  },
 );

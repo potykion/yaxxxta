@@ -15,15 +15,7 @@ import '../widgets.dart';
 class HabitListPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    var controller = useProvider(habitListControllerProvider);
-
-    useEffect(
-      () {
-        controller.loadHabits();
-        return;
-      },
-      [UniqueKey()],
-    );
+    var habits = useProvider(habitListControllerProvider.state);
 
     return Scaffold(
       appBar: PreferredSize(
@@ -38,7 +30,7 @@ class HabitListPage extends HookWidget {
       ),
       body: ListView(
         children: [
-          for (var vm in controller.state)
+          for (var vm in habits)
             SizedBox(
               height: 130,
               child: PageView.builder(
