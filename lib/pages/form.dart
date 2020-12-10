@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../deps.dart';
 import '../models.dart';
-import '../routes.dart';
 import '../theme.dart';
 import '../widgets.dart';
 
@@ -17,12 +16,13 @@ var _vmState = StateProvider.autoDispose((ref) {
 });
 
 var _error = Provider.autoDispose((ref) {
-  Habit habit = ref.watch(_vmState).state;
+  var habit = ref.watch(_vmState).state;
 
-  if (habit.goalValue <= 0)
+  if (habit.goalValue <= 0) {
     return habit.type == HabitType.repeats
         ? "Число повторений должно быть > 0"
         : "Продолжительность должна быть > 0";
+  }
 
   return "";
 });
@@ -33,8 +33,10 @@ class HabitFormPage extends HookWidget {
   Widget build(BuildContext context) {
     var vmState = useProvider(_vmState);
     var vm = vmState.state;
-    // var setVm = (Habit newVm) => vmState.state = newVm;
-    var setVm = (Habit newVm) => context.read(_vmState).state = newVm;
+
+    setVm(Habit newVm) {
+      context.read(_vmState).state = newVm;
+    }
 
     var error = useProvider(_error);
 

@@ -10,6 +10,7 @@ part 'models.freezed.dart';
 abstract class Habit with _$Habit {
   const Habit._();
 
+  /// Создает привычку
   const factory Habit({
     /// Айдишник
     int id,
@@ -96,7 +97,7 @@ abstract class HabitPeriod with _$HabitPeriod {
 
     /// [type=HabitPeriodType.week] Дни выполнения (пн, вт)
     /// Аналог "Число повторений за день" для недель
-    @Default(const <Weekday>[]) List<Weekday> weekdays,
+    @Default(<Weekday>[]) List<Weekday> weekdays,
 
     /// [type=HabitPeriodType.month] День выполнения
     @Default(1) int monthDay,
@@ -181,12 +182,18 @@ enum HabitType {
   repeats,
 }
 
+/// Выполнение прички
 class HabitPerforming {
+  /// Айди привычки
   final int habitId;
+  /// Время выполнения
   final DateTime dateTime;
+  /// Раз выполнения (напр. 1 из 2)
   final int repeatIndex;
+  /// Значение выполнения (напр. 10 сек)
   final double performValue;
 
+  /// Создает выполнение привычки
   HabitPerforming({
     this.habitId,
     this.dateTime,

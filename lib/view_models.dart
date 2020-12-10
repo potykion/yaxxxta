@@ -21,6 +21,7 @@ class DateStatusVM {
 /// Вью-моделька привычки
 @freezed
 abstract class HabitVM with _$HabitVM {
+  /// Создает вм привычки
   @Assert("repeats.length >= 1", "Повторов должно быть >= 1")
   factory HabitVM({
     int id,
@@ -49,6 +50,7 @@ abstract class HabitVM with _$HabitVM {
 abstract class HabitRepeatVM implements _$HabitRepeatVM {
   const HabitRepeatVM._();
 
+  /// Создает вм повтора привычки
   factory HabitRepeatVM({
     /// Текущее значение (4 раза из 10)
     @Default(0) double currentValue,

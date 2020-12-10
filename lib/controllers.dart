@@ -1,19 +1,22 @@
 import 'package:riverpod/riverpod.dart';
-import 'package:yaxxxta/models.dart';
-import 'package:yaxxxta/view_models.dart';
 
 import 'db.dart';
+import 'models.dart';
+import 'view_models.dart';
 
+/// Контроллер списка привычек
 class HabitListController extends StateNotifier<List<HabitVM>> {
-  final HabitRepo repo;
+  final HabitRepo _repo;
 
-  HabitListController(this.repo) : super([]);
+  /// @nodoc
+  HabitListController(this._repo) : super([]);
 
+  /// Грузит привычки из бд
   void loadHabits() {
-    print("loadHabits");
-    state = repo.list().map((h) => HabitVM.fromHabit(h)).toList();
+    state = _repo.list().map((h) => HabitVM.fromHabit(h)).toList();
   }
 
+  /// Инкрементирует прогресс привычки
   void incrementHabitProgress(int id, int repeatIndex) {
     state = [
       for (var vm in state)
@@ -32,11 +35,12 @@ class HabitListController extends StateNotifier<List<HabitVM>> {
     ];
   }
 
+  /// Создает или обновляет привычку
   Future<void> createOrUpdateHabit(Habit habit) async {
     if (habit.isUpdate) {
-      await repo.update(habit);
+      await _repo.update(habit);
     } else {
-      habit = habit.copyWith(id: await repo.insert(habit));
+      habit = habit.copyWith(id: await _repo.insert(habit));
     }
     state = [...state, HabitVM.fromHabit(habit)];
   }

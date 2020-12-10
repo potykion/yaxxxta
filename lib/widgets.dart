@@ -4,10 +4,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_listview/infinite_listview.dart';
-import 'package:yaxxxta/push.dart';
-import 'package:yaxxxta/routes.dart';
 
 import 'models.dart';
+import 'routes.dart';
 import 'theme.dart';
 import 'utils.dart';
 import 'view_models.dart';
@@ -226,7 +225,8 @@ class _HabitProgressControlState extends State<HabitProgressControl> {
                   //   });
                   // } else {
                   //   setState(() =>
-                  //       timer = Timer.periodic(Duration(seconds: 1), (timer) {
+                  //       timer = Timer.periodic(Duration(seconds: 1), (timer)
+                  //       {
                   //         setState(() => habitRepeat.currentValue++);
                   //         if (habitRepeat.currentValue ==
                   //             habitRepeat.goalValue) {

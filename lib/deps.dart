@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
-import 'package:yaxxxta/controllers.dart';
+import 'controllers.dart';
 import 'db.dart';
 
 /// Регает зависимости
@@ -23,11 +23,17 @@ import 'db.dart';
 //   Get.put(NotificationSender(flutterLocalNotificationsPlugin));
 // }
 
+/// Регает hive-box
 Provider<Box<Map>> hiveBoxProvider = Provider((_) => Hive.box<Map>("habits"));
+
+/// Регает репо привычек
 Provider<HabitRepo> habitRepoProvider = Provider(
   (ref) => HabitRepo(ref.watch(hiveBoxProvider)),
 );
-var habitListControllerProvider = StateNotifierProvider(
+
+/// Регает контроллер, загружая привычки
+StateNotifierProvider<HabitListController> habitListControllerProvider =
+    StateNotifierProvider(
   (ref) {
     var controller = HabitListController(ref.watch(habitRepoProvider));
     controller.loadHabits();

@@ -1,16 +1,20 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+/// Отправитель уведомлений
 class NotificationSender {
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
 
-  NotificationSender(this.flutterLocalNotificationsPlugin);
+  /// Создает отправитель
+  NotificationSender(this._flutterLocalNotificationsPlugin);
 
+  /// Андроид канал уведомлений
   AndroidNotificationDetails get habitChannel => AndroidNotificationDetails(
         'habit',
         'habit',
         'Уведомления про привычки',
       );
 
+  /// Отправляет уведомление
   Future<void> send({
     String title,
     String body = "",
@@ -18,7 +22,7 @@ class NotificationSender {
   }) async {
     channel = channel ?? habitChannel;
 
-    await flutterLocalNotificationsPlugin.show(
+    await _flutterLocalNotificationsPlugin.show(
       0,
       title,
       body,

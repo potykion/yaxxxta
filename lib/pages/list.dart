@@ -1,14 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/all.dart';
-import 'package:yaxxxta/theme.dart';
 
-import '../db.dart';
 import '../deps.dart';
 import '../routes.dart';
-import '../view_models.dart';
+import '../theme.dart';
 import '../widgets.dart';
 
 /// Страница списка привычек
