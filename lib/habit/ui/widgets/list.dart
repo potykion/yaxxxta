@@ -1,19 +1,12 @@
 import 'dart:async';
-import 'dart:math';
 
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:infinite_listview/infinite_listview.dart';
-import 'package:yaxxxta/core/ui/widgets/card.dart';
-import 'package:yaxxxta/core/ui/widgets/text.dart';
-import 'package:yaxxxta/deps.dart';
 
-import '../../domain/models.dart';
+import '../../../core/ui/widgets/card.dart';
+import '../../../core/ui/widgets/text.dart';
 import '../../../routes.dart';
 import '../../../theme.dart';
-import '../../../core/utils/utils.dart';
+import '../../domain/models.dart';
 import '../state/view_models.dart';
 
 /// Карточка привычки

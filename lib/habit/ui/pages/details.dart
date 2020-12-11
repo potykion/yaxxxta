@@ -1,5 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/ui/widgets/card.dart';
+import '../../../core/ui/widgets/date.dart';
+import '../../../core/ui/widgets/text.dart';
+import '../../../core/utils/utils.dart';
+import '../../../theme.dart';
+import '../../domain/models.dart';
+import '../state/view_models.dart';
+
 
 /// Страничка с инфой о привычке
 class HabitDetailsPage extends StatelessWidget {

@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-import 'package:yaxxxta/habit/domain/db.dart';
+import '../domain/db.dart';
 
 import '../domain/models.dart';
 
@@ -10,10 +10,10 @@ class HabitRepo implements BaseHabitRepo {
   /// Создает репо
   HabitRepo(this._hiveBox);
 
-  /// Вставляет привычку в бд, возвращая айди
+  @override
   Future<int> insert(Habit habit) => _hiveBox.add(habit.toJson());
 
-  /// Выводит список привычек
+  @override
   List<Habit> list() => _hiveBox.values
       .toList()
       .asMap()
@@ -21,9 +21,9 @@ class HabitRepo implements BaseHabitRepo {
       .map((e) => Habit.fromJson(e.value).copyWith(id: e.key))
       .toList();
 
-  /// Получает привычку по айди
+  @override
   Habit get(int id) => Habit.fromJson(_hiveBox.getAt(id)).copyWith(id: id);
 
-  /// Обновляет привычку в бд
+  @override
   Future<void> update(Habit habit) => _hiveBox.putAt(habit.id, habit.toJson());
 }

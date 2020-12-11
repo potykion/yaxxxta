@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
 
 import 'habit/domain/db.dart';
-import 'habit/external/db.dart';
+import 'habit/infra/db.dart';
 import 'habit/ui/state/controllers.dart';
 
 /// Регает зависимости

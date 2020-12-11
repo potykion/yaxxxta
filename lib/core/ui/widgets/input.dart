@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:yaxxxta/core/ui/widgets/text.dart';
-import 'package:yaxxxta/core/utils/utils.dart';
-import 'package:yaxxxta/habit/domain/models.dart';
+import '../../../habit/domain/models.dart';
 
 import '../../../theme.dart';
+import '../../utils/utils.dart';
+import 'text.dart';
 
 /// Инпут для ввода текста, чисел
 class TextInput<T> extends StatefulWidget {

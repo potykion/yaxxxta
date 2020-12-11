@@ -1,8 +1,9 @@
 import 'dart:math';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../domain/models.dart';
 import '../../../core/utils/utils.dart';
+import '../../domain/models.dart';
 
 part 'view_models.freezed.dart';
 

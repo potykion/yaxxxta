@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:yaxxxta/core/ui/widgets/input.dart';
-import 'package:yaxxxta/habit/domain/models.dart';
 
+import '../../../core/ui/widgets/input.dart';
 import '../../../theme.dart';
+import '../../domain/models.dart';
 
 /// Радио-групп типа привычки
 class HabitTypeRadioGroup extends StatefulWidget {

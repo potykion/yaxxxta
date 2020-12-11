@@ -1,5 +1,5 @@
 import 'package:riverpod/riverpod.dart';
-import 'package:yaxxxta/habit/domain/db.dart';
+import '../../domain/db.dart';
 
 
 import '../../domain/models.dart';
