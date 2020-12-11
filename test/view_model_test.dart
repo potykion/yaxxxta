@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:yaxxxta/models.dart';
+import 'package:yaxxxta/habit/domain/models.dart';
 
 void main() {
   test("Увеличение продолжительности на 1 час, 1 мин, 1 сек", () {

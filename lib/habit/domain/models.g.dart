@@ -13,7 +13,7 @@ _$_Habit _$_$_HabitFromJson(Map json) {
     type: _$enumDecodeNullable(_$HabitTypeEnumMap, json['type']) ??
         HabitType.time,
     dailyRepeatsEnabled: json['dailyRepeatsEnabled'] as bool ?? false,
-    goalValue: (json['goalValue'] as num)?.toDouble() ?? 0,
+    goalValue: (json['goalValue'] as num)?.toDouble() ?? 1,
     dailyRepeats: (json['dailyRepeats'] as num)?.toDouble() ?? 1,
     habitPeriod: json['habitPeriod'] == null
         ? null

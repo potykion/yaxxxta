@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:yaxxxta/utils.dart';
+import 'package:yaxxxta/core/utils/utils.dart';
 
 void main() {
   test("Форматирование дюрейшена", () {

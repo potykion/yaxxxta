@@ -1,7 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
-import 'controllers.dart';
-import 'db.dart';
+
+import 'habit/domain/db.dart';
+import 'habit/external/db.dart';
+import 'habit/ui/state/controllers.dart';
 
 /// Регает зависимости
 // Future<void> initDeps() async {
@@ -27,7 +29,7 @@ import 'db.dart';
 Provider<Box<Map>> hiveBoxProvider = Provider((_) => Hive.box<Map>("habits"));
 
 /// Регает репо привычек
-Provider<HabitRepo> habitRepoProvider = Provider(
+Provider<BaseHabitRepo> habitRepoProvider = Provider(
   (ref) => HabitRepo(ref.watch(hiveBoxProvider)),
 );
 

@@ -1,12 +1,13 @@
 import 'package:riverpod/riverpod.dart';
+import 'package:yaxxxta/habit/domain/db.dart';
 
-import 'db.dart';
-import 'models.dart';
+
+import '../../domain/models.dart';
 import 'view_models.dart';
 
 /// Контроллер списка привычек
 class HabitListController extends StateNotifier<List<HabitVM>> {
-  final HabitRepo _repo;
+  final BaseHabitRepo _repo;
 
   /// @nodoc
   HabitListController(this._repo) : super([]);

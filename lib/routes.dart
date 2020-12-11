@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'pages/details.dart';
-import 'pages/form.dart';
-import 'pages/list.dart';
+import 'habit/ui/pages/details.dart';
+import 'habit/ui/pages/form.dart';
+import 'habit/ui/pages/list.dart';
 
 // ignore: avoid_classes_with_only_static_members
 /// Роуты

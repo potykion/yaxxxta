@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../deps.dart';
 import '../models.dart';
 import '../theme.dart';
-import '../widgets.dart';
+import '../list.dart';
 
 var _vmState = StateProvider.autoDispose((ref) {
   if (Get.arguments != null) {

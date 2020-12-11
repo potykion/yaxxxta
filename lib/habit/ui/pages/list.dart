@@ -6,7 +6,7 @@ import 'package:hooks_riverpod/all.dart';
 import '../deps.dart';
 import '../routes.dart';
 import '../theme.dart';
-import '../widgets.dart';
+import '../list.dart';
 
 /// Страница списка привычек
 class HabitListPage extends HookWidget {

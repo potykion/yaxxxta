@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../models.dart';
-import '../theme.dart';
-import '../utils.dart';
-import '../view_models.dart';
-import '../widgets.dart';
 
 /// Страничка с инфой о привычке
 class HabitDetailsPage extends StatelessWidget {

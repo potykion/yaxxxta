@@ -1,9 +1,10 @@
 import 'package:hive/hive.dart';
+import 'package:yaxxxta/habit/domain/db.dart';
 
-import 'models.dart';
+import '../domain/models.dart';
 
 /// Репо для работы с привычками
-class HabitRepo {
+class HabitRepo implements BaseHabitRepo {
   final Box<Map> _hiveBox;
 
   /// Создает репо
