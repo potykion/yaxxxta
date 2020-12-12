@@ -1,7 +1,6 @@
 import 'package:riverpod/riverpod.dart';
 import '../../domain/db.dart';
 
-
 import '../../domain/models.dart';
 import 'view_models.dart';
 
@@ -18,7 +17,7 @@ class HabitListController extends StateNotifier<List<HabitVM>> {
   }
 
   /// Инкрементирует прогресс привычки
-  void incrementHabitProgress(int id, int repeatIndex) {
+  bool incrementHabitProgress(int id, int repeatIndex) {
     state = [
       for (var vm in state)
         if (vm.id == id)
@@ -34,6 +33,10 @@ class HabitListController extends StateNotifier<List<HabitVM>> {
         else
           vm,
     ];
+
+    var repeatComplete =
+        state.where((vm) => vm.id == id).first.repeats[repeatIndex].isComplete;
+    return repeatComplete;
   }
 
   /// Создает или обновляет привычку

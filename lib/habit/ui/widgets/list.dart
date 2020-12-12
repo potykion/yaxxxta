@@ -60,6 +60,8 @@ class HabitProgressControl extends HookWidget {
 
     var repeat = vm.repeats[repeatIndex];
 
+    var timerState = useState<Timer>(null);
+
     return Stack(
       alignment: AlignmentDirectional.centerStart,
       children: [
@@ -81,35 +83,39 @@ class HabitProgressControl extends HookWidget {
             child: IconButton(
               splashRadius: 20,
               icon: repeat.type == HabitType.time
-                  // ? (timer != null && timer.isActive
-                  // ? Icon(Icons.pause)
-                  ? Icon(Icons.play_arrow)
+                  ? (timerState.value?.isActive ?? false)
+                      ? Icon(Icons.pause)
+                      : Icon(Icons.play_arrow)
                   : Icon(Icons.done),
               onPressed: () {
-                // todo
                 if (repeat.type == HabitType.repeats) {
                   context
                       .read(habitListControllerProvider)
                       .incrementHabitProgress(vm.id, repeatIndex);
-                }
 
-                // if (timer != null && timer.isActive) {
-                //   setState(() {
-                //     timer.cancel();
-                //   });
-                // } else {
-                //   setState(() =>
-                //       timer = Timer.periodic(Duration(seconds: 1), (timer)
-                //       {
-                //         setState(() => habitRepeat.currentValue++);
-                //         if (habitRepeat.currentValue ==
-                //             habitRepeat.goalValue) {
-                //           Get.find<NotificationSender>()
-                //               .send(title: "Время закончилось!");
-                //           timer.cancel();
-                //         }
-                //       }));
-                // }
+                  // todo create habit performing
+                } else if (repeat.type == HabitType.time) {
+                  if (timerState.value?.isActive ?? false) {
+                    timerState.value.cancel();
+                    timerState.value = null;
+
+                    // todo create habit performing
+                  } else {
+                    timerState.value =
+                        Timer.periodic(Duration(seconds: 1), (timer) {
+                      var repeatComplete = context
+                          .read(habitListControllerProvider)
+                          .incrementHabitProgress(vm.id, repeatIndex);
+
+                      if (repeatComplete) {
+                        timerState.value.cancel();
+                        timerState.value = null;
+
+                        // todo create habit performing
+                      }
+                    });
+                  }
+                }
               },
             ),
           ),
