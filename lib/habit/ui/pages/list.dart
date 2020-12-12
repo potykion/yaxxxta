@@ -33,8 +33,13 @@ class HabitListPage extends HookWidget {
               height: 130,
               child: PageView.builder(
                 scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) =>
-                    HabitCard(vm: vm, repeatIndex: index),
+                itemBuilder: (context, index) => ProviderScope(
+                  overrides: [
+                    habitVMProvider.overrideWithValue(vm),
+                    repeatIndexProvider.overrideWithValue(index)
+                  ],
+                  child: HabitCard(),
+                ),
                 itemCount: vm.repeats.length,
               ),
             )

@@ -18,10 +18,7 @@ class NotificationSender {
   Future<void> send({
     String title,
     String body = "",
-    AndroidNotificationDetails channel,
   }) async {
-    channel = channel ?? habitChannel;
-
     await _flutterLocalNotificationsPlugin.show(
       0,
       title,
