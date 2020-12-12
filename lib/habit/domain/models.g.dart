@@ -106,3 +106,22 @@ const _$WeekdayEnumMap = {
   Weekday.saturday: 'saturday',
   Weekday.sunday: 'sunday',
 };
+
+_$_HabitPerforming _$_$_HabitPerformingFromJson(Map json) {
+  return _$_HabitPerforming(
+    habitId: json['habitId'] as int,
+    repeatIndex: json['repeatIndex'] as int,
+    performValue: (json['performValue'] as num)?.toDouble(),
+    performDateTime: json['performDateTime'] == null
+        ? null
+        : DateTime.parse(json['performDateTime'] as String),
+  );
+}
+
+Map<String, dynamic> _$_$_HabitPerformingToJson(_$_HabitPerforming instance) =>
+    <String, dynamic>{
+      'habitId': instance.habitId,
+      'repeatIndex': instance.repeatIndex,
+      'performValue': instance.performValue,
+      'performDateTime': instance.performDateTime?.toIso8601String(),
+    };

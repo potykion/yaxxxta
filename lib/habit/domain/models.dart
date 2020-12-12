@@ -183,21 +183,24 @@ enum HabitType {
 }
 
 /// Выполнение прички
-class HabitPerforming {
-  /// Айди привычки
-  final int habitId;
-  /// Время выполнения
-  final DateTime dateTime;
-  /// Раз выполнения (напр. 1 из 2)
-  final int repeatIndex;
-  /// Значение выполнения (напр. 10 сек)
-  final double performValue;
-
+@freezed
+abstract class HabitPerforming with _$HabitPerforming {
   /// Создает выполнение привычки
-  HabitPerforming({
-    this.habitId,
-    this.dateTime,
-    this.repeatIndex,
-    this.performValue,
-  });
+  factory HabitPerforming({
+    /// Айди привычки
+    @required int habitId,
+
+    /// Раз выполнения (напр. 1 из 2)
+    @required int repeatIndex,
+
+    /// Значение выполнения (напр. 10 сек)
+    @required double performValue,
+
+    /// Время выполнения
+    @required DateTime performDateTime,
+  }) = _HabitPerforming;
+
+  /// Создает выполнение привычки из словаря
+  factory HabitPerforming.fromJson(Map json) =>
+      _$HabitPerformingFromJson(Map<String, dynamic>.from(json));
 }

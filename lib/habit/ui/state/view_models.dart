@@ -35,15 +35,30 @@ abstract class HabitVM with _$HabitVM {
   }) = _HabitVM;
 
   /// Создает вм из привычки
-  factory HabitVM.fromHabit(Habit habit) => HabitVM(
-        id: habit.id,
-        title: habit.title,
-        repeats: List.generate(
-          habit.dailyRepeats.ceil(),
-          (index) =>
-              HabitRepeatVM(type: habit.type, goalValue: habit.goalValue),
+  factory HabitVM.build(
+    Habit habit, [
+    List<HabitPerforming> habitPerformings = const [],
+  ]) {
+    var repeatHabitPerformings = groupBy<HabitPerforming, int>(
+      habitPerformings,
+      (p) => p.repeatIndex,
+    );
+
+    return HabitVM(
+      id: habit.id,
+      title: habit.title,
+      repeats: List.generate(
+        habit.dailyRepeats.ceil(),
+        (index) => HabitRepeatVM(
+          type: habit.type,
+          goalValue: habit.goalValue,
+          currentValue: (repeatHabitPerformings[index] ?? [])
+              .map((p) => p.performValue)
+              .fold(0, (v1, v2) => v1 + v2),
         ),
-      );
+      ),
+    );
+  }
 }
 
 /// Очередное выполнение привычки

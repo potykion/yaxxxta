@@ -14,3 +14,12 @@ abstract class BaseHabitRepo {
   /// Обновляет привычку в бд
   Future<void> update(Habit habit);
 }
+
+/// Репо для работы с выполнениями привычек
+abstract class BaseHabitPerformingRepo {
+  /// Вставляет выполнение привычки в бд, возвращая айди
+  Future<int> insert(HabitPerforming performing);
+
+  /// Выводит список выполнений в промежутке
+  List<HabitPerforming> list(DateTime from, DateTime to);
+}

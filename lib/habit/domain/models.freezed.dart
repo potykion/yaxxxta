@@ -19,7 +19,7 @@ class _$HabitTearOff {
 // ignore: unused_element
   _Habit call(
       {int id,
-      String title = '',
+      String title = "",
       HabitType type = HabitType.time,
       bool dailyRepeatsEnabled = false,
       double goalValue = 1,
@@ -196,7 +196,7 @@ class __$HabitCopyWithImpl<$Res> extends _$HabitCopyWithImpl<$Res>
 class _$_Habit extends _Habit {
   const _$_Habit(
       {this.id,
-      this.title = '',
+      this.title = "",
       this.type = HabitType.time,
       this.dailyRepeatsEnabled = false,
       this.goalValue = 1,
@@ -217,7 +217,7 @@ class _$_Habit extends _Habit {
 
   /// Айдишник
   final int id;
-  @JsonKey(defaultValue: '')
+  @JsonKey(defaultValue: "")
   @override
 
   /// Название
@@ -608,4 +608,247 @@ abstract class _HabitPeriod implements HabitPeriod {
   bool get isCustom;
   @override
   _$HabitPeriodCopyWith<_HabitPeriod> get copyWith;
+}
+
+HabitPerforming _$HabitPerformingFromJson(Map<String, dynamic> json) {
+  return _HabitPerforming.fromJson(json);
+}
+
+/// @nodoc
+class _$HabitPerformingTearOff {
+  const _$HabitPerformingTearOff();
+
+// ignore: unused_element
+  _HabitPerforming call(
+      {@required int habitId,
+      @required int repeatIndex,
+      @required double performValue,
+      @required DateTime performDateTime}) {
+    return _HabitPerforming(
+      habitId: habitId,
+      repeatIndex: repeatIndex,
+      performValue: performValue,
+      performDateTime: performDateTime,
+    );
+  }
+
+// ignore: unused_element
+  HabitPerforming fromJson(Map<String, Object> json) {
+    return HabitPerforming.fromJson(json);
+  }
+}
+
+/// @nodoc
+// ignore: unused_element
+const $HabitPerforming = _$HabitPerformingTearOff();
+
+/// @nodoc
+mixin _$HabitPerforming {
+  /// Айди привычки
+  int get habitId;
+
+  /// Раз выполнения (напр. 1 из 2)
+  int get repeatIndex;
+
+  /// Значение выполнения (напр. 10 сек)
+  double get performValue;
+
+  /// Время выполнения
+  DateTime get performDateTime;
+
+  Map<String, dynamic> toJson();
+  $HabitPerformingCopyWith<HabitPerforming> get copyWith;
+}
+
+/// @nodoc
+abstract class $HabitPerformingCopyWith<$Res> {
+  factory $HabitPerformingCopyWith(
+          HabitPerforming value, $Res Function(HabitPerforming) then) =
+      _$HabitPerformingCopyWithImpl<$Res>;
+  $Res call(
+      {int habitId,
+      int repeatIndex,
+      double performValue,
+      DateTime performDateTime});
+}
+
+/// @nodoc
+class _$HabitPerformingCopyWithImpl<$Res>
+    implements $HabitPerformingCopyWith<$Res> {
+  _$HabitPerformingCopyWithImpl(this._value, this._then);
+
+  final HabitPerforming _value;
+  // ignore: unused_field
+  final $Res Function(HabitPerforming) _then;
+
+  @override
+  $Res call({
+    Object habitId = freezed,
+    Object repeatIndex = freezed,
+    Object performValue = freezed,
+    Object performDateTime = freezed,
+  }) {
+    return _then(_value.copyWith(
+      habitId: habitId == freezed ? _value.habitId : habitId as int,
+      repeatIndex:
+          repeatIndex == freezed ? _value.repeatIndex : repeatIndex as int,
+      performValue: performValue == freezed
+          ? _value.performValue
+          : performValue as double,
+      performDateTime: performDateTime == freezed
+          ? _value.performDateTime
+          : performDateTime as DateTime,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$HabitPerformingCopyWith<$Res>
+    implements $HabitPerformingCopyWith<$Res> {
+  factory _$HabitPerformingCopyWith(
+          _HabitPerforming value, $Res Function(_HabitPerforming) then) =
+      __$HabitPerformingCopyWithImpl<$Res>;
+  @override
+  $Res call(
+      {int habitId,
+      int repeatIndex,
+      double performValue,
+      DateTime performDateTime});
+}
+
+/// @nodoc
+class __$HabitPerformingCopyWithImpl<$Res>
+    extends _$HabitPerformingCopyWithImpl<$Res>
+    implements _$HabitPerformingCopyWith<$Res> {
+  __$HabitPerformingCopyWithImpl(
+      _HabitPerforming _value, $Res Function(_HabitPerforming) _then)
+      : super(_value, (v) => _then(v as _HabitPerforming));
+
+  @override
+  _HabitPerforming get _value => super._value as _HabitPerforming;
+
+  @override
+  $Res call({
+    Object habitId = freezed,
+    Object repeatIndex = freezed,
+    Object performValue = freezed,
+    Object performDateTime = freezed,
+  }) {
+    return _then(_HabitPerforming(
+      habitId: habitId == freezed ? _value.habitId : habitId as int,
+      repeatIndex:
+          repeatIndex == freezed ? _value.repeatIndex : repeatIndex as int,
+      performValue: performValue == freezed
+          ? _value.performValue
+          : performValue as double,
+      performDateTime: performDateTime == freezed
+          ? _value.performDateTime
+          : performDateTime as DateTime,
+    ));
+  }
+}
+
+@JsonSerializable()
+
+/// @nodoc
+class _$_HabitPerforming implements _HabitPerforming {
+  _$_HabitPerforming(
+      {@required this.habitId,
+      @required this.repeatIndex,
+      @required this.performValue,
+      @required this.performDateTime})
+      : assert(habitId != null),
+        assert(repeatIndex != null),
+        assert(performValue != null),
+        assert(performDateTime != null);
+
+  factory _$_HabitPerforming.fromJson(Map<String, dynamic> json) =>
+      _$_$_HabitPerformingFromJson(json);
+
+  @override
+
+  /// Айди привычки
+  final int habitId;
+  @override
+
+  /// Раз выполнения (напр. 1 из 2)
+  final int repeatIndex;
+  @override
+
+  /// Значение выполнения (напр. 10 сек)
+  final double performValue;
+  @override
+
+  /// Время выполнения
+  final DateTime performDateTime;
+
+  @override
+  String toString() {
+    return 'HabitPerforming(habitId: $habitId, repeatIndex: $repeatIndex, performValue: $performValue, performDateTime: $performDateTime)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _HabitPerforming &&
+            (identical(other.habitId, habitId) ||
+                const DeepCollectionEquality()
+                    .equals(other.habitId, habitId)) &&
+            (identical(other.repeatIndex, repeatIndex) ||
+                const DeepCollectionEquality()
+                    .equals(other.repeatIndex, repeatIndex)) &&
+            (identical(other.performValue, performValue) ||
+                const DeepCollectionEquality()
+                    .equals(other.performValue, performValue)) &&
+            (identical(other.performDateTime, performDateTime) ||
+                const DeepCollectionEquality()
+                    .equals(other.performDateTime, performDateTime)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(habitId) ^
+      const DeepCollectionEquality().hash(repeatIndex) ^
+      const DeepCollectionEquality().hash(performValue) ^
+      const DeepCollectionEquality().hash(performDateTime);
+
+  @override
+  _$HabitPerformingCopyWith<_HabitPerforming> get copyWith =>
+      __$HabitPerformingCopyWithImpl<_HabitPerforming>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$_HabitPerformingToJson(this);
+  }
+}
+
+abstract class _HabitPerforming implements HabitPerforming {
+  factory _HabitPerforming(
+      {@required int habitId,
+      @required int repeatIndex,
+      @required double performValue,
+      @required DateTime performDateTime}) = _$_HabitPerforming;
+
+  factory _HabitPerforming.fromJson(Map<String, dynamic> json) =
+      _$_HabitPerforming.fromJson;
+
+  @override
+
+  /// Айди привычки
+  int get habitId;
+  @override
+
+  /// Раз выполнения (напр. 1 из 2)
+  int get repeatIndex;
+  @override
+
+  /// Значение выполнения (напр. 10 сек)
+  double get performValue;
+  @override
+
+  /// Время выполнения
+  DateTime get performDateTime;
+  @override
+  _$HabitPerformingCopyWith<_HabitPerforming> get copyWith;
 }

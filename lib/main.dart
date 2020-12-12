@@ -10,6 +10,7 @@ import 'theme.dart';
 void main() async {
   await Hive.initFlutter();
   await Hive.openBox<Map>("habits");
+  await Hive.openBox<Map>("habit_performings");
   runApp(ProviderScope(child: MyApp()));
 }
 

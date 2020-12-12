@@ -11,6 +11,7 @@ import '../../../routes.dart';
 import '../../../theme.dart';
 import '../../domain/models.dart';
 import '../state/view_models.dart';
+import 'package:yaxxxta/habit/ui/state/controllers.dart';
 
 /// Вью-моделька привычки
 var habitVMProvider = ScopedProvider<HabitVM>(null);
@@ -88,18 +89,17 @@ class HabitProgressControl extends HookWidget {
                       : Icon(Icons.play_arrow)
                   : Icon(Icons.done),
               onPressed: () {
-                if (repeat.type == HabitType.repeats) {
-                  context
-                      .read(habitListControllerProvider)
-                      .incrementHabitProgress(vm.id, repeatIndex);
+                var controller = context.read(habitListControllerProvider);
 
-                  // todo create habit performing
+                if (repeat.type == HabitType.repeats) {
+                  controller.incrementHabitProgress(vm.id, repeatIndex);
+                  controller.createPerfoming(
+                    habitId: vm.id,
+                    repeatIndex: repeatIndex,
+                  );
                 } else if (repeat.type == HabitType.time) {
                   if (timerState.value?.isActive ?? false) {
-                    timerState.value.cancel();
-                    timerState.value = null;
-
-                    // todo create habit performing
+                    cancelTimer(timerState, controller, vm, repeatIndex);
                   } else {
                     timerState.value =
                         Timer.periodic(Duration(seconds: 1), (timer) {
@@ -108,10 +108,7 @@ class HabitProgressControl extends HookWidget {
                           .incrementHabitProgress(vm.id, repeatIndex);
 
                       if (repeatComplete) {
-                        timerState.value.cancel();
-                        timerState.value = null;
-
-                        // todo create habit performing
+                        cancelTimer(timerState, controller, vm, repeatIndex);
                       }
                     });
                   }
@@ -127,5 +124,18 @@ class HabitProgressControl extends HookWidget {
           )
       ],
     );
+  }
+
+  void cancelTimer(ValueNotifier<Timer> timerState,
+      HabitListController controller, HabitVM vm, int repeatIndex) {
+    timerState.value.cancel();
+
+    controller.createPerfoming(
+      habitId: vm.id,
+      repeatIndex: repeatIndex,
+      performValue: timerState.value.tick.toDouble(),
+    );
+
+    timerState.value = null;
   }
 }

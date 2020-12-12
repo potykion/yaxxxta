@@ -25,19 +25,31 @@ import 'habit/ui/state/controllers.dart';
 //   Get.put(NotificationSender(flutterLocalNotificationsPlugin));
 // }
 
-/// Регает hive-box
-Provider<Box<Map>> hiveBoxProvider = Provider((_) => Hive.box<Map>("habits"));
+/// Регает hive-box для привычек
+Provider<Box<Map>> habitBoxProvider = Provider((_) => Hive.box<Map>("habits"));
+
+/// Регает hive-box для выполнений привычек
+Provider<Box<Map>> habitPerformingBoxProvider =
+    Provider((_) => Hive.box<Map>("habit_performings"));
 
 /// Регает репо привычек
 Provider<BaseHabitRepo> habitRepoProvider = Provider(
-  (ref) => HabitRepo(ref.watch(hiveBoxProvider)),
+  (ref) => HabitRepo(ref.watch(habitBoxProvider)),
+);
+
+/// Регает репо выполнений привычек
+Provider<BaseHabitPerformingRepo> habitPerformingRepoProvider = Provider(
+  (ref) => HabitPerformingRepo(ref.watch(habitPerformingBoxProvider)),
 );
 
 /// Регает контроллер, загружая привычки
 StateNotifierProvider<HabitListController> habitListControllerProvider =
     StateNotifierProvider(
   (ref) {
-    var controller = HabitListController(ref.watch(habitRepoProvider));
+    var controller = HabitListController(
+      habitRepo: ref.watch(habitRepoProvider),
+      habitPerformingRepo: ref.watch(habitPerformingRepoProvider),
+    );
     controller.loadHabits();
     return controller;
   },
