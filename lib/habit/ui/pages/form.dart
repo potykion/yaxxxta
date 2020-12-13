@@ -73,11 +73,13 @@ class HabitFormPage extends HookWidget {
                 change: (type) => setVm(vm.copyWith(type: type, goalValue: 1)),
                 setBefore: vm.isUpdate,
               ),
-              HabitRepeatDuringDayCheckbox(
+              SelectableCheckbox(
                 initial: vm.dailyRepeatsEnabled,
                 change: (selected) =>
                     setVm(vm.copyWith(dailyRepeatsEnabled: selected)),
-              )
+                biggerText: "Повторы в течение дня",
+                smallerText: "Например, 10 мин. 2 раза в день",
+              ),
             ],
           ),
           if (vm.type == HabitType.time)

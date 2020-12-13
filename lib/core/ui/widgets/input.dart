@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import '../../../habit/domain/models.dart';
 
 import '../../../theme.dart';
@@ -39,7 +40,7 @@ class _TextInputState<T> extends State<TextInput> {
     super.initState();
     setTecValue();
     tec.addListener(
-          () {
+      () {
         if (isNumberInput) {
           var value = T == double
               ? (double.tryParse(tec.text) ?? 0.0)
@@ -77,28 +78,26 @@ class _TextInputState<T> extends State<TextInput> {
 
   @override
   Widget build(BuildContext context) => TextFormField(
-    controller: tec,
-    decoration: InputDecoration(
-      fillColor: CustomColors.lightGrey,
-      border: OutlineInputBorder(
-        borderSide: BorderSide(width: 0, style: BorderStyle.none),
-        borderRadius: BorderRadius.circular(15),
-      ),
-      filled: true,
-      contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-      suffixIcon: widget.suffix,
-      suffixIconConstraints: BoxConstraints(minHeight: 25, minWidth: 40),
-    ),
-    keyboardType: isNumberInput ? TextInputType.number : TextInputType.text,
-    cursorColor: CustomColors.almostBlack,
-    style: TextStyle(
-      fontSize: 18,
-      color: CustomColors.almostBlack,
-    ),
-  );
+        controller: tec,
+        decoration: InputDecoration(
+          fillColor: CustomColors.lightGrey,
+          border: OutlineInputBorder(
+            borderSide: BorderSide(width: 0, style: BorderStyle.none),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          filled: true,
+          contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+          suffixIcon: widget.suffix,
+          suffixIconConstraints: BoxConstraints(minHeight: 25, minWidth: 40),
+        ),
+        keyboardType: isNumberInput ? TextInputType.number : TextInputType.text,
+        cursorColor: CustomColors.almostBlack,
+        style: TextStyle(
+          fontSize: 18,
+          color: CustomColors.almostBlack,
+        ),
+      );
 }
-
-
 
 /// Виджет выбора из нескольких вариантов
 class Selectable extends StatefulWidget {
@@ -195,55 +194,49 @@ class _SelectableState extends State<Selectable> {
   }
 }
 
-/// Чекбокс определяющий повторять ли привычку в течение дня
-class HabitRepeatDuringDayCheckbox extends StatefulWidget {
+/// Чекбоксик
+class SelectableCheckbox extends HookWidget {
   /// Начальное значение выбора чекбокса
   final bool initial;
 
   /// Событие смены выбора чекбокса
   final Function(bool selected) change;
 
-  /// Создает чекбокс
-  const HabitRepeatDuringDayCheckbox({Key key, this.initial, this.change})
-      : super(key: key);
+  /// Большой текст
+  final String biggerText;
 
-  @override
-  _HabitRepeatDuringDayCheckboxState createState() =>
-      _HabitRepeatDuringDayCheckboxState();
-}
+  /// Маленький текст
+  final String smallerText;
 
-class _HabitRepeatDuringDayCheckboxState
-    extends State<HabitRepeatDuringDayCheckbox> {
-  bool selected;
-
-  @override
-  void initState() {
-    super.initState();
-    selected = widget.initial;
-  }
+  /// @nodoc
+  SelectableCheckbox(
+      {this.initial, this.change, this.biggerText, this.smallerText});
 
   @override
   Widget build(BuildContext context) {
+    var selectedState = useState(initial);
+
+    useValueChanged<bool, void>(
+      selectedState.value,
+      (_, __) => WidgetsBinding.instance.addPostFrameCallback(
+        (_) => change(selectedState.value),
+      ),
+    );
+
     return Selectable(
-      biggerText: "Повторы в течение дня",
-      smallerText: "Например, 10 мин. 2 раза в день",
+      biggerText: biggerText,
+      smallerText: smallerText,
       prefix: Checkbox(
-        onChanged: setSelected,
-        value: selected,
+        onChanged: (selected) => selectedState.value = selected,
+        value: selectedState.value,
         activeColor: CustomColors.yellow,
         checkColor: CustomColors.almostBlack,
       ),
-      initial: selected,
-      onSelected: setSelected,
+      initial: selectedState.value,
+      onSelected: (selected) => selectedState.value = selected,
       selectedColor: Colors.white,
       unselectedColor: Colors.white,
     );
-  }
-
-  // ignore: avoid_positional_boolean_parameters
-  void setSelected(bool selected) {
-    setState(() => this.selected = selected);
-    widget.change(this.selected);
   }
 }
 
@@ -260,22 +253,22 @@ class SimpleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(10),
-      color: CustomColors.yellow,
-    ),
-    child: Material(
-      color: Colors.transparent,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(10),
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: BiggerText(text: text),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: CustomColors.yellow,
         ),
-      ),
-    ),
-  );
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(10),
+            onTap: onTap,
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: BiggerText(text: text),
+            ),
+          ),
+        ),
+      );
 }
 
 /// Обычный чип
@@ -357,14 +350,14 @@ class _HabitPeriodTypeSelectState extends State<HabitPeriodTypeSelect> {
         ),
         value: type,
         items:
-        [HabitPeriodType.day, HabitPeriodType.week, HabitPeriodType.month]
-            .map(
-              (pt) => DropdownMenuItem<HabitPeriodType>(
-            child: Text(pt.format()),
-            value: pt,
-          ),
-        )
-            .toList(),
+            [HabitPeriodType.day, HabitPeriodType.week, HabitPeriodType.month]
+                .map(
+                  (pt) => DropdownMenuItem<HabitPeriodType>(
+                    child: Text(pt.format()),
+                    value: pt,
+                  ),
+                )
+                .toList(),
         onChanged: (v) {
           setState(() => type = v);
           widget.change(v);
@@ -404,22 +397,22 @@ class _WeekdaysPickerState extends State<WeekdaysPicker> {
       children: Weekday.values
           .map(
             (w) => SimpleChip(
-          text: w.format(),
-          selected: weekdays.contains(w),
-          change: (selected) {
-            setState(() {
-              if (selected) {
-                weekdays.add(w);
-              } else {
-                weekdays.remove(w);
-              }
-            });
-            widget.change(weekdays);
-          },
-          color: CustomColors.yellow,
-          padding: EdgeInsets.all(5),
-        ),
-      )
+              text: w.format(),
+              selected: weekdays.contains(w),
+              change: (selected) {
+                setState(() {
+                  if (selected) {
+                    weekdays.add(w);
+                  } else {
+                    weekdays.remove(w);
+                  }
+                });
+                widget.change(weekdays);
+              },
+              color: CustomColors.yellow,
+              padding: EdgeInsets.all(5),
+            ),
+          )
           .toList(),
     );
   }
