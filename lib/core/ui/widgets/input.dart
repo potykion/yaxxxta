@@ -165,7 +165,7 @@ class _SelectableState extends State<Selectable> {
             color: selected ? widget.selectedColor : widget.unselectedColor,
           ),
           child: Padding(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
             child: Row(
               children: [
                 if (widget.prefix != null) widget.prefix,

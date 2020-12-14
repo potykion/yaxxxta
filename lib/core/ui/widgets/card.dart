@@ -6,8 +6,14 @@ class PaddedContainerCard extends StatelessWidget {
   /// Содержимое контейнера
   final List<Widget> children;
 
+  final bool padVerticalOnly;
+
   /// Создает карточку
-  const PaddedContainerCard({Key key, this.children}) : super(key: key);
+  const PaddedContainerCard({
+    Key key,
+    this.children,
+    this.padVerticalOnly = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -18,7 +24,9 @@ class PaddedContainerCard extends StatelessWidget {
             color: Colors.white,
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+            padding: padVerticalOnly
+                ? EdgeInsets.symmetric(vertical: 16, horizontal: 0)
+                : EdgeInsets.symmetric(vertical: 15, horizontal: 15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: children,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:yaxxxta/theme.dart';
 
 import '../../../core/ui/widgets/bottom_nav.dart';
 import '../../../core/ui/widgets/card.dart';
@@ -24,13 +25,16 @@ class SettingsPage extends HookWidget {
       body: ListView(
         children: [
           PaddedContainerCard(
+            padVerticalOnly: true,
             children: [
-              SelectableCheckbox(
-                initial: settings.showCompleted,
-                change: (showCompleted) => setSettings(
+              CheckboxListTile(
+                controlAffinity: ListTileControlAffinity.leading,
+                title: Text("Показывать выполненные привычки"),
+                value: settings.showCompleted,
+                onChanged: (showCompleted) => setSettings(
                   settings.copyWith(showCompleted: showCompleted),
                 ),
-                biggerText: "Показывать выполненные привычки",
+                checkColor: CustomColors.almostBlack,
               ),
             ],
           )
