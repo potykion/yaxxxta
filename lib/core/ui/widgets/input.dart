@@ -170,14 +170,16 @@ class _SelectableState extends State<Selectable> {
               children: [
                 if (widget.prefix != null) widget.prefix,
                 Column(
+                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     BiggerText(text: widget.biggerText),
-                    SmallerText(
-                      text: widget.smallerText,
-                      light: widget.selectedColor != widget.unselectedColor &&
-                          selected,
-                    )
+                    if (widget.smallerText != null)
+                      SmallerText(
+                        text: widget.smallerText,
+                        light: widget.selectedColor != widget.unselectedColor &&
+                            selected,
+                      )
                   ],
                 )
               ],

@@ -24,7 +24,6 @@ class AppBottomNavigationBar extends HookWidget {
         ),
       ],
       currentIndex: pageIndexState.state,
-      // todo попробовать navigator.push вместо home page
       onTap: (index) => context.read(pageIndexProvider).state = index,
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
+import 'package:yaxxxta/settings/infra/db.dart';
 
 import 'habit/domain/db.dart';
 import 'habit/infra/db.dart';
@@ -27,6 +28,8 @@ import 'habit/ui/state/controllers.dart';
 
 /// Регает hive-box для привычек
 Provider<Box<Map>> habitBoxProvider = Provider((_) => Hive.box<Map>("habits"));
+Provider<Box<Map>> settingsBoxProvider =
+    Provider((_) => Hive.box<Map>("settings"));
 
 /// Регает hive-box для выполнений привычек
 Provider<Box<Map>> habitPerformingBoxProvider =
@@ -56,3 +59,10 @@ StateNotifierProvider<HabitListController> habitListControllerProvider =
 );
 
 var pageIndexProvider = StateProvider((_) => 0);
+
+var settingsRepoProvider =
+    Provider((ref) => SettingsRepo(ref.watch(settingsBoxProvider)));
+
+var settingsProvider = StateProvider(
+  (ref) => ref.watch(settingsRepoProvider).getOrCreate(),
+);

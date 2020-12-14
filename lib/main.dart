@@ -12,6 +12,7 @@ void main() async {
   await Hive.initFlutter();
   await Hive.openBox<Map>("habits");
   await Hive.openBox<Map>("habit_performings");
+  await Hive.openBox<Map>("settings");
   runApp(ProviderScope(child: MyApp()));
 }
 

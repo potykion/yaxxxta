@@ -5,13 +5,9 @@ import 'package:yaxxxta/core/ui/widgets/bottom_nav.dart';
 import 'package:yaxxxta/core/ui/widgets/card.dart';
 import 'package:yaxxxta/core/ui/widgets/input.dart';
 import 'package:yaxxxta/settings/domain/models.dart';
+import 'package:yaxxxta/settings/infra/db.dart';
 
-var settingsProvider = StateProvider(
-  (ref) => Settings(
-    dayStartTime: DateTime(2020, 1, 1, 0, 0),
-    dayEndTime: DateTime(2020, 1, 1, 23, 59),
-  ),
-);
+import '../../../deps.dart';
 
 /// Страница с настройками
 class SettingsPage extends HookWidget {
@@ -20,8 +16,10 @@ class SettingsPage extends HookWidget {
     var settingsState = useProvider(settingsProvider);
     var settings = settingsState.state;
 
-    setSettings(Settings settings) =>
-        context.read(settingsProvider).state = settings;
+    setSettings(Settings newSettings) {
+      context.read(settingsProvider).state = newSettings;
+      context.read(settingsRepoProvider).update(newSettings);
+    }
 
     return Scaffold(
       body: ListView(
