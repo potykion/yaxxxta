@@ -10,14 +10,14 @@ import '../../../deps.dart';
 import '../../../routes.dart';
 import '../../../theme.dart';
 import '../../domain/models.dart';
+import '../state/controllers.dart';
 import '../state/view_models.dart';
-import 'package:yaxxxta/habit/ui/state/controllers.dart';
 
 /// Вью-моделька привычки
-var habitVMProvider = ScopedProvider<HabitVM>(null);
+ScopedProvider<HabitVM> habitVMProvider = ScopedProvider<HabitVM>(null);
 
 /// Индекс повтора привычки в течение дня
-var repeatIndexProvider = ScopedProvider<int>(null);
+ScopedProvider<int> repeatIndexProvider = ScopedProvider<int>(null);
 
 /// Карточка привычки
 class HabitCard extends HookWidget {
@@ -93,13 +93,13 @@ class HabitProgressControl extends HookWidget {
 
                 if (repeat.type == HabitType.repeats) {
                   controller.incrementHabitProgress(vm.id, repeatIndex);
-                  controller.createPerfoming(
+                  controller.createPerforming(
                     habitId: vm.id,
                     repeatIndex: repeatIndex,
                   );
                 } else if (repeat.type == HabitType.time) {
                   if (timerState.value?.isActive ?? false) {
-                    cancelTimer(timerState, controller, vm, repeatIndex);
+                    _cancelTimer(timerState, controller, vm, repeatIndex);
                   } else {
                     timerState.value =
                         Timer.periodic(Duration(seconds: 1), (timer) {
@@ -108,7 +108,7 @@ class HabitProgressControl extends HookWidget {
                           .incrementHabitProgress(vm.id, repeatIndex);
 
                       if (repeatComplete) {
-                        cancelTimer(timerState, controller, vm, repeatIndex);
+                        _cancelTimer(timerState, controller, vm, repeatIndex);
                       }
                     });
                   }
@@ -126,11 +126,13 @@ class HabitProgressControl extends HookWidget {
     );
   }
 
-  void cancelTimer(ValueNotifier<Timer> timerState,
+  /// Останавливает таймер, создавая выполнение привычки со временем,
+  /// которое натикало на таймере
+  void _cancelTimer(ValueNotifier<Timer> timerState,
       HabitListController controller, HabitVM vm, int repeatIndex) {
     timerState.value.cancel();
 
-    controller.createPerfoming(
+    controller.createPerforming(
       habitId: vm.id,
       repeatIndex: repeatIndex,
       performValue: timerState.value.tick.toDouble(),

@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/all.dart';
-import 'package:yaxxxta/core/ui/widgets/bottom_nav.dart';
+import '../../../core/ui/widgets/bottom_nav.dart';
 
 import '../../../core/ui/widgets/date.dart';
 import '../../../deps.dart';
 import '../../../routes.dart';
-import '../../../theme.dart';
 import '../widgets/list.dart';
 
 /// Страница списка привычек

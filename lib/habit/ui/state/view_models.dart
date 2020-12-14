@@ -96,7 +96,8 @@ abstract class HabitRepeatVM implements _$HabitRepeatVM {
   /// Нужно ли выполнить привычку один раз
   bool get isSingle => type == HabitType.repeats && goalValue.toInt() == 1;
 
-  bool get isComplete => currentValue == goalValue;
+  /// Выполнена ли привычка
+  bool get isComplete => currentValue.toInt() == goalValue.toInt();
 }
 
 /// Запись о выполнении привычки в прошлом

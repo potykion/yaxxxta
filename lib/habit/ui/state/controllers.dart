@@ -8,7 +8,10 @@ import 'view_models.dart';
 
 /// Контроллер списка привычек
 class HabitListController extends StateNotifier<List<HabitVM>> {
+  /// Репо привычек
   final BaseHabitRepo habitRepo;
+
+  /// Репо выполнений привычек
   final BaseHabitPerformingRepo habitPerformingRepo;
 
   /// @nodoc
@@ -59,7 +62,8 @@ class HabitListController extends StateNotifier<List<HabitVM>> {
     return repeatComplete;
   }
 
-  Future<void> createPerfoming({
+  /// Создает выполнение привычки
+  Future<void> createPerforming({
     @required int habitId,
     @required int repeatIndex,
     double performValue,
