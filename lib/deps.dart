@@ -54,3 +54,5 @@ StateNotifierProvider<HabitListController> habitListControllerProvider =
     return controller;
   },
 );
+
+var pageIndexProvider = StateProvider((_) => 0);

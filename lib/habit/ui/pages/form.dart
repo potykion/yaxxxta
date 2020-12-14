@@ -38,9 +38,7 @@ class HabitFormPage extends HookWidget {
     var vmState = useProvider(_vmState);
     var vm = vmState.state;
 
-    setVm(Habit newVm) {
-      context.read(_vmState).state = newVm;
-    }
+    setVm(Habit newVm) => context.read(_vmState).state = newVm;
 
     var error = useProvider(_error);
 
@@ -342,7 +340,6 @@ class HabitFormPage extends HookWidget {
                         .read(habitListControllerProvider)
                         .createOrUpdateHabit(vm);
                     Navigator.of(context).pop();
-                    // Navigator.of(context).pushNamed(Routes.list);
                   }
                 : null,
             label: SmallerText(

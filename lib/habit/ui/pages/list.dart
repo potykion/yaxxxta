@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:yaxxxta/core/ui/widgets/bottom_nav.dart';
 
 import '../../../core/ui/widgets/date.dart';
 import '../../../deps.dart';
@@ -50,20 +51,7 @@ class HabitListPage extends HookWidget {
         child: Icon(Icons.add, size: 50),
         onPressed: () => Navigator.of(context).pushNamed(Routes.form),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: CustomColors.almostBlack,
-        unselectedItemColor: CustomColors.grey,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.today),
-            label: "Календарь",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: "Настройки",
-          ),
-        ],
-      ),
+      bottomNavigationBar: AppBottomNavigationBar(),
     );
   }
 }

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import 'core/ui/pages/home.dart';
 import 'routes.dart';
 import 'theme.dart';
 
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => GetMaterialApp(
         routes: routes,
-        initialRoute: Routes.list,
+        home: HomePage(),
         theme: buildTheme(context),
       );
 }
