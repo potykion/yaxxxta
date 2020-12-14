@@ -23,5 +23,8 @@ String formatTime(DateTime time) => DateFormat.Hm().format(time);
 String formatDouble(num number) =>
     rtrim(rtrim(number.toStringAsFixed(2), "0"), ".");
 
-final DefaultDayStart = DateTime(2020, 1, 1);
-final DefaultDayEnd = DateTime(2020, 1, 1, 23, 59);
+/// Время начала дня по умолчанию
+final defaultDayEnd = DateTime(2020, 1, 1, 23, 59);
+
+/// Время конца дня по умолчанию
+final defaultDayStart = DateTime(2020, 1, 1);

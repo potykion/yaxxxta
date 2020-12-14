@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/all.dart';
 import '../../../deps.dart';
 import '../../../theme.dart';
 
+/// Боттом нав барчик
 class AppBottomNavigationBar extends HookWidget {
   @override
   Widget build(BuildContext context) {

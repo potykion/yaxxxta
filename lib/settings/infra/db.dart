@@ -1,16 +1,18 @@
 import 'package:hive/hive.dart';
-import 'package:yaxxxta/settings/domain/db.dart';
-import 'package:yaxxxta/settings/domain/models.dart';
+import '../domain/db.dart';
+import '../domain/models.dart';
 
+/// Репо настроек
 class SettingsRepo implements BaseSettingsRepo {
-  final String settingsKey = "settingsKey";
+  final String _settingsKey = "settingsKey";
   final Box<Map> _habitBox;
 
+  /// @nodoc
   SettingsRepo(this._habitBox);
 
   @override
-  Settings getOrCreate() {
-    var settingsJson = _habitBox.get(settingsKey);
+  Settings get() {
+    var settingsJson = _habitBox.get(_settingsKey);
     var settings = settingsJson != null
         ? Settings.fromJson(settingsJson)
         : Settings.createDefault();
@@ -19,5 +21,5 @@ class SettingsRepo implements BaseSettingsRepo {
 
   @override
   Future<void> update(Settings settings) =>
-      _habitBox.put(settingsKey, settings.toJson());
+      _habitBox.put(_settingsKey, settings.toJson());
 }

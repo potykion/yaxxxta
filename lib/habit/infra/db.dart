@@ -28,9 +28,11 @@ class HabitRepo implements BaseHabitRepo {
   Future<void> update(Habit habit) => _habitBox.putAt(habit.id, habit.toJson());
 }
 
+/// Репо выполнений привычек
 class HabitPerformingRepo implements BaseHabitPerformingRepo {
   final Box<Map> _habitPerformingBox;
 
+  /// @nodoc
   HabitPerformingRepo(this._habitPerformingBox);
 
   @override

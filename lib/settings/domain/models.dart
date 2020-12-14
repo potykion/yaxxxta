@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:yaxxxta/core/utils/utils.dart';
+import '../../core/utils/utils.dart';
 
 part 'models.freezed.dart';
 
@@ -24,8 +24,9 @@ abstract class Settings with _$Settings {
   factory Settings.fromJson(Map json) =>
       _$SettingsFromJson(Map<String, dynamic>.from(json));
 
+  /// Создает настройки по умолчанию
   factory Settings.createDefault() => Settings(
-        dayStartTime: DefaultDayStart,
-        dayEndTime: DefaultDayEnd,
+        dayStartTime: defaultDayStart,
+        dayEndTime: defaultDayEnd,
       );
 }

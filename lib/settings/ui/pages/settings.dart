@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
-import 'package:yaxxxta/core/ui/widgets/bottom_nav.dart';
-import 'package:yaxxxta/core/ui/widgets/card.dart';
-import 'package:yaxxxta/core/ui/widgets/input.dart';
-import 'package:yaxxxta/settings/domain/models.dart';
-import 'package:yaxxxta/settings/infra/db.dart';
 
+import '../../../core/ui/widgets/bottom_nav.dart';
+import '../../../core/ui/widgets/card.dart';
+import '../../../core/ui/widgets/input.dart';
 import '../../../deps.dart';
+import '../../domain/models.dart';
 
 /// Страница с настройками
 class SettingsPage extends HookWidget {
