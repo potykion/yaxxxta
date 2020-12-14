@@ -43,4 +43,13 @@ ThemeData buildTheme(BuildContext context) => ThemeData(
       textTheme: GoogleFonts.montserratTextTheme(
         Theme.of(context).textTheme,
       ),
+      inputDecorationTheme: InputDecorationTheme(
+        fillColor: CustomColors.lightGrey,
+        border: OutlineInputBorder(
+          borderSide: BorderSide(width: 0, style: BorderStyle.none),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        filled: true,
+        contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      ),
     );

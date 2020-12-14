@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:yaxxxta/core/ui/widgets/text.dart';
 import 'package:yaxxxta/theme.dart';
 
 import '../../../core/ui/widgets/bottom_nav.dart';
@@ -27,9 +28,28 @@ class SettingsPage extends HookWidget {
           PaddedContainerCard(
             padVerticalOnly: true,
             children: [
+              ListTile(
+                title: Padding(
+                  padding: const EdgeInsets.only(bottom: 5),
+                  child: BiggerText(text: "Начало дня"),
+                ),
+                subtitle: TextInput(change: (value) {}, initial: null),
+              ),
+              ListTile(
+                title: Padding(
+                  padding: const EdgeInsets.only(bottom: 5),
+                  child: BiggerText(text: "Конец дня"),
+                ),
+                subtitle: TextInput(change: (value) {}, initial: null),
+              ),
+            ],
+          ),
+          PaddedContainerCard(
+            padVerticalOnly: true,
+            children: [
               CheckboxListTile(
                 controlAffinity: ListTileControlAffinity.leading,
-                title: Text("Показывать выполненные привычки"),
+                title: BiggerText(text: "Показывать выполненные привычки"),
                 value: settings.showCompleted,
                 onChanged: (showCompleted) => setSettings(
                   settings.copyWith(showCompleted: showCompleted),

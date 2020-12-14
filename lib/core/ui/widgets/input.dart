@@ -80,13 +80,6 @@ class _TextInputState<T> extends State<TextInput> {
   Widget build(BuildContext context) => TextFormField(
         controller: tec,
         decoration: InputDecoration(
-          fillColor: CustomColors.lightGrey,
-          border: OutlineInputBorder(
-            borderSide: BorderSide(width: 0, style: BorderStyle.none),
-            borderRadius: BorderRadius.circular(15),
-          ),
-          filled: true,
-          contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
           suffixIcon: widget.suffix,
           suffixIconConstraints: BoxConstraints(minHeight: 25, minWidth: 40),
         ),
@@ -419,3 +412,5 @@ class _WeekdaysPickerState extends State<WeekdaysPicker> {
     );
   }
 }
+
+
