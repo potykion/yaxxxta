@@ -28,3 +28,13 @@ final defaultDayEnd = DateTime(2020, 1, 1, 23, 59);
 
 /// Время конца дня по умолчанию
 final defaultDayStart = DateTime(2020, 1, 1);
+
+DateTime buildDateTime(DateTime date, DateTime time) {
+  return DateTime(
+    date.year,
+    date.month,
+    date.day,
+    time.hour,
+    time.minute,
+  );
+}

@@ -55,6 +55,7 @@ StateNotifierProvider<HabitListController> habitListControllerProvider =
     var controller = HabitListController(
       habitRepo: ref.watch(habitRepoProvider),
       habitPerformingRepo: ref.watch(habitPerformingRepoProvider),
+      settings: ref.watch(settingsProvider).state,
     );
     controller.loadHabits();
     return controller;

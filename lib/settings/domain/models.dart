@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import '../../core/utils/utils.dart';
+import '../../core/utils/dt.dart';
 
 part 'models.freezed.dart';
 

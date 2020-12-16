@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../core/ui/widgets/card.dart';
 import '../../../core/ui/widgets/date.dart';
 import '../../../core/ui/widgets/text.dart';
-import '../../../core/utils/utils.dart';
+import '../../../core/utils/dt.dart';
 import '../../../theme.dart';
 import '../../domain/models.dart';
 import '../state/view_models.dart';

@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../core/utils/utils.dart';
+import '../../../core/utils/dt.dart';
 import '../../domain/models.dart';
 
 part 'view_models.freezed.dart';

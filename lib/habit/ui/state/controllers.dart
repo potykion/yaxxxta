@@ -1,6 +1,8 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:riverpod/riverpod.dart';
+import 'package:yaxxxta/core/utils/dt.dart';
+import 'package:yaxxxta/settings/domain/models.dart';
 import '../../domain/db.dart';
 
 import '../../domain/models.dart';
@@ -14,18 +16,18 @@ class HabitListController extends StateNotifier<List<HabitVM>> {
   /// Репо выполнений привычек
   final BaseHabitPerformingRepo habitPerformingRepo;
 
+  /// Настроечки
+  final Settings settings;
+
   /// @nodoc
-  HabitListController({this.habitRepo, this.habitPerformingRepo}) : super([]);
+  HabitListController({this.habitRepo, this.habitPerformingRepo, this.settings})
+      : super([]);
 
   /// Грузит привычки из бд
-  void loadHabits() {
-    var dateStart = DateTime.now();
-    dateStart = dateStart.subtract(Duration(
-        hours: dateStart.hour,
-        minutes: dateStart.minute,
-        seconds: dateStart.second));
-
-    var dateEnd = dateStart.add(Duration(hours: 23, minutes: 59, seconds: 59));
+  void loadHabits({DateTime date}) {
+    date = date ?? DateTime.now();
+    var dateStart = buildDateTime(date, settings.dayStartTime);
+    var dateEnd = buildDateTime(date, settings.dayEndTime);
 
     var performings = habitPerformingRepo.list(dateStart, dateEnd);
     var habitPerformings = groupBy<HabitPerforming, int>(
