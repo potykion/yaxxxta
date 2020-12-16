@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:yaxxxta/core/ui/widgets/text.dart';
+import 'package:yaxxxta/core/ui/widgets/time.dart';
 import 'package:yaxxxta/theme.dart';
 
 import '../../../core/ui/widgets/bottom_nav.dart';
@@ -28,19 +29,32 @@ class SettingsPage extends HookWidget {
           PaddedContainerCard(
             padVerticalOnly: true,
             children: [
-              ListTile(
-                title: Padding(
-                  padding: const EdgeInsets.only(bottom: 5),
-                  child: BiggerText(text: "Начало дня"),
-                ),
-                subtitle: TextInput(change: (value) {}, initial: null),
+              Padding(
+                padding: const EdgeInsets.only(left: 15, bottom: 5),
+                child: BiggerText(text: "Начало и конец дня"),
               ),
               ListTile(
-                title: Padding(
-                  padding: const EdgeInsets.only(bottom: 5),
-                  child: BiggerText(text: "Конец дня"),
+                title: Row(
+                  children: [
+                    Flexible(
+                      child: TimePickerInput(
+                        initial: settings.dayStartTime,
+                        change: (time) => setSettings(
+                          settings.copyWith(dayStartTime: time),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Flexible(
+                      child: TimePickerInput(
+                        initial: settings.dayEndTime,
+                        change: (time) => setSettings(
+                          settings.copyWith(dayEndTime: time),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                subtitle: TextInput(change: (value) {}, initial: null),
               ),
             ],
           ),
@@ -57,7 +71,7 @@ class SettingsPage extends HookWidget {
                 checkColor: CustomColors.almostBlack,
               ),
             ],
-          )
+          ),
         ],
       ),
       bottomNavigationBar: AppBottomNavigationBar(),
