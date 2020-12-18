@@ -103,9 +103,10 @@ class __$HabitVMCopyWithImpl<$Res> extends _$HabitVMCopyWithImpl<$Res>
 }
 
 /// @nodoc
-class _$_HabitVM implements _HabitVM {
+class _$_HabitVM extends _HabitVM {
   _$_HabitVM({this.id, this.title, this.repeats})
-      : assert(repeats.length >= 1, 'Повторов должно быть >= 1');
+      : assert(repeats.length >= 1, 'Повторов должно быть >= 1'),
+        super._();
 
   @override
   final int id;
@@ -147,7 +148,8 @@ class _$_HabitVM implements _HabitVM {
       __$HabitVMCopyWithImpl<_HabitVM>(this, _$identity);
 }
 
-abstract class _HabitVM implements HabitVM {
+abstract class _HabitVM extends HabitVM {
+  _HabitVM._() : super._();
   factory _HabitVM({int id, String title, List<HabitRepeatVM> repeats}) =
       _$_HabitVM;
 

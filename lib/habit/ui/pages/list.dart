@@ -13,7 +13,7 @@ import '../widgets/list.dart';
 class HabitListPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    var habits = useProvider(habitListControllerProvider.state);
+    var habits = useProvider(habitsToShowProvider);
 
     return Scaffold(
       appBar: PreferredSize(

@@ -62,6 +62,15 @@ StateNotifierProvider<HabitListController> habitListControllerProvider =
   },
 );
 
+var habitsToShowProvider = Provider((ref) {
+  var settings = ref.watch(settingsProvider).state;
+
+  return ref
+      .watch(habitListControllerProvider.state)
+      .where((h) => settings.showCompleted || !h.isComplete)
+      .toList();
+});
+
 /// Регает индекс выбранной странички
 StateProvider<int> pageIndexProvider = StateProvider((_) => 0);
 
