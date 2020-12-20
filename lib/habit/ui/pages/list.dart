@@ -41,6 +41,9 @@ class HabitListPage extends HookWidget {
                   child: HabitCard(),
                 ),
                 itemCount: vm.repeats.length,
+                controller: PageController(
+                  initialPage: vm.firstIncompleteRepeatIndex,
+                ),
               ),
             )
         ],

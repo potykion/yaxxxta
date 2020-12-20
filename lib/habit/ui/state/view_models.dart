@@ -63,6 +63,15 @@ abstract class HabitVM with _$HabitVM {
   }
 
   bool get isComplete => repeats.every((r) => r.isComplete);
+
+  int get firstIncompleteRepeatIndex => isComplete
+      ? repeats.length - 1
+      : repeats
+          .asMap()
+          .entries
+          .where((e) => !e.value.isComplete && !e.value.isExceeded)
+          .first
+          .key;
 }
 
 /// Очередное выполнение привычки
@@ -102,6 +111,8 @@ abstract class HabitRepeatVM implements _$HabitRepeatVM {
 
   /// Выполнена ли привычка
   bool get isComplete => currentValue.toInt() == goalValue.toInt();
+
+  bool get isExceeded => currentValue > goalValue;
 }
 
 /// Запись о выполнении привычки в прошлом
