@@ -83,9 +83,13 @@ class HabitListController extends StateNotifier<List<HabitVM>> {
   Future<void> createOrUpdateHabit(Habit habit) async {
     if (habit.isUpdate) {
       await habitRepo.update(habit);
+      state = [
+        for (var vm in state)
+          if (vm.id == habit.id) HabitVM.build(habit) else vm
+      ];
     } else {
       habit = habit.copyWith(id: await habitRepo.insert(habit));
+      state = [...state, HabitVM.build(habit)];
     }
-    state = [...state, HabitVM.build(habit)];
   }
 }
