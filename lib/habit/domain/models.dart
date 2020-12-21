@@ -139,14 +139,45 @@ enum Weekday {
 extension FormatWeekday on Weekday {
   /// Форматирует день недели
   String format() {
-    if (this == Weekday.monday) return "Пн";
-    if (this == Weekday.tuesday) return "Вт";
-    if (this == Weekday.wednesday) return "Ср";
-    if (this == Weekday.thursday) return "Чт";
-    if (this == Weekday.friday) return "Пт";
-    if (this == Weekday.saturday) return "Сб";
-    if (this == Weekday.sunday) return "Вс";
-    throw "Failed to format: $this";
+    switch (this) {
+      case Weekday.monday:
+        return "Пн";
+      case Weekday.tuesday:
+        return "Вт";
+      case Weekday.wednesday:
+        return "Ср";
+      case Weekday.thursday:
+        return "Чт";
+      case Weekday.friday:
+        return "Пт";
+      case Weekday.saturday:
+        return "Сб";
+      case Weekday.sunday:
+        return "Вс";
+      default:
+        throw "Failed to format: $this";
+    }
+  }
+}
+
+Weekday weekdayFromInt(int weekdayInt) {
+  switch (weekdayInt) {
+    case 1:
+      return Weekday.monday;
+    case 2:
+      return Weekday.tuesday;
+    case 3:
+      return Weekday.wednesday;
+    case 4:
+      return Weekday.thursday;
+    case 5:
+      return Weekday.friday;
+    case 6:
+      return Weekday.saturday;
+    case 7:
+      return Weekday.sunday;
+    default:
+      throw "Wtf: weekdayInt = $weekdayInt";
   }
 }
 

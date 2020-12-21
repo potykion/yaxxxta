@@ -37,6 +37,24 @@ class HabitListController extends StateNotifier<List<HabitVM>> {
 
     state = habitRepo
         .list()
+        .where((h) {
+          var p = h.habitPeriod;
+
+          if (p.isCustom) {
+            throw UnimplementedError();
+          }
+
+          switch (p.type) {
+            case HabitPeriodType.day:
+              return true;
+            case HabitPeriodType.week:
+              return p.weekdays.contains(weekdayFromInt(date.weekday));
+            case HabitPeriodType.month:
+              return p.monthDay == date.day;
+            default:
+              return false;
+          }
+        })
         .map((h) => HabitVM.build(h, habitPerformings[h.id] ?? []))
         .toList();
   }
