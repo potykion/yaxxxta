@@ -22,7 +22,11 @@ class HabitListPage extends HookWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(height: kToolbarHeight),
-            DatePicker(),
+            DatePicker(
+              change: (date) => context
+                  .read(habitListControllerProvider)
+                  .loadHabits(date: date)
+            ),
           ],
         ),
       ),

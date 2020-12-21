@@ -1,46 +1,47 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:infinite_listview/infinite_listview.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../deps.dart';
 import '../../../theme.dart';
 
 /// Выбор даты
-class DatePicker extends StatefulWidget {
-  @override
-  _DatePickerState createState() => _DatePickerState();
-}
+class DatePicker extends HookWidget {
+  final Function(DateTime date) change;
 
-class _DatePickerState extends State<DatePicker> {
-  int selectedIndex = 0;
-
-  /// Сдвигаем лист-вью на половину экрана + 3 паддинга по 10,
-  /// чтобы текущий день был посерединке
-  InfiniteScrollController controller = InfiniteScrollController(
-    initialScrollOffset: -Get.mediaQuery.size.width / 2 + 3 * 10,
-  );
-
-  Random get random => Random();
+  DatePicker({@required this.change});
 
   @override
-  Widget build(BuildContext context) => SizedBox(
-    height: 60,
-    child: InfiniteListView.builder(
-      controller: controller,
-      scrollDirection: Axis.horizontal,
-      itemBuilder: (_, index) => GestureDetector(
-        onTap: () => setState(() => selectedIndex = index),
-        child: DatePickerItem(
-          date: DateTime.now().add(Duration(days: index)),
-          color: selectedIndex == index
-              ? CustomColors.yellow
-              : CustomColors.green.withAlpha(random.nextInt(255)),
+  Widget build(BuildContext context) {
+    var selectedIndexState = useState(0);
+
+    return SizedBox(
+      height: 60,
+      child: InfiniteListView.builder(
+        /// Сдвигаем лист-вью на половину экрана + 3 паддинга по 10,
+        /// чтобы текущий день был посерединке
+        controller: InfiniteScrollController(
+          initialScrollOffset: -MediaQuery.of(context).size.width / 2 + 3 * 10,
+        ),
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (_, index) => GestureDetector(
+          onTap: () {
+            selectedIndexState.value = index;
+            change(DateTime.now().add(Duration(days: index)));
+          },
+          child: DatePickerItem(
+            date: DateTime.now().add(Duration(days: index)),
+            color: selectedIndexState.value == index
+                ? CustomColors.yellow
+                : Colors.transparent,
+          ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }
+
 /// Ячейка выбора даты
 class DatePickerItem extends StatelessWidget {
   /// Дата
