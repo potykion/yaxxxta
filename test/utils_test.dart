@@ -24,4 +24,12 @@ void main() {
     expect(endOfMonth(DateTime(2020, 11, 1)), 30);
     expect(endOfMonth(DateTime(2020, 12, 1)), 31);
   });
+
+  test("Номер недели", () {
+    expect(yearWeekNum(DateTime(2020, 1, 1)), 1);
+    expect(yearWeekNum(DateTime(2020, 1, 8)), 2);
+    expect(yearWeekNum(DateTime(2020, 12, 31)), 53);
+    expect(yearWeekNum(DateTime(2020, 12, 24)), 52);
+    expect(yearWeekNum(DateTime(2020, 12, 22)), 52);
+  });
 }

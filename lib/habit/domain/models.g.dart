@@ -9,6 +9,9 @@ part of 'models.dart';
 _$_Habit _$_$_HabitFromJson(Map json) {
   return _$_Habit(
     id: json['id'] as int,
+    created: json['created'] == null
+        ? null
+        : DateTime.parse(json['created'] as String),
     title: json['title'] as String ?? '',
     type: _$enumDecodeNullable(_$HabitTypeEnumMap, json['type']) ??
         HabitType.time,
@@ -23,6 +26,7 @@ _$_Habit _$_$_HabitFromJson(Map json) {
 
 Map<String, dynamic> _$_$_HabitToJson(_$_Habit instance) => <String, dynamic>{
       'id': instance.id,
+      'created': instance.created?.toIso8601String(),
       'title': instance.title,
       'type': _$HabitTypeEnumMap[instance.type],
       'dailyRepeatsEnabled': instance.dailyRepeatsEnabled,

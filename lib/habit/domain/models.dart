@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:yaxxxta/core/utils/dt.dart';
 
 part 'models.g.dart';
 
@@ -14,6 +17,9 @@ abstract class Habit with _$Habit {
   const factory Habit({
     /// Айдишник
     int id,
+
+    /// Дата создания
+    @required DateTime created,
 
     /// Название
     @Default("") String title,
@@ -72,6 +78,28 @@ abstract class Habit with _$Habit {
   /// Создает привычку из джсона
   factory Habit.fromJson(Map json) =>
       _$HabitFromJson(Map<String, dynamic>.from(json));
+
+  bool matchDate(DateTime date) {
+    switch (habitPeriod.type) {
+      case HabitPeriodType.day:
+        return (yearDayNum(date) - yearDayNum(created)) %
+                habitPeriod.periodValue ==
+            0;
+
+      case HabitPeriodType.week:
+        return (yearWeekNum(date) - yearWeekNum(created)) %
+                    habitPeriod.periodValue ==
+                0 &&
+            habitPeriod.weekdays.contains(weekdayFromInt(date.weekday));
+
+      case HabitPeriodType.month:
+        return (date.month - created.month) % habitPeriod.periodValue == 0 &&
+            date.day == min(habitPeriod.monthDay, endOfMonth(date));
+
+      default:
+        throw "wtf period.type=${habitPeriod.type}";
+    }
+  }
 }
 
 /// Периодичность
@@ -103,6 +131,7 @@ abstract class HabitPeriod with _$HabitPeriod {
     @Default(1) int monthDay,
 
     /// Если false, то {periodValue} = 1; иначе можно задавать {periodValue} > 1
+    /// Вообще тупа в гуи юзается
     @Default(false) bool isCustom,
   }) = _HabitPeriod;
 

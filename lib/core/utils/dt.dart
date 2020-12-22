@@ -20,18 +20,26 @@ String formatTime(DateTime time) => DateFormat.Hm().format(time);
 final defaultDayEnd = DateTime(2020, 1, 1, 23, 59);
 
 /// Время конца дня по умолчанию
-final defaultDayStart = DateTime(2020, 1, 1);
+final defaultDayStart = DateTime(2020, 1, 1, 0, 0);
 
 /// Собирает дейттайм из даты и времени
-DateTime buildDateTime(DateTime date, DateTime time) {
-  return DateTime(
-    date.year,
-    date.month,
-    date.day,
-    time.hour,
-    time.minute,
-  );
-}
+DateTime buildDateTime(DateTime date, DateTime time) => DateTime(
+      date.year,
+      date.month,
+      date.day,
+      time.hour,
+      time.minute,
+    );
 
 /// Определяет день, когда месяц заканчивается
 int endOfMonth(DateTime date) => DateTime(date.year, date.month + 1, 0).day;
+
+/// Определяет номер дня в рамках года
+int yearDayNum(DateTime date) {
+  var yearStartWeekday = DateTime(date.year, 1, 1)
+      .subtract(Duration(days: DateTime(date.year, 1, 1).day));
+  return date.difference(yearStartWeekday).inDays;
+}
+
+/// Определяет номер недели в рамках года
+int yearWeekNum(DateTime date) => yearDayNum(date) ~/ 7 + 1;

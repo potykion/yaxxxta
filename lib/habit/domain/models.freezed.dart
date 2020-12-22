@@ -19,7 +19,8 @@ class _$HabitTearOff {
 // ignore: unused_element
   _Habit call(
       {int id,
-      String title = "",
+      @required DateTime created,
+      String title = '',
       HabitType type = HabitType.time,
       bool dailyRepeatsEnabled = false,
       double goalValue = 1,
@@ -27,6 +28,7 @@ class _$HabitTearOff {
       @required HabitPeriod habitPeriod}) {
     return _Habit(
       id: id,
+      created: created,
       title: title,
       type: type,
       dailyRepeatsEnabled: dailyRepeatsEnabled,
@@ -50,6 +52,9 @@ const $Habit = _$HabitTearOff();
 mixin _$Habit {
   /// Айдишник
   int get id;
+
+  /// Дата создания
+  DateTime get created;
 
   /// Название
   String get title;
@@ -79,6 +84,7 @@ abstract class $HabitCopyWith<$Res> {
       _$HabitCopyWithImpl<$Res>;
   $Res call(
       {int id,
+      DateTime created,
       String title,
       HabitType type,
       bool dailyRepeatsEnabled,
@@ -100,6 +106,7 @@ class _$HabitCopyWithImpl<$Res> implements $HabitCopyWith<$Res> {
   @override
   $Res call({
     Object id = freezed,
+    Object created = freezed,
     Object title = freezed,
     Object type = freezed,
     Object dailyRepeatsEnabled = freezed,
@@ -109,6 +116,7 @@ class _$HabitCopyWithImpl<$Res> implements $HabitCopyWith<$Res> {
   }) {
     return _then(_value.copyWith(
       id: id == freezed ? _value.id : id as int,
+      created: created == freezed ? _value.created : created as DateTime,
       title: title == freezed ? _value.title : title as String,
       type: type == freezed ? _value.type : type as HabitType,
       dailyRepeatsEnabled: dailyRepeatsEnabled == freezed
@@ -142,6 +150,7 @@ abstract class _$HabitCopyWith<$Res> implements $HabitCopyWith<$Res> {
   @override
   $Res call(
       {int id,
+      DateTime created,
       String title,
       HabitType type,
       bool dailyRepeatsEnabled,
@@ -165,6 +174,7 @@ class __$HabitCopyWithImpl<$Res> extends _$HabitCopyWithImpl<$Res>
   @override
   $Res call({
     Object id = freezed,
+    Object created = freezed,
     Object title = freezed,
     Object type = freezed,
     Object dailyRepeatsEnabled = freezed,
@@ -174,6 +184,7 @@ class __$HabitCopyWithImpl<$Res> extends _$HabitCopyWithImpl<$Res>
   }) {
     return _then(_Habit(
       id: id == freezed ? _value.id : id as int,
+      created: created == freezed ? _value.created : created as DateTime,
       title: title == freezed ? _value.title : title as String,
       type: type == freezed ? _value.type : type as HabitType,
       dailyRepeatsEnabled: dailyRepeatsEnabled == freezed
@@ -196,13 +207,15 @@ class __$HabitCopyWithImpl<$Res> extends _$HabitCopyWithImpl<$Res>
 class _$_Habit extends _Habit {
   const _$_Habit(
       {this.id,
-      this.title = "",
+      @required this.created,
+      this.title = '',
       this.type = HabitType.time,
       this.dailyRepeatsEnabled = false,
       this.goalValue = 1,
       this.dailyRepeats = 1,
       @required this.habitPeriod})
-      : assert(title != null),
+      : assert(created != null),
+        assert(title != null),
         assert(type != null),
         assert(dailyRepeatsEnabled != null),
         assert(goalValue != null),
@@ -217,7 +230,11 @@ class _$_Habit extends _Habit {
 
   /// Айдишник
   final int id;
-  @JsonKey(defaultValue: "")
+  @override
+
+  /// Дата создания
+  final DateTime created;
+  @JsonKey(defaultValue: '')
   @override
 
   /// Название
@@ -249,7 +266,7 @@ class _$_Habit extends _Habit {
 
   @override
   String toString() {
-    return 'Habit(id: $id, title: $title, type: $type, dailyRepeatsEnabled: $dailyRepeatsEnabled, goalValue: $goalValue, dailyRepeats: $dailyRepeats, habitPeriod: $habitPeriod)';
+    return 'Habit(id: $id, created: $created, title: $title, type: $type, dailyRepeatsEnabled: $dailyRepeatsEnabled, goalValue: $goalValue, dailyRepeats: $dailyRepeats, habitPeriod: $habitPeriod)';
   }
 
   @override
@@ -258,6 +275,9 @@ class _$_Habit extends _Habit {
         (other is _Habit &&
             (identical(other.id, id) ||
                 const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.created, created) ||
+                const DeepCollectionEquality()
+                    .equals(other.created, created)) &&
             (identical(other.title, title) ||
                 const DeepCollectionEquality().equals(other.title, title)) &&
             (identical(other.type, type) ||
@@ -280,6 +300,7 @@ class _$_Habit extends _Habit {
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(id) ^
+      const DeepCollectionEquality().hash(created) ^
       const DeepCollectionEquality().hash(title) ^
       const DeepCollectionEquality().hash(type) ^
       const DeepCollectionEquality().hash(dailyRepeatsEnabled) ^
@@ -301,6 +322,7 @@ abstract class _Habit extends Habit {
   const _Habit._() : super._();
   const factory _Habit(
       {int id,
+      @required DateTime created,
       String title,
       HabitType type,
       bool dailyRepeatsEnabled,
@@ -314,6 +336,10 @@ abstract class _Habit extends Habit {
 
   /// Айдишник
   int get id;
+  @override
+
+  /// Дата создания
+  DateTime get created;
   @override
 
   /// Название
