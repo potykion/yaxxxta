@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:yaxxxta/core/utils/dt.dart';
+import 'package:yaxxxta/core/utils/num.dart';
 
 void main() {
   test("Форматирование дюрейшена", () {
@@ -17,5 +18,10 @@ void main() {
     expect(formatDouble(1.01), "1.01");
     expect(formatDouble(2.20), "2.2");
     expect(formatDouble(3.5545), "3.55");
+  });
+
+  test("Конец месяца", () {
+    expect(endOfMonth(DateTime(2020, 11, 1)), 30);
+    expect(endOfMonth(DateTime(2020, 12, 1)), 31);
   });
 }

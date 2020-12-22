@@ -17,12 +17,6 @@ String formatDuration(Duration duration) => [
 /// Форматирует время (20:43)
 String formatTime(DateTime time) => DateFormat.Hm().format(time);
 
-/// Форматирует дабл
-/// 1.023 > 1.02
-/// 1.00 > 1
-String formatDouble(num number) =>
-    rtrim(rtrim(number.toStringAsFixed(2), "0"), ".");
-
 /// Время начала дня по умолчанию
 final defaultDayEnd = DateTime(2020, 1, 1, 23, 59);
 
@@ -38,3 +32,5 @@ DateTime buildDateTime(DateTime date, DateTime time) {
     time.minute,
   );
 }
+
+int endOfMonth(DateTime date) => DateTime(date.year, date.month + 1, 0).day;

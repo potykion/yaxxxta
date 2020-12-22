@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:riverpod/riverpod.dart';
@@ -50,7 +52,8 @@ class HabitListController extends StateNotifier<List<HabitVM>> {
             case HabitPeriodType.week:
               return p.weekdays.contains(weekdayFromInt(date.weekday));
             case HabitPeriodType.month:
-              return p.monthDay == date.day;
+              return date.day ==
+                  min(p.monthDay, endOfMonth(date));
             default:
               return false;
           }
