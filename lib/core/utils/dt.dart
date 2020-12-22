@@ -1,5 +1,4 @@
 import 'package:intl/intl.dart';
-import 'package:validators/sanitizers.dart';
 
 /// Форматирует дюрейшн без нулей впереди и без миллисекунд, типа 1:02:03
 String formatDuration(Duration duration) => [
@@ -23,6 +22,7 @@ final defaultDayEnd = DateTime(2020, 1, 1, 23, 59);
 /// Время конца дня по умолчанию
 final defaultDayStart = DateTime(2020, 1, 1);
 
+/// Собирает дейттайм из даты и времени
 DateTime buildDateTime(DateTime date, DateTime time) {
   return DateTime(
     date.year,
@@ -33,4 +33,5 @@ DateTime buildDateTime(DateTime date, DateTime time) {
   );
 }
 
+/// Определяет день, когда месяц заканчивается
 int endOfMonth(DateTime date) => DateTime(date.year, date.month + 1, 0).day;

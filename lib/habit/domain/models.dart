@@ -160,6 +160,7 @@ extension FormatWeekday on Weekday {
   }
 }
 
+/// Создает день недели из инта
 Weekday weekdayFromInt(int weekdayInt) {
   switch (weekdayInt) {
     case 1:

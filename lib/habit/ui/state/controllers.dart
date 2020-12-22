@@ -1,10 +1,10 @@
 import 'dart:math';
+import 'package:meta/meta.dart';
 
 import 'package:collection/collection.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:riverpod/riverpod.dart';
-import 'package:yaxxxta/core/utils/dt.dart';
-import 'package:yaxxxta/settings/domain/models.dart';
+import '../../../core/utils/dt.dart';
+import '../../../settings/domain/models.dart';
 import '../../domain/db.dart';
 
 import '../../domain/models.dart';
@@ -52,8 +52,7 @@ class HabitListController extends StateNotifier<List<HabitVM>> {
             case HabitPeriodType.week:
               return p.weekdays.contains(weekdayFromInt(date.weekday));
             case HabitPeriodType.month:
-              return date.day ==
-                  min(p.monthDay, endOfMonth(date));
+              return date.day == min(p.monthDay, endOfMonth(date));
             default:
               return false;
           }

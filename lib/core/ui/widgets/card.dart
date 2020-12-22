@@ -6,6 +6,7 @@ class PaddedContainerCard extends StatelessWidget {
   /// Содержимое контейнера
   final List<Widget> children;
 
+  /// Сделать паддинги только по вертикали
   final bool padVerticalOnly;
 
   /// Создает карточку

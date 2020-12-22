@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
+/// Маленький отступ
 class SmallPadding extends StatelessWidget {
+  /// Куда вешать отсут
   final Widget child;
 
+  /// Маленький отступ
   const SmallPadding({Key key, @required this.child}) : super(key: key);
 
   @override

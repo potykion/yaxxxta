@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:infinite_listview/infinite_listview.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../deps.dart';
 import '../../../theme.dart';
 
 /// Выбор даты
 class DatePicker extends HookWidget {
+  /// Событие изменения даты
   final Function(DateTime date) change;
 
+  /// @nodoc
   DatePicker({@required this.change});
 
   @override

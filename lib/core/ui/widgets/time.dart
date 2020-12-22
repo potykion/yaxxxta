@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:yaxxxta/core/utils/dt.dart';
-import 'package:yaxxxta/theme.dart';
 
+import '../../../theme.dart';
+import '../../utils/dt.dart';
+
+/// Выбор времени
 class TimePickerInput extends HookWidget {
+  /// Начальное значение времени
   final DateTime initial;
+
+  /// Событие изменения времени
   final Function(DateTime time) change;
 
+  /// Выбор времени
   TimePickerInput({this.initial, this.change});
 
   @override
