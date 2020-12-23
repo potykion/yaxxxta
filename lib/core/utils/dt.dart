@@ -35,11 +35,13 @@ DateTime buildDateTime(DateTime date, DateTime time) => DateTime(
 int endOfMonth(DateTime date) => DateTime(date.year, date.month + 1, 0).day;
 
 /// Определяет номер дня в рамках года
-int yearDayNum(DateTime date) {
-  var yearStartWeekday = DateTime(date.year, 1, 1)
-      .subtract(Duration(days: DateTime(date.year, 1, 1).day));
-  return date.difference(yearStartWeekday).inDays;
-}
+int yearDayNum(DateTime date) =>
+    date.difference(DateTime(date.year, 1, 1)).inDays + 1;
 
 /// Определяет номер недели в рамках года
-int yearWeekNum(DateTime date) => yearDayNum(date) ~/ 7 + 1;
+int yearWeekNum(DateTime date) {
+  var yearStartWeek = DateTime(date.year, 1, 1)
+      .subtract(Duration(days: DateTime(date.year, 1, 1).day));
+
+  return date.difference(yearStartWeek).inDays ~/ 7 + 1;
+}

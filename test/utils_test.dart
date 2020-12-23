@@ -32,4 +32,9 @@ void main() {
     expect(yearWeekNum(DateTime(2020, 12, 24)), 52);
     expect(yearWeekNum(DateTime(2020, 12, 22)), 52);
   });
+
+  test("Номер дня", () {
+    expect(yearDayNum(DateTime(2020, 1, 1)), 1);
+    expect(yearDayNum(DateTime(2020, 1, 8)), 8);
+  });
 }
