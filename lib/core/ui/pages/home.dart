@@ -3,7 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../deps.dart';
-import '../../../habit/ui/pages/list.dart';
+import '../../../habit/ui/list/pages.dart';
 import '../../../settings/ui/pages/settings.dart';
 
 /// Страничка, которая рендерит другие странички

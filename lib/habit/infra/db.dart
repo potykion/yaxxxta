@@ -48,4 +48,10 @@ class HabitPerformingRepo implements BaseHabitPerformingRepo {
             p.performDateTime.isAfter(from) && p.performDateTime.isBefore(to),
       )
       .toList();
+
+  @override
+  List<HabitPerforming> listByHabit(int habitId) => _habitPerformingBox.values
+      .map((e) => HabitPerforming.fromJson(e))
+      .where((hp) => hp.habitId == habitId)
+      .toList();
 }

@@ -22,4 +22,7 @@ abstract class BaseHabitPerformingRepo {
 
   /// Выводит список выполнений в промежутке
   List<HabitPerforming> list(DateTime from, DateTime to);
+
+  /// Выводит список выполнений для привычки
+  List<HabitPerforming> listByHabit(int habitId);
 }

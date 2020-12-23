@@ -7,7 +7,7 @@ import '../../../core/ui/widgets/bottom_nav.dart';
 import '../../../core/ui/widgets/date.dart';
 import '../../../deps.dart';
 import '../../../routes.dart';
-import '../widgets/list.dart';
+import 'widgets.dart';
 
 /// Страница списка привычек
 class HabitListPage extends HookWidget {

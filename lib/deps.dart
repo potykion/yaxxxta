@@ -3,8 +3,8 @@ import 'package:hive/hive.dart';
 
 import 'habit/domain/db.dart';
 import 'habit/infra/db.dart';
-import 'habit/ui/state/controllers.dart';
-import 'habit/ui/state/view_models.dart';
+import 'habit/ui/list/controllers.dart';
+import 'habit/ui/list/view_models.dart';
 import 'settings/domain/models.dart';
 import 'settings/infra/db.dart';
 
@@ -64,7 +64,7 @@ StateNotifierProvider<HabitListController> habitListControllerProvider =
 );
 
 /// Провайдер привычек, которые отображаются в списке
-Provider<List<HabitVM>> habitsToShowProvider = Provider((ref) {
+Provider<List<HabitListVM>> habitsToShowProvider = Provider((ref) {
   var settings = ref.watch(settingsProvider).state;
 
   return ref

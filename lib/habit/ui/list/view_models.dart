@@ -21,12 +21,12 @@ class DateStatusVM {
 
 /// Вью-моделька привычки
 @freezed
-abstract class HabitVM with _$HabitVM {
-  const HabitVM._();
+abstract class HabitListVM with _$HabitListVM {
+  const HabitListVM._();
 
   /// Создает вм привычки
   @Assert("repeats.length >= 1", "Повторов должно быть >= 1")
-  factory HabitVM({
+  factory HabitListVM({
     int id,
 
     /// Название
@@ -34,10 +34,10 @@ abstract class HabitVM with _$HabitVM {
 
     /// Повторы (15 мин / раз 2 раза в день)
     List<HabitRepeatVM> repeats,
-  }) = _HabitVM;
+  }) = _HabitListVM;
 
   /// Создает вм из привычки
-  factory HabitVM.build(
+  factory HabitListVM.build(
     Habit habit, [
     List<HabitPerforming> habitPerformings = const [],
   ]) {
@@ -46,7 +46,7 @@ abstract class HabitVM with _$HabitVM {
       (p) => p.repeatIndex,
     );
 
-    return HabitVM(
+    return HabitListVM(
       id: habit.id,
       title: habit.title,
       repeats: List.generate(
@@ -117,22 +117,6 @@ abstract class HabitRepeatVM implements _$HabitRepeatVM {
   /// Перевыполнена ли привычка
   /// Напр. вместо 1 минуты, привычка выполнялась 2 минуты
   bool get isExceeded => currentValue > goalValue;
-}
-
-/// Запись о выполнении привычки в прошлом
-class HabitHistoryEntry {
-  /// Дата
-  final DateTime datetime;
-
-  /// Изменеие значения привычки
-  final double value;
-
-  /// Создает запись
-  HabitHistoryEntry({this.datetime, this.value});
-
-  /// Форматирует значение записи
-  String format(HabitType type) =>
-      HabitPerformValue(currentValue: value).format(type);
 }
 
 /// Прогресс привычки

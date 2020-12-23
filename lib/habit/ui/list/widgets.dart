@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:yaxxxta/habit/ui/list/view_models.dart';
 
 import '../../../core/ui/widgets/card.dart';
 import '../../../core/ui/widgets/text.dart';
@@ -10,11 +11,10 @@ import '../../../deps.dart';
 import '../../../routes.dart';
 import '../../../theme.dart';
 import '../../domain/models.dart';
-import '../state/controllers.dart';
-import '../state/view_models.dart';
+import 'controllers.dart';
 
 /// Вью-моделька привычки
-ScopedProvider<HabitVM> habitVMProvider = ScopedProvider<HabitVM>(null);
+ScopedProvider<HabitListVM> habitVMProvider = ScopedProvider<HabitListVM>(null);
 
 /// Индекс повтора привычки в течение дня
 ScopedProvider<int> repeatIndexProvider = ScopedProvider<int>(null);
@@ -32,7 +32,7 @@ class HabitCard extends HookWidget {
 
     return GestureDetector(
       onTap: () =>
-          Navigator.of(context).pushNamed(Routes.form, arguments: vm.id),
+          Navigator.of(context).pushNamed(Routes.details, arguments: vm.id),
       child: PaddedContainerCard(children: [
         Row(
           crossAxisAlignment: CrossAxisAlignment.baseline,
@@ -129,7 +129,7 @@ class HabitProgressControl extends HookWidget {
   /// Останавливает таймер, создавая выполнение привычки со временем,
   /// которое натикало на таймере
   void _cancelTimer(ValueNotifier<Timer> timerState,
-      HabitListController controller, HabitVM vm, int repeatIndex) {
+      HabitListController controller, HabitListVM vm, int repeatIndex) {
     timerState.value.cancel();
 
     controller.createPerforming(

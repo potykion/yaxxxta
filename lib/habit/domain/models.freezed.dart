@@ -20,7 +20,7 @@ class _$HabitTearOff {
   _Habit call(
       {int id,
       @required DateTime created,
-      String title = '',
+      String title = "",
       HabitType type = HabitType.time,
       bool dailyRepeatsEnabled = false,
       double goalValue = 1,
@@ -208,7 +208,7 @@ class _$_Habit extends _Habit {
   const _$_Habit(
       {this.id,
       @required this.created,
-      this.title = '',
+      this.title = "",
       this.type = HabitType.time,
       this.dailyRepeatsEnabled = false,
       this.goalValue = 1,
@@ -234,7 +234,7 @@ class _$_Habit extends _Habit {
 
   /// Дата создания
   final DateTime created;
-  @JsonKey(defaultValue: '')
+  @JsonKey(defaultValue: "")
   @override
 
   /// Название
@@ -418,6 +418,7 @@ mixin _$HabitPeriod {
   int get monthDay;
 
   /// Если false, то {periodValue} = 1; иначе можно задавать {periodValue} > 1
+  /// Вообще тупа в гуи юзается
   bool get isCustom;
 
   Map<String, dynamic> toJson();
@@ -554,6 +555,7 @@ class _$_HabitPeriod implements _HabitPeriod {
   @override
 
   /// Если false, то {periodValue} = 1; иначе можно задавать {periodValue} > 1
+  /// Вообще тупа в гуи юзается
   final bool isCustom;
 
   @override
@@ -631,6 +633,7 @@ abstract class _HabitPeriod implements HabitPeriod {
   @override
 
   /// Если false, то {periodValue} = 1; иначе можно задавать {periodValue} > 1
+  /// Вообще тупа в гуи юзается
   bool get isCustom;
   @override
   _$HabitPeriodCopyWith<_HabitPeriod> get copyWith;
