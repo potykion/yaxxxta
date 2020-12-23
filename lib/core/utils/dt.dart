@@ -45,3 +45,16 @@ int yearWeekNum(DateTime date) {
 
   return date.difference(yearStartWeek).inDays ~/ 7 + 1;
 }
+
+extension DateTimeUtils on DateTime {
+  DateTime date() => DateTime(this.year, this.month, this.day);
+
+  DateTime time({bool withSeconds = false}) => DateTime(
+        2020,
+        1,
+        1,
+        this.hour,
+        this.minute,
+        withSeconds ? this.second : 0,
+      );
+}

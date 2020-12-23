@@ -72,11 +72,11 @@ class HabitDetailsPage extends HookWidget {
               DatePicker(),
               for (var e in [
                 HabitHistoryEntry(
-                  datetime: DateTime(2020, 17, 11, 11),
+                  time: DateTime(2020, 17, 11, 11),
                   value: 60,
                 ),
                 HabitHistoryEntry(
-                  datetime: DateTime(2020, 17, 11, 12),
+                  time: DateTime(2020, 17, 11, 12),
                   value: 60,
                 ),
               ])
@@ -84,7 +84,7 @@ class HabitDetailsPage extends HookWidget {
                   padding: const EdgeInsets.all(5),
                   child: Row(children: [
                     SmallerText(
-                      text: formatTime(e.datetime),
+                      text: formatTime(e.time),
                       dark: true,
                     ),
                     Spacer(),

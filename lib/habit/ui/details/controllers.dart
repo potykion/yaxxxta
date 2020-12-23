@@ -11,11 +11,12 @@ class HabitDetailsController extends StateNotifier<HabitDetailsVM> {
   HabitDetailsController({
     @required this.habitRepo,
     @required this.habitPerformingRepo,
-  }) : super(HabitDetailsVM(null, []));
+  }) : super(HabitDetailsVM(habit: null, habitPerformings: []));
 
   void load(int habitId) {
-    var habit = habitRepo.get(habitId);
-    var habitPerformings = habitPerformingRepo.listByHabit(habitId);
-    state = HabitDetailsVM(habit, habitPerformings);
+    state = HabitDetailsVM(
+      habit: habitRepo.get(habitId),
+      habitPerformings: habitPerformingRepo.listByHabit(habitId),
+    );
   }
 }
