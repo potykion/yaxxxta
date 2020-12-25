@@ -28,6 +28,7 @@ class HabitDetailsPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var controller = useProvider(_controller.state);
+    var selectedDateState = useState(DateTime.now().date());
 
     return Scaffold(
       body: ListView(
@@ -69,31 +70,26 @@ class HabitDetailsPage extends HookWidget {
             children: [
               BiggerText(text: "История"),
               SizedBox(height: 5),
-              DatePicker(),
-              for (var e in [
-                HabitHistoryEntry(
-                  time: DateTime(2020, 17, 11, 11),
-                  value: 60,
-                ),
-                HabitHistoryEntry(
-                  time: DateTime(2020, 17, 11, 12),
-                  value: 60,
-                ),
-              ])
-                Padding(
-                  padding: const EdgeInsets.all(5),
-                  child: Row(children: [
-                    SmallerText(
-                      text: formatTime(e.time),
-                      dark: true,
-                    ),
-                    Spacer(),
-                    SmallerText(
-                      text: "+ ${e.format(HabitType.time)}",
-                      dark: true,
-                    )
-                  ]),
-                )
+              DatePicker(
+                change: (d) => selectedDateState.value = d,
+                highlights: controller.historyHighlights,
+              ),
+              if (controller.history.containsKey(selectedDateState.value))
+                for (var e in controller.history[selectedDateState.value])
+                  Padding(
+                    padding: const EdgeInsets.all(5),
+                    child: Row(children: [
+                      SmallerText(
+                        text: formatTime(e.time),
+                        dark: true,
+                      ),
+                      Spacer(),
+                      SmallerText(
+                        text: "+ ${e.format(HabitType.time)}",
+                        dark: true,
+                      )
+                    ]),
+                  )
             ],
           ),
         ],

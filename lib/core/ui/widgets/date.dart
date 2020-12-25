@@ -3,14 +3,27 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:infinite_listview/infinite_listview.dart';
 
 import '../../../theme.dart';
+import '../../utils/dt.dart';
 
 /// Выбор даты
 class DatePicker extends HookWidget {
+  /// Начальная дата
+  final DateTime initial;
+
   /// Событие изменения даты
   final Function(DateTime date) change;
 
+  /// Подсветска выбора даты - мапа, где ключ - дата, значение - интенсивность
+  /// (напр. ячейка даты зеленая - в этот день привычка была выполнена)
+  final Map<DateTime, double> highlights;
+
   /// @nodoc
-  DatePicker({@required this.change});
+  DatePicker({
+    Map<DateTime, double> highlights,
+    DateTime initial,
+    @required this.change,
+  })  : initial = initial ?? DateTime.now().date(),
+        highlights = highlights ?? {};
 
   @override
   Widget build(BuildContext context) {
@@ -25,18 +38,26 @@ class DatePicker extends HookWidget {
           initialScrollOffset: -MediaQuery.of(context).size.width / 2 + 3 * 10,
         ),
         scrollDirection: Axis.horizontal,
-        itemBuilder: (_, index) => GestureDetector(
-          onTap: () {
-            selectedIndexState.value = index;
-            change(DateTime.now().add(Duration(days: index)));
-          },
-          child: DatePickerItem(
-            date: DateTime.now().add(Duration(days: index)),
-            color: selectedIndexState.value == index
-                ? CustomColors.yellow
-                : Colors.transparent,
-          ),
-        ),
+        itemBuilder: (_, index) {
+          var shiftDate = initial.add(Duration(days: index));
+
+          return GestureDetector(
+            onTap: () {
+              selectedIndexState.value = index;
+              change(shiftDate);
+            },
+            child: DatePickerItem(
+              date: shiftDate,
+              color: selectedIndexState.value == index
+                  ? CustomColors.yellow
+                  : CustomColors.green.withAlpha(
+                      highlights.containsKey(shiftDate)
+                          ? (255 * highlights[shiftDate]).toInt()
+                          : 0,
+                    ),
+            ),
+          );
+        },
       ),
     );
   }

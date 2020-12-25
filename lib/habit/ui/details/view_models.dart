@@ -34,6 +34,9 @@ abstract class HabitDetailsVM with _$HabitDetailsVM {
               .toList(),
         ),
       );
+
+  Map<DateTime, double> get historyHighlights =>
+      history.map((key, value) => MapEntry(key, value.isNotEmpty ? 1 : 0));
 }
 
 /// Запись о выполнении привычки в прошлом
@@ -44,6 +47,7 @@ abstract class HabitHistoryEntry with _$HabitHistoryEntry {
   factory HabitHistoryEntry({
     /// Время
     DateTime time,
+
     /// Изменеие значения привычки
     double value,
   }) = _HabitHistoryEntry;
