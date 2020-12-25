@@ -66,14 +66,18 @@ abstract class HabitListVM with _$HabitListVM {
   bool get isComplete => repeats.every((r) => r.isComplete);
 
   /// Первый индекс невыполненного повтора привычки
-  int get firstIncompleteRepeatIndex => isComplete
-      ? repeats.length - 1
-      : repeats
-          .asMap()
-          .entries
-          .where((e) => !e.value.isComplete && !e.value.isExceeded)
-          .first
-          .key;
+  int get firstIncompleteRepeatIndex {
+    if (repeats.every((r) => r.isComplete || r.isExceeded)) {
+      return repeats.length - 1;
+    }
+
+    return repeats
+        .asMap()
+        .entries
+        .where((e) => !e.value.isComplete && !e.value.isExceeded)
+        .first
+        .key;
+  }
 }
 
 /// Очередное выполнение привычки
@@ -102,8 +106,7 @@ abstract class HabitRepeatVM implements _$HabitRepeatVM {
           .format(type);
 
   /// Процент прогресса: 0.5
-  double get progressPercentage =>
-      goalValue == 0 ? 0 : (min(currentValue, goalValue) / goalValue);
+  double get progressPercentage => min(currentValue / goalValue, 1);
 
   /// Время выпалнения привычки в виде строки
   String get performTimeStr => formatTime(performTime);

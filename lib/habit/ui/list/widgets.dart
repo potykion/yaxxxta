@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:yaxxxta/core/ui/widgets/progress.dart';
 import 'package:yaxxxta/habit/ui/list/view_models.dart';
 
 import '../../../core/ui/widgets/card.dart';
@@ -56,88 +57,35 @@ class HabitCard extends HookWidget {
 class HabitProgressControl extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    var vm = useProvider(habitVMProvider);
+    HabitListVM vm = useProvider(habitVMProvider);
     var repeatIndex = useProvider(repeatIndexProvider);
 
     var repeat = vm.repeats[repeatIndex];
 
-    var timerState = useState<Timer>(null);
-
-    return Stack(
-      alignment: AlignmentDirectional.centerStart,
-      children: [
-        Container(
-          height: 40,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(15),
-            child: LinearProgressIndicator(
-              value: repeat.progressPercentage,
-              backgroundColor: Color(0xffFAFAFA),
-              valueColor: AlwaysStoppedAnimation<Color>(CustomColors.green
-                  .withAlpha((repeat.progressPercentage * 255).toInt())),
-            ),
-          ),
-        ),
-        Positioned(
-          child: Material(
-            color: Colors.transparent,
-            child: IconButton(
-              splashRadius: 20,
-              icon: repeat.type == HabitType.time
-                  ? (timerState.value?.isActive ?? false)
-                      ? Icon(Icons.pause)
-                      : Icon(Icons.play_arrow)
-                  : Icon(Icons.done),
-              onPressed: () {
-                var controller = context.read(habitListControllerProvider);
-
-                if (repeat.type == HabitType.repeats) {
-                  controller.incrementHabitProgress(vm.id, repeatIndex);
-                  controller.createPerforming(
+    return repeat.type == HabitType.time
+        ? TimeProgressControl(
+            progressStr: repeat.progressStr,
+            progressPercentage: repeat.progressPercentage,
+            onTimerIncrement: () => context
+                .read(habitListControllerProvider)
+                .incrementHabitProgress(vm.id, repeatIndex),
+            onTimerStop: (ticks) {
+              context.read(habitListControllerProvider).createPerforming(
                     habitId: vm.id,
                     repeatIndex: repeatIndex,
+                    performValue: ticks.toDouble(),
                   );
-                } else if (repeat.type == HabitType.time) {
-                  if (timerState.value?.isActive ?? false) {
-                    _cancelTimer(timerState, controller, vm, repeatIndex);
-                  } else {
-                    timerState.value =
-                        Timer.periodic(Duration(seconds: 1), (timer) {
-                      var repeatComplete = context
-                          .read(habitListControllerProvider)
-                          .incrementHabitProgress(vm.id, repeatIndex);
-
-                      if (repeatComplete) {
-                        _cancelTimer(timerState, controller, vm, repeatIndex);
-                      }
-                    });
-                  }
-                }
-              },
-            ),
-          ),
-        ),
-        if (!repeat.isSingle)
-          Positioned(
-            child: SmallerText(text: repeat.progressStr, dark: true),
-            right: 20,
+            },
           )
-      ],
-    );
-  }
-
-  /// Останавливает таймер, создавая выполнение привычки со временем,
-  /// которое натикало на таймере
-  void _cancelTimer(ValueNotifier<Timer> timerState,
-      HabitListController controller, HabitListVM vm, int repeatIndex) {
-    timerState.value.cancel();
-
-    controller.createPerforming(
-      habitId: vm.id,
-      repeatIndex: repeatIndex,
-      performValue: timerState.value.tick.toDouble(),
-    );
-
-    timerState.value = null;
+        : RepeatProgressControl(
+            onRepeatIncrement: () {
+              context.read(habitListControllerProvider)
+                ..incrementHabitProgress(vm.id, repeatIndex)
+                ..createPerforming(habitId: vm.id, repeatIndex: repeatIndex);
+            },
+            showProgressStr: !repeat.isSingle,
+            progressPercentage: repeat.progressPercentage,
+            progressStr: repeat.progressStr,
+          );
   }
 }
