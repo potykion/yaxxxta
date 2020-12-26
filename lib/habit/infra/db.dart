@@ -26,6 +26,9 @@ class HabitRepo implements BaseHabitRepo {
 
   @override
   Future<void> update(Habit habit) => _habitBox.putAt(habit.id, habit.toJson());
+
+  @override
+  Future<void> delete(int id) => _habitBox.delete(id);
 }
 
 /// Репо выполнений привычек

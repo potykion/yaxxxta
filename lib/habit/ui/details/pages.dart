@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:yaxxxta/deps.dart';
 
 import '../../../core/ui/widgets/card.dart';
 import '../../../core/ui/widgets/date.dart';
 import '../../../core/ui/widgets/text.dart';
 import '../../../core/utils/dt.dart';
+import '../../../routes.dart';
 import '../../../theme.dart';
 import '../../domain/models.dart';
 import 'deps.dart';
 import 'widgets.dart';
+
+enum HabitActionType { edit, delete }
 
 /// Страничка с инфой о привычке
 class HabitDetailsPage extends HookWidget {
@@ -30,7 +34,69 @@ class HabitDetailsPage extends HookWidget {
                     onPressed: () => Navigator.of(context).pop()),
                 BiggestText(text: vm.habit.title),
                 Spacer(),
-                IconButton(icon: Icon(Icons.more_vert), onPressed: () {})
+                IconButton(
+                    icon: Icon(Icons.more_vert),
+                    onPressed: () async {
+                      var actionType =
+                          await showModalBottomSheet<HabitActionType>(
+                        context: context,
+                        builder: (context) => Container(
+                          height: 170,
+                          child: ListView(
+                            children: [
+                              ListTile(
+                                title:
+                                    BiggerText(text: "Что делаем с привычкой?"),
+                              ),
+                              ListTile(
+                                title: Text("Редактируем"),
+                                onTap: () => Navigator.of(context)
+                                    .pop(HabitActionType.edit),
+                              ),
+                              ListTile(
+                                title: Text("Удаляем"),
+                                onTap: () => Navigator.of(context)
+                                    .pop(HabitActionType.delete),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+
+                      if (actionType == HabitActionType.edit) {
+                        Navigator.of(context)
+                            .pushNamed(Routes.form, arguments: vm.habit.id);
+                      } else if (actionType == HabitActionType.delete) {
+                        var isDelete = await showModalBottomSheet<bool>(
+                          context: context,
+                          builder: (context) => Container(
+                            height: 170,
+                            child: ListView(
+                              children: [
+                                ListTile(
+                                  title: BiggerText(text: "Точно удаляем?"),
+                                ),
+                                ListTile(
+                                  title: Text("Да"),
+                                  onTap: () => Navigator.of(context).pop(true),
+                                ),
+                                ListTile(
+                                  title: Text("Не"),
+                                  onTap: () => Navigator.of(context).pop(false),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                        if (isDelete != null && isDelete) {
+                          context.read(habitRepoProvider).delete(vm.habit.id);
+                          //  todo бля тут тож надо стейт в списке изменить
+                          Navigator.of(context).pop();
+                        }
+                      } else {
+                        //  ничо не делаем
+                      }
+                    })
               ],
             ),
           ),
