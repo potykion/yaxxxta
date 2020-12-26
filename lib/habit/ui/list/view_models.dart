@@ -7,18 +7,6 @@ import '../../domain/models.dart';
 
 part 'view_models.freezed.dart';
 
-/// Ячейка в списке дат, показываюшая прогресс за дату
-class DateStatusVM {
-  /// Дата
-  final DateTime date;
-
-  /// 0, 1 для простоты
-  final double donePercentage;
-
-  /// Создает ячейку
-  DateStatusVM(this.date, this.donePercentage);
-}
-
 /// Вью-моделька привычки
 @freezed
 abstract class HabitListVM with _$HabitListVM {
@@ -100,14 +88,6 @@ abstract class HabitRepeatVM implements _$HabitRepeatVM {
     HabitType type,
   }) = _HabitRepeatVM;
 
-  /// Строка прогресса: 4 / 10, 1:00 / 2:00
-  String get progressStr =>
-      HabitPerformValue(currentValue: currentValue, goalValue: goalValue)
-          .format(type);
-
-  /// Процент прогресса: 0.5
-  double get progressPercentage => min(currentValue / goalValue, 1);
-
   /// Время выпалнения привычки в виде строки
   String get performTimeStr => formatTime(performTime);
 
@@ -120,38 +100,4 @@ abstract class HabitRepeatVM implements _$HabitRepeatVM {
   /// Перевыполнена ли привычка
   /// Напр. вместо 1 минуты, привычка выполнялась 2 минуты
   bool get isExceeded => currentValue > goalValue;
-}
-
-/// Прогресс привычки
-class HabitPerformValue {
-  /// Текущее значение
-  final double currentValue;
-
-  /// Желаемое значение
-  final double goalValue;
-
-  /// Создает прогресс
-  HabitPerformValue({this.currentValue, this.goalValue});
-
-  /// Форматирует прогресс
-  String format(HabitType type) {
-    if (type == HabitType.time) {
-      if (goalValue != null) {
-        var currentValueDur = Duration(seconds: currentValue.toInt());
-        var goalValueDue = Duration(seconds: goalValue.toInt());
-        return "${formatDuration(currentValueDur)} / ${formatDuration(goalValueDue)}";
-      } else {
-        var currentValueDur = Duration(seconds: currentValue.toInt());
-        return formatDuration(currentValueDur);
-      }
-    }
-    if (type == HabitType.repeats) {
-      if (goalValue != null) {
-        return "${currentValue.toInt()} / ${goalValue.toInt()}";
-      } else {
-        return currentValue.toInt().toString();
-      }
-    }
-    throw "Хз как быть с type=$type";
-  }
 }

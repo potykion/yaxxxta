@@ -62,8 +62,8 @@ class HabitDetailsPage extends HookWidget {
             children: [
               BiggerText(text: "Сегодня"),
               SizedBox(height: 5),
-              // HabitProgressControl(
-              // ),
+
+
             ],
           ),
           PaddedContainerCard(
@@ -97,3 +97,5 @@ class HabitDetailsPage extends HookWidget {
     );
   }
 }
+
+

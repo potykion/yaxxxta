@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:yaxxxta/core/ui/widgets/text.dart';
+import 'package:yaxxxta/core/utils/dt.dart';
 
 import '../../../theme.dart';
 
@@ -52,15 +54,13 @@ class _BaseProgressControl extends StatelessWidget {
 
 class RepeatProgressControl extends StatelessWidget {
   final void Function() onRepeatIncrement;
-  final double progressPercentage;
-  final String progressStr;
-  final bool showProgressStr;
+  final double currentValue;
+  final double goalValue;
 
   RepeatProgressControl({
     @required this.onRepeatIncrement,
-    @required this.progressPercentage,
-    @required this.progressStr,
-    @required this.showProgressStr,
+    @required this.currentValue,
+    @required this.goalValue,
   });
 
   @override
@@ -70,24 +70,30 @@ class RepeatProgressControl extends StatelessWidget {
           icon: Icon(Icons.done),
           onPressed: onRepeatIncrement,
         ),
-        progressPercentage: progressPercentage,
-        progressStr: progressStr,
-        showProgressStr: showProgressStr,
+        progressPercentage: min(currentValue / goalValue, 1),
+        progressStr: "${currentValue.toInt()} / ${goalValue.toInt()}",
+        showProgressStr: goalValue.toInt() != 1,
       );
 }
 
 class TimeProgressControl extends HookWidget {
   final bool Function() onTimerIncrement;
   final void Function(int ticks) onTimerStop;
-  final double progressPercentage;
-  final String progressStr;
+  final double currentValue;
+  final double goalValue;
 
   TimeProgressControl({
     @required this.onTimerIncrement,
     @required this.onTimerStop,
-    @required this.progressPercentage,
-    @required this.progressStr,
+    @required this.currentValue,
+    @required this.goalValue,
   });
+
+  String get progressStr {
+    var currentValueDuration = Duration(seconds: currentValue.toInt()).format();
+    var goalValueDuration = Duration(seconds: goalValue.toInt()).format();
+    return "$currentValueDuration / $goalValueDuration";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +107,7 @@ class TimeProgressControl extends HookWidget {
 
     return _BaseProgressControl(
       progressStr: progressStr,
-      progressPercentage: progressPercentage,
+      progressPercentage: min(currentValue / goalValue, 1),
       incrementButton: IconButton(
         splashRadius: 20,
         icon: (timerState.value?.isActive ?? false)

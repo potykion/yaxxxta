@@ -64,8 +64,8 @@ class HabitProgressControl extends HookWidget {
 
     return repeat.type == HabitType.time
         ? TimeProgressControl(
-            progressStr: repeat.progressStr,
-            progressPercentage: repeat.progressPercentage,
+            currentValue: repeat.currentValue,
+            goalValue: repeat.goalValue,
             onTimerIncrement: () => context
                 .read(habitListControllerProvider)
                 .incrementHabitProgress(vm.id, repeatIndex),
@@ -83,9 +83,8 @@ class HabitProgressControl extends HookWidget {
                 ..incrementHabitProgress(vm.id, repeatIndex)
                 ..createPerforming(habitId: vm.id, repeatIndex: repeatIndex);
             },
-            showProgressStr: !repeat.isSingle,
-            progressPercentage: repeat.progressPercentage,
-            progressStr: repeat.progressStr,
+            currentValue: repeat.currentValue,
+            goalValue: repeat.goalValue,
           );
   }
 }

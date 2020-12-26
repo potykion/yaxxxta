@@ -53,6 +53,7 @@ abstract class HabitHistoryEntry with _$HabitHistoryEntry {
   }) = _HabitHistoryEntry;
 
   /// Форматирует значение записи
-  String format(HabitType type) =>
-      HabitPerformValue(currentValue: value).format(type);
+  String format(HabitType type) => type == HabitType.time
+      ? Duration(seconds: value.toInt()).format()
+      : value.toInt().toString();
 }
