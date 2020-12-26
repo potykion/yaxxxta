@@ -1,29 +1,35 @@
-import 'dart:math';
 import 'package:meta/meta.dart';
 
 import 'package:collection/collection.dart';
 import 'package:riverpod/riverpod.dart';
+import 'package:yaxxxta/habit/domain/use_cases.dart';
+import 'package:yaxxxta/habit/ui/core/view_models.dart';
 import '../../../core/utils/dt.dart';
 import '../../../settings/domain/models.dart';
 import '../../domain/db.dart';
 
 import '../../domain/models.dart';
-import 'view_models.dart';
 
 /// Контроллер списка привычек
-class HabitListController extends StateNotifier<List<HabitListVM>> {
+class HabitListController extends StateNotifier<List<HabitProgressVM>> {
   /// Репо привычек
   final BaseHabitRepo habitRepo;
 
   /// Репо выполнений привычек
   final BaseHabitPerformingRepo habitPerformingRepo;
 
+  final CreatePerforming createPerforming;
+
   /// Настроечки
   final Settings settings;
 
   /// @nodoc
-  HabitListController({this.habitRepo, this.habitPerformingRepo, this.settings})
-      : super([]);
+  HabitListController({
+    this.habitRepo,
+    this.habitPerformingRepo,
+    this.settings,
+    this.createPerforming,
+  }) : super([]);
 
   /// Грузит привычки из бд
   void loadHabits({DateTime date}) {
@@ -40,7 +46,7 @@ class HabitListController extends StateNotifier<List<HabitListVM>> {
     state = habitRepo
         .list()
         .where((h) => h.matchDate(date))
-        .map((h) => HabitListVM.build(h, habitPerformings[h.id] ?? []))
+        .map((h) => HabitProgressVM.build(h, habitPerformings[h.id] ?? []))
         .toList();
   }
 
@@ -67,32 +73,17 @@ class HabitListController extends StateNotifier<List<HabitListVM>> {
     return repeatComplete;
   }
 
-  /// Создает выполнение привычки
-  Future<void> createPerforming({
-    @required int habitId,
-    @required int repeatIndex,
-    double performValue,
-    DateTime performDateTime,
-  }) async {
-    var performing = HabitPerforming(
-        habitId: habitId,
-        repeatIndex: repeatIndex,
-        performValue: performValue ?? 1,
-        performDateTime: performDateTime ?? DateTime.now());
-    await habitPerformingRepo.insert(performing);
-  }
-
   /// Создает или обновляет привычку
   Future<void> createOrUpdateHabit(Habit habit) async {
     if (habit.isUpdate) {
       await habitRepo.update(habit);
       state = [
         for (var vm in state)
-          if (vm.id == habit.id) HabitListVM.build(habit) else vm
+          if (vm.id == habit.id) HabitProgressVM.build(habit) else vm
       ];
     } else {
       habit = habit.copyWith(id: await habitRepo.insert(habit));
-      state = [...state, HabitListVM.build(habit)];
+      state = [...state, HabitProgressVM.build(habit)];
     }
   }
 }

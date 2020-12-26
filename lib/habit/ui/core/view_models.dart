@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../core/utils/dt.dart';
@@ -7,14 +5,14 @@ import '../../domain/models.dart';
 
 part 'view_models.freezed.dart';
 
-/// Вью-моделька привычки
+/// Вью-моделька прогресса привычки
 @freezed
-abstract class HabitListVM with _$HabitListVM {
-  const HabitListVM._();
+abstract class HabitProgressVM with _$HabitProgressVM {
+  const HabitProgressVM._();
 
-  /// Создает вм привычки
+  /// Вью-моделька прогресса привычки
   @Assert("repeats.length >= 1", "Повторов должно быть >= 1")
-  factory HabitListVM({
+  factory HabitProgressVM({
     int id,
 
     /// Название
@@ -22,30 +20,30 @@ abstract class HabitListVM with _$HabitListVM {
 
     /// Повторы (15 мин / раз 2 раза в день)
     List<HabitRepeatVM> repeats,
-  }) = _HabitListVM;
+  }) = _HabitProgressVM;
 
   /// Создает вм из привычки
-  factory HabitListVM.build(
-    Habit habit, [
+  factory HabitProgressVM.build(Habit habit, [
     List<HabitPerforming> habitPerformings = const [],
   ]) {
     var repeatHabitPerformings = groupBy<HabitPerforming, int>(
       habitPerformings,
-      (p) => p.repeatIndex,
+          (p) => p.repeatIndex,
     );
 
-    return HabitListVM(
+    return HabitProgressVM(
       id: habit.id,
       title: habit.title,
       repeats: List.generate(
         habit.dailyRepeats.ceil(),
-        (index) => HabitRepeatVM(
-          type: habit.type,
-          goalValue: habit.goalValue,
-          currentValue: (repeatHabitPerformings[index] ?? [])
-              .map((p) => p.performValue)
-              .fold(0, (v1, v2) => v1 + v2),
-        ),
+            (index) =>
+            HabitRepeatVM(
+              type: habit.type,
+              goalValue: habit.goalValue,
+              currentValue: (repeatHabitPerformings[index] ?? [])
+                  .map((p) => p.performValue)
+                  .fold(0, (v1, v2) => v1 + v2),
+            ),
       ),
     );
   }

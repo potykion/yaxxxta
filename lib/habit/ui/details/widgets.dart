@@ -3,28 +3,45 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:yaxxxta/core/ui/widgets/progress.dart';
 import 'package:yaxxxta/habit/domain/models.dart';
-import 'package:yaxxxta/habit/ui/list/view_models.dart';
-import 'package:yaxxxta/habit/ui/list/widgets.dart';
+import 'package:yaxxxta/habit/ui/core/view_models.dart';
+import 'package:yaxxxta/habit/ui/details/deps.dart';
 
-import '../../../deps.dart';
+var _vm = StateProvider((ref) => HabitProgressVM.build(
+      ref.watch(habitDetailsController.state).habit,
+      ref.watch(habitDetailsController.state).habitPerformings,
+    ));
 
-class HabitProgressControl extends HookWidget {
+var _repeat = Provider(
+    (ref) => ref.watch(_vm).state.repeats[0]);
+
+class HabitDetailsProgressControl extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    HabitListVM vm = useProvider(habitVMProvider);
-    var repeatIndex = useProvider(repeatIndexProvider);
+    var vmState = useProvider(_vm);
+    var vm = vmState.state;
+    var repeat = useProvider(_repeat);
+    var repeatIndex = 0;
 
-    var repeat = vm.repeats[repeatIndex];
+    incrementHabitProgress() {
+      vmState.state = vmState.state.copyWith(repeats: [
+        for (var repeatWithIndex in vmState.state.repeats.asMap().entries)
+          if (repeatWithIndex.key == 0)
+            repeatWithIndex.value.copyWith(
+              currentValue: repeatWithIndex.value.currentValue + 1,
+            )
+          else
+            repeatWithIndex.value,
+      ]);
+      return vmState.state.repeats[0].isComplete;
+    }
 
     return repeat.type == HabitType.time
         ? TimeProgressControl(
             currentValue: repeat.currentValue,
             goalValue: repeat.goalValue,
-            onTimerIncrement: () => context
-                .read(habitListControllerProvider)
-                .incrementHabitProgress(vm.id, repeatIndex),
+            onTimerIncrement: incrementHabitProgress,
             onTimerStop: (ticks) {
-              context.read(habitListControllerProvider).createPerforming(
+              context.read(habitDetailsController).createPerforming(
                     habitId: vm.id,
                     repeatIndex: repeatIndex,
                     performValue: ticks.toDouble(),
@@ -33,9 +50,10 @@ class HabitProgressControl extends HookWidget {
           )
         : RepeatProgressControl(
             onRepeatIncrement: () {
-              context.read(habitListControllerProvider)
-                ..incrementHabitProgress(vm.id, repeatIndex)
-                ..createPerforming(habitId: vm.id, repeatIndex: repeatIndex);
+              incrementHabitProgress();
+              context
+                  .read(habitDetailsController)
+                  .createPerforming(habitId: vm.id, repeatIndex: repeatIndex);
             },
             currentValue: repeat.currentValue,
             goalValue: repeat.goalValue,

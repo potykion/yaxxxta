@@ -1,33 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:get/get.dart';
 import 'package:hooks_riverpod/all.dart';
 
 import '../../../core/ui/widgets/card.dart';
 import '../../../core/ui/widgets/date.dart';
 import '../../../core/ui/widgets/text.dart';
 import '../../../core/utils/dt.dart';
-import '../../../deps.dart';
 import '../../../theme.dart';
 import '../../domain/models.dart';
-import 'controllers.dart';
-import 'view_models.dart';
-
-StateNotifierProvider<HabitDetailsController> _controller =
-    StateNotifierProvider((ref) {
-  var controller = HabitDetailsController(
-    habitRepo: ref.watch(habitRepoProvider),
-    habitPerformingRepo: ref.watch(habitPerformingRepoProvider),
-  );
-  controller.load(Get.arguments as int);
-  return controller;
-});
+import 'deps.dart';
+import 'widgets.dart';
 
 /// Страничка с инфой о привычке
 class HabitDetailsPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    var controller = useProvider(_controller.state);
+    var vm = useProvider(habitDetailsController.state);
     var selectedDateState = useState(DateTime.now().date());
 
     return Scaffold(
@@ -37,7 +25,10 @@ class HabitDetailsPage extends HookWidget {
             padding: const EdgeInsets.only(left: 10),
             child: Row(
               children: [
-                BiggestText(text: controller.habit.title),
+                IconButton(
+                    icon: Icon(Icons.arrow_back),
+                    onPressed: () => Navigator.of(context).pop()),
+                BiggestText(text: vm.habit.title),
                 Spacer(),
                 IconButton(icon: Icon(Icons.more_vert), onPressed: () {})
               ],
@@ -58,13 +49,25 @@ class HabitDetailsPage extends HookWidget {
               ],
             ),
           ),
-          PaddedContainerCard(
-            children: [
-              BiggerText(text: "Сегодня"),
-              SizedBox(height: 5),
-
-
-            ],
+          SizedBox(
+            height: 130,
+            child: PageView.builder(
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) => ProviderScope(
+                overrides: [repeatIndexProvider.overrideWithValue(index)],
+                child: PaddedContainerCard(
+                  children: [
+                    BiggerText(text: "Сегодня"),
+                    SizedBox(height: 5),
+                    HabitDetailsProgressControl(),
+                  ],
+                ),
+              ),
+              itemCount: vm.habit.dailyRepeats.toInt(),
+              // controller: PageController(
+              //   initialPage: vm.firstIncompleteRepeatIndex,
+              // ),
+            ),
           ),
           PaddedContainerCard(
             children: [
@@ -72,10 +75,10 @@ class HabitDetailsPage extends HookWidget {
               SizedBox(height: 5),
               DatePicker(
                 change: (d) => selectedDateState.value = d,
-                highlights: controller.historyHighlights,
+                highlights: vm.historyHighlights,
               ),
-              if (controller.history.containsKey(selectedDateState.value))
-                for (var e in controller.history[selectedDateState.value])
+              if (vm.history.containsKey(selectedDateState.value))
+                for (var e in vm.history[selectedDateState.value])
                   Padding(
                     padding: const EdgeInsets.all(5),
                     child: Row(children: [
@@ -97,5 +100,3 @@ class HabitDetailsPage extends HookWidget {
     );
   }
 }
-
-

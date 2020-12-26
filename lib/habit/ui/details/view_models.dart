@@ -1,5 +1,5 @@
 import 'package:yaxxxta/habit/domain/models.dart';
-import 'package:yaxxxta/habit/ui/list/view_models.dart';
+import 'package:yaxxxta/habit/ui/core/view_models.dart';
 import '../../../core/utils/dt.dart';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -37,6 +37,10 @@ abstract class HabitDetailsVM with _$HabitDetailsVM {
 
   Map<DateTime, double> get historyHighlights =>
       history.map((key, value) => MapEntry(key, value.isNotEmpty ? 1 : 0));
+
+  HabitProgressVM get progress =>
+      HabitProgressVM.build(habit, habitPerformings);
+
 }
 
 /// Запись о выполнении привычки в прошлом

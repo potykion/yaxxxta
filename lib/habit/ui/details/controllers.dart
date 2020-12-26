@@ -1,16 +1,19 @@
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:yaxxxta/habit/domain/db.dart';
+import 'package:yaxxxta/habit/domain/use_cases.dart';
 
 import 'view_models.dart';
 
 class HabitDetailsController extends StateNotifier<HabitDetailsVM> {
   final BaseHabitRepo habitRepo;
   final BaseHabitPerformingRepo habitPerformingRepo;
+  final CreatePerforming createPerforming;
 
   HabitDetailsController({
     @required this.habitRepo,
     @required this.habitPerformingRepo,
+    @required this.createPerforming,
   }) : super(HabitDetailsVM(habit: null, habitPerformings: []));
 
   void load(int habitId) {
@@ -19,6 +22,8 @@ class HabitDetailsController extends StateNotifier<HabitDetailsVM> {
       habitPerformings: habitPerformingRepo.listByHabit(habitId),
     );
   }
+
+
 
 
 }

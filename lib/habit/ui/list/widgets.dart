@@ -1,24 +1,15 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/core/ui/widgets/progress.dart';
-import 'package:yaxxxta/habit/ui/list/view_models.dart';
+import 'package:yaxxxta/habit/ui/core/view_models.dart';
 
 import '../../../core/ui/widgets/card.dart';
 import '../../../core/ui/widgets/text.dart';
 import '../../../deps.dart';
 import '../../../routes.dart';
-import '../../../theme.dart';
 import '../../domain/models.dart';
-import 'controllers.dart';
-
-/// Вью-моделька привычки
-ScopedProvider<HabitListVM> habitVMProvider = ScopedProvider<HabitListVM>(null);
-
-/// Индекс повтора привычки в течение дня
-ScopedProvider<int> repeatIndexProvider = ScopedProvider<int>(null);
+import 'deps.dart';
 
 /// Карточка привычки
 class HabitCard extends HookWidget {
@@ -57,7 +48,7 @@ class HabitCard extends HookWidget {
 class HabitProgressControl extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    HabitListVM vm = useProvider(habitVMProvider);
+    HabitProgressVM vm = useProvider(habitVMProvider);
     var repeatIndex = useProvider(repeatIndexProvider);
 
     var repeat = vm.repeats[repeatIndex];

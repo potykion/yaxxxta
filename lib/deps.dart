@@ -2,12 +2,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
 
 import 'habit/domain/db.dart';
+import 'habit/domain/use_cases.dart';
 import 'habit/infra/db.dart';
-import 'habit/ui/list/controllers.dart';
-import 'habit/ui/list/view_models.dart';
 import 'settings/domain/models.dart';
 import 'settings/infra/db.dart';
 
+// todo в контроллер засунуть отправку пушей
 /// Регает зависимости
 // Future<void> initDeps() async {
 //   await Hive.initFlutter();
@@ -28,12 +28,19 @@ import 'settings/infra/db.dart';
 //   Get.put(NotificationSender(flutterLocalNotificationsPlugin));
 // }
 
+////////////////////////////////////////////////////////////////////////////////
+// CORE
+////////////////////////////////////////////////////////////////////////////////
+
+/// Регает индекс выбранной странички
+StateProvider<int> pageIndexProvider = StateProvider((_) => 0);
+
+////////////////////////////////////////////////////////////////////////////////
+// HABIT
+////////////////////////////////////////////////////////////////////////////////
+
 /// Регает hive-box для привычек
 Provider<Box<Map>> habitBoxProvider = Provider((_) => Hive.box<Map>("habits"));
-
-/// Регает hive-box для настроек
-Provider<Box<Map>> settingsBoxProvider =
-    Provider((_) => Hive.box<Map>("settings"));
 
 /// Регает hive-box для выполнений привычек
 Provider<Box<Map>> habitPerformingBoxProvider =
@@ -49,32 +56,19 @@ Provider<BaseHabitPerformingRepo> habitPerformingRepoProvider = Provider(
   (ref) => HabitPerformingRepo(ref.watch(habitPerformingBoxProvider)),
 );
 
-/// Регает контроллер, загружая привычки
-StateNotifierProvider<HabitListController> habitListControllerProvider =
-    StateNotifierProvider(
-  (ref) {
-    var controller = HabitListController(
-      habitRepo: ref.watch(habitRepoProvider),
-      habitPerformingRepo: ref.watch(habitPerformingRepoProvider),
-      settings: ref.watch(settingsProvider).state,
-    );
-    controller.loadHabits();
-    return controller;
-  },
+Provider<CreatePerforming> createPerforming = Provider(
+  (ref) => CreatePerforming(
+    habitPerformingRepo: ref.watch(habitPerformingRepoProvider),
+  ),
 );
 
-/// Провайдер привычек, которые отображаются в списке
-Provider<List<HabitListVM>> habitsToShowProvider = Provider((ref) {
-  var settings = ref.watch(settingsProvider).state;
+////////////////////////////////////////////////////////////////////////////////
+// SETTINGS
+////////////////////////////////////////////////////////////////////////////////
 
-  return ref
-      .watch(habitListControllerProvider.state)
-      .where((h) => settings.showCompleted || !h.isComplete)
-      .toList();
-});
-
-/// Регает индекс выбранной странички
-StateProvider<int> pageIndexProvider = StateProvider((_) => 0);
+/// Регает hive-box для настроек
+Provider<Box<Map>> settingsBoxProvider =
+    Provider((_) => Hive.box<Map>("settings"));
 
 /// Регает репо настроек
 Provider<SettingsRepo> settingsRepoProvider =

@@ -10,12 +10,12 @@ part of 'view_models.dart';
 T _$identity<T>(T value) => value;
 
 /// @nodoc
-class _$HabitListVMTearOff {
-  const _$HabitListVMTearOff();
+class _$HabitProgressVMTearOff {
+  const _$HabitProgressVMTearOff();
 
 // ignore: unused_element
-  _HabitListVM call({int id, String title, List<HabitRepeatVM> repeats}) {
-    return _HabitListVM(
+  _HabitProgressVM call({int id, String title, List<HabitRepeatVM> repeats}) {
+    return _HabitProgressVM(
       id: id,
       title: title,
       repeats: repeats,
@@ -25,10 +25,10 @@ class _$HabitListVMTearOff {
 
 /// @nodoc
 // ignore: unused_element
-const $HabitListVM = _$HabitListVMTearOff();
+const $HabitProgressVM = _$HabitProgressVMTearOff();
 
 /// @nodoc
-mixin _$HabitListVM {
+mixin _$HabitProgressVM {
   int get id;
 
   /// Название
@@ -37,24 +37,25 @@ mixin _$HabitListVM {
   /// Повторы (15 мин / раз 2 раза в день)
   List<HabitRepeatVM> get repeats;
 
-  $HabitListVMCopyWith<HabitListVM> get copyWith;
+  $HabitProgressVMCopyWith<HabitProgressVM> get copyWith;
 }
 
 /// @nodoc
-abstract class $HabitListVMCopyWith<$Res> {
-  factory $HabitListVMCopyWith(
-          HabitListVM value, $Res Function(HabitListVM) then) =
-      _$HabitListVMCopyWithImpl<$Res>;
+abstract class $HabitProgressVMCopyWith<$Res> {
+  factory $HabitProgressVMCopyWith(
+          HabitProgressVM value, $Res Function(HabitProgressVM) then) =
+      _$HabitProgressVMCopyWithImpl<$Res>;
   $Res call({int id, String title, List<HabitRepeatVM> repeats});
 }
 
 /// @nodoc
-class _$HabitListVMCopyWithImpl<$Res> implements $HabitListVMCopyWith<$Res> {
-  _$HabitListVMCopyWithImpl(this._value, this._then);
+class _$HabitProgressVMCopyWithImpl<$Res>
+    implements $HabitProgressVMCopyWith<$Res> {
+  _$HabitProgressVMCopyWithImpl(this._value, this._then);
 
-  final HabitListVM _value;
+  final HabitProgressVM _value;
   // ignore: unused_field
-  final $Res Function(HabitListVM) _then;
+  final $Res Function(HabitProgressVM) _then;
 
   @override
   $Res call({
@@ -72,24 +73,25 @@ class _$HabitListVMCopyWithImpl<$Res> implements $HabitListVMCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$HabitListVMCopyWith<$Res>
-    implements $HabitListVMCopyWith<$Res> {
-  factory _$HabitListVMCopyWith(
-          _HabitListVM value, $Res Function(_HabitListVM) then) =
-      __$HabitListVMCopyWithImpl<$Res>;
+abstract class _$HabitProgressVMCopyWith<$Res>
+    implements $HabitProgressVMCopyWith<$Res> {
+  factory _$HabitProgressVMCopyWith(
+          _HabitProgressVM value, $Res Function(_HabitProgressVM) then) =
+      __$HabitProgressVMCopyWithImpl<$Res>;
   @override
   $Res call({int id, String title, List<HabitRepeatVM> repeats});
 }
 
 /// @nodoc
-class __$HabitListVMCopyWithImpl<$Res> extends _$HabitListVMCopyWithImpl<$Res>
-    implements _$HabitListVMCopyWith<$Res> {
-  __$HabitListVMCopyWithImpl(
-      _HabitListVM _value, $Res Function(_HabitListVM) _then)
-      : super(_value, (v) => _then(v as _HabitListVM));
+class __$HabitProgressVMCopyWithImpl<$Res>
+    extends _$HabitProgressVMCopyWithImpl<$Res>
+    implements _$HabitProgressVMCopyWith<$Res> {
+  __$HabitProgressVMCopyWithImpl(
+      _HabitProgressVM _value, $Res Function(_HabitProgressVM) _then)
+      : super(_value, (v) => _then(v as _HabitProgressVM));
 
   @override
-  _HabitListVM get _value => super._value as _HabitListVM;
+  _HabitProgressVM get _value => super._value as _HabitProgressVM;
 
   @override
   $Res call({
@@ -97,7 +99,7 @@ class __$HabitListVMCopyWithImpl<$Res> extends _$HabitListVMCopyWithImpl<$Res>
     Object title = freezed,
     Object repeats = freezed,
   }) {
-    return _then(_HabitListVM(
+    return _then(_HabitProgressVM(
       id: id == freezed ? _value.id : id as int,
       title: title == freezed ? _value.title : title as String,
       repeats:
@@ -107,8 +109,8 @@ class __$HabitListVMCopyWithImpl<$Res> extends _$HabitListVMCopyWithImpl<$Res>
 }
 
 /// @nodoc
-class _$_HabitListVM extends _HabitListVM {
-  _$_HabitListVM({this.id, this.title, this.repeats})
+class _$_HabitProgressVM extends _HabitProgressVM {
+  _$_HabitProgressVM({this.id, this.title, this.repeats})
       : assert(repeats.length >= 1, 'Повторов должно быть >= 1'),
         super._();
 
@@ -125,13 +127,13 @@ class _$_HabitListVM extends _HabitListVM {
 
   @override
   String toString() {
-    return 'HabitListVM(id: $id, title: $title, repeats: $repeats)';
+    return 'HabitProgressVM(id: $id, title: $title, repeats: $repeats)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _HabitListVM &&
+        (other is _HabitProgressVM &&
             (identical(other.id, id) ||
                 const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.title, title) ||
@@ -148,14 +150,14 @@ class _$_HabitListVM extends _HabitListVM {
       const DeepCollectionEquality().hash(repeats);
 
   @override
-  _$HabitListVMCopyWith<_HabitListVM> get copyWith =>
-      __$HabitListVMCopyWithImpl<_HabitListVM>(this, _$identity);
+  _$HabitProgressVMCopyWith<_HabitProgressVM> get copyWith =>
+      __$HabitProgressVMCopyWithImpl<_HabitProgressVM>(this, _$identity);
 }
 
-abstract class _HabitListVM extends HabitListVM {
-  _HabitListVM._() : super._();
-  factory _HabitListVM({int id, String title, List<HabitRepeatVM> repeats}) =
-      _$_HabitListVM;
+abstract class _HabitProgressVM extends HabitProgressVM {
+  _HabitProgressVM._() : super._();
+  factory _HabitProgressVM(
+      {int id, String title, List<HabitRepeatVM> repeats}) = _$_HabitProgressVM;
 
   @override
   int get id;
@@ -168,7 +170,7 @@ abstract class _HabitListVM extends HabitListVM {
   /// Повторы (15 мин / раз 2 раза в день)
   List<HabitRepeatVM> get repeats;
   @override
-  _$HabitListVMCopyWith<_HabitListVM> get copyWith;
+  _$HabitProgressVMCopyWith<_HabitProgressVM> get copyWith;
 }
 
 /// @nodoc
