@@ -40,12 +40,14 @@ class HabitDetailsPage extends HookWidget {
               spacing: 5,
               children: [
                 Chip(
-                    label: Text("На время"),
-                    backgroundColor: CustomColors.blue),
+                  label: Text(vm.habit.type.verbose()),
+                  backgroundColor: CustomColors.blue,
+                ),
                 Chip(
-                    label: Text("Ежедневная"),
-                    backgroundColor: CustomColors.red),
-                Chip(label: Text("Спорт"), backgroundColor: CustomColors.pink),
+                  label: Text(vm.habit.habitPeriod.type.verbose()),
+                  backgroundColor: CustomColors.red,
+                ),
+                // Chip(label: Text("Спорт"), backgroundColor: CustomColors.pink),
               ],
             ),
           ),

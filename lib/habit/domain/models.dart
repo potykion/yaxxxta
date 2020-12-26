@@ -225,6 +225,19 @@ enum HabitPeriodType {
 
 /// Форматирует тип периода привычки
 extension FormatHabitPeriodType on HabitPeriodType {
+  String verbose() {
+    switch (this) {
+      case HabitPeriodType.day:
+        return "Ежедневная";
+      case HabitPeriodType.week:
+        return "Еженедельная";
+      case HabitPeriodType.month:
+        return "Ежемесячная";
+      default:
+        throw "хз че делать: this=$this";
+    }
+  }
+
   /// Форматирует тип периода привычки
   String format() {
     if (this == HabitPeriodType.day) return "День";
@@ -241,6 +254,18 @@ enum HabitType {
 
   /// На повторы
   repeats,
+}
+
+extension HabitTypeToStr on HabitType {
+  String verbose() {
+    if (this == HabitType.time) {
+      return "На время";
+    }
+    if (this == HabitType.repeats) {
+      return "На повторы";
+    }
+    throw "хз что за тип: this=$this";
+  }
 }
 
 /// Выполнение прички
