@@ -11,28 +11,29 @@ var _vm = StateProvider((ref) => HabitProgressVM.build(
       ref.watch(habitDetailsController.state).habitPerformings,
     ));
 
-var _repeat = Provider(
-    (ref) => ref.watch(_vm).state.repeats[0]);
+var _repeat = Provider.family(
+  (ref, int index) => ref.watch(_vm).state.repeats[index],
+);
 
 class HabitDetailsProgressControl extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var vmState = useProvider(_vm);
     var vm = vmState.state;
-    var repeat = useProvider(_repeat);
-    var repeatIndex = 0;
+    var repeatIndex = useProvider(repeatIndexProvider);
+    var repeat = useProvider(_repeat(repeatIndex));
 
     incrementHabitProgress() {
       vmState.state = vmState.state.copyWith(repeats: [
         for (var repeatWithIndex in vmState.state.repeats.asMap().entries)
-          if (repeatWithIndex.key == 0)
+          if (repeatWithIndex.key == repeatIndex)
             repeatWithIndex.value.copyWith(
               currentValue: repeatWithIndex.value.currentValue + 1,
             )
           else
             repeatWithIndex.value,
       ]);
-      return vmState.state.repeats[0].isComplete;
+      return vmState.state.repeats[repeatIndex].isComplete;
     }
 
     return repeat.type == HabitType.time
@@ -41,7 +42,9 @@ class HabitDetailsProgressControl extends HookWidget {
             goalValue: repeat.goalValue,
             onTimerIncrement: incrementHabitProgress,
             onTimerStop: (ticks) {
-              context.read(habitDetailsController).createPerforming(
+              context
+                  .read(habitDetailsController)
+                  .createPerformingAndUpdateHistory(
                     habitId: vm.id,
                     repeatIndex: repeatIndex,
                     performValue: ticks.toDouble(),
@@ -53,7 +56,10 @@ class HabitDetailsProgressControl extends HookWidget {
               incrementHabitProgress();
               context
                   .read(habitDetailsController)
-                  .createPerforming(habitId: vm.id, repeatIndex: repeatIndex);
+                  .createPerformingAndUpdateHistory(
+                    habitId: vm.id,
+                    repeatIndex: repeatIndex,
+                  );
             },
             currentValue: repeat.currentValue,
             goalValue: repeat.goalValue,

@@ -8,7 +8,7 @@ class CreatePerforming {
 
   CreatePerforming({this.habitPerformingRepo});
 
-  Future<void> call({
+  Future<HabitPerforming> call({
     @required int habitId,
     @required int repeatIndex,
     double performValue,
@@ -21,5 +21,6 @@ class CreatePerforming {
       performDateTime: performDateTime ?? DateTime.now(),
     );
     await habitPerformingRepo.insert(performing);
+    return performing;
   }
 }

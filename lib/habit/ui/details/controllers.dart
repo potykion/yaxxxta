@@ -23,7 +23,20 @@ class HabitDetailsController extends StateNotifier<HabitDetailsVM> {
     );
   }
 
-
-
-
+  Future<void> createPerformingAndUpdateHistory({
+    @required int habitId,
+    @required int repeatIndex,
+    double performValue,
+    DateTime performDateTime,
+  }) async {
+    var performing = await createPerforming(
+        habitId: habitId,
+        repeatIndex: repeatIndex,
+        performValue: performValue,
+        performDateTime: performDateTime,
+    );
+    state = state.copyWith(
+      habitPerformings: [...state.habitPerformings, performing],
+    );
+  }
 }
