@@ -37,13 +37,13 @@ mixin _$HabitProgressVM {
   /// Повторы (15 мин / раз 2 раза в день)
   List<HabitRepeatVM> get repeats;
 
-  $HabitProgressVMCopyWith<HabitProgressVM> get copyWith;
+  $HabitProgressVMCopyWith<HabitListPageVM> get copyWith;
 }
 
 /// @nodoc
 abstract class $HabitProgressVMCopyWith<$Res> {
   factory $HabitProgressVMCopyWith(
-          HabitProgressVM value, $Res Function(HabitProgressVM) then) =
+          HabitListPageVM value, $Res Function(HabitListPageVM) then) =
       _$HabitProgressVMCopyWithImpl<$Res>;
   $Res call({int id, String title, List<HabitRepeatVM> repeats});
 }
@@ -53,9 +53,9 @@ class _$HabitProgressVMCopyWithImpl<$Res>
     implements $HabitProgressVMCopyWith<$Res> {
   _$HabitProgressVMCopyWithImpl(this._value, this._then);
 
-  final HabitProgressVM _value;
+  final HabitListPageVM _value;
   // ignore: unused_field
-  final $Res Function(HabitProgressVM) _then;
+  final $Res Function(HabitListPageVM) _then;
 
   @override
   $Res call({
@@ -154,7 +154,7 @@ class _$_HabitProgressVM extends _HabitProgressVM {
       __$HabitProgressVMCopyWithImpl<_HabitProgressVM>(this, _$identity);
 }
 
-abstract class _HabitProgressVM extends HabitProgressVM {
+abstract class _HabitProgressVM extends HabitListPageVM {
   _HabitProgressVM._() : super._();
   factory _HabitProgressVM(
       {int id, String title, List<HabitRepeatVM> repeats}) = _$_HabitProgressVM;

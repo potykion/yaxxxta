@@ -20,7 +20,7 @@ StateNotifierProvider<HabitListController> habitListControllerProvider =
 );
 
 /// Провайдер привычек, которые отображаются в списке
-Provider<List<HabitProgressVM>> habitsToShowProvider = Provider((ref) {
+Provider<List<HabitListPageVM>> habitsToShowProvider = Provider((ref) {
   var settings = ref.watch(settingsProvider).state;
 
   return ref
@@ -31,7 +31,9 @@ Provider<List<HabitProgressVM>> habitsToShowProvider = Provider((ref) {
 
 
 /// Вью-моделька привычки
-ScopedProvider<HabitProgressVM> habitVMProvider = ScopedProvider<HabitProgressVM>(null);
+ScopedProvider<HabitListPageVM> habitVMProvider = ScopedProvider<HabitListPageVM>(null);
 
 /// Индекс повтора привычки в течение дня
 ScopedProvider<int> repeatIndexProvider = ScopedProvider<int>(null);
+
+

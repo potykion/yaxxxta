@@ -11,7 +11,7 @@ import '../../domain/db.dart';
 import '../../domain/models.dart';
 
 /// Контроллер списка привычек
-class HabitListController extends StateNotifier<List<HabitProgressVM>> {
+class HabitListController extends StateNotifier<List<HabitListPageVM>> {
   /// Репо привычек
   final BaseHabitRepo habitRepo;
 
@@ -46,7 +46,7 @@ class HabitListController extends StateNotifier<List<HabitProgressVM>> {
     state = habitRepo
         .list()
         .where((h) => h.matchDate(date))
-        .map((h) => HabitProgressVM.build(h, habitPerformings[h.id] ?? []))
+        .map((h) => HabitListPageVM.build(h, habitPerformings[h.id] ?? []))
         .toList();
   }
 
@@ -79,11 +79,11 @@ class HabitListController extends StateNotifier<List<HabitProgressVM>> {
       await habitRepo.update(habit);
       state = [
         for (var vm in state)
-          if (vm.id == habit.id) HabitProgressVM.build(habit) else vm
+          if (vm.id == habit.id) HabitListPageVM.build(habit) else vm
       ];
     } else {
       habit = habit.copyWith(id: await habitRepo.insert(habit));
-      state = [...state, HabitProgressVM.build(habit)];
+      state = [...state, HabitListPageVM.build(habit)];
     }
   }
 }

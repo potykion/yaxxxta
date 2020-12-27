@@ -7,10 +7,10 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'view_models.freezed.dart';
 
 @freezed
-abstract class HabitDetailsVM with _$HabitDetailsVM {
-  const HabitDetailsVM._();
+abstract class HabitDetailsPageVM with _$HabitDetailsVM {
+  const HabitDetailsPageVM._();
 
-  factory HabitDetailsVM({
+  factory HabitDetailsPageVM({
     @nullable Habit habit,
     @nullable List<HabitPerforming> habitPerformings,
   }) = _HabitDetailsVM;
@@ -38,8 +38,8 @@ abstract class HabitDetailsVM with _$HabitDetailsVM {
   Map<DateTime, double> get historyHighlights =>
       history.map((key, value) => MapEntry(key, value.isNotEmpty ? 1 : 0));
 
-  HabitProgressVM get progress =>
-      HabitProgressVM.build(habit, habitPerformings);
+  HabitListPageVM get progress =>
+      HabitListPageVM.build(habit, habitPerformings);
 
 }
 

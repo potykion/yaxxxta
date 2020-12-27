@@ -4,7 +4,7 @@ import 'package:yaxxxta/habit/ui/details/view_models.dart';
 
 void main() {
   test("HabitDetailsVM.history", () {
-    var vm = HabitDetailsVM(habitPerformings: [
+    var vm = HabitDetailsPageVM(habitPerformings: [
       HabitPerforming(
         habitId: 1,
         repeatIndex: 1,

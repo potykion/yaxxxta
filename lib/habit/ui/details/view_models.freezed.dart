@@ -35,13 +35,13 @@ mixin _$HabitDetailsVM {
   @nullable
   List<HabitPerforming> get habitPerformings;
 
-  $HabitDetailsVMCopyWith<HabitDetailsVM> get copyWith;
+  $HabitDetailsVMCopyWith<HabitDetailsPageVM> get copyWith;
 }
 
 /// @nodoc
 abstract class $HabitDetailsVMCopyWith<$Res> {
   factory $HabitDetailsVMCopyWith(
-          HabitDetailsVM value, $Res Function(HabitDetailsVM) then) =
+          HabitDetailsPageVM value, $Res Function(HabitDetailsPageVM) then) =
       _$HabitDetailsVMCopyWithImpl<$Res>;
   $Res call(
       {@nullable Habit habit,
@@ -55,9 +55,9 @@ class _$HabitDetailsVMCopyWithImpl<$Res>
     implements $HabitDetailsVMCopyWith<$Res> {
   _$HabitDetailsVMCopyWithImpl(this._value, this._then);
 
-  final HabitDetailsVM _value;
+  final HabitDetailsPageVM _value;
   // ignore: unused_field
-  final $Res Function(HabitDetailsVM) _then;
+  final $Res Function(HabitDetailsPageVM) _then;
 
   @override
   $Res call({
@@ -162,7 +162,7 @@ class _$_HabitDetailsVM extends _HabitDetailsVM {
       __$HabitDetailsVMCopyWithImpl<_HabitDetailsVM>(this, _$identity);
 }
 
-abstract class _HabitDetailsVM extends HabitDetailsVM {
+abstract class _HabitDetailsVM extends HabitDetailsPageVM {
   _HabitDetailsVM._() : super._();
   factory _HabitDetailsVM(
       {@nullable Habit habit,

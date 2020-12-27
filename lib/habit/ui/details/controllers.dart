@@ -5,7 +5,7 @@ import 'package:yaxxxta/habit/domain/use_cases.dart';
 
 import 'view_models.dart';
 
-class HabitDetailsController extends StateNotifier<HabitDetailsVM> {
+class HabitDetailsController extends StateNotifier<HabitDetailsPageVM> {
   final BaseHabitRepo habitRepo;
   final BaseHabitPerformingRepo habitPerformingRepo;
   final CreatePerforming createPerforming;
@@ -14,10 +14,10 @@ class HabitDetailsController extends StateNotifier<HabitDetailsVM> {
     @required this.habitRepo,
     @required this.habitPerformingRepo,
     @required this.createPerforming,
-  }) : super(HabitDetailsVM(habit: null, habitPerformings: []));
+  }) : super(HabitDetailsPageVM(habit: null, habitPerformings: []));
 
   void load(int habitId) {
-    state = HabitDetailsVM(
+    state = HabitDetailsPageVM(
       habit: habitRepo.get(habitId),
       habitPerformings: habitPerformingRepo.listByHabit(habitId),
     );

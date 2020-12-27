@@ -6,7 +6,7 @@ import 'package:yaxxxta/habit/domain/models.dart';
 import 'package:yaxxxta/habit/ui/core/view_models.dart';
 import 'package:yaxxxta/habit/ui/details/deps.dart';
 
-var _vm = StateProvider((ref) => HabitProgressVM.build(
+var _vm = StateProvider((ref) => HabitListPageVM.build(
       ref.watch(habitDetailsController.state).habit,
       ref.watch(habitDetailsController.state).habitPerformings,
     ));

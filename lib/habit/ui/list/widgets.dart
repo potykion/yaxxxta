@@ -48,7 +48,7 @@ class HabitCard extends HookWidget {
 class HabitProgressControl extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    HabitProgressVM vm = useProvider(habitVMProvider);
+    HabitListPageVM vm = useProvider(habitVMProvider);
     var repeatIndex = useProvider(repeatIndexProvider);
 
     var repeat = vm.repeats[repeatIndex];
