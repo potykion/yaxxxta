@@ -1,26 +1,25 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter_hooks/flutter_hooks.dart';
-// import 'package:hooks_riverpod/all.dart';
-// import 'package:yaxxxta/deps.dart';
-//
-// import '../../../core/ui/widgets/card.dart';
-// import '../../../core/ui/widgets/date.dart';
-// import '../../../core/ui/widgets/text.dart';
-// import '../../../core/utils/dt.dart';
-// import '../../../routes.dart';
-// import '../../../theme.dart';
-// import '../../domain/models.dart';
-// import 'deps.dart';
-// import 'widgets.dart';
-//
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/all.dart';
+import 'package:yaxxxta/deps.dart';
+
+import '../../../core/ui/widgets/card.dart';
+import '../../../core/ui/widgets/date.dart';
+import '../../../core/ui/widgets/text.dart';
+import '../../../core/utils/dt.dart';
+import '../../../routes.dart';
+import '../../../theme.dart';
+import '../../domain/models.dart';
+import 'deps.dart';
+import 'widgets.dart';
+
 // enum HabitActionType { edit, delete }
 //
 // /// Страничка с инфой о привычке
 // class HabitDetailsPage extends HookWidget {
 //   @override
 //   Widget build(BuildContext context) {
-//     var vm = useProvider(habitDetailsController.state);
-//     var selectedDateState = useState(DateTime.now().date());
+//
 //
 //     return Scaffold(
 //       body: ListView(
@@ -32,7 +31,7 @@
 //                 IconButton(
 //                     icon: Icon(Icons.arrow_back),
 //                     onPressed: () => Navigator.of(context).pop()),
-//                 BiggestText(text: vm.habit.title),
+//                 BiggestText(text: vm.habit.repeatTitleBuilder),
 //                 Spacer(),
 //                 IconButton(
 //                     icon: Icon(Icons.more_vert),

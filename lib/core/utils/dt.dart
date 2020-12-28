@@ -61,6 +61,7 @@ extension DateTimeUtils on DateTime {
         withSeconds ? this.second : 0,
       );
 
+  bool isToday() => this.date() == DateTime.now().date();
 }
 
 

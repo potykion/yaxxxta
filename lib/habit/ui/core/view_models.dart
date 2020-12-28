@@ -7,12 +7,12 @@ part 'view_models.freezed.dart';
 
 /// Вью-моделька прогресса привычки
 @freezed
-abstract class HabitListPageVM with _$HabitProgressVM {
-  const HabitListPageVM._();
+abstract class ProgressHabitVM with _$HabitProgressVM {
+  const ProgressHabitVM._();
 
   /// Вью-моделька прогресса привычки
   @Assert("repeats.length >= 1", "Повторов должно быть >= 1")
-  factory HabitListPageVM({
+  factory ProgressHabitVM({
     int id,
 
     /// Название
@@ -23,27 +23,27 @@ abstract class HabitListPageVM with _$HabitProgressVM {
   }) = _HabitProgressVM;
 
   /// Создает вм из привычки
-  factory HabitListPageVM.build(Habit habit, [
+  factory ProgressHabitVM.build(
+    Habit habit, [
     List<HabitPerforming> habitPerformings = const [],
   ]) {
     var repeatHabitPerformings = groupBy<HabitPerforming, int>(
       habitPerformings,
-          (p) => p.repeatIndex,
+      (p) => p.repeatIndex,
     );
 
-    return HabitListPageVM(
+    return ProgressHabitVM(
       id: habit.id,
       title: habit.title,
       repeats: List.generate(
         habit.dailyRepeats.ceil(),
-            (index) =>
-            HabitRepeatVM(
-              type: habit.type,
-              goalValue: habit.goalValue,
-              currentValue: (repeatHabitPerformings[index] ?? [])
-                  .map((p) => p.performValue)
-                  .fold(0, (v1, v2) => v1 + v2),
-            ),
+        (index) => HabitRepeatVM(
+          type: habit.type,
+          goalValue: habit.goalValue,
+          currentValue: (repeatHabitPerformings[index] ?? [])
+              .map((p) => p.performValue)
+              .fold(0, (v1, v2) => v1 + v2),
+        ),
       ),
     );
   }

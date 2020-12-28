@@ -51,6 +51,10 @@ class _RepeatProgressControl extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var currentValueState = useState(currentValue);
+    useValueChanged<double, void>(
+      currentValue,
+      (_, __) => currentValueState.value = currentValue,
+    );
 
     return _BaseProgressControl(
       incrementButton: IconButton(

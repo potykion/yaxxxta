@@ -38,8 +38,8 @@ abstract class HabitDetailsPageVM with _$HabitDetailsVM {
   Map<DateTime, double> get historyHighlights =>
       history.map((key, value) => MapEntry(key, value.isNotEmpty ? 1 : 0));
 
-  HabitListPageVM get progress =>
-      HabitListPageVM.build(habit, habitPerformings);
+  ProgressHabitVM get progress =>
+      ProgressHabitVM.build(habit, habitPerformings);
 
 }
 
