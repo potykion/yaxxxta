@@ -27,11 +27,13 @@ class HabitRepeatControl extends StatelessWidget {
         child: PageView.builder(
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) {
+            // todo vm.repeats + vm.firstIncompleteRepeatIndex as params
             var repeat = vm.repeats[index];
             var isSingleRepeat = vm.repeats.length == 1;
             var repeatCounter = "${index + 1} / ${vm.repeats.length}";
 
             return GestureDetector(
+              // todo extract pushNamed
               onTap: () => Navigator.of(context).pushNamed(
                 Routes.details,
                 arguments: vm.id,
