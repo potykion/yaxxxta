@@ -40,25 +40,31 @@ StateProvider<int> pageIndexProvider = StateProvider((_) => 0);
 ////////////////////////////////////////////////////////////////////////////////
 
 /// Регает hive-box для привычек
-Provider<Box<Map>> habitBoxProvider = Provider((_) => Hive.box<Map>("habits"));
+Provider<Box<Map>> _habitBoxProvider = Provider((_) => Hive.box<Map>("habits"));
 
 /// Регает hive-box для выполнений привычек
-Provider<Box<Map>> habitPerformingBoxProvider =
+Provider<Box<Map>> _habitPerformingBoxProvider =
     Provider((_) => Hive.box<Map>("habit_performings"));
 
 /// Регает репо привычек
 Provider<BaseHabitRepo> habitRepoProvider = Provider(
-  (ref) => HabitRepo(ref.watch(habitBoxProvider)),
+  (ref) => HabitRepo(ref.watch(_habitBoxProvider)),
 );
 
 /// Регает репо выполнений привычек
 Provider<BaseHabitPerformingRepo> habitPerformingRepoProvider = Provider(
-  (ref) => HabitPerformingRepo(ref.watch(habitPerformingBoxProvider)),
+  (ref) => HabitPerformingRepo(ref.watch(_habitPerformingBoxProvider)),
 );
 
-Provider<CreatePerforming> createPerforming = Provider(
-  (ref) => CreatePerforming(
+var createHabitPerformingProvider = Provider(
+  (ref) => CreateHabitPerforming(
+      habitPerformingRepo: ref.watch(habitPerformingRepoProvider)),
+);
+
+var loadDateHabitPerformingsProvider = Provider(
+  (ref) => LoadDateHabitPerformings(
     habitPerformingRepo: ref.watch(habitPerformingRepoProvider),
+    settings: ref.watch(settingsProvider).state,
   ),
 );
 
@@ -67,12 +73,12 @@ Provider<CreatePerforming> createPerforming = Provider(
 ////////////////////////////////////////////////////////////////////////////////
 
 /// Регает hive-box для настроек
-Provider<Box<Map>> settingsBoxProvider =
+Provider<Box<Map>> _settingsBoxProvider =
     Provider((_) => Hive.box<Map>("settings"));
 
 /// Регает репо настроек
 Provider<SettingsRepo> settingsRepoProvider =
-    Provider((ref) => SettingsRepo(ref.watch(settingsBoxProvider)));
+    Provider((ref) => SettingsRepo(ref.watch(_settingsBoxProvider)));
 
 /// Регает настройки
 StateProvider<Settings> settingsProvider = StateProvider(

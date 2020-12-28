@@ -2,20 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:yaxxxta/habit/ui/core/deps.dart';
 import '../../../core/ui/widgets/bottom_nav.dart';
 
 import '../../../core/ui/widgets/date.dart';
 import '../../../deps.dart';
 import '../../../routes.dart';
-import 'deps.dart';
 import 'widgets.dart';
 
 /// Страница списка привычек
 class HabitListPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
-
-
+    var vms = useProvider(listHabitVMs);
 
     return Scaffold(
       appBar: PreferredSize(
@@ -25,34 +24,16 @@ class HabitListPage extends HookWidget {
           children: [
             SizedBox(height: kToolbarHeight),
             DatePicker(
-              change: (date) => context
-                  .read(habitListControllerProvider)
-                  .loadHabits(date: date)
+              change: (date) {
+                context.read(selectedDateProvider).state = date;
+                var performings = context.read(loadDateHabitPerformingsProvider)(date);
+              },
             ),
           ],
         ),
       ),
       body: ListView(
-        children: [
-          for (var vm in habits)
-            SizedBox(
-              height: 130,
-              child: PageView.builder(
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) => ProviderScope(
-                  overrides: [
-                    habitVMProvider.overrideWithValue(vm),
-                    repeatIndexProvider.overrideWithValue(index)
-                  ],
-                  child: HabitCard(),
-                ),
-                itemCount: vm.repeats.length,
-                controller: PageController(
-                  initialPage: vm.firstIncompleteRepeatIndex,
-                ),
-              ),
-            )
-        ],
+        children: [for (var vm in vms) HabitRepeatControl(vm: vm)],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: FloatingActionButton(

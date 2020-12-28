@@ -1,12 +1,14 @@
 import 'package:meta/meta.dart';
+import 'package:yaxxxta/core/utils/dt.dart';
+import 'package:yaxxxta/settings/domain/models.dart';
 
 import 'db.dart';
 import 'models.dart';
 
-class CreatePerforming {
+class CreateHabitPerforming {
   final BaseHabitPerformingRepo habitPerformingRepo;
 
-  CreatePerforming({this.habitPerformingRepo});
+  CreateHabitPerforming({this.habitPerformingRepo});
 
   Future<HabitPerforming> call({
     @required int habitId,
@@ -22,5 +24,18 @@ class CreatePerforming {
     );
     await habitPerformingRepo.insert(performing);
     return performing;
+  }
+}
+
+class LoadDateHabitPerformings {
+  final Settings settings;
+  final BaseHabitPerformingRepo habitPerformingRepo;
+
+  LoadDateHabitPerformings({this.habitPerformingRepo, this.settings});
+
+  List<HabitPerforming> call(DateTime date) {
+    var dateStart = buildDateTime(date, settings.dayStartTime);
+    var dateEnd = buildDateTime(date, settings.dayEndTime);
+    return habitPerformingRepo.list(dateStart, dateEnd);
   }
 }

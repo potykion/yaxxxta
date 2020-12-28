@@ -8,7 +8,7 @@ import 'view_models.dart';
 class HabitDetailsController extends StateNotifier<HabitDetailsPageVM> {
   final BaseHabitRepo habitRepo;
   final BaseHabitPerformingRepo habitPerformingRepo;
-  final CreatePerforming createPerforming;
+  final CreateHabitPerforming createPerforming;
 
   HabitDetailsController({
     @required this.habitRepo,

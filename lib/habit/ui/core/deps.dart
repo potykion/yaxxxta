@@ -12,35 +12,30 @@ var habitsProvider =
 var dateHabitPerformingsProvider =
     StateProvider<List<HabitPerforming>>((ref) => []);
 
-var todayHabitPerformingsProvider = StateProvider((ref) {
-  var settings = ref.watch(settingsProvider).state;
-
-  var date = DateTime.now();
-  var dateStart = buildDateTime(date, settings.dayStartTime);
-  var dateEnd = buildDateTime(date, settings.dayEndTime);
-
-  return ref.watch(habitPerformingRepoProvider).list(dateStart, dateEnd);
-});
+var todayHabitPerformingsProvider = StateProvider((ref) =>
+    ref.watch(loadDateHabitPerformingsProvider)(DateTime.now().date()));
 
 ////////////////////////////////////////////////////////////////////////////////
 // HABIT LIST PAGE
 ////////////////////////////////////////////////////////////////////////////////
 
-var selectedDate = StateProvider((ref) => DateTime.now().date());
+var selectedDateProvider = StateProvider((ref) => DateTime.now().date());
 
-Provider<List<HabitPerforming>> selectedDateHabitPerformings = Provider(
-  (ref) => ref.watch(selectedDate) == DateTime.now().date()
+Provider<List<HabitPerforming>> _selectedDateHabitPerformings = Provider(
+  (ref) => ref.watch(selectedDateProvider).state == DateTime.now().date()
       ? ref.watch(todayHabitPerformingsProvider).state
       : ref.watch(dateHabitPerformingsProvider).state,
 );
 
 Provider<List<HabitListPageVM>> listHabitVMs = Provider((ref) {
-  var habitPerformings = ref.watch(selectedDateHabitPerformings);
+  var habitPerformings = ref.watch(_selectedDateHabitPerformings);
   var groupedHabitPerformings =
       groupBy(habitPerformings, (HabitPerforming hp) => hp.habitId);
   var habits = ref.watch(habitsProvider).state;
+  var settings = ref.watch(settingsProvider).state;
   return habits
       .map((h) => HabitListPageVM.build(h, groupedHabitPerformings[h.id] ?? []))
+      .where((h) => settings.showCompleted || !h.isComplete)
       .toList();
 });
 
@@ -67,6 +62,7 @@ var selectedHabitPerformings = Provider(
 
 var detailsHabitVM = Provider(
   (ref) => HabitDetailsPageVM(
-      habit: ref.watch(selectedHabit),
-      habitPerformings: ref.watch(selectedDateHabitPerformings)),
+    habit: ref.watch(selectedHabit),
+    habitPerformings: ref.watch(_selectedDateHabitPerformings),
+  ),
 );
