@@ -6,13 +6,23 @@ import 'package:yaxxxta/habit/domain/models.dart';
 import 'package:yaxxxta/habit/ui/core/view_models.dart';
 import 'package:yaxxxta/habit/ui/details/view_models.dart';
 
+import 'controllers.dart';
+
 var habitsProvider =
     StateProvider((ref) => ref.watch(habitRepoProvider).list());
 
-var todayHabitPerformingsProvider = StateProvider((ref) =>
-    ref.watch(loadDateHabitPerformingsProvider)(DateTime.now().date()));
+var todayHabitPerformingsProvider = StateProvider((ref) => <HabitPerforming>[]);
 
 var dateHabitPerfomingsProvider = StateProvider((ref) => <HabitPerforming>[]);
+
+var habitPerformingController = Provider(
+  (ref) => HabitPerformingController(
+    habitPerformingRepo: ref.watch(habitPerformingRepoProvider),
+    dateHabitPerformingsState: ref.watch(dateHabitPerfomingsProvider),
+    todayHabitPerformingsState: ref.watch(todayHabitPerformingsProvider),
+    settings: ref.watch(settingsProvider).state,
+  )
+);
 
 ////////////////////////////////////////////////////////////////////////////////
 // HABIT LIST PAGE
@@ -20,16 +30,10 @@ var dateHabitPerfomingsProvider = StateProvider((ref) => <HabitPerforming>[]);
 
 var selectedDateProvider = StateProvider((ref) => DateTime.now().date());
 
-var selectedDateHabitPerformings = Provider((ref) {
-  var selectedDate = ref.watch(selectedDateProvider).state;
-  return selectedDate == DateTime.now().date()
-      ? ref.watch(todayHabitPerformingsProvider).state
-      : ref.watch(dateHabitPerfomingsProvider).state;
-});
-
-
 Provider<List<ProgressHabitVM>> listHabitVMs = Provider((ref) {
-  var habitPerformings = ref.watch(selectedDateHabitPerformings);
+  var selectedDate = ref.watch(selectedDateProvider).state;
+  var habitPerformings =
+      ref.watch(habitPerformingController).getDateState(selectedDate).state;
   var groupedHabitPerformings =
       groupBy(habitPerformings, (HabitPerforming hp) => hp.habitId);
   var habits = ref.watch(habitsProvider).state;

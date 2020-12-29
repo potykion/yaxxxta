@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../core/ui/widgets/card.dart';
 import '../../../core/ui/widgets/new_progress.dart';
 import '../../../core/ui/widgets/text.dart';
-import '../core/view_models.dart';
+import 'view_models.dart';
 
 class HabitRepeatControl extends StatelessWidget {
   final List<HabitRepeatVM> repeats;

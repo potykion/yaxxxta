@@ -2,7 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
 
 import 'habit/domain/db.dart';
-import 'habit/domain/use_cases.dart';
 import 'habit/infra/db.dart';
 import 'settings/domain/models.dart';
 import 'settings/infra/db.dart';
@@ -54,18 +53,6 @@ Provider<BaseHabitRepo> habitRepoProvider = Provider(
 /// Регает репо выполнений привычек
 Provider<BaseHabitPerformingRepo> habitPerformingRepoProvider = Provider(
   (ref) => HabitPerformingRepo(ref.watch(_habitPerformingBoxProvider)),
-);
-
-var createHabitPerformingProvider = Provider(
-  (ref) => CreateHabitPerforming(
-      habitPerformingRepo: ref.watch(habitPerformingRepoProvider)),
-);
-
-var loadDateHabitPerformingsProvider = Provider(
-  (ref) => LoadDateHabitPerformings(
-    habitPerformingRepo: ref.watch(habitPerformingRepoProvider),
-    settings: ref.watch(settingsProvider).state,
-  ),
 );
 
 ////////////////////////////////////////////////////////////////////////////////
