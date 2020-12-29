@@ -41,37 +41,45 @@ class HabitListPage extends HookWidget {
       body: ListView(
         children: [
           for (var vm in vms)
-            HabitRepeatControl(
-              repeatTitleBuilder: (repeat) => Row(children: [
-                BiggerText(text: vm.title),
-                SizedBox(width: 5),
-                if (repeat.performTime != null)
-                  SmallerText(text: repeat.performTimeStr),
-              ]),
-              vm: vm,
-              onRepeatIncrement: (repeatIndex, incrementValue) async {
-                var selectedDate = context.read(selectedDateProvider).state;
+            GestureDetector(
+              onTap: () => Navigator.of(context).pushNamed(
+                Routes.details,
+                arguments: vm.id,
+              ),
+              child: HabitRepeatControl(
+                repeatTitleBuilder: (repeat) => Row(children: [
+                  BiggerText(text: vm.title),
+                  SizedBox(width: 5),
+                  if (repeat.performTime != null)
+                    SmallerText(text: repeat.performTimeStr),
+                ]),
+                repeats: vm.repeats,
+                initialRepeatIndex: vm.firstIncompleteRepeatIndex,
+                onRepeatIncrement: (repeatIndex, incrementValue) async {
+                  var selectedDate = context.read(selectedDateProvider).state;
 
-                var performing =
-                    await context.read(createHabitPerformingProvider)(
-                  habitId: vm.id,
-                  repeatIndex: repeatIndex,
-                  performValue: incrementValue,
-                  performDateTime: buildDateTime(selectedDate, DateTime.now()),
-                );
+                  var performing =
+                      await context.read(createHabitPerformingProvider)(
+                    habitId: vm.id,
+                    repeatIndex: repeatIndex,
+                    performValue: incrementValue,
+                    performDateTime:
+                        buildDateTime(selectedDate, DateTime.now()),
+                  );
 
-                if (selectedDate.isToday()) {
-                  context.read(todayHabitPerformingsProvider).state = [
-                    ...context.read(todayHabitPerformingsProvider).state,
-                    performing,
-                  ];
-                } else {
-                  context.read(dateHabitPerfomingsProvider).state = [
-                    ...context.read(dateHabitPerfomingsProvider).state,
-                    performing,
-                  ];
-                }
-              },
+                  if (selectedDate.isToday()) {
+                    context.read(todayHabitPerformingsProvider).state = [
+                      ...context.read(todayHabitPerformingsProvider).state,
+                      performing,
+                    ];
+                  } else {
+                    context.read(dateHabitPerfomingsProvider).state = [
+                      ...context.read(dateHabitPerfomingsProvider).state,
+                      performing,
+                    ];
+                  }
+                },
+              ),
             )
         ],
       ),
