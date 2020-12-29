@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
 
-import '../../../deps.dart';
 import '../../../theme.dart';
+import '../deps.dart';
 
 /// Боттом нав барчик
 class AppBottomNavigationBar extends HookWidget {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:yaxxxta/settings/ui/pages/settings.dart';
 
 import 'habit/ui/details/pages.dart';
 import 'habit/ui/form/pages.dart';
 import 'habit/ui/list/pages.dart';
-import 'settings/ui/pages/settings.dart';
 
 // ignore: avoid_classes_with_only_static_members
 /// Роуты

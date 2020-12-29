@@ -7,6 +7,7 @@ import '../../../core/utils/dt.dart';
 
 class HabitPerformingController {
   final BaseHabitPerformingRepo habitPerformingRepo;
+  final StateController<bool> loadingState;
   final StateController<List<HabitPerforming>> todayHabitPerformingsState;
   final StateController<List<HabitPerforming>> dateHabitPerformingsState;
   final Settings settings;
@@ -16,6 +17,7 @@ class HabitPerformingController {
     @required this.todayHabitPerformingsState,
     @required this.dateHabitPerformingsState,
     @required this.settings,
+    @required this.loadingState,
   });
 
   Future<void> create({
@@ -38,11 +40,13 @@ class HabitPerformingController {
     stateController.state = [...stateController.state, performing];
   }
 
-  void load(DateTime date) {
+  void load(DateTime date) async {
+    loadingState.state = true;
     var dateStart = buildDateTime(date, settings.dayStartTime);
     var dateEnd = buildDateTime(date, settings.dayEndTime);
     var performings = habitPerformingRepo.list(dateStart, dateEnd);
     getDateState(date).state = performings;
+    loadingState.state = false;
   }
 
   StateController<List<HabitPerforming>> getDateState(DateTime date) =>

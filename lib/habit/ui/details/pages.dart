@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
-import 'package:yaxxxta/deps.dart';
 
 import '../../../core/ui/widgets/card.dart';
 import '../../../core/ui/widgets/date.dart';

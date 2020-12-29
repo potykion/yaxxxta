@@ -3,18 +3,20 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:yaxxxta/core/ui/widgets/text.dart';
-import 'package:yaxxxta/core/utils/dt.dart';
-import 'package:yaxxxta/habit/domain/models.dart';
+import '../../../habit/domain/models.dart';
 
 import '../../../theme.dart';
+import '../../utils/dt.dart';
+import 'text.dart';
 
+/// Контрол прогресса проивычки
 class HabitProgressControl extends StatelessWidget {
   final double currentValue;
   final double goalValue;
   final void Function(double incrementValue) onValueIncrement;
   final HabitType habitType;
 
+  /// Контрол прогресса проивычки
   const HabitProgressControl({
     Key key,
     this.currentValue,
