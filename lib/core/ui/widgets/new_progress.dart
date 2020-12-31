@@ -11,9 +11,17 @@ import 'text.dart';
 
 /// Контрол прогресса проивычки
 class HabitProgressControl extends StatelessWidget {
+  /// Текущее значение прогресса
   final double currentValue;
+
+  /// Желаемое значение прогресса
   final double goalValue;
+
+  /// Событие изменения прогресса
   final void Function(double incrementValue) onValueIncrement;
+
+  /// Тип привычки
+  /// В зависимости от него определяется тип прогресс-контрола
   final HabitType habitType;
 
   /// Контрол прогресса проивычки

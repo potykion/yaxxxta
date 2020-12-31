@@ -1,12 +1,12 @@
 import 'package:intl/intl.dart';
-import 'package:tuple/tuple.dart';
 
+/// @nodoc
 extension DurationUtils on Duration {
   /// Форматирует дюрейшн без нулей впереди и без миллисекунд, типа 1:02:03
   String format() => [
-        this.inHours > 0 ? this.inHours : null,
-        this.inMinutes > 0 ? this.inMinutes % 60 : null,
-        this.inSeconds % 60
+        inHours > 0 ? inHours : null,
+        inMinutes > 0 ? inMinutes % 60 : null,
+        inSeconds % 60
       ]
           .where((d) => d != null)
           .toList()
@@ -49,19 +49,21 @@ int yearWeekNum(DateTime date) {
   return date.difference(yearStartWeek).inDays ~/ 7 + 1;
 }
 
+/// @nodoc
 extension DateTimeUtils on DateTime {
-  DateTime date() => DateTime(this.year, this.month, this.day);
+  /// Создает дейт тайм без времени, то есть просто дейт
+  DateTime date() => DateTime(year, month, day);
 
+  /// Создает дейт тайм с фиксированной датой, то есть просто тайм
   DateTime time({bool withSeconds = false}) => DateTime(
         2020,
         1,
         1,
-        this.hour,
-        this.minute,
-        withSeconds ? this.second : 0,
+        hour,
+        minute,
+        withSeconds ? second : 0,
       );
 
-  bool isToday() => this.date() == DateTime.now().date();
+  /// Определяет, является ли дата сегодняшней
+  bool isToday() => date() == DateTime.now().date();
 }
-
-

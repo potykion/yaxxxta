@@ -1,17 +1,29 @@
 import 'package:hooks_riverpod/all.dart';
 import 'package:meta/meta.dart';
-import 'package:yaxxxta/habit/domain/db.dart';
-import 'package:yaxxxta/habit/domain/models.dart';
-import 'package:yaxxxta/settings/domain/models.dart';
-import '../../../core/utils/dt.dart';
 
+import '../../../core/utils/dt.dart';
+import '../../../settings/domain/models.dart';
+import '../../domain/db.dart';
+import '../../domain/models.dart';
+
+/// Контроллер выполнений привычек
 class HabitPerformingController {
+  /// Репо выполнений привычек
   final BaseHabitPerformingRepo habitPerformingRepo;
+
+  /// Состояние загрузки
   final StateController<bool> loadingState;
+
+  /// Состояние выполнений привычек за сегодня
   final StateController<List<HabitPerforming>> todayHabitPerformingsState;
+
+  /// Состояние выполнений привычек за дату
   final StateController<List<HabitPerforming>> dateHabitPerformingsState;
+
+  /// Настроечки
   final Settings settings;
 
+  /// Контроллер выполнений привычек
   HabitPerformingController({
     @required this.habitPerformingRepo,
     @required this.todayHabitPerformingsState,
@@ -20,6 +32,7 @@ class HabitPerformingController {
     @required this.loadingState,
   });
 
+  /// Создает выполнение привычки, обновляя состояние
   Future<void> create({
     @required int habitId,
     @required int repeatIndex,
@@ -40,6 +53,7 @@ class HabitPerformingController {
     stateController.state = [...stateController.state, performing];
   }
 
+  /// Загружает выполнения привычек за дату, обновляя состояние
   void load(DateTime date) async {
     loadingState.state = true;
     var dateStart = buildDateTime(date, settings.dayStartTime);
@@ -49,6 +63,7 @@ class HabitPerformingController {
     loadingState.state = false;
   }
 
+  /// Получает состояние выполнений привычек за дату
   StateController<List<HabitPerforming>> getDateState(DateTime date) =>
       date.isToday() ? todayHabitPerformingsState : dateHabitPerformingsState;
 }
