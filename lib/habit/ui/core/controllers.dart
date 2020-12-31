@@ -1,5 +1,6 @@
 import 'package:hooks_riverpod/all.dart';
 import 'package:meta/meta.dart';
+import 'package:yaxxxta/habit/infra/db.dart';
 
 import '../../../core/utils/dt.dart';
 import '../../../settings/domain/models.dart';
@@ -66,4 +67,16 @@ class HabitPerformingController {
   /// Получает состояние выполнений привычек за дату
   StateController<List<HabitPerforming>> getDateState(DateTime date) =>
       date.isToday() ? todayHabitPerformingsState : dateHabitPerformingsState;
+}
+
+class HabitController {
+  final BaseHabitRepo habitRepo;
+  final StateController<List<Habit>> habitState;
+
+  HabitController({this.habitRepo, this.habitState});
+
+  Future<void> delete(int habitId) async {
+    await habitRepo.delete(habitId);
+    habitState.state = [...habitState.state.where((h) => h.id != habitId)];
+  }
 }

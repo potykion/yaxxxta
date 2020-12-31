@@ -7,12 +7,12 @@ part 'view_models.freezed.dart';
 
 /// Вью-моделька прогресса привычки
 @freezed
-abstract class ProgressHabitVM with _$HabitProgressVM {
-  const ProgressHabitVM._();
+abstract class HabitProgressVM with _$HabitProgressVM {
+  const HabitProgressVM._();
 
   /// Вью-моделька прогресса привычки
   @Assert("repeats.length >= 1", "Повторов должно быть >= 1")
-  factory ProgressHabitVM({
+  factory HabitProgressVM({
     int id,
 
     /// Название
@@ -23,7 +23,7 @@ abstract class ProgressHabitVM with _$HabitProgressVM {
   }) = _HabitProgressVM;
 
   /// Создает вм из привычки
-  factory ProgressHabitVM.build(
+  factory HabitProgressVM.build(
     Habit habit, [
     List<HabitPerforming> habitPerformings = const [],
   ]) {
@@ -32,7 +32,7 @@ abstract class ProgressHabitVM with _$HabitProgressVM {
       (p) => p.repeatIndex,
     );
 
-    return ProgressHabitVM(
+    return HabitProgressVM(
       id: habit.id,
       title: habit.title,
       repeats: List.generate(

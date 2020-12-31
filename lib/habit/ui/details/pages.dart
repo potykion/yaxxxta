@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:get/get.dart';
 import 'package:hooks_riverpod/all.dart';
-import 'package:yaxxxta/habit/ui/core/deps.dart';
-import 'package:yaxxxta/habit/ui/core/widgets.dart';
-import 'package:yaxxxta/habit/ui/details/view_models.dart';
 
 import '../../../core/ui/widgets/card.dart';
 import '../../../core/ui/widgets/date.dart';
@@ -13,8 +9,8 @@ import '../../../core/utils/dt.dart';
 import '../../../routes.dart';
 import '../../../theme.dart';
 import '../../domain/models.dart';
-import 'deps.dart';
-import 'widgets.dart';
+import '../core/deps.dart';
+import '../core/widgets.dart';
 
 enum HabitActionType { edit, delete }
 
@@ -22,8 +18,10 @@ enum HabitActionType { edit, delete }
 class HabitDetailsPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    HabitDetailsPageVM vm = useProvider(habitDetailsVMProvider);
-    var selectedHistoryDateState = useState(DateTime.now().date());
+    var habit = useProvider(selectedHabitProvider);
+    var historyDateState = useState(DateTime.now().date());
+    var progress = useProvider(selectedHabitProgressProvider);
+    var history = useProvider(selectedHabitHistoryProvider);
 
     return Scaffold(
       body: ListView(
@@ -36,7 +34,7 @@ class HabitDetailsPage extends HookWidget {
                 IconButton(
                     icon: Icon(Icons.arrow_back),
                     onPressed: () => Navigator.of(context).pop()),
-                BiggestText(text: vm.habit.title),
+                BiggestText(text: habit.title),
                 Spacer(),
                 IconButton(
                     icon: Icon(Icons.more_vert),
@@ -49,8 +47,8 @@ class HabitDetailsPage extends HookWidget {
                           child: ListView(
                             children: [
                               ListTile(
-                                title: BiggerText(
-                                    text: "Что делаем с привычкой?"),
+                                title:
+                                    BiggerText(text: "Что делаем с привычкой?"),
                               ),
                               ListTile(
                                 title: Text("Редактируем"),
@@ -69,7 +67,7 @@ class HabitDetailsPage extends HookWidget {
 
                       if (actionType == HabitActionType.edit) {
                         Navigator.of(context)
-                            .pushNamed(Routes.form, arguments: vm.habit.id);
+                            .pushNamed(Routes.form, arguments: habit.id);
                       } else if (actionType == HabitActionType.delete) {
                         var isDelete = await showModalBottomSheet<bool>(
                           context: context,
@@ -82,21 +80,20 @@ class HabitDetailsPage extends HookWidget {
                                 ),
                                 ListTile(
                                   title: Text("Да"),
-                                  onTap: () =>
-                                      Navigator.of(context).pop(true),
+                                  onTap: () => Navigator.of(context).pop(true),
                                 ),
                                 ListTile(
                                   title: Text("Не"),
-                                  onTap: () =>
-                                      Navigator.of(context).pop(false),
+                                  onTap: () => Navigator.of(context).pop(false),
                                 ),
                               ],
                             ),
                           ),
                         );
                         if (isDelete ?? false) {
-                          context.read(habitRepoProvider).delete(vm.habit.id);
-                          //  todo бля тут тож надо стейт в списке изменить
+                          context
+                              .read(habitControllerProvider)
+                              .delete(habit.id);
                           Navigator.of(context).pop();
                         }
                       } else {
@@ -112,25 +109,25 @@ class HabitDetailsPage extends HookWidget {
               spacing: 5,
               children: [
                 Chip(
-                  label: Text(vm.habit.type.verbose()),
+                  label: Text(habit.type.verbose()),
                   backgroundColor: CustomColors.blue,
                 ),
                 Chip(
-                  label: Text(vm.habit.habitPeriod.type.verbose()),
+                  label: Text(habit.habitPeriod.type.verbose()),
                   backgroundColor: CustomColors.red,
                 ),
               ],
             ),
           ),
           HabitRepeatControl(
-            repeats: vm.progress.repeats,
+            repeats: progress.repeats,
             onRepeatIncrement: (repeatIndex, incrementValue) =>
                 context.read(habitPerformingController).create(
-                  habitId: vm.habit.id,
-                  repeatIndex: repeatIndex,
-                  performValue: incrementValue,
-                  performDateTime: DateTime.now(),
-                ),
+                      habitId: habit.id,
+                      repeatIndex: repeatIndex,
+                      performValue: incrementValue,
+                      performDateTime: DateTime.now(),
+                    ),
             repeatTitle: "Сегодня",
           ),
           PaddedContainerCard(
@@ -138,11 +135,11 @@ class HabitDetailsPage extends HookWidget {
               BiggerText(text: "История"),
               SizedBox(height: 5),
               DatePicker(
-                change: (d) => selectedHistoryDateState.value = d,
-                highlights: vm.historyHighlights,
+                change: (d) => historyDateState.value = d,
+                highlights: history.highlights,
               ),
-              if (vm.history.containsKey(selectedHistoryDateState.value))
-                for (var e in vm.history[selectedHistoryDateState.value])
+              if (history.history.containsKey(historyDateState.value))
+                for (var e in history.history[historyDateState.value])
                   Padding(
                     padding: const EdgeInsets.all(5),
                     child: Row(children: [

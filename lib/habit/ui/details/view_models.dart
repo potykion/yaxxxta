@@ -6,19 +6,14 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'view_models.freezed.dart';
 
-@freezed
-abstract class HabitDetailsPageVM with _$HabitDetailsVM {
-  const HabitDetailsPageVM._();
+class HabitHistory {
+  final Map<DateTime, List<HabitHistoryEntry>> history;
 
-  factory HabitDetailsPageVM({
-    @nullable Habit habit,
-    @nullable List<HabitPerforming> habitPerformings,
-  }) = _HabitDetailsVM;
+  HabitHistory(this.history);
 
-  /// История привычки - мапа, где ключ - дата,
-  /// значение - список записей из времени и изменения прогресса
-  Map<DateTime, List<HabitHistoryEntry>> get history => groupBy(
-        habitPerformings,
+  factory HabitHistory.fromPerformings(List<HabitPerforming> performings) =>
+      HabitHistory(groupBy(
+        performings,
         (HabitPerforming hp) => hp.performDateTime.date(),
       ).map(
         (key, value) => MapEntry(
@@ -33,15 +28,10 @@ abstract class HabitDetailsPageVM with _$HabitDetailsVM {
               )
               .toList(),
         ),
-      );
+      ));
 
-  Map<DateTime, double> get historyHighlights =>
+  Map<DateTime, double> get highlights =>
       history.map((key, value) => MapEntry(key, value.isNotEmpty ? 1 : 0));
-
-  ProgressHabitVM get progress =>
-      ProgressHabitVM.build(habit, habitPerformings);
-
-
 }
 
 /// Запись о выполнении привычки в прошлом

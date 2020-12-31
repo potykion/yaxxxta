@@ -53,6 +53,11 @@ Provider<HabitPerformingController> habitPerformingController =
           loadingState: ref.watch(loadingState),
         ));
 
+var habitControllerProvider = Provider((ref) => HabitController(
+      habitRepo: ref.watch(habitRepoProvider),
+      habitState: ref.watch(habitsProvider),
+    ));
+
 ////////////////////////////////////////////////////////////////////////////////
 // HABIT LIST PAGE
 ////////////////////////////////////////////////////////////////////////////////
@@ -61,7 +66,7 @@ StateProvider<DateTime> selectedDateProvider =
     StateProvider((ref) => DateTime.now().date());
 
 /// Провайдер ВМок для страницы со списком привычек
-Provider<List<ProgressHabitVM>> listHabitVMs = Provider((ref) {
+Provider<List<HabitProgressVM>> listHabitVMs = Provider((ref) {
   var selectedDate = ref.watch(selectedDateProvider).state;
   var habitPerformings =
       ref.watch(habitPerformingController).getDateState(selectedDate).state;
@@ -70,7 +75,7 @@ Provider<List<ProgressHabitVM>> listHabitVMs = Provider((ref) {
   var habits = ref.watch(habitsProvider).state;
   var settings = ref.watch(settingsProvider).state;
   return habits
-      .map((h) => ProgressHabitVM.build(h, groupedHabitPerformings[h.id] ?? []))
+      .map((h) => HabitProgressVM.build(h, groupedHabitPerformings[h.id] ?? []))
       .where((h) => settings.showCompleted || !h.isComplete)
       .toList();
 });
@@ -83,25 +88,45 @@ StateProvider<int> selectedHabitId = StateProvider((ref) => null);
 
 /// Провайдер выбранной привычки
 Provider<Habit> selectedHabitProvider = Provider(
-  (ref) => ref
-      .watch(habitsProvider)
-      .state
-      .where((h) => h.id == ref.watch(selectedHabitId).state)
-      .first,
+  (ref) {
+    var habitId = ref.watch(selectedHabitId).state;
+    if (habitId == null) return null;
+    return ref.watch(habitsProvider).state.where((h) => h.id == habitId).first;
+  },
 );
 
-/// Провадер выполнений выбранной привычки
-Provider<Iterable<HabitPerforming>> selectedHabitPerformings = Provider(
+var todaySelectedHabitPerformingsProvider = Provider(
   (ref) => ref
       .watch(todayHabitPerformingsProvider)
       .state
-      .where((hp) => hp.habitId == ref.watch(selectedHabitId).state),
+      .where((hp) => hp.habitId == ref.watch(selectedHabitId).state)
+      .toList(),
 );
 
-/// Провайдер ВМки для страницы деталей привычки
-Provider<HabitDetailsPageVM> habitDetailsVMProvider = Provider(
-  (ref) => HabitDetailsPageVM(
-    habit: ref.watch(selectedHabitProvider),
-    habitPerformings: ref.watch(todayHabitPerformingsProvider).state,
-  ),
+/// Провадер выполнений выбранной привычки
+Provider<List<HabitPerforming>> selectedHabitPerformingsProvider = Provider(
+  (ref) {
+    var todaySelectedHabitPerformings =
+        ref.watch(todaySelectedHabitPerformingsProvider);
+
+    var notTodaySelectedHabitPerfomings = ref
+        .watch(habitPerformingRepoProvider)
+        .listByHabit(ref.watch(selectedHabitId).state)
+        .where((hp) => !todaySelectedHabitPerformings.contains(hp));
+
+    return [
+      ...todaySelectedHabitPerformings,
+      ...notTodaySelectedHabitPerfomings
+    ];
+  },
+);
+
+var selectedHabitProgressProvider = Provider(
+  (ref) => HabitProgressVM.build(ref.watch(selectedHabitProvider),
+      ref.watch(todaySelectedHabitPerformingsProvider)),
+);
+
+var selectedHabitHistoryProvider = Provider(
+  (ref) =>
+      HabitHistory.fromPerformings(ref.watch(selectedHabitPerformingsProvider)),
 );
