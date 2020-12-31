@@ -24,7 +24,7 @@ abstract class Routes {
 /// Маппинг роутов в страницы
 final Map<String, Widget Function(BuildContext context)> routes = {
   Routes.list: (_) => HabitListPage(),
-  // Routes.details: (_) => HabitDetailsPage(),
+  Routes.details: (_) => HabitDetailsPage(),
   // Routes.form: (_) => HabitFormPage(),
   Routes.settings: (_) => SettingsPage()
 };

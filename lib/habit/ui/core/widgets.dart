@@ -5,13 +5,24 @@ import '../../../core/ui/widgets/new_progress.dart';
 import '../../../core/ui/widgets/text.dart';
 import 'view_models.dart';
 
+/// Контрол повторов выполнений привычки
 class HabitRepeatControl extends StatelessWidget {
+  /// ВМки повторов привычек
   final List<HabitRepeatVM> repeats;
+
+  /// Начальный индекс повтора
   final int initialRepeatIndex;
+
+  /// Событие инкремента привычки
   final Function(int repeatIndex, double incrementValue) onRepeatIncrement;
+
+  /// Название на карточке с повтором
   final String repeatTitle;
+
+  /// Функция, которая по повтору делает название на карточке с повтором
   final Widget Function(HabitRepeatVM repeat) repeatTitleBuilder;
 
+  /// Контрол повторов выполнений привычки
   const HabitRepeatControl({
     Key key,
     @required this.repeats,

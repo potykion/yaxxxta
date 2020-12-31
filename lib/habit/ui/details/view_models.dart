@@ -41,6 +41,7 @@ abstract class HabitDetailsPageVM with _$HabitDetailsVM {
   ProgressHabitVM get progress =>
       ProgressHabitVM.build(habit, habitPerformings);
 
+
 }
 
 /// Запись о выполнении привычки в прошлом

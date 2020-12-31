@@ -99,7 +99,7 @@ Provider<Iterable<HabitPerforming>> selectedHabitPerformings = Provider(
 );
 
 /// Провайдер ВМки для страницы деталей привычки
-Provider<HabitDetailsPageVM> detailsHabitVM = Provider(
+Provider<HabitDetailsPageVM> habitDetailsVMProvider = Provider(
   (ref) => HabitDetailsPageVM(
     habit: ref.watch(selectedHabitProvider),
     habitPerformings: ref.watch(todayHabitPerformingsProvider).state,

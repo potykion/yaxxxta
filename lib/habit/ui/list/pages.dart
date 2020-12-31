@@ -50,10 +50,10 @@ class HabitListPage extends HookWidget {
               children: [
                 for (var vm in vms)
                   GestureDetector(
-                    onTap: () => Navigator.of(context).pushNamed(
-                      Routes.details,
-                      arguments: vm.id,
-                    ),
+                    onTap: () {
+                      context.read(selectedHabitId).state = vm.id;
+                      return Navigator.of(context).pushNamed(Routes.details);
+                    },
                     child: HabitRepeatControl(
                       repeatTitleBuilder: (repeat) => Row(children: [
                         BiggerText(text: vm.title),
