@@ -35,7 +35,7 @@ class HabitPerformingController {
 
   /// Создает выполнение привычки, обновляя состояние
   Future<void> create({
-    @required int habitId,
+    @required String habitId,
     @required int repeatIndex,
     double performValue = 1,
     DateTime performDateTime,
@@ -75,7 +75,7 @@ class HabitController {
 
   HabitController({this.habitRepo, this.habitState});
 
-  Future<void> delete(int habitId) async {
+  Future<void> delete(String habitId) async {
     await habitRepo.delete(habitId);
     habitState.state = [...habitState.state.where((h) => h.id != habitId)];
   }

@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:uuid/uuid.dart';
 import '../domain/db.dart';
 
 import '../domain/models.dart';
@@ -6,29 +7,30 @@ import '../domain/models.dart';
 /// Репо для работы с привычками
 class HabitRepo implements BaseHabitRepo {
   final Box<Map> _habitBox;
+  final Uuid _uuid = Uuid();
 
   /// Создает репо
   HabitRepo(this._habitBox);
 
   @override
-  Future<int> insert(Habit habit) => _habitBox.add(habit.toJson());
+  Future<String> insert(Habit habit) async {
+    var id = _uuid.v1();
+    var habitWithId = habit.copyWith(id: id);
+    await _habitBox.put(id, habitWithId.toJson());
+    return id;
+  }
 
   @override
-  List<Habit> list() => _habitBox.values
-      .toList()
-      .asMap()
-      .entries
-      .map((e) => Habit.fromJson(e.value).copyWith(id: e.key))
-      .toList();
+  List<Habit> list() => _habitBox.values.map((e) => Habit.fromJson(e)).toList();
 
   @override
-  Habit get(int id) => Habit.fromJson(_habitBox.getAt(id)).copyWith(id: id);
+  Habit get(String id) => Habit.fromJson(_habitBox.get(id));
 
   @override
   Future<void> update(Habit habit) => _habitBox.put(habit.id, habit.toJson());
 
   @override
-  Future<void> delete(int id) => _habitBox.delete(id);
+  Future<void> delete(String id) => _habitBox.delete(id);
 }
 
 /// Репо выполнений привычек
@@ -39,8 +41,9 @@ class HabitPerformingRepo implements BaseHabitPerformingRepo {
   HabitPerformingRepo(this._habitPerformingBox);
 
   @override
-  Future<int> insert(HabitPerforming performing) =>
-      _habitPerformingBox.add(performing.toJson());
+  Future<void> insert(HabitPerforming performing) async {
+    await _habitPerformingBox.add(performing.toJson());
+  }
 
   @override
   List<HabitPerforming> list(DateTime from, DateTime to) => _habitPerformingBox
@@ -53,8 +56,9 @@ class HabitPerformingRepo implements BaseHabitPerformingRepo {
       .toList();
 
   @override
-  List<HabitPerforming> listByHabit(int habitId) => _habitPerformingBox.values
-      .map((e) => HabitPerforming.fromJson(e))
-      .where((hp) => hp.habitId == habitId)
-      .toList();
+  List<HabitPerforming> listByHabit(String habitId) =>
+      _habitPerformingBox.values
+          .map((e) => HabitPerforming.fromJson(e))
+          .where((hp) => hp.habitId == habitId)
+          .toList();
 }

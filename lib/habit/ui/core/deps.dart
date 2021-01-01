@@ -31,6 +31,7 @@ Provider<BaseHabitPerformingRepo> habitPerformingRepoProvider = Provider(
 /// Провайдер состояния загрузи чего-либо
 StateProvider<bool> loadingState = StateProvider((_) => true);
 
+
 /// Провайдер привычек
 StateProvider<List<Habit>> habitsProvider =
     StateProvider((ref) => ref.watch(habitRepoProvider).list());
@@ -71,28 +72,28 @@ Provider<List<HabitProgressVM>> listHabitVMs = Provider((ref) {
   var habitPerformings =
       ref.watch(habitPerformingController).getDateState(selectedDate).state;
   var groupedHabitPerformings =
-      groupBy<HabitPerforming, int>(habitPerformings, (hp) => hp.habitId);
+      groupBy<HabitPerforming, String>(habitPerformings, (hp) => hp.habitId);
   var habits = ref.watch(habitsProvider).state;
   var settings = ref.watch(settingsProvider).state;
-  return habits
+  var vms = habits
       .map((h) => HabitProgressVM.build(h, groupedHabitPerformings[h.id] ?? []))
       .where((h) => settings.showCompleted || !h.isComplete)
       .toList();
+  return vms;
 });
 
 ////////////////////////////////////////////////////////////////////////////////
 // HABIT DETAILS PAGE
 ////////////////////////////////////////////////////////////////////////////////
 
-StateProvider<int> selectedHabitId = StateProvider((ref) => null);
+StateProvider<String> selectedHabitId = StateProvider((ref) => null);
 
 /// Провайдер выбранной привычки
 Provider<Habit> selectedHabitProvider = Provider(
-  (ref) {
-    var habitId = ref.watch(selectedHabitId).state;
-    if (habitId == null) return null;
-    return ref.watch(habitsProvider).state.where((h) => h.id == habitId).first;
-  },
+  (ref) => ref.watch(habitsProvider).state.firstWhere(
+        (h) => h.id == ref.watch(selectedHabitId).state,
+        orElse: () => null,
+      ),
 );
 
 var todaySelectedHabitPerformingsProvider = Provider(
@@ -122,8 +123,10 @@ Provider<List<HabitPerforming>> selectedHabitPerformingsProvider = Provider(
 );
 
 var selectedHabitProgressProvider = Provider(
-  (ref) => HabitProgressVM.build(ref.watch(selectedHabitProvider),
-      ref.watch(todaySelectedHabitPerformingsProvider)),
+  (ref) => HabitProgressVM.build(
+    ref.watch(selectedHabitProvider),
+    ref.watch(todaySelectedHabitPerformingsProvider),
+  ),
 );
 
 var selectedHabitHistoryProvider = Provider(

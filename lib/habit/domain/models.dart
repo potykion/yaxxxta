@@ -16,7 +16,7 @@ abstract class Habit with _$Habit {
   /// Создает привычку
   const factory Habit({
     /// Айдишник
-    int id,
+    String id,
 
     /// Дата создания
     @required DateTime created,
@@ -274,7 +274,7 @@ abstract class HabitPerforming with _$HabitPerforming {
   /// Создает выполнение привычки
   factory HabitPerforming({
     /// Айди привычки
-    @required int habitId,
+    @required String habitId,
 
     /// Раз выполнения (напр. 1 из 2)
     @required int repeatIndex,

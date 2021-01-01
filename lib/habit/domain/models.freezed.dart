@@ -18,7 +18,7 @@ class _$HabitTearOff {
 
 // ignore: unused_element
   _Habit call(
-      {int id,
+      {String id,
       @required DateTime created,
       String title = "",
       HabitType type = HabitType.time,
@@ -51,7 +51,7 @@ const $Habit = _$HabitTearOff();
 /// @nodoc
 mixin _$Habit {
   /// Айдишник
-  int get id;
+  String get id;
 
   /// Дата создания
   DateTime get created;
@@ -83,7 +83,7 @@ abstract class $HabitCopyWith<$Res> {
   factory $HabitCopyWith(Habit value, $Res Function(Habit) then) =
       _$HabitCopyWithImpl<$Res>;
   $Res call(
-      {int id,
+      {String id,
       DateTime created,
       String title,
       HabitType type,
@@ -115,7 +115,7 @@ class _$HabitCopyWithImpl<$Res> implements $HabitCopyWith<$Res> {
     Object habitPeriod = freezed,
   }) {
     return _then(_value.copyWith(
-      id: id == freezed ? _value.id : id as int,
+      id: id == freezed ? _value.id : id as String,
       created: created == freezed ? _value.created : created as DateTime,
       title: title == freezed ? _value.title : title as String,
       type: type == freezed ? _value.type : type as HabitType,
@@ -149,7 +149,7 @@ abstract class _$HabitCopyWith<$Res> implements $HabitCopyWith<$Res> {
       __$HabitCopyWithImpl<$Res>;
   @override
   $Res call(
-      {int id,
+      {String id,
       DateTime created,
       String title,
       HabitType type,
@@ -183,7 +183,7 @@ class __$HabitCopyWithImpl<$Res> extends _$HabitCopyWithImpl<$Res>
     Object habitPeriod = freezed,
   }) {
     return _then(_Habit(
-      id: id == freezed ? _value.id : id as int,
+      id: id == freezed ? _value.id : id as String,
       created: created == freezed ? _value.created : created as DateTime,
       title: title == freezed ? _value.title : title as String,
       type: type == freezed ? _value.type : type as HabitType,
@@ -229,7 +229,7 @@ class _$_Habit extends _Habit {
   @override
 
   /// Айдишник
-  final int id;
+  final String id;
   @override
 
   /// Дата создания
@@ -321,7 +321,7 @@ class _$_Habit extends _Habit {
 abstract class _Habit extends Habit {
   const _Habit._() : super._();
   const factory _Habit(
-      {int id,
+      {String id,
       @required DateTime created,
       String title,
       HabitType type,
@@ -335,7 +335,7 @@ abstract class _Habit extends Habit {
   @override
 
   /// Айдишник
-  int get id;
+  String get id;
   @override
 
   /// Дата создания
@@ -649,7 +649,7 @@ class _$HabitPerformingTearOff {
 
 // ignore: unused_element
   _HabitPerforming call(
-      {@required int habitId,
+      {@required String habitId,
       @required int repeatIndex,
       @required double performValue,
       @required DateTime performDateTime}) {
@@ -674,7 +674,7 @@ const $HabitPerforming = _$HabitPerformingTearOff();
 /// @nodoc
 mixin _$HabitPerforming {
   /// Айди привычки
-  int get habitId;
+  String get habitId;
 
   /// Раз выполнения (напр. 1 из 2)
   int get repeatIndex;
@@ -695,7 +695,7 @@ abstract class $HabitPerformingCopyWith<$Res> {
           HabitPerforming value, $Res Function(HabitPerforming) then) =
       _$HabitPerformingCopyWithImpl<$Res>;
   $Res call(
-      {int habitId,
+      {String habitId,
       int repeatIndex,
       double performValue,
       DateTime performDateTime});
@@ -718,7 +718,7 @@ class _$HabitPerformingCopyWithImpl<$Res>
     Object performDateTime = freezed,
   }) {
     return _then(_value.copyWith(
-      habitId: habitId == freezed ? _value.habitId : habitId as int,
+      habitId: habitId == freezed ? _value.habitId : habitId as String,
       repeatIndex:
           repeatIndex == freezed ? _value.repeatIndex : repeatIndex as int,
       performValue: performValue == freezed
@@ -739,7 +739,7 @@ abstract class _$HabitPerformingCopyWith<$Res>
       __$HabitPerformingCopyWithImpl<$Res>;
   @override
   $Res call(
-      {int habitId,
+      {String habitId,
       int repeatIndex,
       double performValue,
       DateTime performDateTime});
@@ -764,7 +764,7 @@ class __$HabitPerformingCopyWithImpl<$Res>
     Object performDateTime = freezed,
   }) {
     return _then(_HabitPerforming(
-      habitId: habitId == freezed ? _value.habitId : habitId as int,
+      habitId: habitId == freezed ? _value.habitId : habitId as String,
       repeatIndex:
           repeatIndex == freezed ? _value.repeatIndex : repeatIndex as int,
       performValue: performValue == freezed
@@ -797,7 +797,7 @@ class _$_HabitPerforming implements _HabitPerforming {
   @override
 
   /// Айди привычки
-  final int habitId;
+  final String habitId;
   @override
 
   /// Раз выполнения (напр. 1 из 2)
@@ -854,7 +854,7 @@ class _$_HabitPerforming implements _HabitPerforming {
 
 abstract class _HabitPerforming implements HabitPerforming {
   factory _HabitPerforming(
-      {@required int habitId,
+      {@required String habitId,
       @required int repeatIndex,
       @required double performValue,
       @required DateTime performDateTime}) = _$_HabitPerforming;
@@ -865,7 +865,7 @@ abstract class _HabitPerforming implements HabitPerforming {
   @override
 
   /// Айди привычки
-  int get habitId;
+  String get habitId;
   @override
 
   /// Раз выполнения (напр. 1 из 2)

@@ -36,34 +36,34 @@ class HabitProgressControl extends StatelessWidget {
   @override
   Widget build(BuildContext context) => habitType == HabitType.repeats
       ? _RepeatProgressControl(
-          currentValue: currentValue,
+          initialValue: currentValue,
           goalValue: goalValue,
           onValueIncrement: onValueIncrement,
         )
       : _TimeProgressControl(
-          currentValue: currentValue,
+          initialValue: currentValue,
           goalValue: goalValue,
           onValueIncrement: onValueIncrement,
         );
 }
 
 class _RepeatProgressControl extends HookWidget {
-  final double currentValue;
+  final double initialValue;
   final double goalValue;
   final void Function(double incrementValue) onValueIncrement;
 
   _RepeatProgressControl({
-    @required this.currentValue,
+    @required this.initialValue,
     @required this.goalValue,
     @required this.onValueIncrement,
   });
 
   @override
   Widget build(BuildContext context) {
-    var currentValueState = useState(currentValue);
+    var currentValueState = useState(initialValue);
     useValueChanged<double, void>(
-      currentValue,
-      (_, __) => currentValueState.value = currentValue,
+      initialValue,
+      (_, __) => currentValueState.value = initialValue,
     );
 
     return _BaseProgressControl(
@@ -83,32 +83,39 @@ class _RepeatProgressControl extends HookWidget {
 }
 
 class _TimeProgressControl extends HookWidget {
-  final double currentValue;
+  final double initialValue;
   final double goalValue;
   final void Function(double incrementValue) onValueIncrement;
 
   _TimeProgressControl({
-    @required this.currentValue,
+    @required this.initialValue,
     @required this.goalValue,
     @required this.onValueIncrement,
   });
 
-  String get progressStr {
-    var currentValueDuration = Duration(seconds: currentValue.toInt()).format();
-    var goalValueDuration = Duration(seconds: goalValue.toInt()).format();
-    return "$currentValueDuration / $goalValueDuration";
-  }
-
   @override
   Widget build(BuildContext context) {
-    var currentValueState = useState(currentValue);
     var timerState = useState<Timer>(null);
-
     void _cancelTimer() {
+      if (timerState.value == null) return;
       timerState.value.cancel();
       onValueIncrement(timerState.value.tick.toDouble());
       timerState.value = null;
     }
+
+    var currentValueState = useState(initialValue);
+    useValueChanged<double, void>(
+      initialValue,
+      (_, __) {
+        _cancelTimer();
+        currentValueState.value = initialValue;
+      },
+    );
+
+    var currentValueDuration =
+        Duration(seconds: currentValueState.value.toInt()).format();
+    var goalValueDuration = Duration(seconds: goalValue.toInt()).format();
+    var progressStr = "$currentValueDuration / $goalValueDuration";
 
     return _BaseProgressControl(
       progressStr: progressStr,

@@ -59,6 +59,9 @@ dependencies:
   # тьюплы
   tuple: ^1.0.3
 
+  # uuid
+  uuid: ^2.2.2
+
 
 
 dev_dependencies:

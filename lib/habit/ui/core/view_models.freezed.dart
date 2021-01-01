@@ -14,7 +14,8 @@ class _$HabitProgressVMTearOff {
   const _$HabitProgressVMTearOff();
 
 // ignore: unused_element
-  _HabitProgressVM call({int id, String title, List<HabitRepeatVM> repeats}) {
+  _HabitProgressVM call(
+      {String id, String title, List<HabitRepeatVM> repeats}) {
     return _HabitProgressVM(
       id: id,
       title: title,
@@ -29,7 +30,7 @@ const $HabitProgressVM = _$HabitProgressVMTearOff();
 
 /// @nodoc
 mixin _$HabitProgressVM {
-  int get id;
+  String get id;
 
   /// Название
   String get title;
@@ -45,7 +46,7 @@ abstract class $HabitProgressVMCopyWith<$Res> {
   factory $HabitProgressVMCopyWith(
           HabitProgressVM value, $Res Function(HabitProgressVM) then) =
       _$HabitProgressVMCopyWithImpl<$Res>;
-  $Res call({int id, String title, List<HabitRepeatVM> repeats});
+  $Res call({String id, String title, List<HabitRepeatVM> repeats});
 }
 
 /// @nodoc
@@ -64,7 +65,7 @@ class _$HabitProgressVMCopyWithImpl<$Res>
     Object repeats = freezed,
   }) {
     return _then(_value.copyWith(
-      id: id == freezed ? _value.id : id as int,
+      id: id == freezed ? _value.id : id as String,
       title: title == freezed ? _value.title : title as String,
       repeats:
           repeats == freezed ? _value.repeats : repeats as List<HabitRepeatVM>,
@@ -79,7 +80,7 @@ abstract class _$HabitProgressVMCopyWith<$Res>
           _HabitProgressVM value, $Res Function(_HabitProgressVM) then) =
       __$HabitProgressVMCopyWithImpl<$Res>;
   @override
-  $Res call({int id, String title, List<HabitRepeatVM> repeats});
+  $Res call({String id, String title, List<HabitRepeatVM> repeats});
 }
 
 /// @nodoc
@@ -100,7 +101,7 @@ class __$HabitProgressVMCopyWithImpl<$Res>
     Object repeats = freezed,
   }) {
     return _then(_HabitProgressVM(
-      id: id == freezed ? _value.id : id as int,
+      id: id == freezed ? _value.id : id as String,
       title: title == freezed ? _value.title : title as String,
       repeats:
           repeats == freezed ? _value.repeats : repeats as List<HabitRepeatVM>,
@@ -115,7 +116,7 @@ class _$_HabitProgressVM extends _HabitProgressVM {
         super._();
 
   @override
-  final int id;
+  final String id;
   @override
 
   /// Название
@@ -157,10 +158,12 @@ class _$_HabitProgressVM extends _HabitProgressVM {
 abstract class _HabitProgressVM extends HabitProgressVM {
   _HabitProgressVM._() : super._();
   factory _HabitProgressVM(
-      {int id, String title, List<HabitRepeatVM> repeats}) = _$_HabitProgressVM;
+      {String id,
+      String title,
+      List<HabitRepeatVM> repeats}) = _$_HabitProgressVM;
 
   @override
-  int get id;
+  String get id;
   @override
 
   /// Название

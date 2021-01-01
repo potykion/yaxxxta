@@ -8,7 +8,7 @@ part of 'models.dart';
 
 _$_Habit _$_$_HabitFromJson(Map json) {
   return _$_Habit(
-    id: json['id'] as int,
+    id: json['id'] as String,
     created: json['created'] == null
         ? null
         : DateTime.parse(json['created'] as String),
@@ -113,7 +113,7 @@ const _$WeekdayEnumMap = {
 
 _$_HabitPerforming _$_$_HabitPerformingFromJson(Map json) {
   return _$_HabitPerforming(
-    habitId: json['habitId'] as int,
+    habitId: json['habitId'] as String,
     repeatIndex: json['repeatIndex'] as int,
     performValue: (json['performValue'] as num)?.toDouble(),
     performDateTime: json['performDateTime'] == null

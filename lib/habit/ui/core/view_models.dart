@@ -13,7 +13,7 @@ abstract class HabitProgressVM with _$HabitProgressVM {
   /// Вью-моделька прогресса привычки
   @Assert("repeats.length >= 1", "Повторов должно быть >= 1")
   factory HabitProgressVM({
-    int id,
+    String id,
 
     /// Название
     String title,

@@ -20,7 +20,7 @@ class HabitListPage extends HookWidget {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         context.read(habitPerformingController).load(DateTime.now());
       });
-    });
+    }, []);
     var vms = useProvider(listHabitVMs);
     var loading = useProvider(loadingState).state;
 

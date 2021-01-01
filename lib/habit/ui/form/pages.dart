@@ -11,7 +11,7 @@ import '../../../core/ui/widgets/text.dart';
 import '../../../theme.dart';
 import '../../domain/models.dart';
 
-var _vmProvider = StateProvider(
+var _vmProvider = StateProvider.autoDispose(
   (ref) =>
       ref.watch(selectedHabitProvider) ??
       Habit(habitPeriod: HabitPeriod(), created: DateTime.now()),
