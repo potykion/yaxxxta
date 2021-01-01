@@ -79,4 +79,19 @@ class HabitController {
     await habitRepo.delete(habitId);
     habitState.state = [...habitState.state.where((h) => h.id != habitId)];
   }
+
+  Future<void> createOrUpdateHabit(Habit habit) async {
+    if (habit.isUpdate) {
+      await habitRepo.update(habit);
+      habitState.state = [
+        for (var h in habitState.state)
+          if (h.id == habit.id) habit else h
+      ];
+    } else {
+      habitState.state = [
+        ...habitState.state,
+        habit.copyWith(id: await habitRepo.insert(habit))
+      ];
+    }
+  }
 }

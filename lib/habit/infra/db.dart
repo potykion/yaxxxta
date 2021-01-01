@@ -25,7 +25,7 @@ class HabitRepo implements BaseHabitRepo {
   Habit get(int id) => Habit.fromJson(_habitBox.getAt(id)).copyWith(id: id);
 
   @override
-  Future<void> update(Habit habit) => _habitBox.putAt(habit.id, habit.toJson());
+  Future<void> update(Habit habit) => _habitBox.put(habit.id, habit.toJson());
 
   @override
   Future<void> delete(int id) => _habitBox.delete(id);
