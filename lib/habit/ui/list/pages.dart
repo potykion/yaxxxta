@@ -63,16 +63,19 @@ class HabitListPage extends HookWidget {
                       ]),
                       repeats: vm.repeats,
                       initialRepeatIndex: vm.firstIncompleteRepeatIndex,
-                      onRepeatIncrement: (repeatIndex, incrementValue) =>
+                      onRepeatIncrement: (repeatIndex, incrementValue,
+                              [date]) =>
                           context.read(habitPerformingController).create(
                                 habitId: vm.id,
                                 repeatIndex: repeatIndex,
                                 performValue: incrementValue,
                                 performDateTime: buildDateTime(
-                                  context.read(selectedDateProvider).state,
+                                  date ??
+                                      context.read(selectedDateProvider).state,
                                   DateTime.now(),
                                 ),
                               ),
+                      initialDate: context.read(selectedDateProvider).state,
                     ),
                   )
               ],

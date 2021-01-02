@@ -121,7 +121,7 @@ class HabitDetailsPage extends HookWidget {
           ),
           HabitRepeatControl(
             repeats: progress.repeats,
-            onRepeatIncrement: (repeatIndex, incrementValue) =>
+            onRepeatIncrement: (repeatIndex, incrementValue, [_]) =>
                 context.read(habitPerformingController).create(
                       habitId: habit.id,
                       repeatIndex: repeatIndex,

@@ -14,13 +14,16 @@ class HabitRepeatControl extends StatelessWidget {
   final int initialRepeatIndex;
 
   /// Событие инкремента привычки
-  final Function(int repeatIndex, double incrementValue) onRepeatIncrement;
+  final void Function(int repeatIndex, double incrementValue,
+      [DateTime dateTime]) onRepeatIncrement;
 
   /// Название на карточке с повтором
   final String repeatTitle;
 
   /// Функция, которая по повтору делает название на карточке с повтором
   final Widget Function(HabitRepeatVM repeat) repeatTitleBuilder;
+
+  final DateTime initialDate;
 
   /// Контрол повторов выполнений привычки
   const HabitRepeatControl({
@@ -30,6 +33,7 @@ class HabitRepeatControl extends StatelessWidget {
     this.initialRepeatIndex = 0,
     this.repeatTitle = "",
     this.repeatTitleBuilder,
+    this.initialDate,
   }) : super(key: key);
 
   @override
@@ -56,7 +60,9 @@ class HabitRepeatControl extends StatelessWidget {
                 habitType: repeat.type,
                 currentValue: repeat.currentValue,
                 goalValue: repeat.goalValue,
-                onValueIncrement: (value) => onRepeatIncrement(index, value),
+                onValueIncrement: (value, [dt]) =>
+                    onRepeatIncrement(index, value, dt),
+                  initialDate: initialDate
               )
             ]);
           },

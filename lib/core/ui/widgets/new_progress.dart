@@ -9,6 +9,9 @@ import '../../../theme.dart';
 import '../../utils/dt.dart';
 import 'text.dart';
 
+typedef OnValueIncrement = void Function(double incrementValue,
+    [DateTime datetime]);
+
 /// Контрол прогресса проивычки
 class HabitProgressControl extends StatelessWidget {
   /// Текущее значение прогресса
@@ -18,19 +21,22 @@ class HabitProgressControl extends StatelessWidget {
   final double goalValue;
 
   /// Событие изменения прогресса
-  final void Function(double incrementValue) onValueIncrement;
+  final OnValueIncrement onValueIncrement;
 
   /// Тип привычки
   /// В зависимости от него определяется тип прогресс-контрола
   final HabitType habitType;
 
+  final DateTime initialDate;
+
   /// Контрол прогресса проивычки
   const HabitProgressControl({
     Key key,
-    this.currentValue,
-    this.goalValue,
-    this.onValueIncrement,
-    this.habitType,
+    @required this.currentValue,
+    @required this.goalValue,
+    @required this.onValueIncrement,
+    @required this.habitType,
+    @required this.initialDate,
   }) : super(key: key);
 
   @override
@@ -44,13 +50,14 @@ class HabitProgressControl extends StatelessWidget {
           initialValue: currentValue,
           goalValue: goalValue,
           onValueIncrement: onValueIncrement,
+          initialDate: initialDate,
         );
 }
 
 class _RepeatProgressControl extends HookWidget {
   final double initialValue;
   final double goalValue;
-  final void Function(double incrementValue) onValueIncrement;
+  final OnValueIncrement onValueIncrement;
 
   _RepeatProgressControl({
     @required this.initialValue,
@@ -85,21 +92,23 @@ class _RepeatProgressControl extends HookWidget {
 class _TimeProgressControl extends HookWidget {
   final double initialValue;
   final double goalValue;
-  final void Function(double incrementValue) onValueIncrement;
+  final OnValueIncrement onValueIncrement;
+  final DateTime initialDate;
 
   _TimeProgressControl({
     @required this.initialValue,
     @required this.goalValue,
     @required this.onValueIncrement,
+    @required this.initialDate,
   });
 
   @override
   Widget build(BuildContext context) {
     var timerState = useState<Timer>(null);
-    void _cancelTimer() {
+    void _cancelTimer([DateTime oldDate]) {
       if (timerState.value == null) return;
       timerState.value.cancel();
-      onValueIncrement(timerState.value.tick.toDouble());
+      onValueIncrement(timerState.value.tick.toDouble(), oldDate);
       timerState.value = null;
     }
 
@@ -107,10 +116,13 @@ class _TimeProgressControl extends HookWidget {
     useValueChanged<double, void>(
       initialValue,
       (_, __) {
-        _cancelTimer();
         currentValueState.value = initialValue;
       },
     );
+
+    useValueChanged<DateTime, void>(initialDate, (oldDate, _) {
+      _cancelTimer(oldDate);
+    });
 
     var currentValueDuration =
         Duration(seconds: currentValueState.value.toInt()).format();
