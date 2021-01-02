@@ -13,7 +13,7 @@ import '../../domain/models.dart';
 
 var _vmProvider = StateProvider.autoDispose(
   (ref) =>
-      ref.watch(selectedHabitProvider) ??
+      Get.arguments as Habit ??
       Habit(habitPeriod: HabitPeriod(), created: DateTime.now()),
 );
 

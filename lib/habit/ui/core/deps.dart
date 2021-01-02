@@ -31,7 +31,6 @@ Provider<BaseHabitPerformingRepo> habitPerformingRepoProvider = Provider(
 /// Провайдер состояния загрузи чего-либо
 StateProvider<bool> loadingState = StateProvider((_) => true);
 
-
 /// Провайдер привычек
 StateProvider<List<Habit>> habitsProvider =
     StateProvider((ref) => ref.watch(habitRepoProvider).list());
@@ -123,10 +122,12 @@ Provider<List<HabitPerforming>> selectedHabitPerformingsProvider = Provider(
 );
 
 var selectedHabitProgressProvider = Provider(
-  (ref) => HabitProgressVM.build(
-    ref.watch(selectedHabitProvider),
-    ref.watch(todaySelectedHabitPerformingsProvider),
-  ),
+  (ref) => ref.watch(selectedHabitProvider) != null
+      ? HabitProgressVM.build(
+          ref.watch(selectedHabitProvider),
+          ref.watch(todaySelectedHabitPerformingsProvider),
+        )
+      : null,
 );
 
 var selectedHabitHistoryProvider = Provider(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:yaxxxta/core/ui/widgets/circular_progress.dart';
 import 'package:yaxxxta/core/ui/widgets/text.dart';
 import 'package:yaxxxta/habit/ui/core/deps.dart';
 import 'package:yaxxxta/theme.dart';
@@ -41,11 +42,7 @@ class HabitListPage extends HookWidget {
         ),
       ),
       body: loading
-          ? Center(
-              child: CircularProgressIndicator(
-              valueColor:
-                  AlwaysStoppedAnimation<Color>(CustomColors.almostBlack),
-            ))
+          ? CenteredCircularProgress()
           : ListView(
               children: [
                 for (var vm in vms)
