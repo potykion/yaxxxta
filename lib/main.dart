@@ -25,10 +25,12 @@ void main() async {
   runApp(ProviderScope(child: MyApp()));
 }
 
+
 /// Приложуха
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => GetMaterialApp(
+        navigatorKey: navigatorKey,
         routes: routes,
         home: HomePage(),
         theme: buildTheme(context),

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:yaxxxta/core/ui/deps.dart';
 
 import '../../../core/ui/widgets/card.dart';
 import '../../../core/ui/widgets/date.dart';
 import '../../../core/ui/widgets/text.dart';
 import '../../../core/utils/dt.dart';
+import '../../../main.dart';
 import '../../../routes.dart';
 import '../../../theme.dart';
 import '../../domain/models.dart';
@@ -13,6 +15,8 @@ import '../core/deps.dart';
 import '../core/widgets.dart';
 
 enum HabitActionType { edit, delete }
+
+GlobalKey _scaffold = GlobalKey();
 
 /// Страничка с инфой о привычке
 class HabitDetailsPage extends HookWidget {
@@ -24,6 +28,7 @@ class HabitDetailsPage extends HookWidget {
     var history = useProvider(selectedHabitHistoryProvider);
 
     return Scaffold(
+      key: _scaffold,
       body: ListView(
         children: [
           // todo отдельным компонентом + в апп-бар перенести
@@ -122,7 +127,9 @@ class HabitDetailsPage extends HookWidget {
           HabitRepeatControl(
             repeats: progress.repeats,
             onRepeatIncrement: (repeatIndex, incrementValue, [_]) =>
-                context.read(habitPerformingController).create(
+                navigatorKey.currentContext
+                    .read(habitPerformingController)
+                    .create(
                       habitId: habit.id,
                       repeatIndex: repeatIndex,
                       performValue: incrementValue,

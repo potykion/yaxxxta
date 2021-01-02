@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hooks_riverpod/all.dart';
 
@@ -12,3 +13,5 @@ FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 Provider<FlutterLocalNotificationsPlugin>
     flutterLocalNotificationsPluginProvider =
     Provider((_) => flutterLocalNotificationsPlugin);
+
+var navigatorKey = GlobalKey<NavigatorState>();

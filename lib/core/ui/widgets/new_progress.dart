@@ -105,11 +105,13 @@ class _TimeProgressControl extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var timerState = useState<Timer>(null);
-    void _cancelTimer([DateTime oldDate]) {
+    void _cancelTimer({DateTime oldDate, bool withResetTimer = true}) {
       if (timerState.value == null) return;
       timerState.value.cancel();
       onValueIncrement(timerState.value.tick.toDouble(), oldDate);
-      timerState.value = null;
+      if (withResetTimer) {
+        timerState.value = null;
+      }
     }
 
     var currentValueState = useState(initialValue);
@@ -120,9 +122,14 @@ class _TimeProgressControl extends HookWidget {
       },
     );
 
-    useValueChanged<DateTime, void>(initialDate, (oldDate, _) {
-      _cancelTimer(oldDate);
-    });
+    useValueChanged<DateTime, void>(
+      initialDate,
+      (oldDate, _) => _cancelTimer(oldDate: oldDate),
+    );
+    useEffect(
+      () => () => _cancelTimer(withResetTimer: false),
+      [timerState],
+    );
 
     var currentValueDuration =
         Duration(seconds: currentValueState.value.toInt()).format();
