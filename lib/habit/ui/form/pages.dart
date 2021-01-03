@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:get/get.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/habit/ui/core/deps.dart';
 import 'package:yaxxxta/habit/ui/form/widgets.dart';
@@ -11,15 +10,7 @@ import '../../../core/ui/widgets/text.dart';
 import '../../../theme.dart';
 import '../../domain/models.dart';
 
-var _vmProvider = StateProvider.autoDispose(
-  (ref) =>
-      Get.arguments as Habit ??
-      Habit(habitPeriod: HabitPeriod(), created: DateTime.now()),
-);
-
-var _error = Provider.autoDispose((ref) {
-  var habit = ref.watch(_vmProvider).state;
-
+var _error = Provider.family<String, Habit>((ref, habit) {
   if (habit.goalValue <= 0) {
     return habit.type == HabitType.repeats
         ? "Число повторений должно быть > 0"
@@ -33,12 +24,12 @@ var _error = Provider.autoDispose((ref) {
 class HabitFormPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    var vmState = useProvider(_vmProvider);
-    var vm = vmState.state;
+    var vmState = useState(ModalRoute.of(context).settings.arguments as Habit ??
+        Habit(habitPeriod: HabitPeriod(), created: DateTime.now()));
+    var vm = vmState.value;
+    setVm(Habit newVm) => vmState.value = newVm;
 
-    setVm(Habit newVm) => context.read(_vmProvider).state = newVm;
-
-    var error = useProvider(_error);
+    var error = useProvider(_error(vm));
 
     return Scaffold(
       body: ListView(
