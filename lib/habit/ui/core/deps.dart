@@ -75,6 +75,7 @@ Provider<List<HabitProgressVM>> listHabitVMs = Provider((ref) {
   var habits = ref.watch(habitsProvider).state;
   var settings = ref.watch(settingsProvider).state;
   var vms = habits
+      .where((h) => h.matchDate(selectedDate))
       .map((h) => HabitProgressVM.build(h, groupedHabitPerformings[h.id] ?? []))
       .where((h) => settings.showCompleted || !h.isComplete)
       .toList();
