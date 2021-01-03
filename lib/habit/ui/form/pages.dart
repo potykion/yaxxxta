@@ -213,7 +213,7 @@ class HabitFormPage extends HookWidget {
                 spacing: 10,
                 children: [
                   SimpleChip(
-                    text: vm.habitPeriod.type.verbose(),
+                    text: HabitPeriodType.day.verbose(),
                     selected: !vm.habitPeriod.isCustom &&
                         vm.habitPeriod.type == HabitPeriodType.day,
                     change: (_) => setVm(
@@ -223,7 +223,7 @@ class HabitFormPage extends HookWidget {
                     ),
                   ),
                   SimpleChip(
-                    text: vm.habitPeriod.type.verbose(),
+                    text: HabitPeriodType.week.verbose(),
                     selected: !vm.habitPeriod.isCustom &&
                         vm.habitPeriod.type == HabitPeriodType.week,
                     change: (_) => setVm(
@@ -233,7 +233,7 @@ class HabitFormPage extends HookWidget {
                     ),
                   ),
                   SimpleChip(
-                    text: vm.habitPeriod.type.verbose(),
+                    text: HabitPeriodType.month.verbose(),
                     selected: !vm.habitPeriod.isCustom &&
                         vm.habitPeriod.type == HabitPeriodType.month,
                     change: (_) => setVm(

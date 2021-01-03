@@ -24,7 +24,6 @@ void main() async {
   runApp(ProviderScope(child: MyApp()));
 }
 
-
 /// Приложуха
 class MyApp extends StatelessWidget {
   @override
