@@ -25,7 +25,7 @@ abstract class Habit with _$Habit {
     @Default("") String title,
 
     /// Тип
-    @Default(HabitType.time) HabitType type,
+    @Default(HabitType.repeats) HabitType type,
 
     /// Повторы в течение дня включены
     @Default(false) bool dailyRepeatsEnabled,

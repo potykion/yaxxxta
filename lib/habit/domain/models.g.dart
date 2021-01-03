@@ -14,7 +14,7 @@ _$_Habit _$_$_HabitFromJson(Map json) {
         : DateTime.parse(json['created'] as String),
     title: json['title'] as String ?? '',
     type: _$enumDecodeNullable(_$HabitTypeEnumMap, json['type']) ??
-        HabitType.time,
+        HabitType.repeats,
     dailyRepeatsEnabled: json['dailyRepeatsEnabled'] as bool ?? false,
     goalValue: (json['goalValue'] as num)?.toDouble() ?? 1,
     dailyRepeats: (json['dailyRepeats'] as num)?.toDouble() ?? 1,

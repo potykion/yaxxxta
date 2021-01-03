@@ -20,8 +20,8 @@ class _$HabitTearOff {
   _Habit call(
       {String id,
       @required DateTime created,
-      String title = "",
-      HabitType type = HabitType.time,
+      String title = '',
+      HabitType type = HabitType.repeats,
       bool dailyRepeatsEnabled = false,
       double goalValue = 1,
       double dailyRepeats = 1,
@@ -208,8 +208,8 @@ class _$_Habit extends _Habit {
   const _$_Habit(
       {this.id,
       @required this.created,
-      this.title = "",
-      this.type = HabitType.time,
+      this.title = '',
+      this.type = HabitType.repeats,
       this.dailyRepeatsEnabled = false,
       this.goalValue = 1,
       this.dailyRepeats = 1,
@@ -234,12 +234,12 @@ class _$_Habit extends _Habit {
 
   /// Дата создания
   final DateTime created;
-  @JsonKey(defaultValue: "")
+  @JsonKey(defaultValue: '')
   @override
 
   /// Название
   final String title;
-  @JsonKey(defaultValue: HabitType.time)
+  @JsonKey(defaultValue: HabitType.repeats)
   @override
 
   /// Тип

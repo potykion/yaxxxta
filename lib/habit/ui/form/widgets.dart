@@ -38,16 +38,16 @@ class _HabitTypeRadioGroupState extends State<HabitTypeRadioGroup> {
 
   @override
   Widget build(BuildContext context) => Column(
-    children: [
-      if (!widget.setBefore ||
-          widget.setBefore && widget.initial == HabitType.time)
-        buildHabitTypeRadio(HabitType.time),
-      if (!widget.setBefore) SizedBox(height: 5),
-      if (!widget.setBefore ||
-          widget.setBefore && widget.initial == HabitType.repeats)
-        buildHabitTypeRadio(HabitType.repeats),
-    ],
-  );
+        children: [
+          if (!widget.setBefore ||
+              widget.setBefore && widget.initial == HabitType.repeats)
+            buildHabitTypeRadio(HabitType.repeats),
+          if (!widget.setBefore) SizedBox(height: 5),
+          if (!widget.setBefore ||
+              widget.setBefore && widget.initial == HabitType.time)
+            buildHabitTypeRadio(HabitType.time),
+        ],
+      );
 
   Selectable buildHabitTypeRadio(HabitType habitType) {
     String biggerText;
