@@ -3,10 +3,12 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../habit/domain/models.dart';
 
 import '../../../theme.dart';
 import '../../utils/dt.dart';
+import '../deps.dart';
 import 'text.dart';
 
 typedef OnValueIncrement = void Function(double incrementValue,
@@ -154,6 +156,10 @@ class _TimeProgressControl extends HookWidget {
                 currentValueState.value += 1;
                 if (currentValueState.value.toInt() == goalValue.toInt()) {
                   _cancelTimer();
+                  context.read(notificationSender).send(
+                        title: "Привычка выполнена",
+                        // body: "Я не знаю что сюда написать",
+                      );
                 }
               },
             );
