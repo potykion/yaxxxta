@@ -60,13 +60,6 @@ class HabitFormPage extends HookWidget {
                 change: (type) => setVm(vm.copyWith(type: type, goalValue: 1)),
                 setBefore: vm.isUpdate,
               ),
-              SelectableCheckbox(
-                initial: vm.dailyRepeatsEnabled,
-                change: (selected) =>
-                    setVm(vm.copyWith(dailyRepeatsEnabled: selected)),
-                biggerText: "Повторы в течение дня",
-                smallerText: "Например, 10 мин. 2 раза в день",
-              ),
             ],
           ),
           if (vm.type == HabitType.time)
@@ -163,43 +156,6 @@ class HabitFormPage extends HookWidget {
                       text: "+ 100",
                       onTap: () =>
                           setVm(vm.copyWith(goalValue: vm.goalValue + 100)),
-                    ),
-                  ],
-                )
-              ],
-            ),
-          if (vm.dailyRepeatsEnabled)
-            PaddedContainerCard(
-              children: [
-                BiggerText(text: "Число повторений за день"),
-                SizedBox(height: 5),
-                TextInput<double>(
-                  initial: vm.dailyRepeats,
-                  change: (dynamic r) =>
-                      setVm(vm.copyWith(dailyRepeats: r as double)),
-                ),
-                SizedBox(height: 5),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SimpleButton(
-                      text: "+ 1 %",
-                      onTap: () => setVm(vm.increaseDailyRepeatsByPercent()),
-                    ),
-                    SimpleButton(
-                      text: "+ 1",
-                      onTap: () =>
-                          setVm(vm.copyWith(dailyRepeats: vm.dailyRepeats + 1)),
-                    ),
-                    SimpleButton(
-                      text: "+ 10",
-                      onTap: () => setVm(
-                          vm.copyWith(dailyRepeats: vm.dailyRepeats + 10)),
-                    ),
-                    SimpleButton(
-                      text: "+ 100",
-                      onTap: () => setVm(
-                          vm.copyWith(dailyRepeats: vm.dailyRepeats + 100)),
                     ),
                   ],
                 )
