@@ -41,8 +41,7 @@ class HabitDetailsPage extends HookWidget {
                       IconButton(
                           icon: Icon(Icons.arrow_back),
                           onPressed: () => Navigator.of(context).pop()),
-                      BiggestText(text: habit.title),
-                      Spacer(),
+                      Expanded(child: BiggestText(text: habit.title)),
                       IconButton(
                           icon: Icon(Icons.more_vert),
                           onPressed: () async {

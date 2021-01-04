@@ -91,7 +91,7 @@ class BiggestText extends StatelessWidget {
   Widget build(BuildContext context) => Text(
         text,
         style: TextStyle(
-          fontSize: 24,
+          fontSize: 20,
           fontWeight: FontWeight.bold,
           color: CustomColors.almostBlack,
         ),
