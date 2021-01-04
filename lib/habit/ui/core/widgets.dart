@@ -37,27 +37,16 @@ class HabitRepeatControl extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => ConstrainedBox(
-        constraints: BoxConstraints(
-          // minHeight: 130,
-          maxHeight: 155,
-        ),
-        child: PaddedContainerCard(children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.baseline,
-            children: [
-              Flexible(child: BiggerText(text: repeatTitle)),
-            ],
-          ),
-          SizedBox(height: 5),
-          HabitProgressControl(
-            habitType: repeats[0].type,
-            currentValue: repeats[0].currentValue,
-            goalValue: repeats[0].goalValue,
-            onValueIncrement: (value, [dt]) =>
-                onRepeatIncrement(0, value, dt),
-            initialDate: initialDate,
-          )
-        ]),
-      );
+  Widget build(BuildContext context) => PaddedContainerCard(children: [
+    BiggerText(text: repeatTitle),
+    SizedBox(height: 5),
+    HabitProgressControl(
+      habitType: repeats[0].type,
+      currentValue: repeats[0].currentValue,
+      goalValue: repeats[0].goalValue,
+      onValueIncrement: (value, [dt]) =>
+          onRepeatIncrement(0, value, dt),
+      initialDate: initialDate,
+    )
+  ]);
 }
