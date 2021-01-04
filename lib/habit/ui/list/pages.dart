@@ -52,12 +52,7 @@ class HabitListPage extends HookWidget {
                       return Navigator.of(context).pushNamed(Routes.details);
                     },
                     child: HabitRepeatControl(
-                      repeatTitleBuilder: (repeat) => Row(children: [
-                        BiggerText(text: vm.title),
-                        SizedBox(width: 5),
-                        if (repeat.performTime != null)
-                          SmallerText(text: repeat.performTimeStr),
-                      ]),
+                      repeatTitle: vm.title,
                       repeats: vm.repeats,
                       initialRepeatIndex: vm.firstIncompleteRepeatIndex,
                       onRepeatIncrement: (repeatIndex, incrementValue,

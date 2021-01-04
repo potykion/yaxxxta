@@ -29,6 +29,7 @@ class PaddedContainerCard extends StatelessWidget {
                 ? EdgeInsets.symmetric(vertical: 16, horizontal: 0)
                 : EdgeInsets.symmetric(vertical: 15, horizontal: 15),
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: children,
             ),

@@ -37,37 +37,27 @@ class HabitRepeatControl extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => SizedBox(
-        height: 130,
-        child: PageView.builder(
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (context, index) {
-            var repeat = repeats[index];
-
-            return PaddedContainerCard(children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.baseline,
-                children: [
-                  repeatTitleBuilder?.call(repeat) ??
-                      BiggerText(text: repeatTitle),
-                  Spacer(),
-                  if (repeats.length != 1)
-                    SmallerText(text: "${index + 1} / ${repeats.length}")
-                ],
-              ),
-              SizedBox(height: 5),
-              HabitProgressControl(
-                habitType: repeat.type,
-                currentValue: repeat.currentValue,
-                goalValue: repeat.goalValue,
-                onValueIncrement: (value, [dt]) =>
-                    onRepeatIncrement(index, value, dt),
-                  initialDate: initialDate
-              )
-            ]);
-          },
-          itemCount: repeats.length,
-          controller: PageController(initialPage: initialRepeatIndex),
+  Widget build(BuildContext context) => ConstrainedBox(
+        constraints: BoxConstraints(
+          // minHeight: 130,
+          maxHeight: 155,
         ),
+        child: PaddedContainerCard(children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.baseline,
+            children: [
+              Flexible(child: BiggerText(text: repeatTitle)),
+            ],
+          ),
+          SizedBox(height: 5),
+          HabitProgressControl(
+            habitType: repeats[0].type,
+            currentValue: repeats[0].currentValue,
+            goalValue: repeats[0].goalValue,
+            onValueIncrement: (value, [dt]) =>
+                onRepeatIncrement(0, value, dt),
+            initialDate: initialDate,
+          )
+        ]),
       );
 }
