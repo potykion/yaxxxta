@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:infinite_listview/infinite_listview.dart';
+import 'package:yaxxxta/core/ui/widgets/text.dart';
 
 import '../../../theme.dart';
 import '../../utils/dt.dart';
@@ -30,7 +31,7 @@ class DatePicker extends HookWidget {
     var selectedIndexState = useState(0);
 
     return SizedBox(
-      height: 60,
+      height: 70,
       child: InfiniteListView.builder(
         /// Сдвигаем лист-вью на половину экрана + 3 паддинга по 10,
         /// чтобы текущий день был посерединке
@@ -80,19 +81,25 @@ class DatePickerItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(5.0),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: color,
-        ),
-        width: 50,
-        child: Center(
-          child: Text(
-            _dateStr,
-            style: TextStyle(fontWeight: FontWeight.bold),
+      padding: const EdgeInsets.symmetric(horizontal: 5),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: color,
+            ),
+            width: 50,
+            height: 50,
+            child: Center(
+                child: Text(
+              _dateStr,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            )),
           ),
-        ),
+          SmallestText(date.isToday() ? "сегодня" : "")
+        ],
       ),
     );
   }

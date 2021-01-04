@@ -30,9 +30,31 @@ class SmallerText extends StatelessWidget {
         color: dark
             ? CustomColors.almostBlack
             : light
-            ? CustomColors.lightGrey
-            : CustomColors.grey,
+                ? CustomColors.lightGrey
+                : CustomColors.grey,
         fontSize: 14,
+      ),
+    );
+  }
+}
+
+class SmallestText extends StatelessWidget {
+  /// Текст
+  final String text;
+
+  /// Создает текст
+  const SmallestText(
+    this.text,
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: TextStyle(
+        fontWeight: FontWeight.bold,
+        color: CustomColors.grey,
+        fontSize: 12,
       ),
     );
   }
@@ -48,13 +70,13 @@ class BiggerText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Text(
-    text,
-    style: TextStyle(
-      fontSize: 16,
-      fontWeight: FontWeight.bold,
-      color: CustomColors.almostBlack,
-    ),
-  );
+        text,
+        style: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+          color: CustomColors.almostBlack,
+        ),
+      );
 }
 
 /// Большуший текст
@@ -67,11 +89,11 @@ class BiggestText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Text(
-    text,
-    style: TextStyle(
-      fontSize: 24,
-      fontWeight: FontWeight.bold,
-      color: CustomColors.almostBlack,
-    ),
-  );
+        text,
+        style: TextStyle(
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+          color: CustomColors.almostBlack,
+        ),
+      );
 }
