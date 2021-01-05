@@ -76,12 +76,18 @@ class _RepeatProgressControl extends HookWidget {
     );
 
     return _BaseProgressControl(
-      incrementButton: IconButton(
-        splashRadius: 20,
-        icon: Icon(Icons.done),
-        onPressed: () {
-          currentValueState.value += 1;
-          onValueIncrement(1);
+      incrementButton: GestureDetector(
+        child: IconButton(
+          splashRadius: 20,
+          icon: Icon(Icons.done),
+          onPressed: () {
+            currentValueState.value += 1;
+            onValueIncrement(1);
+          },
+        ),
+        onLongPress: () {
+          if (currentValueState.value >= goalValue) return;
+          onValueIncrement(goalValue - currentValueState.value);
         },
       ),
       progressPercentage: min(currentValueState.value / goalValue, 1),
@@ -107,7 +113,14 @@ class _TimeProgressControl extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var timerState = useState<Timer>(null);
-    void _cancelTimer({DateTime oldDate, bool withResetTimer = true}) {
+    void _cancelTimer({
+      DateTime oldDate,
+      bool withResetTimer = true,
+      double value,
+    }) {
+      if (value != null) {
+        onValueIncrement(value ?? timerState.value.tick.toDouble(), oldDate);
+      }
       if (timerState.value == null) return;
       timerState.value.cancel();
       onValueIncrement(timerState.value.tick.toDouble(), oldDate);
@@ -141,29 +154,37 @@ class _TimeProgressControl extends HookWidget {
     return _BaseProgressControl(
       progressStr: progressStr,
       progressPercentage: min(currentValueState.value / goalValue, 1),
-      incrementButton: IconButton(
-        splashRadius: 20,
-        icon: (timerState.value?.isActive ?? false)
-            ? Icon(Icons.pause)
-            : Icon(Icons.play_arrow),
-        onPressed: () {
-          if (timerState.value?.isActive ?? false) {
-            _cancelTimer();
-          } else {
-            timerState.value = Timer.periodic(
-              Duration(seconds: 1),
-              (timer) {
-                currentValueState.value += 1;
-                if (currentValueState.value.toInt() == goalValue.toInt()) {
-                  _cancelTimer();
-                  context.read(notificationSender).send(
-                        title: "Привычка выполнена",
-                        // body: "Я не знаю что сюда написать",
-                      );
-                }
-              },
-            );
-          }
+      incrementButton: GestureDetector(
+        child: IconButton(
+          splashRadius: 20,
+          icon: (timerState.value?.isActive ?? false)
+              ? Icon(Icons.pause)
+              : Icon(Icons.play_arrow),
+          disabledColor: CustomColors.almostBlack,
+          onPressed: () {
+            if (timerState.value?.isActive ?? false) {
+              _cancelTimer();
+            } else {
+              timerState.value = Timer.periodic(
+                Duration(seconds: 1),
+                (timer) {
+                  currentValueState.value += 1;
+                  if (currentValueState.value.toInt() == goalValue.toInt()) {
+                    _cancelTimer();
+                    context.read(notificationSender).send(
+                          title: "Привычка выполнена",
+                          // body: "Я не знаю что сюда написать",
+                        );
+                  }
+                },
+              );
+            }
+          },
+        ),
+        onLongPress: () {
+          if (timerState.value?.isActive ?? false) return;
+          if (currentValueState.value >= goalValue) return;
+          _cancelTimer(value: goalValue - currentValueState.value);
         },
       ),
     );
