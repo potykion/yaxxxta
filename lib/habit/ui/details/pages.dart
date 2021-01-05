@@ -127,9 +127,9 @@ class HabitDetailsPage extends HookWidget {
                       ),
                       if (habit.dailyRepeatSettings?.performTimes != null)
                         Chip(
-                          label: Text(
-                            "Выполняется в ${formatTime(habit.dailyRepeatSettings.performTimes[0])}",
-                          ),
+                          avatar: Icon(Icons.access_time),
+                          label: Text(formatTime(
+                              habit.dailyRepeatSettings.performTimes[0])),
                           backgroundColor: CustomColors.purple,
                         ),
                     ],
