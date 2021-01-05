@@ -37,16 +37,22 @@ class HabitRepeatControl extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => PaddedContainerCard(children: [
-    BiggerText(text: repeatTitle),
-    SizedBox(height: 5),
-    HabitProgressControl(
-      habitType: repeats[0].type,
-      currentValue: repeats[0].currentValue,
-      goalValue: repeats[0].goalValue,
-      onValueIncrement: (value, [dt]) =>
-          onRepeatIncrement(0, value, dt),
-      initialDate: initialDate,
-    )
-  ]);
+  Widget build(BuildContext context) {
+    var repeat = repeats[0];
+    return PaddedContainerCard(children: [
+      BiggerText(
+        text: repeat.performTime != null
+            ? "${repeat.performTimeStr}: $repeatTitle"
+            : repeatTitle,
+      ),
+      SizedBox(height: 5),
+      HabitProgressControl(
+        habitType: repeat.type,
+        currentValue: repeat.currentValue,
+        goalValue: repeat.goalValue,
+        onValueIncrement: (value, [dt]) => onRepeatIncrement(0, value, dt),
+        initialDate: initialDate,
+      )
+    ]);
+  }
 }

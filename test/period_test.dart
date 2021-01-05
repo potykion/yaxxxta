@@ -5,7 +5,7 @@ void main() {
   test("Кастомная периодичность по месяцам", () {
     var monthHabit = Habit(
       created: DateTime(2020, 1, 1),
-      habitPeriod: HabitPeriod(
+      habitPeriod: HabitPeriodSettings(
         type: HabitPeriodType.month,
         periodValue: 2,
         monthDay: 1,
@@ -21,7 +21,7 @@ void main() {
   test("Кастомная периодичность по неделям", () {
     var monthHabit = Habit(
       created: DateTime(2020, 1, 1),
-      habitPeriod: HabitPeriod(
+      habitPeriod: HabitPeriodSettings(
         type: HabitPeriodType.week,
         periodValue: 2,
         weekdays: [Weekday.wednesday],
@@ -37,7 +37,7 @@ void main() {
   test("Кастомная периодичность по дням", () {
     var monthHabit = Habit(
       created: DateTime(2020, 1, 1),
-      habitPeriod: HabitPeriod(
+      habitPeriod: HabitPeriodSettings(
         type: HabitPeriodType.day,
         periodValue: 2,
       ),
@@ -52,7 +52,7 @@ void main() {
   test("Кастомная периодичность по дням с кол-вом дней > 7", () {
     var monthHabit = Habit(
       created: DateTime(2020, 1, 1),
-      habitPeriod: HabitPeriod(
+      habitPeriod: HabitPeriodSettings(
         type: HabitPeriodType.day,
         periodValue: 12,
       ),

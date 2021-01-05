@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:yaxxxta/core/ui/widgets/time.dart';
 import 'package:yaxxxta/habit/ui/core/deps.dart';
 import 'package:yaxxxta/habit/ui/form/widgets.dart';
 
@@ -25,7 +26,7 @@ class HabitFormPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var vmState = useState(ModalRoute.of(context).settings.arguments as Habit ??
-        Habit(habitPeriod: HabitPeriod(), created: DateTime.now()));
+        Habit(habitPeriod: HabitPeriodSettings(), created: DateTime.now()));
     var vm = vmState.value;
     setVm(Habit newVm) => vmState.value = newVm;
 
@@ -34,6 +35,9 @@ class HabitFormPage extends HookWidget {
     return Scaffold(
       body: ListView(
         children: [
+          //////////////////////////////////////////////////////////////////////
+          // Название
+          //////////////////////////////////////////////////////////////////////
           PaddedContainerCard(
             children: [
               BiggerText(text: "Название"),
@@ -44,6 +48,10 @@ class HabitFormPage extends HookWidget {
               ),
             ],
           ),
+          //////////////////////////////////////////////////////////////////////
+          // Тип + продолжительность / повыторы
+          //////////////////////////////////////////////////////////////////////
+          // region
           PaddedContainerCard(
             children: [
               Row(
@@ -161,6 +169,11 @@ class HabitFormPage extends HookWidget {
                 )
               ],
             ),
+          // endregion
+          //////////////////////////////////////////////////////////////////////
+          // Периодичность
+          //////////////////////////////////////////////////////////////////////
+          // region
           PaddedContainerCard(
             children: [
               BiggerText(text: "Периодичность"),
@@ -270,6 +283,31 @@ class HabitFormPage extends HookWidget {
                 ),
               ],
             ),
+          // endregion
+
+          //////////////////////////////////////////////////////////////////////
+          // Время выполнения
+          //////////////////////////////////////////////////////////////////////
+
+          PaddedContainerCard(
+            children: [
+              BiggerText(text: "Время выполнения"),
+              SizedBox(height: 5),
+              TimePickerInput(
+                initial: vm.dailyRepeatSettings.performTimes[0],
+                change: (time) => setVm(
+                  vm.copyWith(
+                    dailyRepeatSettings: vm.dailyRepeatSettings
+                        .copyWith(performTimes: {0: time}),
+                  ),
+                ),
+              )
+            ],
+          ),
+
+          //////////////////////////////////////////////////////////////////////
+          // Воздух, чтобы кнопка "Сохранить" не перекрывала последний инпут
+          //////////////////////////////////////////////////////////////////////
           SizedBox(height: 60)
         ],
       ),

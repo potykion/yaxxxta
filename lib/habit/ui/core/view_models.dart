@@ -36,13 +36,14 @@ abstract class HabitProgressVM with _$HabitProgressVM {
       id: habit.id,
       title: habit.title,
       repeats: List.generate(
-        habit.dailyRepeats.ceil(),
+        habit.dailyRepeatSettings.repeatsCount.ceil(),
         (index) => HabitRepeatVM(
           type: habit.type,
           goalValue: habit.goalValue,
           currentValue: (repeatHabitPerformings[index] ?? [])
               .map((p) => p.performValue)
               .fold(0, (v1, v2) => v1 + v2),
+          performTime: habit.dailyRepeatSettings.performTimes[index],
         ),
       ),
     );
@@ -50,6 +51,8 @@ abstract class HabitProgressVM with _$HabitProgressVM {
 
   /// Выполнена ли все повторы привычки
   bool get isComplete => repeats.every((r) => r.isComplete);
+
+  HabitRepeatVM get firstRepeat => repeats.first;
 
   /// Первый индекс невыполненного повтора привычки
   int get firstIncompleteRepeatIndex {

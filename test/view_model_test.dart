@@ -3,7 +3,7 @@ import 'package:yaxxxta/habit/domain/models.dart';
 
 void main() {
   test("Увеличение продолжительности на 1 час, 1 мин, 1 сек", () {
-    var vm = Habit(habitPeriod: HabitPeriod());
+    var vm = Habit(habitPeriod: HabitPeriodSettings());
 
     vm = vm.copyWith(goalValue: vm.goalValue + 1 + 1 * 60 + 1 * 3600);
 
@@ -13,7 +13,7 @@ void main() {
   });
 
   test("Увеличение продолжительности на 1 час и 2 %", () {
-    var vm = Habit(habitPeriod: HabitPeriod());
+    var vm = Habit(habitPeriod: HabitPeriodSettings());
 
     vm = vm
         .copyWith(goalValue: vm.goalValue + 1 * 3600)
@@ -27,7 +27,7 @@ void main() {
   });
 
   test("Установка секунд после установки минут", () {
-    var vm = Habit(habitPeriod: HabitPeriod());
+    var vm = Habit(habitPeriod: HabitPeriodSettings());
 
     vm = vm
         .copyWith(goalValue: vm.goalValue + 1 * 60 + 36)

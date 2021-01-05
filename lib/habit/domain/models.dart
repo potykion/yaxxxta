@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:yaxxxta/core/utils/dt.dart';
+import '../../core/utils/dt.dart';
 
 part 'models.g.dart';
 
@@ -27,17 +27,12 @@ abstract class Habit with _$Habit {
     /// Тип
     @Default(HabitType.repeats) HabitType type,
 
-    /// Повторы в течение дня включены
-    @Default(false) bool dailyRepeatsEnabled,
-
     /// Продолжительность / число повторений за раз
     @Default(1) double goalValue,
-
-    /// Число повторений за день
-    @Default(1) double dailyRepeats,
+    @required HabitDailyRepeatSettings dailyRepeatSettings,
 
     /// Периодичность
-    @required HabitPeriod habitPeriod,
+    @required HabitPeriodSettings habitPeriod,
   }) = _Habit;
 
   /// Если true, то привычка создана и редактируется;
@@ -70,10 +65,6 @@ abstract class Habit with _$Habit {
   /// Увеличивает продолжительность привычки на 1%
   Habit increaseGoalValueByPercent() =>
       copyWith(goalValue: double.parse((goalValue * 1.01).toStringAsFixed(2)));
-
-  /// Увеличивает кол-во повторов в течение дня на 1%
-  Habit increaseDailyRepeatsByPercent() => copyWith(
-      dailyRepeats: double.parse((dailyRepeats * 1.01).toStringAsFixed(2)));
 
   /// Создает привычку из джсона
   factory Habit.fromJson(Map json) =>
@@ -113,10 +104,10 @@ abstract class Habit with _$Habit {
 /// Ежемесячная периодичность:
 ///   - каждое 10 число месяца
 @freezed
-abstract class HabitPeriod with _$HabitPeriod {
+abstract class HabitPeriodSettings with _$HabitPeriodSettings {
   /// Создает периодичность привычки
 
-  const factory HabitPeriod({
+  const factory HabitPeriodSettings({
     /// Тип периодичности
     @Default(HabitPeriodType.day) HabitPeriodType type,
 
@@ -133,11 +124,26 @@ abstract class HabitPeriod with _$HabitPeriod {
     /// Если false, то {periodValue} = 1; иначе можно задавать {periodValue} > 1
     /// Вообще тупа в гуи юзается
     @Default(false) bool isCustom,
-  }) = _HabitPeriod;
+  }) = _HabitPeriodSettings;
 
   /// Создает периодичность привычки из словаря
-  factory HabitPeriod.fromJson(Map json) =>
-      _$HabitPeriodFromJson(Map<String, dynamic>.from(json));
+  factory HabitPeriodSettings.fromJson(Map json) =>
+      _$HabitPeriodSettingsFromJson(Map<String, dynamic>.from(json));
+}
+
+@freezed
+abstract class HabitDailyRepeatSettings with _$HabitDailyRepeatSettings {
+  const factory HabitDailyRepeatSettings({
+    /// Повторы в течение дня включены
+    @Default(false) bool repeatsEnabled,
+
+    /// Число повторений за день
+    @Default(1) double repeatsCount,
+    @Default(<int, DateTime>{}) Map<int, DateTime> performTimes,
+  }) = _HabitDailyRepeatSettings;
+
+  factory HabitDailyRepeatSettings.fromJson(Map json) =>
+      _$HabitDailyRepeatSettingsFromJson(Map<String, dynamic>.from(json));
 }
 
 /// День недели
