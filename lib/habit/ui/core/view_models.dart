@@ -36,14 +36,14 @@ abstract class HabitProgressVM with _$HabitProgressVM {
       id: habit.id,
       title: habit.title,
       repeats: List.generate(
-        habit.dailyRepeatSettings.repeatsCount.ceil(),
+        habit.dailyRepeatSettings?.repeatsCount?.ceil() ?? 1,
         (index) => HabitRepeatVM(
           type: habit.type,
           goalValue: habit.goalValue,
           currentValue: (repeatHabitPerformings[index] ?? [])
               .map((p) => p.performValue)
               .fold(0, (v1, v2) => v1 + v2),
-          performTime: habit.dailyRepeatSettings.performTimes[index],
+          performTime: (habit.dailyRepeatSettings?.performTimes ?? {})[index],
         ),
       ),
     );

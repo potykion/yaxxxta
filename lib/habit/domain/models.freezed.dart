@@ -23,7 +23,7 @@ class _$HabitTearOff {
       String title = "",
       HabitType type = HabitType.repeats,
       double goalValue = 1,
-      @required HabitDailyRepeatSettings dailyRepeatSettings,
+      HabitDailyRepeatSettings dailyRepeatSettings,
       @required HabitPeriodSettings habitPeriod}) {
     return _Habit(
       id: id,
@@ -208,13 +208,12 @@ class _$_Habit extends _Habit {
       this.title = "",
       this.type = HabitType.repeats,
       this.goalValue = 1,
-      @required this.dailyRepeatSettings,
+      this.dailyRepeatSettings,
       @required this.habitPeriod})
       : assert(created != null),
         assert(title != null),
         assert(type != null),
         assert(goalValue != null),
-        assert(dailyRepeatSettings != null),
         assert(habitPeriod != null),
         super._();
 
@@ -309,7 +308,7 @@ abstract class _Habit extends Habit {
       String title,
       HabitType type,
       double goalValue,
-      @required HabitDailyRepeatSettings dailyRepeatSettings,
+      HabitDailyRepeatSettings dailyRepeatSettings,
       @required HabitPeriodSettings habitPeriod}) = _$_Habit;
 
   factory _Habit.fromJson(Map<String, dynamic> json) = _$_Habit.fromJson;

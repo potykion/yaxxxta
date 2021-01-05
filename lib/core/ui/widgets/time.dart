@@ -17,7 +17,9 @@ class TimePickerInput extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    var tec = useTextEditingController(text: formatTime(initial));
+    var tec = useTextEditingController(
+      text: initial != null ? formatTime(initial) : "",
+    );
 
     return TextFormField(
       controller: tec,
@@ -25,7 +27,7 @@ class TimePickerInput extends HookWidget {
       onTap: () async {
         var selectedTime = await showTimePicker(
           context: context,
-          initialTime: TimeOfDay.fromDateTime(initial),
+          initialTime: TimeOfDay.fromDateTime(initial ?? DateTime.now()),
         );
         var selectedTimeDateTime = DateTime(
           2020,

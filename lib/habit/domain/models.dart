@@ -29,7 +29,8 @@ abstract class Habit with _$Habit {
 
     /// Продолжительность / число повторений за раз
     @Default(1) double goalValue,
-    @required HabitDailyRepeatSettings dailyRepeatSettings,
+
+    HabitDailyRepeatSettings dailyRepeatSettings,
 
     /// Периодичность
     @required HabitPeriodSettings habitPeriod,

@@ -294,11 +294,12 @@ class HabitFormPage extends HookWidget {
               BiggerText(text: "Время выполнения"),
               SizedBox(height: 5),
               TimePickerInput(
-                initial: vm.dailyRepeatSettings.performTimes[0],
+                initial: (vm.dailyRepeatSettings?.performTimes ?? {0: null})[0],
                 change: (time) => setVm(
                   vm.copyWith(
-                    dailyRepeatSettings: vm.dailyRepeatSettings
-                        .copyWith(performTimes: {0: time}),
+                    dailyRepeatSettings:
+                        (vm.dailyRepeatSettings ?? HabitDailyRepeatSettings())
+                            .copyWith(performTimes: {0: time}),
                   ),
                 ),
               )

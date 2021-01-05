@@ -80,9 +80,9 @@ Provider<List<HabitProgressVM>> listHabitVMs = Provider((ref) {
       .where((h) => settings.showCompleted || !h.isComplete)
       .toList()
         ..sort((h1, h2) => h1.firstRepeat.performTime == null
-            ? (h2.firstRepeat.performTime == null ? 0 : -1)
+            ? (h2.firstRepeat.performTime == null ? 0 : 1)
             : (h2.firstRepeat.performTime == null
-                ? 1
+                ? -1
                 : h1.firstRepeat.performTime
                     .compareTo(h2.firstRepeat.performTime)));
   return vms;

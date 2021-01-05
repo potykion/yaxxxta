@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/all.dart';
 import 'package:yaxxxta/core/ui/widgets/circular_progress.dart';
 import 'package:yaxxxta/core/ui/widgets/text.dart';
 import 'package:yaxxxta/habit/ui/core/deps.dart';
+import 'package:yaxxxta/habit/ui/core/view_models.dart';
 import 'package:yaxxxta/theme.dart';
 import '../../../core/ui/widgets/bottom_nav.dart';
 import '../../../core/utils/dt.dart';
@@ -45,14 +46,17 @@ class HabitListPage extends HookWidget {
           ? CenteredCircularProgress()
           : ListView(
               children: [
-                for (var vm in vms)
+                for (HabitProgressVM vm in vms)
                   GestureDetector(
                     onTap: () {
                       context.read(selectedHabitId).state = vm.id;
                       return Navigator.of(context).pushNamed(Routes.details);
                     },
                     child: HabitRepeatControl(
-                      repeatTitle: vm.title,
+                      withPerformTime: true,
+                      repeatTitle: vm.firstRepeat.performTime != null
+                          ? "${vm.firstRepeat.performTimeStr}: ${vm.title}"
+                          : vm.title,
                       repeats: vm.repeats,
                       initialRepeatIndex: vm.firstIncompleteRepeatIndex,
                       onRepeatIncrement: (repeatIndex, incrementValue,

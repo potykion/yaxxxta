@@ -125,6 +125,13 @@ class HabitDetailsPage extends HookWidget {
                         label: Text(habit.habitPeriod.type.verbose()),
                         backgroundColor: CustomColors.red,
                       ),
+                      if (habit.dailyRepeatSettings?.performTimes != null)
+                        Chip(
+                          label: Text(
+                            "Выполняется в ${formatTime(habit.dailyRepeatSettings.performTimes[0])}",
+                          ),
+                          backgroundColor: CustomColors.purple,
+                        ),
                     ],
                   ),
                 ),
