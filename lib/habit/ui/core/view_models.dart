@@ -52,6 +52,7 @@ abstract class HabitProgressVM with _$HabitProgressVM {
   /// Выполнена ли все повторы привычки
   bool get isComplete => repeats.every((r) => r.isComplete);
 
+  /// Первый повтор привычки
   HabitRepeatVM get firstRepeat => repeats.first;
 
   /// Первый индекс невыполненного повтора привычки

@@ -23,21 +23,19 @@ class HabitRepeatControl extends StatelessWidget {
   /// Функция, которая по повтору делает название на карточке с повтором
   final Widget Function(HabitRepeatVM repeat) repeatTitleBuilder;
 
+  /// Начальная дата
   final DateTime initialDate;
 
-  final bool withPerformTime;
-
   /// Контрол повторов выполнений привычки
-  const HabitRepeatControl(
-      {Key key,
-      @required this.repeats,
-      @required this.onRepeatIncrement,
-      this.initialRepeatIndex = 0,
-      this.repeatTitle = "",
-      this.repeatTitleBuilder,
-      this.initialDate,
-      this.withPerformTime = false})
-      : super(key: key);
+  const HabitRepeatControl({
+    Key key,
+    @required this.repeats,
+    @required this.onRepeatIncrement,
+    this.initialRepeatIndex = 0,
+    this.repeatTitle = "",
+    this.repeatTitleBuilder,
+    this.initialDate,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

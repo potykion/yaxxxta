@@ -38,6 +38,7 @@ class SmallerText extends StatelessWidget {
   }
 }
 
+/// Самый маленький текст
 class SmallestText extends StatelessWidget {
   /// Текст
   final String text;

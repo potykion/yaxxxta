@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 import 'package:hooks_riverpod/all.dart';
-import 'package:yaxxxta/settings/domain/models.dart';
-import 'package:yaxxxta/settings/infra/db.dart';
+import '../../domain/models.dart';
+import '../../infra/db.dart';
 
 /// Регает hive-box для настроек
 Provider<Box<Map>> _settingsBoxProvider =

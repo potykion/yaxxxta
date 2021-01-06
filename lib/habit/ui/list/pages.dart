@@ -2,16 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/all.dart';
-import 'package:yaxxxta/core/ui/widgets/circular_progress.dart';
-import 'package:yaxxxta/core/ui/widgets/text.dart';
-import 'package:yaxxxta/habit/ui/core/deps.dart';
-import 'package:yaxxxta/habit/ui/core/view_models.dart';
-import 'package:yaxxxta/theme.dart';
-import '../../../core/ui/widgets/bottom_nav.dart';
-import '../../../core/utils/dt.dart';
 
+import '../../../core/ui/widgets/bottom_nav.dart';
+import '../../../core/ui/widgets/circular_progress.dart';
 import '../../../core/ui/widgets/date.dart';
+import '../../../core/utils/dt.dart';
 import '../../../routes.dart';
+import '../core/deps.dart';
+import '../core/view_models.dart';
 import '../core/widgets.dart';
 
 /// Страница списка привычек
@@ -22,6 +20,7 @@ class HabitListPage extends HookWidget {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         context.read(habitPerformingController).load(DateTime.now());
       });
+      return;
     }, []);
     var vms = useProvider(listHabitVMs);
     var loading = useProvider(loadingState).state;
@@ -53,7 +52,6 @@ class HabitListPage extends HookWidget {
                       return Navigator.of(context).pushNamed(Routes.details);
                     },
                     child: HabitRepeatControl(
-                      withPerformTime: true,
                       repeatTitle: vm.firstRepeat.performTime != null
                           ? "${vm.firstRepeat.performTimeStr}: ${vm.title}"
                           : vm.title,

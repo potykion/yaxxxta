@@ -1,10 +1,13 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+/// Отправщик уведомлений
 class NotificationSender {
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
 
-  NotificationSender(this.flutterLocalNotificationsPlugin);
+  /// Отправщик уведомлений
+  NotificationSender(this._flutterLocalNotificationsPlugin);
 
+  /// Андроид канал для уведомлений о завершении работы таймера
   AndroidNotificationDetails get timeProgressNotification =>
       AndroidNotificationDetails(
         'time-progress',
@@ -17,6 +20,7 @@ class NotificationSender {
         enableVibration: true,
       );
 
+  /// Отправка уведомления
   Future<void> send({
     String title,
     String body,
@@ -24,7 +28,7 @@ class NotificationSender {
   }) async {
     channel = channel ?? timeProgressNotification;
 
-    await flutterLocalNotificationsPlugin.show(
+    await _flutterLocalNotificationsPlugin.show(
       0,
       title,
       body,

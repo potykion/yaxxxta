@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
-import 'package:yaxxxta/settings/ui/core/deps.dart';
 
 import '../../../core/ui/widgets/bottom_nav.dart';
 import '../../../core/ui/widgets/card.dart';
@@ -10,6 +9,7 @@ import '../../../core/ui/widgets/text.dart';
 import '../../../core/ui/widgets/time.dart';
 import '../../../theme.dart';
 import '../../domain/models.dart';
+import '../core/deps.dart';
 
 /// Страница с настройками
 class SettingsPage extends HookWidget {

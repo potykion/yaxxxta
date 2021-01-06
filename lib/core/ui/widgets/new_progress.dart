@@ -29,6 +29,7 @@ class HabitProgressControl extends StatelessWidget {
   /// В зависимости от него определяется тип прогресс-контрола
   final HabitType habitType;
 
+  /// Начальная дата, нужно для _TimeProgressControl
   final DateTime initialDate;
 
   /// Контрол прогресса проивычки
@@ -86,7 +87,10 @@ class _RepeatProgressControl extends HookWidget {
           },
         ),
         onLongPress: () {
+          /// Если прогресс заполнен, то долгое нажатие ничо не делает
           if (currentValueState.value >= goalValue) return;
+
+          /// Заполняем оставшийся прогресс иначе
           onValueIncrement(goalValue - currentValueState.value);
         },
       ),
@@ -113,18 +117,25 @@ class _TimeProgressControl extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var timerState = useState<Timer>(null);
+
+    /// Вырубает таймер
     void _cancelTimer({
       DateTime oldDate,
       bool withResetTimer = true,
-      double value,
     }) {
-      if (value != null) {
-        onValueIncrement(value ?? timerState.value.tick.toDouble(), oldDate);
-      }
+      /// Если таймера нет, то нечего отменять
       if (timerState.value == null) return;
+
+      /// Отключение таймера
       timerState.value.cancel();
+
+      /// Обновляем прогресс
       onValueIncrement(timerState.value.tick.toDouble(), oldDate);
+
+      /// Обнуление таймера вызывает перерисовку виджета,
+      /// это не нужно делать, если мы покидаем страницу с виджетом
       if (withResetTimer) {
+        /// Удаляем таймер, чтобы его можно было запустить заново
         timerState.value = null;
       }
     }
@@ -137,10 +148,16 @@ class _TimeProgressControl extends HookWidget {
       },
     );
 
+    /// При смене initialDate нужно сбросить таймер
+    /// Актуально для списка привычек, где можно менять дату
     useValueChanged<DateTime, void>(
       initialDate,
       (oldDate, _) => _cancelTimer(oldDate: oldDate),
     );
+
+    /// При выходе со страницы, на которой работает таймер - его нужно отрубать
+    /// Пример: зашли на страницу деталей привычки, запустили таймер,
+    /// а потом ушли оттуда - надо вырубить таймер
     useEffect(
       () => () => _cancelTimer(withResetTimer: false),
       [timerState],
@@ -171,10 +188,9 @@ class _TimeProgressControl extends HookWidget {
                   currentValueState.value += 1;
                   if (currentValueState.value.toInt() == goalValue.toInt()) {
                     _cancelTimer();
-                    context.read(notificationSender).send(
-                          title: "Привычка выполнена",
-                          // body: "Я не знаю что сюда написать",
-                        );
+                    context
+                        .read(notificationSender)
+                        .send(title: "Привычка выполнена");
                   }
                 },
               );
@@ -182,9 +198,14 @@ class _TimeProgressControl extends HookWidget {
           },
         ),
         onLongPress: () {
+          /// Если таймер запущен, то долгое нажатие ничо не делает
           if (timerState.value?.isActive ?? false) return;
+
+          /// Если прогресс заполнен, то долгое нажатие ничо не делает
           if (currentValueState.value >= goalValue) return;
-          _cancelTimer(value: goalValue - currentValueState.value);
+
+          /// Заполняем оставшийся прогресс иначе
+          onValueIncrement(goalValue - currentValueState.value);
         },
       ),
     );

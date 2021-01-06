@@ -1,44 +1,61 @@
-import 'package:yaxxxta/habit/domain/models.dart';
-import 'package:yaxxxta/habit/ui/core/view_models.dart';
-import '../../../core/utils/dt.dart';
-
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../../../core/utils/dt.dart';
+import '../../domain/models.dart';
 
 part 'view_models.freezed.dart';
 
+/// История привычки
 class HabitHistory {
+  /// История привычки - мапа,
+  /// где ключ - дата, значения - список записей об истории
   final Map<DateTime, List<HabitHistoryEntry>> history;
 
+  /// История привычки
   HabitHistory(this.history);
 
+  /// Создает историю из выполнений
   factory HabitHistory.fromPerformings(List<HabitPerforming> performings) =>
-      HabitHistory(groupBy(
-        performings,
-        (HabitPerforming hp) => hp.performDateTime.date(),
-      ).map(
-        (key, value) => MapEntry(
-          key,
-          groupBy(value, (HabitPerforming hp) => hp.performDateTime.time())
-              .entries
-              .map(
-                (e) => HabitHistoryEntry(
-                  time: e.key.time(),
-                  value: e.value.fold(0, (sum, hp) => sum + hp.performValue),
-                ),
-              )
-              .toList(),
-        ),
-      ));
+      HabitHistory(
+        /// Группируем выполнения по дате
+        groupBy<HabitPerforming, DateTime>(
+          performings,
+          (hp) => hp.performDateTime.date(),
+        ).map(
+          (key, value) => MapEntry(
+            key,
 
+            /// Группируем выполнения по времени в рамках одной даты
+            groupBy<HabitPerforming, DateTime>(
+              value,
+              (hp) => hp.performDateTime.time(),
+            )
+                .entries
+
+                /// Создаем записи истории, суммируя значения выполнений
+                .map(
+                  (e) => HabitHistoryEntry(
+                    time: e.key.time(),
+                    value: e.value.fold(0, (sum, hp) => sum + hp.performValue),
+                  ),
+                )
+                .toList(),
+          ),
+        ),
+      );
+
+  /// Хайлаты истории - мапа,
+  /// где ключ - дата, значение была ли выполнения привычка в эту дату
   Map<DateTime, double> get highlights =>
       history.map((key, value) => MapEntry(key, value.isNotEmpty ? 1 : 0));
 }
 
-/// Запись о выполнении привычки в прошлом
+/// Запись о выполнении привычки
 @freezed
 abstract class HabitHistoryEntry with _$HabitHistoryEntry {
   const HabitHistoryEntry._();
 
+  /// Запись о выполнении привычки
   factory HabitHistoryEntry({
     /// Время
     DateTime time,

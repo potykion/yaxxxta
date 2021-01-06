@@ -30,11 +30,18 @@ abstract class Habit with _$Habit {
     /// Продолжительность / число повторений за раз
     @Default(1) double goalValue,
 
+    /// Настройки повторов в течение дня
     HabitDailyRepeatSettings dailyRepeatSettings,
 
     /// Периодичность
     @required HabitPeriodSettings habitPeriod,
   }) = _Habit;
+
+  /// Созадет пустую привычку
+  factory Habit.blank() => Habit(
+        habitPeriod: HabitPeriodSettings(),
+        created: DateTime.now(),
+      );
 
   /// Если true, то привычка создана и редактируется;
   /// иначе создается новая привычка
@@ -71,6 +78,9 @@ abstract class Habit with _$Habit {
   factory Habit.fromJson(Map json) =>
       _$HabitFromJson(Map<String, dynamic>.from(json));
 
+  /// Чекает входит ли дата в периодичность привычки
+  /// Например, если периодичность еженедельная по пн,
+  /// то вызов метода с 2021-01-04 вернет true
   bool matchDate(DateTime date) {
     switch (habitPeriod.type) {
       case HabitPeriodType.day:
@@ -132,17 +142,26 @@ abstract class HabitPeriodSettings with _$HabitPeriodSettings {
       _$HabitPeriodSettingsFromJson(Map<String, dynamic>.from(json));
 }
 
+/// Настройки повторов в течение дня
+/// Раньше была идея реализовать их, типа делать что-то 2+ раза в день
+/// Но это сильно усложняет систему, и число повторений за день = 1 всегда
 @freezed
 abstract class HabitDailyRepeatSettings with _$HabitDailyRepeatSettings {
+  /// Настройки повторов в течение дня
+  @Assert("repeatsCount == 1", "Число повторений за день дожно = 1 всегда")
   const factory HabitDailyRepeatSettings({
     /// Повторы в течение дня включены
     @Default(false) bool repeatsEnabled,
 
     /// Число повторений за день
     @Default(1) double repeatsCount,
+
+    /// Мапа, где ключ - индекс повтора за день,
+    /// значение - вресмя выполнения привычки
     @Default(<int, DateTime>{}) Map<int, DateTime> performTimes,
   }) = _HabitDailyRepeatSettings;
 
+  /// Создает из джсонки
   factory HabitDailyRepeatSettings.fromJson(Map json) =>
       _$HabitDailyRepeatSettingsFromJson(Map<String, dynamic>.from(json));
 }
@@ -232,6 +251,7 @@ enum HabitPeriodType {
 
 /// Форматирует тип периода привычки
 extension FormatHabitPeriodType on HabitPeriodType {
+  /// Переводит тип периода привычки в строку
   String verbose() {
     switch (this) {
       case HabitPeriodType.day:
@@ -263,7 +283,9 @@ enum HabitType {
   repeats,
 }
 
+/// Переводит тип привычки в строку
 extension HabitTypeToStr on HabitType {
+  /// Переводит тип привычки в строку
   String verbose() {
     if (this == HabitType.time) {
       return "На время";

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hooks_riverpod/all.dart';
-import 'package:yaxxxta/core/infra/push.dart';
+import '../infra/push.dart';
 
 /// Регает индекс выбранной странички
 StateProvider<int> pageIndexProvider = StateProvider((_) => 0);
@@ -15,9 +15,12 @@ Provider<FlutterLocalNotificationsPlugin>
     flutterLocalNotificationsPluginProvider =
     Provider((_) => flutterLocalNotificationsPlugin);
 
-var notificationSender = Provider(
+/// Провайдер отправщика уведомлений
+Provider<NotificationSender> notificationSender = Provider(
   (ref) =>
       NotificationSender(ref.watch(flutterLocalNotificationsPluginProvider)),
 );
 
-var navigatorKey = GlobalKey<NavigatorState>();
+/// АЙдишник открытой странички
+/// Используется для получения контекста страницы, после вызова Navigator.pop
+GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();

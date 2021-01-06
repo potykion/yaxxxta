@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
-import 'package:yaxxxta/core/ui/deps.dart';
-import 'package:yaxxxta/core/ui/widgets/circular_progress.dart';
 
+import '../../../core/ui/deps.dart';
 import '../../../core/ui/widgets/card.dart';
+import '../../../core/ui/widgets/circular_progress.dart';
 import '../../../core/ui/widgets/date.dart';
 import '../../../core/ui/widgets/text.dart';
 import '../../../core/utils/dt.dart';
-import '../../../main.dart';
 import '../../../routes.dart';
 import '../../../theme.dart';
 import '../../domain/models.dart';
 import '../core/deps.dart';
 import '../core/widgets.dart';
 
-enum HabitActionType { edit, delete }
+/// Тип действия над привычкой
+enum HabitActionType {
+  /// Редактирование привычки
+  edit,
+
+  /// Удаление привычки
+  delete
+}
 
 GlobalKey _scaffold = GlobalKey();
 

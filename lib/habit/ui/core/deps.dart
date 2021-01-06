@@ -53,10 +53,12 @@ Provider<HabitPerformingController> habitPerformingController =
           loadingState: ref.watch(loadingState),
         ));
 
-var habitControllerProvider = Provider((ref) => HabitController(
-      habitRepo: ref.watch(habitRepoProvider),
-      habitState: ref.watch(habitsProvider),
-    ));
+/// Провайдер контроллера привычек
+Provider<HabitController> habitControllerProvider =
+    Provider((ref) => HabitController(
+          habitRepo: ref.watch(habitRepoProvider),
+          habitState: ref.watch(habitsProvider),
+        ));
 
 ////////////////////////////////////////////////////////////////////////////////
 // HABIT LIST PAGE
@@ -102,7 +104,9 @@ Provider<Habit> selectedHabitProvider = Provider(
       ),
 );
 
-var todaySelectedHabitPerformingsProvider = Provider(
+/// Провайдер выполнений выбранной привычки за сегодня
+Provider<List<HabitPerforming>> todaySelectedHabitPerformingsProvider =
+    Provider(
   (ref) => ref
       .watch(todayHabitPerformingsProvider)
       .state
@@ -128,7 +132,8 @@ Provider<List<HabitPerforming>> selectedHabitPerformingsProvider = Provider(
   },
 );
 
-var selectedHabitProgressProvider = Provider(
+/// Повайдер вмки прогресса выбранной привычки
+Provider<HabitProgressVM> selectedHabitProgressProvider = Provider(
   (ref) => ref.watch(selectedHabitProvider) != null
       ? HabitProgressVM.build(
           ref.watch(selectedHabitProvider),
@@ -137,7 +142,8 @@ var selectedHabitProgressProvider = Provider(
       : null,
 );
 
-var selectedHabitHistoryProvider = Provider(
+/// Провайдер истории выбранной привычки
+Provider<HabitHistory> selectedHabitHistoryProvider = Provider(
   (ref) =>
       HabitHistory.fromPerformings(ref.watch(selectedHabitPerformingsProvider)),
 );
