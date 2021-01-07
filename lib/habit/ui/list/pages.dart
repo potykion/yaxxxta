@@ -52,6 +52,7 @@ class HabitListPage extends HookWidget {
                       return Navigator.of(context).pushNamed(Routes.details);
                     },
                     child: HabitRepeatControl(
+                      key: Key(vm.id),
                       repeatTitle: vm.firstRepeat.performTime != null
                           ? "${vm.firstRepeat.performTimeStr}: ${vm.title}"
                           : vm.title,

@@ -28,7 +28,7 @@ class HabitRepeatControl extends StatelessWidget {
 
   /// Контрол повторов выполнений привычки
   const HabitRepeatControl({
-    Key key,
+    @required Key key,
     @required this.repeats,
     @required this.onRepeatIncrement,
     this.initialRepeatIndex = 0,
