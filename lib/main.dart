@@ -3,6 +3,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:package_info/package_info.dart';
 
 import 'core/ui/deps.dart';
 import 'core/ui/pages/home.dart';
@@ -20,6 +21,8 @@ void main() async {
     iOS: IOSInitializationSettings(),
     macOS: MacOSInitializationSettings(),
   ));
+
+  packageInfo = await PackageInfo.fromPlatform();
 
   runApp(ProviderScope(child: MyApp()));
 }
