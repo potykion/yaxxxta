@@ -25,17 +25,11 @@ class TimePickerInput extends HookWidget {
       controller: tec,
       readOnly: true,
       onTap: () async {
-        var selectedTime = await showTimePicker(
+        var selectedTimeDateTime = (await showTimePicker(
           context: context,
           initialTime: TimeOfDay.fromDateTime(initial ?? DateTime.now()),
-        );
-        var selectedTimeDateTime = DateTime(
-          2020,
-          1,
-          1,
-          selectedTime.hour,
-          selectedTime.minute,
-        );
+        ))
+            .toDateTime();
         tec.text = formatTime(selectedTimeDateTime);
         change(selectedTimeDateTime);
       },
@@ -44,4 +38,8 @@ class TimePickerInput extends HookWidget {
       ),
     );
   }
+}
+
+extension TimeOfDayToDateTime on TimeOfDay {
+  DateTime toDateTime() => DateTime(2020, 1, 1, hour, minute);
 }

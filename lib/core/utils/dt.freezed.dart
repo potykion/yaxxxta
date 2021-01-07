@@ -92,10 +92,11 @@ class __$DateRangeCopyWithImpl<$Res> extends _$DateRangeCopyWithImpl<$Res>
 }
 
 /// @nodoc
-class _$_DateRange implements _DateRange {
+class _$_DateRange extends _DateRange {
   _$_DateRange(this.from, this.to)
       : assert(from != null),
-        assert(to != null);
+        assert(to != null),
+        super._();
 
   @override
   final DateTime from;
@@ -128,7 +129,8 @@ class _$_DateRange implements _DateRange {
       __$DateRangeCopyWithImpl<_DateRange>(this, _$identity);
 }
 
-abstract class _DateRange implements DateRange {
+abstract class _DateRange extends DateRange {
+  _DateRange._() : super._();
   factory _DateRange(DateTime from, DateTime to) = _$_DateRange;
 
   @override

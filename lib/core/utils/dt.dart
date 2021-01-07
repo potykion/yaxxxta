@@ -74,6 +74,8 @@ extension DateTimeUtils on DateTime {
 /// Дейт ренж
 @freezed
 abstract class DateRange with _$DateRange {
+  const DateRange._();
+
   /// Дейт ренж
   factory DateRange(
     DateTime from,
@@ -93,4 +95,9 @@ abstract class DateRange with _$DateRange {
           toTime,
         ),
       );
+
+  /// Находится ли {dateTime} в ренже
+  bool containsDateTime(DateTime dateTime) =>
+      (dateTime.isAfter(from) || dateTime.isAtSameMomentAs(from)) &&
+      (dateTime.isBefore(to) || dateTime.isAtSameMomentAs(to));
 }

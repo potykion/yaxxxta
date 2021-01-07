@@ -56,11 +56,22 @@ class HabitPerformingController {
   /// Загружает выполнения привычек за дату, обновляя состояние
   void load(DateTime date) async {
     loadingState.state = true;
+
     var dateRange = DateRange.fromDateAndTimes(
       date,
       settings.dayStartTime,
       settings.dayEndTime,
     );
+
+    /// Если дата сегодняшняя, и текущее время не входит в дейт ренж даты =>
+    /// берем дейт ренж за предыдущую дату
+    if (date.isToday() && !dateRange.containsDateTime(DateTime.now())) {
+      dateRange = DateRange.fromDateAndTimes(
+        date.add(Duration(days: -1)),
+        settings.dayStartTime,
+        settings.dayEndTime,
+      );
+    }
     var performings = habitPerformingRepo.list(dateRange.from, dateRange.to);
     getDateState(date).state = performings;
     loadingState.state = false;

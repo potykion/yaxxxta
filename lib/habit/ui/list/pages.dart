@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/all.dart';
 
+import '../../../core/ui/widgets/time.dart';
 import '../../../core/ui/widgets/bottom_nav.dart';
 import '../../../core/ui/widgets/circular_progress.dart';
 import '../../../core/ui/widgets/date.dart';
@@ -59,17 +60,30 @@ class HabitListPage extends HookWidget {
                       repeats: vm.repeats,
                       initialRepeatIndex: vm.firstIncompleteRepeatIndex,
                       onRepeatIncrement: (repeatIndex, incrementValue,
-                              [date]) =>
-                          context.read(habitPerformingController).create(
-                                habitId: vm.id,
-                                repeatIndex: repeatIndex,
-                                performValue: incrementValue,
-                                performDateTime: buildDateTime(
-                                  date ??
-                                      context.read(selectedDateProvider).state,
-                                  DateTime.now(),
-                                ),
-                              ),
+                          [date]) async {
+                        var performDate =
+                            date ?? context.read(selectedDateProvider).state;
+
+                        /// Если выбранная дата не сегодня,
+                        /// то выбираем в какое время хотим добавить
+                        /// выполнение привычки за другую дату
+                        var performTime = DateTime.now();
+                        if (!performDate.isToday()) {
+                          performTime = (await showTimePicker(
+                            context: context,
+                            initialTime: TimeOfDay.fromDateTime(performTime),
+                          ))
+                              .toDateTime();
+                        }
+
+                        return context.read(habitPerformingController).create(
+                              habitId: vm.id,
+                              repeatIndex: repeatIndex,
+                              performValue: incrementValue,
+                              performDateTime:
+                                  buildDateTime(performDate, performTime),
+                            );
+                      },
                       initialDate: context.read(selectedDateProvider).state,
                     ),
                   )
