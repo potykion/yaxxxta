@@ -18,7 +18,7 @@ class DatePicker extends HookWidget {
   /// (напр. ячейка даты зеленая - в этот день привычка была выполнена)
   final Map<DateTime, double> highlights;
 
-  /// @nodoc
+  /// Выбор даты
   DatePicker({
     Map<DateTime, double> highlights,
     DateTime initial,

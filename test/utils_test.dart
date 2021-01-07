@@ -36,4 +36,33 @@ void main() {
     expect(yearDayNum(DateTime(2020, 1, 1)), 1);
     expect(yearDayNum(DateTime(2020, 1, 8)), 8);
   });
+
+  test("DateRange.fromDateAndTimes", () {
+    expect(
+      DateRange.fromDateAndTimes(
+        DateTime(2020, 1, 1),
+        DateTime(2020, 1, 1, 11),
+        DateTime(2020, 1, 1, 23),
+      ),
+      DateRange(DateTime(2020, 1, 1, 11), DateTime(2020, 1, 1, 23)),
+    );
+
+    expect(
+      DateRange.fromDateAndTimes(
+        DateTime(2020, 1, 1),
+        DateTime(2020, 1, 1, 11),
+        DateTime(2020, 1, 1, 00),
+      ),
+      DateRange(DateTime(2020, 1, 1, 11), DateTime(2020, 1, 2, 00)),
+    );
+
+    expect(
+      DateRange.fromDateAndTimes(
+        DateTime(2020, 1, 1),
+        DateTime(2020, 1, 1, 11),
+        DateTime(2020, 1, 1, 01),
+      ),
+      DateRange(DateTime(2020, 1, 1, 11), DateTime(2020, 1, 2, 01)),
+    );
+  });
 }

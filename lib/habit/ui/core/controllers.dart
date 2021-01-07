@@ -56,9 +56,12 @@ class HabitPerformingController {
   /// Загружает выполнения привычек за дату, обновляя состояние
   void load(DateTime date) async {
     loadingState.state = true;
-    var dateStart = buildDateTime(date, settings.dayStartTime);
-    var dateEnd = buildDateTime(date, settings.dayEndTime);
-    var performings = habitPerformingRepo.list(dateStart, dateEnd);
+    var dateRange = DateRange.fromDateAndTimes(
+      date,
+      settings.dayStartTime,
+      settings.dayEndTime,
+    );
+    var performings = habitPerformingRepo.list(dateRange.from, dateRange.to);
     getDateState(date).state = performings;
     loadingState.state = false;
   }

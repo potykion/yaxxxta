@@ -62,6 +62,8 @@ mixin _$Habit {
 
   /// Продолжительность / число повторений за раз
   double get goalValue;
+
+  /// Настройки повторов в течение дня
   HabitDailyRepeatSettings get dailyRepeatSettings;
 
   /// Периодичность
@@ -244,6 +246,8 @@ class _$_Habit extends _Habit {
   /// Продолжительность / число повторений за раз
   final double goalValue;
   @override
+
+  /// Настройки повторов в течение дня
   final HabitDailyRepeatSettings dailyRepeatSettings;
   @override
 
@@ -334,6 +338,8 @@ abstract class _Habit extends Habit {
   /// Продолжительность / число повторений за раз
   double get goalValue;
   @override
+
+  /// Настройки повторов в течение дня
   HabitDailyRepeatSettings get dailyRepeatSettings;
   @override
 
@@ -655,6 +661,9 @@ mixin _$HabitDailyRepeatSettings {
 
   /// Число повторений за день
   double get repeatsCount;
+
+  /// Мапа, где ключ - индекс повтора за день,
+  /// значение - вресмя выполнения привычки
   Map<int, DateTime> get performTimes;
 
   Map<String, dynamic> toJson();
@@ -756,7 +765,8 @@ class _$_HabitDailyRepeatSettings implements _HabitDailyRepeatSettings {
       this.performTimes = const <int, DateTime>{}})
       : assert(repeatsEnabled != null),
         assert(repeatsCount != null),
-        assert(performTimes != null);
+        assert(performTimes != null),
+        assert(repeatsCount == 1, 'Число повторений за день дожно = 1 всегда');
 
   factory _$_HabitDailyRepeatSettings.fromJson(Map<String, dynamic> json) =>
       _$_$_HabitDailyRepeatSettingsFromJson(json);
@@ -773,6 +783,9 @@ class _$_HabitDailyRepeatSettings implements _HabitDailyRepeatSettings {
   final double repeatsCount;
   @JsonKey(defaultValue: const <int, DateTime>{})
   @override
+
+  /// Мапа, где ключ - индекс повтора за день,
+  /// значение - вресмя выполнения привычки
   final Map<int, DateTime> performTimes;
 
   @override
@@ -831,6 +844,9 @@ abstract class _HabitDailyRepeatSettings implements HabitDailyRepeatSettings {
   /// Число повторений за день
   double get repeatsCount;
   @override
+
+  /// Мапа, где ключ - индекс повтора за день,
+  /// значение - вресмя выполнения привычки
   Map<int, DateTime> get performTimes;
   @override
   _$HabitDailyRepeatSettingsCopyWith<_HabitDailyRepeatSettings> get copyWith;

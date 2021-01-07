@@ -1,4 +1,7 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:intl/intl.dart';
+
+part 'dt.freezed.dart';
 
 /// @nodoc
 extension DurationUtils on Duration {
@@ -66,4 +69,28 @@ extension DateTimeUtils on DateTime {
 
   /// Определяет, является ли дата сегодняшней
   bool isToday() => date() == DateTime.now().date();
+}
+
+/// Дейт ренж
+@freezed
+abstract class DateRange with _$DateRange {
+  /// Дейт ренж
+  factory DateRange(
+    DateTime from,
+    DateTime to,
+  ) = _DateRange;
+
+  /// Создает дейт ренж из даты, времени с и времени по
+  /// Если время с > времени по => дейт ренж сквозной
+  /// Например, дата - 2020-01-01, время с - 10:00, а время по - 02:00 =>
+  /// дейтренж с 2020-01-01 10:00 по 2020-01-02 02:00
+  factory DateRange.fromDateAndTimes(
+          DateTime date, DateTime fromTime, DateTime toTime) =>
+      DateRange(
+        buildDateTime(date, fromTime),
+        buildDateTime(
+          date.add(Duration(days: fromTime.isAfter(toTime) ? 1 : 0)),
+          toTime,
+        ),
+      );
 }
