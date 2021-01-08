@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:yaxxxta/core/infra/push.dart';
 import '../../../habit/domain/models.dart';
 
 import '../../../theme.dart';
@@ -137,7 +138,8 @@ class _TimeProgressControl extends HookWidget {
       /// Отключение таймера
       timerState.value.cancel();
 
-      /// Обновляем прогресс
+      /// Обновляем прогресс = разницы между текущим значение таймера
+      /// и начальным
       onValueIncrement(currentValueState.value - initialValue, oldDate);
 
       /// Обнуление таймера вызывает перерисовку виджета,
@@ -184,22 +186,33 @@ class _TimeProgressControl extends HookWidget {
             } else {
               var timerStart = DateTime.now();
 
+              /// Создаем уведомление о завершении таймера
+              /// через кол-во сек до цели
+              if (currentValueState.value < goalValue) {
+                context.read(notificationSender).schedule(
+                      title: "Привычка выполнена",
+                      sendAfterSeconds:
+                          (goalValue - currentValueState.value).toInt(),
+                    );
+              }
+
               timerState.value = Timer.periodic(
                 Duration(seconds: 1),
-                (timer) {
+                (_) {
                   var currentTime = DateTime.now();
+
+                  /// Обновление прогресса = timerStart - currentTime, а не 1 с.
+                  /// Потому что андроид может застопить апп, в тч таймер =>
+                  /// Надо прогресс обновлять по разнице во времени
                   var secondDiff =
                       (currentTime.difference(timerStart).inMilliseconds / 1000)
                           .round();
+                  timerStart = currentTime;
 
                   currentValueState.value += secondDiff;
-                  timerStart = currentTime;
 
                   if (currentValueState.value.toInt() == goalValue.toInt()) {
                     _cancelTimer();
-                    context
-                        .read(notificationSender)
-                        .send(title: "Привычка выполнена");
                   }
                 },
               );

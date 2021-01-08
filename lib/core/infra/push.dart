@@ -1,8 +1,13 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+import 'package:timezone/timezone.dart' as tz;
+
 /// Отправщик уведомлений
 class NotificationSender {
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
+
+  static final int defaultNotificationId = 0;
+  static final int scheduleNotificationId = 1;
 
   /// Отправщик уведомлений
   NotificationSender(this._flutterLocalNotificationsPlugin);
@@ -29,12 +34,32 @@ class NotificationSender {
     channel = channel ?? timeProgressNotification;
 
     await _flutterLocalNotificationsPlugin.show(
-      0,
+      defaultNotificationId,
       title,
       body,
-      NotificationDetails(
-        android: timeProgressNotification,
-      ),
+      NotificationDetails(android: timeProgressNotification),
     );
   }
+
+  Future<void> schedule({
+    String title,
+    String body,
+    int sendAfterSeconds,
+    AndroidNotificationDetails channel,
+  }) async {
+    channel = channel ?? timeProgressNotification;
+
+    await _flutterLocalNotificationsPlugin.zonedSchedule(
+      scheduleNotificationId,
+      title,
+      body,
+      tz.TZDateTime.now(tz.local).add(Duration(seconds: sendAfterSeconds)),
+      NotificationDetails(android: timeProgressNotification),
+      androidAllowWhileIdle: true,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+    );
+  }
+
+  Future<void> cancel(int id) => _flutterLocalNotificationsPlugin.cancel(id);
 }

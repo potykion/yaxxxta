@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/all.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:package_info/package_info.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 import 'core/ui/deps.dart';
 import 'core/ui/pages/home.dart';
@@ -23,6 +25,9 @@ void main() async {
   ));
 
   packageInfo = await PackageInfo.fromPlatform();
+
+  tz.initializeTimeZones();
+  tz.setLocalLocation(tz.getLocation("Europe/Moscow"));
 
   runApp(ProviderScope(child: MyApp()));
 }

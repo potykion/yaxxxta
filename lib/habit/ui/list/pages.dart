@@ -70,10 +70,12 @@ class HabitListPage extends HookWidget {
                         var performTime = DateTime.now();
                         if (!performDate.isToday()) {
                           performTime = (await showTimePicker(
-                            context: context,
-                            initialTime: TimeOfDay.fromDateTime(performTime),
-                          ))
-                              .toDateTime();
+                                context: context,
+                                initialTime:
+                                    TimeOfDay.fromDateTime(performTime),
+                              ))
+                                  ?.toDateTime() ??
+                              performTime;
                         }
 
                         return context.read(habitPerformingController).create(
