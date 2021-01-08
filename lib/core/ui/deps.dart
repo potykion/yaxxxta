@@ -26,7 +26,9 @@ Provider<NotificationSender> notificationSender = Provider(
 /// Используется для получения контекста страницы, после вызова Navigator.pop
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
+/// Инфа о приложении
 PackageInfo packageInfo;
 
+/// Провайдер версии
 Provider<String> versionProvider =
     Provider((ref) => "${packageInfo.version}+${packageInfo.buildNumber}");

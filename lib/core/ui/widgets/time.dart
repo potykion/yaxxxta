@@ -40,6 +40,8 @@ class TimePickerInput extends HookWidget {
   }
 }
 
+/// @nodoc
 extension TimeOfDayToDateTime on TimeOfDay {
+  /// Переводит TimeOfDay в дейт-тайм
   DateTime toDateTime() => DateTime(2020, 1, 1, hour, minute);
 }

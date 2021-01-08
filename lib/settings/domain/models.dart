@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import '../../core/utils/dt.dart';
 
 part 'models.freezed.dart';
 
@@ -26,7 +25,7 @@ abstract class Settings with _$Settings {
 
   /// Создает настройки по умолчанию
   factory Settings.createDefault() => Settings(
-        dayStartTime: defaultDayStart,
-        dayEndTime: defaultDayEnd,
+        dayStartTime: DateTime(2020, 1, 1, 0, 0),
+        dayEndTime: DateTime(2020, 1, 1, 23, 59),
       );
 }

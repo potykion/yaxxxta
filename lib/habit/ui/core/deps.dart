@@ -144,6 +144,8 @@ Provider<HabitProgressVM> selectedHabitProgressProvider = Provider(
 
 /// Провайдер истории выбранной привычки
 Provider<HabitHistory> selectedHabitHistoryProvider = Provider(
-  (ref) =>
-      HabitHistory.fromPerformings(ref.watch(selectedHabitPerformingsProvider)),
+  (ref) => HabitHistory.fromPerformings(
+    ref.watch(selectedHabitPerformingsProvider),
+    ref.watch(settingsProvider).state,
+  ),
 );

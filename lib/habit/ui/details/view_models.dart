@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../core/utils/dt.dart';
+import '../../../settings/domain/models.dart';
 import '../../domain/models.dart';
 
 part 'view_models.freezed.dart';
@@ -15,12 +16,19 @@ class HabitHistory {
   HabitHistory(this.history);
 
   /// Создает историю из выполнений
-  factory HabitHistory.fromPerformings(List<HabitPerforming> performings) =>
+  factory HabitHistory.fromPerformings(
+    List<HabitPerforming> performings,
+    Settings settings,
+  ) =>
       HabitHistory(
         /// Группируем выполнения по дате
         groupBy<HabitPerforming, DateTime>(
           performings,
-          (hp) => hp.performDateTime.date(),
+          (hp) => DateRange.fromDateTimeAndTimes(
+            hp.performDateTime,
+            settings.dayStartTime,
+            settings.dayEndTime,
+          ).date,
         ).map(
           (key, value) => MapEntry(
             key,

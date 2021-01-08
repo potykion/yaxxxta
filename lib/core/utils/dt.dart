@@ -22,12 +22,6 @@ extension DurationUtils on Duration {
 /// Форматирует время (20:43)
 String formatTime(DateTime time) => DateFormat.Hm().format(time);
 
-/// Время начала дня по умолчанию
-final defaultDayEnd = DateTime(2020, 1, 1, 23, 59);
-
-/// Время конца дня по умолчанию
-final defaultDayStart = DateTime(2020, 1, 1, 0, 0);
-
 /// Собирает дейттайм из даты и времени
 DateTime buildDateTime(DateTime date, DateTime time) => DateTime(
       date.year,
@@ -71,21 +65,24 @@ extension DateTimeUtils on DateTime {
   bool isToday() => date() == DateTime.now().date();
 }
 
-/// Дейт ренж
+/// Дейт-ренж - класс с двумя дейт-таймами: дейт-тайм с, дейт-тайм по
 @freezed
 abstract class DateRange with _$DateRange {
   const DateRange._();
 
-  /// Дейт ренж
+  /// Дейт-ренж - класс с двумя дейт-таймами: дейт-тайм с, дейт-тайм по
   factory DateRange(
+    /// Дейт-тайм с
     DateTime from,
+
+    /// Дейт-тайм по
     DateTime to,
   ) = _DateRange;
 
-  /// Создает дейт ренж из даты, времени с и времени по
-  /// Если время с > времени по => дейт ренж сквозной
+  /// Создает дейт-ренж из даты, времени с и времени по
+  /// Если время с > времени по => дейт-ренж сквозной
   /// Например, дата - 2020-01-01, время с - 10:00, а время по - 02:00 =>
-  /// дейтренж с 2020-01-01 10:00 по 2020-01-02 02:00
+  /// дейт-ренж с 2020-01-01 10:00 по 2020-01-02 02:00
   factory DateRange.fromDateAndTimes(
           DateTime date, DateTime fromTime, DateTime toTime) =>
       DateRange(
@@ -100,4 +97,29 @@ abstract class DateRange with _$DateRange {
   bool containsDateTime(DateTime dateTime) =>
       (dateTime.isAfter(from) || dateTime.isAtSameMomentAs(from)) &&
       (dateTime.isBefore(to) || dateTime.isAtSameMomentAs(to));
+
+  /// Дата дейт-ренжа
+  DateTime get date => from.date();
+
+  /// Создает дейт-ренж из дейт-тайма, времени с, времени по
+  /// Например, дейт-тайм - 2020-01-02 01:00,
+  ///   время с - 10:00, а время по - 02:00 =>
+  /// дейт-ренж с 2020-01-01 10:00 по 2020-01-02 02:00 =>
+  /// дейт-тайм относится к 2020-01-01, а не к 2020-01-02
+  factory DateRange.fromDateTimeAndTimes(
+          DateTime dateTime, DateTime fromTime, DateTime toTime) =>
+      [
+        DateRange.fromDateAndTimes(
+          dateTime,
+          fromTime,
+          toTime,
+        ),
+        DateRange.fromDateAndTimes(
+          dateTime.add(Duration(days: -1)),
+          fromTime,
+          toTime,
+        ),
+      ].firstWhere(
+        (dr) => dr.containsDateTime(dateTime),
+      );
 }
