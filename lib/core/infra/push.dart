@@ -14,8 +14,8 @@ class NotificationSender {
         'Time progress',
         'Уведомление о том, что таймер отработал',
         // Вроде это нужно для heads-up уведомления, но чет хз
-        fullScreenIntent: true,
         priority: Priority.high,
+        importance: Importance.max,
         // Вибрация - норм альтернатива heads-up уведомлениям
         enableVibration: true,
       );

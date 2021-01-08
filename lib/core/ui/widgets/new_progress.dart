@@ -118,6 +118,14 @@ class _TimeProgressControl extends HookWidget {
   Widget build(BuildContext context) {
     var timerState = useState<Timer>(null);
 
+    var currentValueState = useState(initialValue);
+    useValueChanged<double, void>(
+      initialValue,
+      (_, __) {
+        currentValueState.value = initialValue;
+      },
+    );
+
     /// Вырубает таймер
     void _cancelTimer({
       DateTime oldDate,
@@ -130,7 +138,7 @@ class _TimeProgressControl extends HookWidget {
       timerState.value.cancel();
 
       /// Обновляем прогресс
-      onValueIncrement(timerState.value.tick.toDouble(), oldDate);
+      onValueIncrement(currentValueState.value - initialValue, oldDate);
 
       /// Обнуление таймера вызывает перерисовку виджета,
       /// это не нужно делать, если мы покидаем страницу с виджетом
@@ -139,14 +147,6 @@ class _TimeProgressControl extends HookWidget {
         timerState.value = null;
       }
     }
-
-    var currentValueState = useState(initialValue);
-    useValueChanged<double, void>(
-      initialValue,
-      (_, __) {
-        currentValueState.value = initialValue;
-      },
-    );
 
     /// При смене initialDate нужно сбросить таймер
     /// Актуально для списка привычек, где можно менять дату
@@ -182,10 +182,19 @@ class _TimeProgressControl extends HookWidget {
             if (timerState.value?.isActive ?? false) {
               _cancelTimer();
             } else {
+              var timerStart = DateTime.now();
+
               timerState.value = Timer.periodic(
                 Duration(seconds: 1),
                 (timer) {
-                  currentValueState.value += 1;
+                  var currentTime = DateTime.now();
+                  var secondDiff =
+                      (currentTime.difference(timerStart).inMilliseconds / 1000)
+                          .round();
+
+                  currentValueState.value += secondDiff;
+                  timerStart = currentTime;
+
                   if (currentValueState.value.toInt() == goalValue.toInt()) {
                     _cancelTimer();
                     context
