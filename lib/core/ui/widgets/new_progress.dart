@@ -127,16 +127,24 @@ class _TimeProgressControl extends HookWidget {
       },
     );
 
+    var notificationId = useValueNotifier<int>(null, []);
+
     /// Вырубает таймер
     void _cancelTimer({
       DateTime oldDate,
       bool withResetTimer = true,
+      bool withCancelNotification = false,
     }) {
       /// Если таймера нет, то нечего отменять
       if (timerState.value == null) return;
 
       /// Отключение таймера
       timerState.value.cancel();
+
+      /// Отменяем уведомление, если withCancelNotification = true
+      if (withCancelNotification && notificationId.value != null) {
+        context.read(notificationSender).cancel(notificationId.value);
+      }
 
       /// Обновляем прогресс = разницы между текущим значение таймера
       /// и начальным
@@ -154,14 +162,20 @@ class _TimeProgressControl extends HookWidget {
     /// Актуально для списка привычек, где можно менять дату
     useValueChanged<DateTime, void>(
       initialDate,
-      (oldDate, _) => _cancelTimer(oldDate: oldDate),
+      (oldDate, _) => _cancelTimer(
+        oldDate: oldDate,
+        withCancelNotification: true,
+      ),
     );
 
     /// При выходе со страницы, на которой работает таймер - его нужно отрубать
     /// Пример: зашли на страницу деталей привычки, запустили таймер,
     /// а потом ушли оттуда - надо вырубить таймер
     useEffect(
-      () => () => _cancelTimer(withResetTimer: false),
+      () => () => _cancelTimer(
+            withResetTimer: false,
+            withCancelNotification: true,
+          ),
       [timerState],
     );
 
@@ -180,20 +194,21 @@ class _TimeProgressControl extends HookWidget {
               ? Icon(Icons.pause)
               : Icon(Icons.play_arrow),
           disabledColor: CustomColors.almostBlack,
-          onPressed: () {
+          onPressed: () async {
             if (timerState.value?.isActive ?? false) {
-              _cancelTimer();
+              _cancelTimer(withCancelNotification: true);
             } else {
               var timerStart = DateTime.now();
 
               /// Создаем уведомление о завершении таймера
               /// через кол-во сек до цели
               if (currentValueState.value < goalValue) {
-                context.read(notificationSender).schedule(
-                      title: "Привычка выполнена",
-                      sendAfterSeconds:
-                          (goalValue - currentValueState.value).toInt(),
-                    );
+                notificationId.value =
+                    await context.read(notificationSender).schedule(
+                          title: "Привычка выполнена",
+                          sendAfterSeconds:
+                              (goalValue - currentValueState.value).toInt(),
+                        );
               }
 
               timerState.value = Timer.periodic(

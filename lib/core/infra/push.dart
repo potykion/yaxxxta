@@ -41,7 +41,7 @@ class NotificationSender {
     );
   }
 
-  Future<void> schedule({
+  Future<int> schedule({
     String title,
     String body,
     int sendAfterSeconds,
@@ -49,8 +49,11 @@ class NotificationSender {
   }) async {
     channel = channel ?? timeProgressNotification;
 
+    /// Айди должен быть в ренже [-2^31, 2^31 - 1]
+    /// flutter_local_notifications/lib/src/helpers > validateId
+    var id = DateTime.now().millisecondsSinceEpoch.toSigned(31);
     await _flutterLocalNotificationsPlugin.zonedSchedule(
-      scheduleNotificationId,
+      id,
       title,
       body,
       tz.TZDateTime.now(tz.local).add(Duration(seconds: sendAfterSeconds)),
@@ -59,6 +62,7 @@ class NotificationSender {
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
     );
+    return id;
   }
 
   Future<void> cancel(int id) => _flutterLocalNotificationsPlugin.cancel(id);
