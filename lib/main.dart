@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/all.dart';
@@ -13,21 +14,30 @@ import 'routes.dart';
 import 'theme.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  /// носкл
   await Hive.initFlutter();
   await Hive.openBox<Map>("habits");
   await Hive.openBox<Map>("habit_performings");
   await Hive.openBox<Map>("settings");
 
+  /// пуши
   await flutterLocalNotificationsPlugin.initialize(InitializationSettings(
     android: AndroidInitializationSettings('app_icon'),
     iOS: IOSInitializationSettings(),
     macOS: MacOSInitializationSettings(),
   ));
 
+  /// инфа о аппе
   packageInfo = await PackageInfo.fromPlatform();
 
+  /// тайм-зоны
   tz.initializeTimeZones();
   tz.setLocalLocation(tz.getLocation("Europe/Moscow"));
+
+  /// фаер-бейз
+  await Firebase.initializeApp();
 
   runApp(ProviderScope(child: MyApp()));
 }

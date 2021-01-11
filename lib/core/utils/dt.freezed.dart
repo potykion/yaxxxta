@@ -28,7 +28,10 @@ const $DateRange = _$DateRangeTearOff();
 
 /// @nodoc
 mixin _$DateRange {
+  /// Дейт-тайм с
   DateTime get from;
+
+  /// Дейт-тайм по
   DateTime get to;
 
   $DateRangeCopyWith<DateRange> get copyWith;
@@ -99,8 +102,12 @@ class _$_DateRange extends _DateRange {
         super._();
 
   @override
+
+  /// Дейт-тайм с
   final DateTime from;
   @override
+
+  /// Дейт-тайм по
   final DateTime to;
 
   @override
@@ -134,8 +141,12 @@ abstract class _DateRange extends DateRange {
   factory _DateRange(DateTime from, DateTime to) = _$_DateRange;
 
   @override
+
+  /// Дейт-тайм с
   DateTime get from;
   @override
+
+  /// Дейт-тайм по
   DateTime get to;
   @override
   _$DateRangeCopyWith<_DateRange> get copyWith;

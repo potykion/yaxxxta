@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "843289797199",
+    "project_id": "yaxxxta",
+    "storage_bucket": "yaxxxta.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:843289797199:android:d3d39a2dcce4040e9b803a",
+        "android_client_info": {
+          "package_name": "dev.palka.yaxxxta"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "843289797199-0r5j9bqo1pm8at99f9jtr6fjagvb12f8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dev.palka.yaxxxta",
+            "certificate_hash": "634a9ece343b47955667f8793ea6b254a5a9b5f9"
+          }
+        },
+        {
+          "client_id": "843289797199-9ec777eampm8koufhi0u8i22chomvg3g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdcRxTqRKokK92_EJt82rM9-3_cWKvOJE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "843289797199-9ec777eampm8koufhi0u8i22chomvg3g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

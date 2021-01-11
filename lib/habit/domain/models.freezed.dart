@@ -20,7 +20,7 @@ class _$HabitTearOff {
   _Habit call(
       {String id,
       @required DateTime created,
-      String title = "",
+      String title = '',
       HabitType type = HabitType.repeats,
       double goalValue = 1,
       HabitDailyRepeatSettings dailyRepeatSettings,
@@ -207,7 +207,7 @@ class _$_Habit extends _Habit {
   const _$_Habit(
       {this.id,
       @required this.created,
-      this.title = "",
+      this.title = '',
       this.type = HabitType.repeats,
       this.goalValue = 1,
       this.dailyRepeatSettings,
@@ -230,7 +230,7 @@ class _$_Habit extends _Habit {
 
   /// Дата создания
   final DateTime created;
-  @JsonKey(defaultValue: "")
+  @JsonKey(defaultValue: '')
   @override
 
   /// Название
