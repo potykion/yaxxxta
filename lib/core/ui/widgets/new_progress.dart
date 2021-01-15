@@ -95,7 +95,7 @@ class _RepeatProgressControl extends HookWidget {
           /// Заполняем оставшийся прогресс иначе
           onValueIncrement(
             goalValue - currentValueState.value,
-            currentValueState.value >= goalValue,
+            true,
           );
         },
       ),
@@ -254,7 +254,7 @@ class _TimeProgressControl extends HookWidget {
           if (currentValueState.value >= goalValue) return;
 
           /// Заполняем оставшийся прогресс иначе
-          onValueIncrement(goalValue - currentValueState.value, currentValueState.value >= goalValue);
+          onValueIncrement(goalValue - currentValueState.value, true);
         },
       ),
     );
