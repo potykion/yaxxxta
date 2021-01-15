@@ -14,7 +14,8 @@ class HabitRepeatControl extends StatelessWidget {
   final int initialRepeatIndex;
 
   /// Событие инкремента привычки
-  final void Function(int repeatIndex, double incrementValue, bool isCompleteOrExceeded,
+  final void Function(
+      int repeatIndex, double incrementValue, bool isCompleteOrExceeded,
       [DateTime dateTime]) onRepeatIncrement;
 
   /// Название на карточке с повтором
@@ -47,7 +48,10 @@ class HabitRepeatControl extends StatelessWidget {
         habitType: repeat.type,
         currentValue: repeat.currentValue,
         goalValue: repeat.goalValue,
-        onValueIncrement: (value, isCompleteOrExceeded, [dt]) => onRepeatIncrement(0, value, isCompleteOrExceeded, dt),
+        onValueIncrement: (value, isCompleteOrExceeded, [dt]) =>
+            onRepeatIncrement != null
+                ? onRepeatIncrement(0, value, isCompleteOrExceeded, dt)
+                : null,
         initialDate: initialDate,
       )
     ]);

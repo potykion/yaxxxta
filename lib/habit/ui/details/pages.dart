@@ -109,7 +109,7 @@ class HabitDetailsPage extends HookWidget {
                                 context
                                     .read(habitControllerProvider)
                                     .delete(habit.id);
-                                Navigator.of(context).pop();
+                                Navigator.of(context).pop(true);
                               }
                             } else {
                               //  ничо не делаем
