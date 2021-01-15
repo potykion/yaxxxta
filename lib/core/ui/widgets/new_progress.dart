@@ -12,7 +12,8 @@ import '../../utils/dt.dart';
 import '../deps.dart';
 import 'text.dart';
 
-typedef OnValueIncrement = void Function(double incrementValue,
+typedef OnValueIncrement = void Function(
+    double incrementValue, bool isCompleteOrExceeded,
     [DateTime datetime]);
 
 /// Контрол прогресса проивычки
@@ -84,7 +85,7 @@ class _RepeatProgressControl extends HookWidget {
           icon: Icon(Icons.done),
           onPressed: () {
             currentValueState.value += 1;
-            onValueIncrement(1);
+            onValueIncrement(1, currentValueState.value >= goalValue);
           },
         ),
         onLongPress: () {
@@ -92,7 +93,10 @@ class _RepeatProgressControl extends HookWidget {
           if (currentValueState.value >= goalValue) return;
 
           /// Заполняем оставшийся прогресс иначе
-          onValueIncrement(goalValue - currentValueState.value);
+          onValueIncrement(
+            goalValue - currentValueState.value,
+            currentValueState.value >= goalValue,
+          );
         },
       ),
       progressPercentage: min(currentValueState.value / goalValue, 1),
@@ -148,7 +152,7 @@ class _TimeProgressControl extends HookWidget {
 
       /// Обновляем прогресс = разницы между текущим значение таймера
       /// и начальным
-      onValueIncrement(currentValueState.value - initialValue, oldDate);
+      onValueIncrement(currentValueState.value - initialValue, currentValueState.value >= goalValue, oldDate);
 
       /// Обнуление таймера вызывает перерисовку виджета,
       /// это не нужно делать, если мы покидаем страницу с виджетом
@@ -250,7 +254,7 @@ class _TimeProgressControl extends HookWidget {
           if (currentValueState.value >= goalValue) return;
 
           /// Заполняем оставшийся прогресс иначе
-          onValueIncrement(goalValue - currentValueState.value);
+          onValueIncrement(goalValue - currentValueState.value, currentValueState.value >= goalValue);
         },
       ),
     );

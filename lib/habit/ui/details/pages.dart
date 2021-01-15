@@ -144,7 +144,7 @@ class HabitDetailsPage extends HookWidget {
                 HabitRepeatControl(
                   key: Key("HabitDetailsPage_HabitRepeatControl"),
                   repeats: progress.repeats,
-                  onRepeatIncrement: (repeatIndex, incrementValue, [_]) =>
+                  onRepeatIncrement: (repeatIndex, incrementValue, _, [__]) =>
                       navigatorKey.currentContext
                           .read(habitPerformingController)
                           .create(

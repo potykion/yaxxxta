@@ -44,53 +44,11 @@ class HabitListPage extends HookWidget {
       ),
       body: loading
           ? CenteredCircularProgress()
-          : ListView(
-              children: [
-                for (HabitProgressVM vm in vms)
-                  GestureDetector(
-                    onTap: () {
-                      context.read(selectedHabitId).state = vm.id;
-                      return Navigator.of(context).pushNamed(Routes.details);
-                    },
-                    child: HabitRepeatControl(
-                      key: Key(vm.id),
-                      repeatTitle: vm.firstRepeat.performTime != null
-                          ? "${vm.firstRepeat.performTimeStr}: ${vm.title}"
-                          : vm.title,
-                      repeats: vm.repeats,
-                      initialRepeatIndex: vm.firstIncompleteRepeatIndex,
-                      onRepeatIncrement: (repeatIndex, incrementValue,
-                          [date]) async {
-                        var performDate =
-                            date ?? context.read(selectedDateProvider).state;
-
-                        /// Если выбранная дата не сегодня,
-                        /// то выбираем в какое время хотим добавить
-                        /// выполнение привычки за другую дату
-                        var performTime = DateTime.now();
-                        if (!performDate.isToday()) {
-                          performTime = (await showTimePicker(
-                                context: context,
-                                initialTime:
-                                    TimeOfDay.fromDateTime(performTime),
-                              ))
-                                  ?.toDateTime() ??
-                              performTime;
-                        }
-
-                        return context.read(habitPerformingController).create(
-                              habitId: vm.id,
-                              repeatIndex: repeatIndex,
-                              performValue: incrementValue,
-                              performDateTime:
-                                  buildDateTime(performDate, performTime),
-                            );
-                      },
-                      initialDate: context.read(selectedDateProvider).state,
-                    ),
-                  )
-              ],
-            ),
+          : AnimatedList(
+              initialItemCount: vms.length,
+              itemBuilder: (context, index, animation) =>
+                  _buildHabitRepeatControl(
+                      context, index, vms[index], animation)),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add, size: 50),
@@ -98,5 +56,71 @@ class HabitListPage extends HookWidget {
       ),
       bottomNavigationBar: AppBottomNavigationBar(),
     );
+  }
+
+  Widget _buildHabitRepeatControl(BuildContext context, int index,
+      HabitProgressVM vm, Animation<double> animation,
+      {bool removed = false}) {
+    return SizeTransition(
+      axis: Axis.vertical,
+      sizeFactor: animation,
+      child: GestureDetector(
+        onTap: removed
+            ? null
+            : () {
+                context.read(selectedHabitId).state = vm.id;
+                return Navigator.of(context).pushNamed(Routes.details);
+              },
+        child: HabitRepeatControl(
+          key: Key(vm.id),
+          repeatTitle: vm.firstRepeat.performTime != null
+              ? "${vm.firstRepeat.performTimeStr}: ${vm.title}"
+              : vm.title,
+          repeats: vm.repeats,
+          initialRepeatIndex: vm.firstIncompleteRepeatIndex,
+          onRepeatIncrement: removed
+              ? null
+              : (repeatIndex, incrementValue, isCompleteOrExceeded, [date]) async {
+                  context.read(habitPerformingController).create(
+                        habitId: vm.id,
+                        repeatIndex: repeatIndex,
+                        performValue: incrementValue,
+                        performDateTime:
+                            await _computePerformDateTime(context, date),
+                      );
+
+                  if (isCompleteOrExceeded) {
+                    AnimatedList.of(context).removeItem(
+                      index,
+                      (context, animation) => _buildHabitRepeatControl(
+                          context, index, vm, animation,
+                          removed: true),
+                    );
+                  }
+                },
+          initialDate: context.read(selectedDateProvider).state,
+        ),
+      ),
+    );
+  }
+
+  Future<DateTime> _computePerformDateTime(
+      BuildContext context, DateTime initialDate) async {
+    var performDate = initialDate ?? context.read(selectedDateProvider).state;
+
+    /// Если выбранная дата не сегодня,
+    /// то выбираем в какое время хотим добавить
+    /// выполнение привычки за другую дату
+    var performTime = DateTime.now();
+    if (!performDate.isToday()) {
+      performTime = (await showTimePicker(
+            context: context,
+            initialTime: TimeOfDay.fromDateTime(performTime),
+          ))
+              ?.toDateTime() ??
+          performTime;
+    }
+
+    return buildDateTime(performDate, performTime);
   }
 }
