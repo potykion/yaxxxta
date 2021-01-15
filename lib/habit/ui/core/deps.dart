@@ -20,7 +20,7 @@ Provider<Box<Map>> _habitPerformingBoxProvider =
 
 /// Регает репо привычек
 Provider<BaseHabitRepo> habitRepoProvider = Provider(
-  (ref) => HabitRepo(ref.watch(_habitBoxProvider)),
+  (ref) => HiveHabitRepo(ref.watch(_habitBoxProvider)),
 );
 
 /// Регает репо выполнений привычек

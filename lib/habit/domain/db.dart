@@ -6,10 +6,10 @@ abstract class BaseHabitRepo {
   Future<String> insert(Habit habit);
 
   /// Выводит список привычек
-  List<Habit> list();
+  Future<List<Habit>> list();
 
   /// Получает привычку по айди
-  Habit get(String id);
+  Future<Habit> get(String id);
 
   /// Обновляет привычку в бд
   Future<void> update(Habit habit);

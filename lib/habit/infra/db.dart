@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hive/hive.dart';
 import 'package:uuid/uuid.dart';
 import '../domain/db.dart';
@@ -5,12 +6,12 @@ import '../domain/db.dart';
 import '../domain/models.dart';
 
 /// Репо для работы с привычками
-class HabitRepo implements BaseHabitRepo {
+class HiveHabitRepo implements BaseHabitRepo {
   final Box<Map> _habitBox;
   final Uuid _uuid = Uuid();
 
   /// Создает репо
-  HabitRepo(this._habitBox);
+  HiveHabitRepo(this._habitBox);
 
   @override
   Future<String> insert(Habit habit) async {
@@ -61,4 +62,37 @@ class HabitPerformingRepo implements BaseHabitPerformingRepo {
           .map((e) => HabitPerforming.fromJson(e))
           .where((hp) => hp.habitId == habitId)
           .toList();
+}
+
+class FirestoreHabitRepo implements BaseHabitRepo {
+  final CollectionReference _collectionReference;
+
+  FirestoreHabitRepo(this._collectionReference);
+
+  @override
+  Future<void> delete(String id) {
+    // TODO: implement delete
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Habit> get(String id) async =>
+      Habit.fromJson((await _collectionReference.doc(id).get()).data())
+          .copyWith(id: id);
+
+  @override
+  Future<String> insert(Habit habit) async =>
+      (await _collectionReference.add(habit.toJson())).id;
+
+  @override
+  List<Habit> list() {
+    // TODO: implement list
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> update(Habit habit) {
+    // TODO: implement update
+    throw UnimplementedError();
+  }
 }

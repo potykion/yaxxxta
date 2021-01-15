@@ -70,7 +70,7 @@ dependencies:
   google_sign_in: ^4.5.9
 
   # фаербейз стор
-  firebase_storage: ^7.0.0
+  cloud_firestore: ^0.16.0
 
 
 dev_dependencies:
