@@ -212,16 +212,25 @@ class _TimeProgressControl extends HookWidget {
               }
 
               timerState.value = Timer.periodic(
-                Duration(seconds: 1),
+                /// 250 мс для быстрой перерисовки
+                Duration(milliseconds: 250),
                 (_) {
                   var currentTime = DateTime.now();
 
                   /// Обновление прогресса = timerStart - currentTime, а не 1 с.
                   /// Потому что андроид может застопить апп, в тч таймер =>
                   /// Надо прогресс обновлять по разнице во времени
-                  var secondDiff =
-                      (currentTime.difference(timerStart).inMilliseconds / 1000)
-                          .round();
+                  var millisecondDiff =
+                      currentTime.difference(timerStart).inMilliseconds;
+                  print(millisecondDiff);
+
+                  /// Если секунда не прошла => скипаем обновление
+                  /// 900 мс потому что таймер тикает с погрешностью
+                  if (millisecondDiff < 900) {
+                    return;
+                  }
+
+                  var secondDiff = (millisecondDiff / 1000).round();
                   timerStart = currentTime;
 
                   currentValueState.value += secondDiff;
