@@ -79,7 +79,7 @@ Provider<List<HabitProgressVM>> listHabitVMs = Provider((ref) {
   var vms = habits
       .where((h) => h.matchDate(selectedDate))
       .map((h) => HabitProgressVM.build(h, groupedHabitPerformings[h.id] ?? []))
-      .where((h) => settings.showCompleted || !h.isComplete)
+      .where((h) => settings.showCompleted || !h.isComplete && !h.isExceeded)
       .toList()
         ..sort((h1, h2) => h1.firstRepeat.performTime == null
             ? (h2.firstRepeat.performTime == null ? 0 : 1)

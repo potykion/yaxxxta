@@ -222,7 +222,6 @@ class _TimeProgressControl extends HookWidget {
                   /// Надо прогресс обновлять по разнице во времени
                   var millisecondDiff =
                       currentTime.difference(timerStart).inMilliseconds;
-                  print(millisecondDiff);
 
                   /// Если секунда не прошла => скипаем обновление
                   /// 900 мс потому что таймер тикает с погрешностью
