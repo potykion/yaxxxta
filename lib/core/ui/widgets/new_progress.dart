@@ -12,7 +12,8 @@ import '../../utils/dt.dart';
 import '../deps.dart';
 import 'text.dart';
 
-typedef OnValueIncrement = void Function(double incrementValue,
+typedef OnValueIncrement = void Function(
+    double incrementValue, bool isCompleteOrExceeded,
     [DateTime datetime]);
 
 /// Контрол прогресса проивычки
@@ -84,7 +85,7 @@ class _RepeatProgressControl extends HookWidget {
           icon: Icon(Icons.done),
           onPressed: () {
             currentValueState.value += 1;
-            onValueIncrement(1);
+            onValueIncrement(1, currentValueState.value >= goalValue);
           },
         ),
         onLongPress: () {
@@ -92,7 +93,10 @@ class _RepeatProgressControl extends HookWidget {
           if (currentValueState.value >= goalValue) return;
 
           /// Заполняем оставшийся прогресс иначе
-          onValueIncrement(goalValue - currentValueState.value);
+          onValueIncrement(
+            goalValue - currentValueState.value,
+            true,
+          );
         },
       ),
       progressPercentage: min(currentValueState.value / goalValue, 1),
@@ -148,7 +152,7 @@ class _TimeProgressControl extends HookWidget {
 
       /// Обновляем прогресс = разницы между текущим значение таймера
       /// и начальным
-      onValueIncrement(currentValueState.value - initialValue, oldDate);
+      onValueIncrement(currentValueState.value - initialValue, currentValueState.value >= goalValue, oldDate);
 
       /// Обнуление таймера вызывает перерисовку виджета,
       /// это не нужно делать, если мы покидаем страницу с виджетом
@@ -212,16 +216,24 @@ class _TimeProgressControl extends HookWidget {
               }
 
               timerState.value = Timer.periodic(
-                Duration(seconds: 1),
+                /// 250 мс для быстрой перерисовки
+                Duration(milliseconds: 250),
                 (_) {
                   var currentTime = DateTime.now();
 
                   /// Обновление прогресса = timerStart - currentTime, а не 1 с.
                   /// Потому что андроид может застопить апп, в тч таймер =>
                   /// Надо прогресс обновлять по разнице во времени
-                  var secondDiff =
-                      (currentTime.difference(timerStart).inMilliseconds / 1000)
-                          .round();
+                  var millisecondDiff =
+                      currentTime.difference(timerStart).inMilliseconds;
+
+                  /// Если секунда не прошла => скипаем обновление
+                  /// 900 мс потому что таймер тикает с погрешностью
+                  if (millisecondDiff < 900) {
+                    return;
+                  }
+
+                  var secondDiff = (millisecondDiff / 1000).round();
                   timerStart = currentTime;
 
                   currentValueState.value += secondDiff;
@@ -242,7 +254,7 @@ class _TimeProgressControl extends HookWidget {
           if (currentValueState.value >= goalValue) return;
 
           /// Заполняем оставшийся прогресс иначе
-          onValueIncrement(goalValue - currentValueState.value);
+          onValueIncrement(goalValue - currentValueState.value, true);
         },
       ),
     );

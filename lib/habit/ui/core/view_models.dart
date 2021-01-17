@@ -52,6 +52,11 @@ abstract class HabitProgressVM with _$HabitProgressVM {
   /// Выполнена ли все повторы привычки
   bool get isComplete => repeats.every((r) => r.isComplete);
 
+  /// Перевыполнена ли привычка
+  /// Напр. вместо 1 минуты, привычка выполнялась 2 минуты
+  bool get isExceeded => repeats.every((r) => r.isExceeded);
+
+
   /// Первый повтор привычки
   HabitRepeatVM get firstRepeat => repeats.first;
 
