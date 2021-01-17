@@ -54,7 +54,7 @@ class HabitPerformingController {
   }
 
   /// Загружает выполнения привычек за дату, обновляя состояние
-  void load(DateTime date) async {
+  Future<void> load(DateTime date) async {
     loadingState.state = true;
 
     var dateRange = DateRange.fromDateAndTimes(
@@ -72,7 +72,8 @@ class HabitPerformingController {
         settings.dayEndTime,
       );
     }
-    var performings = habitPerformingRepo.list(dateRange.from, dateRange.to);
+    var performings =
+        await habitPerformingRepo.list(dateRange.from, dateRange.to);
     getDateState(date).state = performings;
     loadingState.state = false;
   }
@@ -92,6 +93,10 @@ class HabitController {
 
   /// Контроллер привычек
   HabitController({this.habitRepo, this.habitState});
+
+  Future<void> list() async {
+    habitState.state = await habitRepo.list();
+  }
 
   /// Удаляет привычку
   Future<void> delete(String habitId) async {

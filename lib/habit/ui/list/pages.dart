@@ -18,7 +18,8 @@ class HabitListPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     useEffect(() {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        await context.read(habitControllerProvider).list();
         context.read(habitPerformingController).load(DateTime.now());
       });
       return;

@@ -29,6 +29,21 @@ GlobalKey _scaffold = GlobalKey();
 class HabitDetailsPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
+    useEffect(() {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        // fixme pizec
+        context.read(notTodaySelectedHabitPerfomingsProvider).state =
+            (await context
+                    .read(habitPerformingRepoProvider)
+                    .listByHabit(context.read(selectedHabitId).state))
+                .where((hp) => !context
+                    .read(todaySelectedHabitPerformingsProvider)
+                    .contains(hp))
+                .toList();
+      });
+      return;
+    }, []);
+
     var habit = useProvider(selectedHabitProvider);
     var historyDateState = useState(DateTime.now().date());
     var progress = useProvider(selectedHabitProgressProvider);

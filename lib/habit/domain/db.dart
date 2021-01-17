@@ -24,8 +24,8 @@ abstract class BaseHabitPerformingRepo {
   Future<void> insert(HabitPerforming performing);
 
   /// Выводит список выполнений в промежутке
-  List<HabitPerforming> list(DateTime from, DateTime to);
+  Future<List<HabitPerforming>> list(DateTime from, DateTime to);
 
   /// Выводит список выполнений для привычки
-  List<HabitPerforming> listByHabit(String habitId);
+  Future<List<HabitPerforming>> listByHabit(String habitId);
 }

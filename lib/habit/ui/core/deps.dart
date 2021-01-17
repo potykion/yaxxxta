@@ -25,15 +25,14 @@ Provider<BaseHabitRepo> habitRepoProvider = Provider(
 
 /// Регает репо выполнений привычек
 Provider<BaseHabitPerformingRepo> habitPerformingRepoProvider = Provider(
-  (ref) => HabitPerformingRepo(ref.watch(_habitPerformingBoxProvider)),
+  (ref) => HiveHabitPerformingRepo(ref.watch(_habitPerformingBoxProvider)),
 );
 
 /// Провайдер состояния загрузи чего-либо
 StateProvider<bool> loadingState = StateProvider((_) => true);
 
 /// Провайдер привычек
-StateProvider<List<Habit>> habitsProvider =
-    StateProvider((ref) => ref.watch(habitRepoProvider).list());
+StateProvider<List<Habit>> habitsProvider = StateProvider((ref) => []);
 
 /// Провайдер выполнений привычек за сегодня
 StateProvider<List<HabitPerforming>> todayHabitPerformingsProvider =
@@ -114,22 +113,15 @@ Provider<List<HabitPerforming>> todaySelectedHabitPerformingsProvider =
       .toList(),
 );
 
+StateProvider<List<HabitPerforming>> notTodaySelectedHabitPerfomingsProvider =
+    StateProvider((ref) => []);
+
 /// Провадер выполнений выбранной привычки
 Provider<List<HabitPerforming>> selectedHabitPerformingsProvider = Provider(
-  (ref) {
-    var todaySelectedHabitPerformings =
-        ref.watch(todaySelectedHabitPerformingsProvider);
-
-    var notTodaySelectedHabitPerfomings = ref
-        .watch(habitPerformingRepoProvider)
-        .listByHabit(ref.watch(selectedHabitId).state)
-        .where((hp) => !todaySelectedHabitPerformings.contains(hp));
-
-    return [
-      ...todaySelectedHabitPerformings,
-      ...notTodaySelectedHabitPerfomings
-    ];
-  },
+  (ref) => [
+    ...ref.watch(todaySelectedHabitPerformingsProvider),
+    ...ref.watch(notTodaySelectedHabitPerfomingsProvider).state
+  ],
 );
 
 /// Повайдер вмки прогресса выбранной привычки

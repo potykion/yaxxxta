@@ -22,10 +22,11 @@ class HiveHabitRepo implements BaseHabitRepo {
   }
 
   @override
-  List<Habit> list() => _habitBox.values.map((e) => Habit.fromJson(e)).toList();
+  Future<List<Habit>> list() async =>
+      _habitBox.values.map((e) => Habit.fromJson(e)).toList();
 
   @override
-  Habit get(String id) => Habit.fromJson(_habitBox.get(id));
+  Future<Habit> get(String id) async => Habit.fromJson(_habitBox.get(id));
 
   @override
   Future<void> update(Habit habit) => _habitBox.put(habit.id, habit.toJson());
@@ -35,11 +36,11 @@ class HiveHabitRepo implements BaseHabitRepo {
 }
 
 /// Репо выполнений привычек
-class HabitPerformingRepo implements BaseHabitPerformingRepo {
+class HiveHabitPerformingRepo implements BaseHabitPerformingRepo {
   final Box<Map> _habitPerformingBox;
 
   /// @nodoc
-  HabitPerformingRepo(this._habitPerformingBox);
+  HiveHabitPerformingRepo(this._habitPerformingBox);
 
   @override
   Future<void> insert(HabitPerforming performing) async {
@@ -47,17 +48,18 @@ class HabitPerformingRepo implements BaseHabitPerformingRepo {
   }
 
   @override
-  List<HabitPerforming> list(DateTime from, DateTime to) => _habitPerformingBox
-      .values
-      .map((e) => HabitPerforming.fromJson(e))
-      .where(
-        (p) =>
-            p.performDateTime.isAfter(from) && p.performDateTime.isBefore(to),
-      )
-      .toList();
+  Future<List<HabitPerforming>> list(DateTime from, DateTime to) async =>
+      _habitPerformingBox.values
+          .map((e) => HabitPerforming.fromJson(e))
+          .where(
+            (p) =>
+                p.performDateTime.isAfter(from) &&
+                p.performDateTime.isBefore(to),
+          )
+          .toList();
 
   @override
-  List<HabitPerforming> listByHabit(String habitId) =>
+  Future<List<HabitPerforming>> listByHabit(String habitId) async =>
       _habitPerformingBox.values
           .map((e) => HabitPerforming.fromJson(e))
           .where((hp) => hp.habitId == habitId)
@@ -85,7 +87,7 @@ class FirestoreHabitRepo implements BaseHabitRepo {
       (await _collectionReference.add(habit.toJson())).id;
 
   @override
-  List<Habit> list() {
+  Future<List<Habit>> list() {
     // TODO: implement list
     throw UnimplementedError();
   }
