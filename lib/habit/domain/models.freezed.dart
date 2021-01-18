@@ -20,11 +20,13 @@ class _$HabitTearOff {
   _Habit call(
       {String id,
       @required DateTime created,
-      String title = '',
+      String title = "",
       HabitType type = HabitType.repeats,
       double goalValue = 1,
       HabitDailyRepeatSettings dailyRepeatSettings,
-      @required HabitPeriodSettings habitPeriod}) {
+      @required HabitPeriodSettings habitPeriod,
+      String deviceId,
+      String userId}) {
     return _Habit(
       id: id,
       created: created,
@@ -33,6 +35,8 @@ class _$HabitTearOff {
       goalValue: goalValue,
       dailyRepeatSettings: dailyRepeatSettings,
       habitPeriod: habitPeriod,
+      deviceId: deviceId,
+      userId: userId,
     );
   }
 
@@ -69,7 +73,14 @@ mixin _$Habit {
   /// Периодичность
   HabitPeriodSettings get habitPeriod;
 
+  /// Айди девайса
+  String get deviceId;
+
+  /// Айди юзера
+  String get userId;
+
   Map<String, dynamic> toJson();
+  @JsonKey(ignore: true)
   $HabitCopyWith<Habit> get copyWith;
 }
 
@@ -84,7 +95,9 @@ abstract class $HabitCopyWith<$Res> {
       HabitType type,
       double goalValue,
       HabitDailyRepeatSettings dailyRepeatSettings,
-      HabitPeriodSettings habitPeriod});
+      HabitPeriodSettings habitPeriod,
+      String deviceId,
+      String userId});
 
   $HabitDailyRepeatSettingsCopyWith<$Res> get dailyRepeatSettings;
   $HabitPeriodSettingsCopyWith<$Res> get habitPeriod;
@@ -107,6 +120,8 @@ class _$HabitCopyWithImpl<$Res> implements $HabitCopyWith<$Res> {
     Object goalValue = freezed,
     Object dailyRepeatSettings = freezed,
     Object habitPeriod = freezed,
+    Object deviceId = freezed,
+    Object userId = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed ? _value.id : id as String,
@@ -120,6 +135,8 @@ class _$HabitCopyWithImpl<$Res> implements $HabitCopyWith<$Res> {
       habitPeriod: habitPeriod == freezed
           ? _value.habitPeriod
           : habitPeriod as HabitPeriodSettings,
+      deviceId: deviceId == freezed ? _value.deviceId : deviceId as String,
+      userId: userId == freezed ? _value.userId : userId as String,
     ));
   }
 
@@ -157,7 +174,9 @@ abstract class _$HabitCopyWith<$Res> implements $HabitCopyWith<$Res> {
       HabitType type,
       double goalValue,
       HabitDailyRepeatSettings dailyRepeatSettings,
-      HabitPeriodSettings habitPeriod});
+      HabitPeriodSettings habitPeriod,
+      String deviceId,
+      String userId});
 
   @override
   $HabitDailyRepeatSettingsCopyWith<$Res> get dailyRepeatSettings;
@@ -183,6 +202,8 @@ class __$HabitCopyWithImpl<$Res> extends _$HabitCopyWithImpl<$Res>
     Object goalValue = freezed,
     Object dailyRepeatSettings = freezed,
     Object habitPeriod = freezed,
+    Object deviceId = freezed,
+    Object userId = freezed,
   }) {
     return _then(_Habit(
       id: id == freezed ? _value.id : id as String,
@@ -196,6 +217,8 @@ class __$HabitCopyWithImpl<$Res> extends _$HabitCopyWithImpl<$Res>
       habitPeriod: habitPeriod == freezed
           ? _value.habitPeriod
           : habitPeriod as HabitPeriodSettings,
+      deviceId: deviceId == freezed ? _value.deviceId : deviceId as String,
+      userId: userId == freezed ? _value.userId : userId as String,
     ));
   }
 }
@@ -207,11 +230,13 @@ class _$_Habit extends _Habit {
   const _$_Habit(
       {this.id,
       @required this.created,
-      this.title = '',
+      this.title = "",
       this.type = HabitType.repeats,
       this.goalValue = 1,
       this.dailyRepeatSettings,
-      @required this.habitPeriod})
+      @required this.habitPeriod,
+      this.deviceId,
+      this.userId})
       : assert(created != null),
         assert(title != null),
         assert(type != null),
@@ -230,7 +255,7 @@ class _$_Habit extends _Habit {
 
   /// Дата создания
   final DateTime created;
-  @JsonKey(defaultValue: '')
+  @JsonKey(defaultValue: "")
   @override
 
   /// Название
@@ -253,10 +278,18 @@ class _$_Habit extends _Habit {
 
   /// Периодичность
   final HabitPeriodSettings habitPeriod;
+  @override
+
+  /// Айди девайса
+  final String deviceId;
+  @override
+
+  /// Айди юзера
+  final String userId;
 
   @override
   String toString() {
-    return 'Habit(id: $id, created: $created, title: $title, type: $type, goalValue: $goalValue, dailyRepeatSettings: $dailyRepeatSettings, habitPeriod: $habitPeriod)';
+    return 'Habit(id: $id, created: $created, title: $title, type: $type, goalValue: $goalValue, dailyRepeatSettings: $dailyRepeatSettings, habitPeriod: $habitPeriod, deviceId: $deviceId, userId: $userId)';
   }
 
   @override
@@ -280,7 +313,12 @@ class _$_Habit extends _Habit {
                     .equals(other.dailyRepeatSettings, dailyRepeatSettings)) &&
             (identical(other.habitPeriod, habitPeriod) ||
                 const DeepCollectionEquality()
-                    .equals(other.habitPeriod, habitPeriod)));
+                    .equals(other.habitPeriod, habitPeriod)) &&
+            (identical(other.deviceId, deviceId) ||
+                const DeepCollectionEquality()
+                    .equals(other.deviceId, deviceId)) &&
+            (identical(other.userId, userId) ||
+                const DeepCollectionEquality().equals(other.userId, userId)));
   }
 
   @override
@@ -292,8 +330,11 @@ class _$_Habit extends _Habit {
       const DeepCollectionEquality().hash(type) ^
       const DeepCollectionEquality().hash(goalValue) ^
       const DeepCollectionEquality().hash(dailyRepeatSettings) ^
-      const DeepCollectionEquality().hash(habitPeriod);
+      const DeepCollectionEquality().hash(habitPeriod) ^
+      const DeepCollectionEquality().hash(deviceId) ^
+      const DeepCollectionEquality().hash(userId);
 
+  @JsonKey(ignore: true)
   @override
   _$HabitCopyWith<_Habit> get copyWith =>
       __$HabitCopyWithImpl<_Habit>(this, _$identity);
@@ -313,7 +354,9 @@ abstract class _Habit extends Habit {
       HabitType type,
       double goalValue,
       HabitDailyRepeatSettings dailyRepeatSettings,
-      @required HabitPeriodSettings habitPeriod}) = _$_Habit;
+      @required HabitPeriodSettings habitPeriod,
+      String deviceId,
+      String userId}) = _$_Habit;
 
   factory _Habit.fromJson(Map<String, dynamic> json) = _$_Habit.fromJson;
 
@@ -346,6 +389,15 @@ abstract class _Habit extends Habit {
   /// Периодичность
   HabitPeriodSettings get habitPeriod;
   @override
+
+  /// Айди девайса
+  String get deviceId;
+  @override
+
+  /// Айди юзера
+  String get userId;
+  @override
+  @JsonKey(ignore: true)
   _$HabitCopyWith<_Habit> get copyWith;
 }
 
@@ -403,6 +455,7 @@ mixin _$HabitPeriodSettings {
   bool get isCustom;
 
   Map<String, dynamic> toJson();
+  @JsonKey(ignore: true)
   $HabitPeriodSettingsCopyWith<HabitPeriodSettings> get copyWith;
 }
 
@@ -575,6 +628,7 @@ class _$_HabitPeriodSettings implements _HabitPeriodSettings {
       const DeepCollectionEquality().hash(monthDay) ^
       const DeepCollectionEquality().hash(isCustom);
 
+  @JsonKey(ignore: true)
   @override
   _$HabitPeriodSettingsCopyWith<_HabitPeriodSettings> get copyWith =>
       __$HabitPeriodSettingsCopyWithImpl<_HabitPeriodSettings>(
@@ -620,6 +674,7 @@ abstract class _HabitPeriodSettings implements HabitPeriodSettings {
   /// Вообще тупа в гуи юзается
   bool get isCustom;
   @override
+  @JsonKey(ignore: true)
   _$HabitPeriodSettingsCopyWith<_HabitPeriodSettings> get copyWith;
 }
 
@@ -667,6 +722,7 @@ mixin _$HabitDailyRepeatSettings {
   Map<int, DateTime> get performTimes;
 
   Map<String, dynamic> toJson();
+  @JsonKey(ignore: true)
   $HabitDailyRepeatSettingsCopyWith<HabitDailyRepeatSettings> get copyWith;
 }
 
@@ -815,6 +871,7 @@ class _$_HabitDailyRepeatSettings implements _HabitDailyRepeatSettings {
       const DeepCollectionEquality().hash(repeatsCount) ^
       const DeepCollectionEquality().hash(performTimes);
 
+  @JsonKey(ignore: true)
   @override
   _$HabitDailyRepeatSettingsCopyWith<_HabitDailyRepeatSettings> get copyWith =>
       __$HabitDailyRepeatSettingsCopyWithImpl<_HabitDailyRepeatSettings>(
@@ -849,6 +906,7 @@ abstract class _HabitDailyRepeatSettings implements HabitDailyRepeatSettings {
   /// значение - вресмя выполнения привычки
   Map<int, DateTime> get performTimes;
   @override
+  @JsonKey(ignore: true)
   _$HabitDailyRepeatSettingsCopyWith<_HabitDailyRepeatSettings> get copyWith;
 }
 
@@ -899,6 +957,7 @@ mixin _$HabitPerforming {
   DateTime get performDateTime;
 
   Map<String, dynamic> toJson();
+  @JsonKey(ignore: true)
   $HabitPerformingCopyWith<HabitPerforming> get copyWith;
 }
 
@@ -1055,6 +1114,7 @@ class _$_HabitPerforming implements _HabitPerforming {
       const DeepCollectionEquality().hash(performValue) ^
       const DeepCollectionEquality().hash(performDateTime);
 
+  @JsonKey(ignore: true)
   @override
   _$HabitPerformingCopyWith<_HabitPerforming> get copyWith =>
       __$HabitPerformingCopyWithImpl<_HabitPerforming>(this, _$identity);
@@ -1092,5 +1152,6 @@ abstract class _HabitPerforming implements HabitPerforming {
   /// Время выполнения
   DateTime get performDateTime;
   @override
+  @JsonKey(ignore: true)
   _$HabitPerformingCopyWith<_HabitPerforming> get copyWith;
 }

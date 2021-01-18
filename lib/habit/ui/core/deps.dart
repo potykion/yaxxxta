@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:yaxxxta/core/ui/deps.dart';
 
 import '../../../core/utils/dt.dart';
 import '../../../settings/ui/core/deps.dart';
@@ -57,6 +58,7 @@ Provider<HabitController> habitControllerProvider =
     Provider((ref) => HabitController(
           habitRepo: ref.watch(habitRepoProvider),
           habitState: ref.watch(habitsProvider),
+          deviceInfo: androidInfo,
         ));
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -34,6 +34,7 @@ mixin _$HabitHistoryEntry {
   /// Изменеие значения привычки
   double get value;
 
+  @JsonKey(ignore: true)
   $HabitHistoryEntryCopyWith<HabitHistoryEntry> get copyWith;
 }
 
@@ -133,6 +134,7 @@ class _$_HabitHistoryEntry extends _HabitHistoryEntry {
       const DeepCollectionEquality().hash(time) ^
       const DeepCollectionEquality().hash(value);
 
+  @JsonKey(ignore: true)
   @override
   _$HabitHistoryEntryCopyWith<_HabitHistoryEntry> get copyWith =>
       __$HabitHistoryEntryCopyWithImpl<_HabitHistoryEntry>(this, _$identity);
@@ -152,5 +154,6 @@ abstract class _HabitHistoryEntry extends HabitHistoryEntry {
   /// Изменеие значения привычки
   double get value;
   @override
+  @JsonKey(ignore: true)
   _$HabitHistoryEntryCopyWith<_HabitHistoryEntry> get copyWith;
 }

@@ -48,6 +48,7 @@ mixin _$Settings {
   DateTime get dayEndTime;
 
   Map<String, dynamic> toJson();
+  @JsonKey(ignore: true)
   $SettingsCopyWith<Settings> get copyWith;
 }
 
@@ -173,6 +174,7 @@ class _$_Settings implements _Settings {
       const DeepCollectionEquality().hash(dayStartTime) ^
       const DeepCollectionEquality().hash(dayEndTime);
 
+  @JsonKey(ignore: true)
   @override
   _$SettingsCopyWith<_Settings> get copyWith =>
       __$SettingsCopyWithImpl<_Settings>(this, _$identity);
@@ -204,5 +206,6 @@ abstract class _Settings implements Settings {
   /// Конец дня
   DateTime get dayEndTime;
   @override
+  @JsonKey(ignore: true)
   _$SettingsCopyWith<_Settings> get copyWith;
 }

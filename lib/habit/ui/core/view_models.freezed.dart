@@ -38,6 +38,7 @@ mixin _$HabitProgressVM {
   /// Повторы (15 мин / раз 2 раза в день)
   List<HabitRepeatVM> get repeats;
 
+  @JsonKey(ignore: true)
   $HabitProgressVMCopyWith<HabitProgressVM> get copyWith;
 }
 
@@ -150,6 +151,7 @@ class _$_HabitProgressVM extends _HabitProgressVM {
       const DeepCollectionEquality().hash(title) ^
       const DeepCollectionEquality().hash(repeats);
 
+  @JsonKey(ignore: true)
   @override
   _$HabitProgressVMCopyWith<_HabitProgressVM> get copyWith =>
       __$HabitProgressVMCopyWithImpl<_HabitProgressVM>(this, _$identity);
@@ -173,6 +175,7 @@ abstract class _HabitProgressVM extends HabitProgressVM {
   /// Повторы (15 мин / раз 2 раза в день)
   List<HabitRepeatVM> get repeats;
   @override
+  @JsonKey(ignore: true)
   _$HabitProgressVMCopyWith<_HabitProgressVM> get copyWith;
 }
 
@@ -213,6 +216,7 @@ mixin _$HabitRepeatVM {
   /// Тип
   HabitType get type;
 
+  @JsonKey(ignore: true)
   $HabitRepeatVMCopyWith<HabitRepeatVM> get copyWith;
 }
 
@@ -355,6 +359,7 @@ class _$_HabitRepeatVM extends _HabitRepeatVM {
       const DeepCollectionEquality().hash(performTime) ^
       const DeepCollectionEquality().hash(type);
 
+  @JsonKey(ignore: true)
   @override
   _$HabitRepeatVMCopyWith<_HabitRepeatVM> get copyWith =>
       __$HabitRepeatVMCopyWithImpl<_HabitRepeatVM>(this, _$identity);
@@ -385,5 +390,6 @@ abstract class _HabitRepeatVM extends HabitRepeatVM {
   /// Тип
   HabitType get type;
   @override
+  @JsonKey(ignore: true)
   _$HabitRepeatVMCopyWith<_HabitRepeatVM> get copyWith;
 }

@@ -1,3 +1,4 @@
+import 'package:device_info/device_info.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:meta/meta.dart';
 
@@ -91,8 +92,14 @@ class HabitController {
   /// Стейт привычек
   final StateController<List<Habit>> habitState;
 
+  final AndroidDeviceInfo deviceInfo;
+
   /// Контроллер привычек
-  HabitController({this.habitRepo, this.habitState});
+  HabitController({
+    @required this.habitRepo,
+    @required this.habitState,
+    @required this.deviceInfo,
+  });
 
   Future<void> list() async {
     habitState.state = await habitRepo.list();
@@ -106,6 +113,10 @@ class HabitController {
 
   /// Создает или обновляет привычку в зависимости от наличия айди
   Future<bool> createOrUpdateHabit(Habit habit) async {
+    if (habit.deviceId == null) {
+      habit = habit.copyWith(deviceId: deviceInfo.id);
+    }
+
     if (habit.isUpdate) {
       await habitRepo.update(habit);
       habitState.state = [

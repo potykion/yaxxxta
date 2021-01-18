@@ -34,6 +34,7 @@ mixin _$DateRange {
   /// Дейт-тайм по
   DateTime get to;
 
+  @JsonKey(ignore: true)
   $DateRangeCopyWith<DateRange> get copyWith;
 }
 
@@ -131,6 +132,7 @@ class _$_DateRange extends _DateRange {
       const DeepCollectionEquality().hash(from) ^
       const DeepCollectionEquality().hash(to);
 
+  @JsonKey(ignore: true)
   @override
   _$DateRangeCopyWith<_DateRange> get copyWith =>
       __$DateRangeCopyWithImpl<_DateRange>(this, _$identity);
@@ -149,5 +151,6 @@ abstract class _DateRange extends DateRange {
   /// Дейт-тайм по
   DateTime get to;
   @override
+  @JsonKey(ignore: true)
   _$DateRangeCopyWith<_DateRange> get copyWith;
 }

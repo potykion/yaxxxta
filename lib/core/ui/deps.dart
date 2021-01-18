@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hooks_riverpod/all.dart';
@@ -12,6 +13,8 @@ StateProvider<int> pageIndexProvider = StateProvider((_) => 0);
 /// Плагин для отправки локальных пушей
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
+
+
 
 /// Регает плагин для отправки локальных пушей
 Provider<FlutterLocalNotificationsPlugin>
@@ -30,6 +33,9 @@ GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 /// Инфа о приложении
 PackageInfo packageInfo;
+
+/// Инфа о девайсе
+AndroidDeviceInfo androidInfo;
 
 /// Провайдер версии
 Provider<String> versionProvider =

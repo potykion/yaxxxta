@@ -72,6 +72,9 @@ dependencies:
   # фаербейз стор
   cloud_firestore: ^0.16.0
 
+  # Инфа о девайсе
+  device_info: ^1.0.0
+
 
 dev_dependencies:
   flutter_test:

@@ -35,6 +35,12 @@ abstract class Habit with _$Habit {
 
     /// Периодичность
     @required HabitPeriodSettings habitPeriod,
+
+    /// Айди девайса
+    String deviceId,
+
+    /// Айди юзера
+    String userId,
   }) = _Habit;
 
   /// Созадет пустую привычку

@@ -22,6 +22,8 @@ _$_Habit _$_$_HabitFromJson(Map json) {
     habitPeriod: json['habitPeriod'] == null
         ? null
         : HabitPeriodSettings.fromJson(json['habitPeriod'] as Map),
+    deviceId: json['deviceId'] as String,
+    userId: json['userId'] as String,
   );
 }
 
@@ -33,6 +35,8 @@ Map<String, dynamic> _$_$_HabitToJson(_$_Habit instance) => <String, dynamic>{
       'goalValue': instance.goalValue,
       'dailyRepeatSettings': instance.dailyRepeatSettings?.toJson(),
       'habitPeriod': instance.habitPeriod?.toJson(),
+      'deviceId': instance.deviceId,
+      'userId': instance.userId,
     };
 
 T _$enumDecode<T>(
