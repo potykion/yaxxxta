@@ -14,8 +14,6 @@ StateProvider<int> pageIndexProvider = StateProvider((_) => 0);
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
-
-
 /// Регает плагин для отправки локальных пушей
 Provider<FlutterLocalNotificationsPlugin>
     flutterLocalNotificationsPluginProvider =
@@ -45,5 +43,6 @@ Provider<SignInWithGoogle> signInWithGoogleProvider =
     Provider((_) => SignInWithGoogle());
 
 var habitCollectionRefProvider = Provider(
-  (_) => FirebaseFirestore.instance.collection("habits"),
+  (_) =>
+      FirebaseFirestore.instance.collection("habits_test"),
 );

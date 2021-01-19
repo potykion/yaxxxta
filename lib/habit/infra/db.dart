@@ -72,10 +72,7 @@ class FirestoreHabitRepo implements BaseHabitRepo {
   FirestoreHabitRepo(this._collectionReference);
 
   @override
-  Future<void> delete(String id) {
-    // TODO: implement delete
-    throw UnimplementedError();
-  }
+  Future<void> delete(String id) => _collectionReference.doc(id).delete();
 
   @override
   Future<Habit> get(String id) async =>
@@ -87,14 +84,12 @@ class FirestoreHabitRepo implements BaseHabitRepo {
       (await _collectionReference.add(habit.toJson())).id;
 
   @override
-  Future<List<Habit>> list() {
-    // TODO: implement list
-    throw UnimplementedError();
-  }
+  Future<List<Habit>> list() async => (await _collectionReference.get())
+      .docs
+      .map((d) => Habit.fromJson(d.data()))
+      .toList();
 
   @override
-  Future<void> update(Habit habit) {
-    // TODO: implement update
-    throw UnimplementedError();
-  }
+  Future<void> update(Habit habit) =>
+      _collectionReference.doc(habit.id).update(habit.toJson());
 }

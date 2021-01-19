@@ -21,7 +21,9 @@ Provider<Box<Map>> _habitPerformingBoxProvider =
 
 /// Регает репо привычек
 Provider<BaseHabitRepo> habitRepoProvider = Provider(
-  (ref) => HiveHabitRepo(ref.watch(_habitBoxProvider)),
+  (ref) =>
+      HiveHabitRepo(ref.watch(_habitBoxProvider)),
+      // FirestoreHabitRepo(ref.watch(habitCollectionRefProvider)),
 );
 
 /// Регает репо выполнений привычек
