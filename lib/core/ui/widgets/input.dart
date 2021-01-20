@@ -39,22 +39,19 @@ class _TextInputState<T> extends State<TextInput> {
   bool get isNumberInput => T == double || T == int;
 
   void _change() {
-    if (_debounce?.isActive ?? false) _debounce.cancel();
-    _debounce = Timer(const Duration(seconds: 1), () {
-      if (isNumberInput) {
-        var value = T == double
-            ? (double.tryParse(tec.text) ?? 0.0)
-            : (int.tryParse(tec.text) ?? 0);
-        if (formatDouble(widget.initial as num) != formatDouble(value)) {
-          widget.change(value);
-        }
-      } else {
-        var value = tec.text;
-        if (widget.initial != value) {
-          widget.change(value);
-        }
+    if (isNumberInput) {
+      var value = T == double
+          ? (double.tryParse(tec.text) ?? 0.0)
+          : (int.tryParse(tec.text) ?? 0);
+      if (formatDouble(widget.initial as num) != formatDouble(value)) {
+        widget.change(value);
       }
-    });
+    } else {
+      var value = tec.text;
+      if (widget.initial != value) {
+        widget.change(value);
+      }
+    }
   }
 
   @override
