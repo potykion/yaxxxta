@@ -6,9 +6,6 @@ import 'package:timezone/timezone.dart' as tz;
 class NotificationSender {
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
 
-  static final int defaultNotificationId = 0;
-  static final int scheduleNotificationId = 1;
-
   /// Отправщик уведомлений
   NotificationSender(this._flutterLocalNotificationsPlugin);
 
@@ -25,22 +22,7 @@ class NotificationSender {
         enableVibration: true,
       );
 
-  /// Отправка уведомления
-  Future<void> send({
-    String title,
-    String body,
-    AndroidNotificationDetails channel,
-  }) async {
-    channel = channel ?? timeProgressNotification;
-
-    await _flutterLocalNotificationsPlugin.show(
-      defaultNotificationId,
-      title,
-      body,
-      NotificationDetails(android: timeProgressNotification),
-    );
-  }
-
+  /// Планирует отправку уведомления через {sendAfterSeconds} секунд
   Future<int> schedule({
     String title,
     String body,
@@ -65,5 +47,6 @@ class NotificationSender {
     return id;
   }
 
+  /// Отменяет уведомление
   Future<void> cancel(int id) => _flutterLocalNotificationsPlugin.cancel(id);
 }

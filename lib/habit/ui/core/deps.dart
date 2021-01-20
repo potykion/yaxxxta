@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 import 'package:hooks_riverpod/all.dart';
-import 'package:yaxxxta/core/ui/deps.dart';
+import '../../../core/ui/deps.dart';
 
 import '../../../core/utils/dt.dart';
 import '../../../settings/ui/core/deps.dart';
@@ -42,14 +42,14 @@ StateProvider<List<HabitPerforming>> todayHabitPerformingsProvider =
     StateProvider((ref) => <HabitPerforming>[]);
 
 /// Провайдер выполнений привычек за дату
-StateProvider<List<HabitPerforming>> dateHabitPerfomingsProvider =
+StateProvider<List<HabitPerforming>> dateHabitPerformingsProvider =
     StateProvider((ref) => <HabitPerforming>[]);
 
 /// Провайдер контроллера выполнений привычек
 Provider<HabitPerformingController> habitPerformingController =
     Provider((ref) => HabitPerformingController(
           habitPerformingRepo: ref.watch(habitPerformingRepoProvider),
-          dateHabitPerformingsState: ref.watch(dateHabitPerfomingsProvider),
+          dateHabitPerformingsState: ref.watch(dateHabitPerformingsProvider),
           todayHabitPerformingsState: ref.watch(todayHabitPerformingsProvider),
           settings: ref.watch(settingsProvider).state,
           loadingState: ref.watch(loadingState),
@@ -117,14 +117,15 @@ Provider<List<HabitPerforming>> todaySelectedHabitPerformingsProvider =
       .toList(),
 );
 
-StateProvider<List<HabitPerforming>> notTodaySelectedHabitPerfomingsProvider =
+/// Провайдер выполнений выбранной привычки за все время, кроме сегодня
+StateProvider<List<HabitPerforming>> notTodaySelectedHabitPerformingsProvider =
     StateProvider((ref) => []);
 
 /// Провадер выполнений выбранной привычки
 Provider<List<HabitPerforming>> selectedHabitPerformingsProvider = Provider(
   (ref) => [
     ...ref.watch(todaySelectedHabitPerformingsProvider),
-    ...ref.watch(notTodaySelectedHabitPerfomingsProvider).state
+    ...ref.watch(notTodaySelectedHabitPerformingsProvider).state
   ],
 );
 

@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth;
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
-import 'package:yaxxxta/auth/models.dart';
+import '../../../auth/models.dart';
 import '../../../core/ui/deps.dart';
 
 import '../../../core/ui/widgets/bottom_nav.dart';
@@ -49,7 +49,7 @@ class SettingsPage extends HookWidget {
                   ListTile(
                     title: BiggerText(text: "Войти"),
                     onTap: () async {
-                      var user = await context.read(signInWithGoogleProvider)();
+                      await context.read(signInWithGoogleProvider)();
                     },
                     trailing: Icon(Icons.login),
                   )

@@ -92,6 +92,7 @@ class HabitController {
   /// Стейт привычек
   final StateController<List<Habit>> habitState;
 
+  /// Инфа о ведре
   final AndroidDeviceInfo deviceInfo;
 
   /// Контроллер привычек
@@ -101,6 +102,7 @@ class HabitController {
     @required this.deviceInfo,
   });
 
+  /// Грузит список привычек и сеттит в стейт
   Future<void> list() async {
     habitState.state = await habitRepo.list();
   }

@@ -4,7 +4,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:yaxxxta/core/infra/push.dart';
 import '../../../habit/domain/models.dart';
 
 import '../../../theme.dart';
@@ -152,7 +151,11 @@ class _TimeProgressControl extends HookWidget {
 
       /// Обновляем прогресс = разницы между текущим значение таймера
       /// и начальным
-      onValueIncrement(currentValueState.value - initialValue, currentValueState.value >= goalValue, oldDate);
+      onValueIncrement(
+        currentValueState.value - initialValue,
+        currentValueState.value >= goalValue,
+        oldDate,
+      );
 
       /// Обнуление таймера вызывает перерисовку виджета,
       /// это не нужно делать, если мы покидаем страницу с виджетом

@@ -39,10 +39,11 @@ AndroidDeviceInfo androidInfo;
 Provider<String> versionProvider =
     Provider((ref) => "${packageInfo.version}+${packageInfo.buildNumber}");
 
+/// Провайдер входа через гугл
 Provider<SignInWithGoogle> signInWithGoogleProvider =
     Provider((_) => SignInWithGoogle());
 
-var habitCollectionRefProvider = Provider(
-  (_) =>
-      FirebaseFirestore.instance.collection("habits_test"),
+/// Провайдер ссылки на фаер-стор коллекцию с привычками
+Provider<CollectionReference> habitCollectionRefProvider = Provider(
+  (_) => FirebaseFirestore.instance.collection("habits_test"),
 );
