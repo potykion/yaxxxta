@@ -66,9 +66,11 @@ class HiveHabitPerformingRepo implements BaseHabitPerformingRepo {
           .toList();
 }
 
+/// Фаерстор репо для привычек
 class FirestoreHabitRepo implements BaseHabitRepo {
   final CollectionReference _collectionReference;
 
+  /// Фаерстор репо для привычек
   FirestoreHabitRepo(this._collectionReference);
 
   @override

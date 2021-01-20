@@ -8,6 +8,7 @@ part 'models.freezed.dart';
 /// https://pub.dev/documentation/firebase_auth/latest/firebase_auth/User-class.html
 @freezed
 abstract class User with _$User {
+  /// Юзерок
   factory User({
     String photoURL,
     String uid,
@@ -15,9 +16,11 @@ abstract class User with _$User {
     String email,
   }) = _User;
 
+  /// Создает из джсона
   factory User.fromJson(Map json) =>
       _$UserFromJson(Map<String, dynamic>.from(json));
 
+  /// Создает из фаербейза
   factory User.fromFireBase(fb.User fireBaseUser) => User(
         photoURL: fireBaseUser.photoURL,
         uid: fireBaseUser.uid,
