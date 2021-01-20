@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -32,30 +34,42 @@ class TextInput<T> extends StatefulWidget {
 
 class _TextInputState<T> extends State<TextInput> {
   TextEditingController tec = TextEditingController();
+  Timer _debounce;
 
   bool get isNumberInput => T == double || T == int;
+
+  void _change() {
+    if (_debounce?.isActive ?? false) _debounce.cancel();
+    _debounce = Timer(const Duration(seconds: 1), () {
+      if (isNumberInput) {
+        var value = T == double
+            ? (double.tryParse(tec.text) ?? 0.0)
+            : (int.tryParse(tec.text) ?? 0);
+        if (formatDouble(widget.initial as num) != formatDouble(value)) {
+          widget.change(value);
+        }
+      } else {
+        var value = tec.text;
+        if (widget.initial != value) {
+          widget.change(value);
+        }
+      }
+    });
+  }
 
   @override
   void initState() {
     super.initState();
     setTecValue();
-    tec.addListener(
-      () {
-        if (isNumberInput) {
-          var value = T == double
-              ? (double.tryParse(tec.text) ?? 0.0)
-              : (int.tryParse(tec.text) ?? 0);
-          if (formatDouble(widget.initial as num) != formatDouble(value)) {
-            widget.change(value);
-          }
-        } else {
-          var value = tec.text;
-          if (widget.initial != value) {
-            widget.change(value);
-          }
-        }
-      },
-    );
+    tec.addListener(_change);
+  }
+
+  @override
+  void dispose() {
+    tec.removeListener(_change);
+    tec.dispose();
+    _debounce?.cancel();
+    super.dispose();
   }
 
   @override
@@ -65,11 +79,13 @@ class _TextInputState<T> extends State<TextInput> {
   }
 
   void setTecValue() {
-    if (isNumberInput) {
-      tec.text = formatDouble(widget.initial as num);
-    } else {
-      tec.text = widget.initial.toString();
-    }
+    var tecValue = isNumberInput
+        ? formatDouble(widget.initial as num)
+        : widget.initial.toString();
+
+    if (tec.text == tecValue) return;
+
+    tec.text = tecValue;
 
     // ставим курсор в конец инпута
     tec.selection =
@@ -412,5 +428,3 @@ class _WeekdaysPickerState extends State<WeekdaysPicker> {
     );
   }
 }
-
-
