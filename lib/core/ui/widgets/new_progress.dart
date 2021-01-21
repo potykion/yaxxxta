@@ -4,7 +4,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../habit/domain/models.dart';
 
 import '../../../theme.dart';
 import '../../utils/dt.dart';
@@ -15,55 +14,19 @@ typedef OnValueIncrement = void Function(
     double incrementValue, bool isCompleteOrExceeded,
     [DateTime datetime]);
 
-/// Контрол прогресса проивычки
-class HabitProgressControl extends StatelessWidget {
-  /// Текущее значение прогресса
-  final double currentValue;
-
-  /// Желаемое значение прогресса
-  final double goalValue;
-
-  /// Событие изменения прогресса
-  final OnValueIncrement onValueIncrement;
-
-  /// Тип привычки
-  /// В зависимости от него определяется тип прогресс-контрола
-  final HabitType habitType;
-
-  /// Начальная дата, нужно для _TimeProgressControl
-  final DateTime initialDate;
-
-  /// Контрол прогресса проивычки
-  const HabitProgressControl({
-    Key key,
-    @required this.currentValue,
-    @required this.goalValue,
-    @required this.onValueIncrement,
-    @required this.habitType,
-    @required this.initialDate,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) => habitType == HabitType.repeats
-      ? _RepeatProgressControl(
-          initialValue: currentValue,
-          goalValue: goalValue,
-          onValueIncrement: onValueIncrement,
-        )
-      : _TimeProgressControl(
-          initialValue: currentValue,
-          goalValue: goalValue,
-          onValueIncrement: onValueIncrement,
-          initialDate: initialDate,
-        );
-}
-
-class _RepeatProgressControl extends HookWidget {
+/// Контролл прогресса на повторы
+class RepeatProgressControl extends HookWidget {
+  /// Начальное значение
   final double initialValue;
+
+  /// Целевое значение
   final double goalValue;
+
+  /// Событие изменения значения
   final OnValueIncrement onValueIncrement;
 
-  _RepeatProgressControl({
+  /// Контролл прогресса на повторы
+  RepeatProgressControl({
     @required this.initialValue,
     @required this.goalValue,
     @required this.onValueIncrement,
@@ -105,17 +68,30 @@ class _RepeatProgressControl extends HookWidget {
   }
 }
 
-class _TimeProgressControl extends HookWidget {
+/// Контролл прогресса на время
+class TimeProgressControl extends HookWidget {
+  /// Начальное значение
   final double initialValue;
+
+  /// Целевое значение
   final double goalValue;
+
+  /// Событие изменения значения
   final OnValueIncrement onValueIncrement;
+
+  /// Начальная дата
   final DateTime initialDate;
 
-  _TimeProgressControl({
+  /// Текст уведомления о выполнении привычки
+  final String notificationText;
+
+  /// Контролл прогресса на время
+  TimeProgressControl({
     @required this.initialValue,
     @required this.goalValue,
     @required this.onValueIncrement,
     @required this.initialDate,
+    this.notificationText = "Привычка выполнена",
   });
 
   @override
@@ -212,7 +188,7 @@ class _TimeProgressControl extends HookWidget {
               if (currentValueState.value < goalValue) {
                 notificationId.value =
                     await context.read(notificationSender).schedule(
-                          title: "Привычка выполнена",
+                          title: notificationText,
                           sendAfterSeconds:
                               (goalValue - currentValueState.value).toInt(),
                         );
