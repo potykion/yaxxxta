@@ -140,7 +140,6 @@ Map<String, dynamic> _$_$_HabitDailyRepeatSettingsToJson(
 _$_HabitPerforming _$_$_HabitPerformingFromJson(Map json) {
   return _$_HabitPerforming(
     habitId: json['habitId'] as String,
-    repeatIndex: json['repeatIndex'] as int,
     performValue: (json['performValue'] as num)?.toDouble(),
     performDateTime: json['performDateTime'] == null
         ? null
@@ -151,7 +150,6 @@ _$_HabitPerforming _$_$_HabitPerformingFromJson(Map json) {
 Map<String, dynamic> _$_$_HabitPerformingToJson(_$_HabitPerforming instance) =>
     <String, dynamic>{
       'habitId': instance.habitId,
-      'repeatIndex': instance.repeatIndex,
       'performValue': instance.performValue,
       'performDateTime': instance.performDateTime?.toIso8601String(),
     };

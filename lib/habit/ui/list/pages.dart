@@ -101,20 +101,18 @@ class HabitListPage extends HookWidget {
                   );
                 }
               },
-        child: HabitRepeatControl(
+        child: HabitProgressControl(
           key: Key(vm.id),
-          repeatTitle: vm.firstRepeat.performTime != null
-              ? "${vm.firstRepeat.performTimeStr}: ${vm.title}"
+          repeatTitle: vm.performTime != null
+              ? "${vm.performTimeStr}: ${vm.title}"
               : vm.title,
-          repeats: vm.repeats,
-          initialRepeatIndex: vm.firstIncompleteRepeatIndex,
+          vm: vm,
           onRepeatIncrement: removed
               ? null
-              : (repeatIndex, incrementValue, isCompleteOrExceeded,
+              : (incrementValue, isCompleteOrExceeded,
                   [date]) async {
                   context.read(habitPerformingController).create(
                         habitId: vm.id,
-                        repeatIndex: repeatIndex,
                         performValue: incrementValue,
                         performDateTime:
                             await _computePerformDateTime(context, date),

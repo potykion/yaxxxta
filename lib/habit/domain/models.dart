@@ -311,9 +311,6 @@ abstract class HabitPerforming with _$HabitPerforming {
     /// Айди привычки
     @required String habitId,
 
-    /// Раз выполнения (напр. 1 из 2)
-    @required int repeatIndex,
-
     /// Значение выполнения (напр. 10 сек)
     @required double performValue,
 

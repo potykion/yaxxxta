@@ -921,12 +921,10 @@ class _$HabitPerformingTearOff {
 // ignore: unused_element
   _HabitPerforming call(
       {@required String habitId,
-      @required int repeatIndex,
       @required double performValue,
       @required DateTime performDateTime}) {
     return _HabitPerforming(
       habitId: habitId,
-      repeatIndex: repeatIndex,
       performValue: performValue,
       performDateTime: performDateTime,
     );
@@ -947,9 +945,6 @@ mixin _$HabitPerforming {
   /// Айди привычки
   String get habitId;
 
-  /// Раз выполнения (напр. 1 из 2)
-  int get repeatIndex;
-
   /// Значение выполнения (напр. 10 сек)
   double get performValue;
 
@@ -966,11 +961,7 @@ abstract class $HabitPerformingCopyWith<$Res> {
   factory $HabitPerformingCopyWith(
           HabitPerforming value, $Res Function(HabitPerforming) then) =
       _$HabitPerformingCopyWithImpl<$Res>;
-  $Res call(
-      {String habitId,
-      int repeatIndex,
-      double performValue,
-      DateTime performDateTime});
+  $Res call({String habitId, double performValue, DateTime performDateTime});
 }
 
 /// @nodoc
@@ -985,14 +976,11 @@ class _$HabitPerformingCopyWithImpl<$Res>
   @override
   $Res call({
     Object habitId = freezed,
-    Object repeatIndex = freezed,
     Object performValue = freezed,
     Object performDateTime = freezed,
   }) {
     return _then(_value.copyWith(
       habitId: habitId == freezed ? _value.habitId : habitId as String,
-      repeatIndex:
-          repeatIndex == freezed ? _value.repeatIndex : repeatIndex as int,
       performValue: performValue == freezed
           ? _value.performValue
           : performValue as double,
@@ -1010,11 +998,7 @@ abstract class _$HabitPerformingCopyWith<$Res>
           _HabitPerforming value, $Res Function(_HabitPerforming) then) =
       __$HabitPerformingCopyWithImpl<$Res>;
   @override
-  $Res call(
-      {String habitId,
-      int repeatIndex,
-      double performValue,
-      DateTime performDateTime});
+  $Res call({String habitId, double performValue, DateTime performDateTime});
 }
 
 /// @nodoc
@@ -1031,14 +1015,11 @@ class __$HabitPerformingCopyWithImpl<$Res>
   @override
   $Res call({
     Object habitId = freezed,
-    Object repeatIndex = freezed,
     Object performValue = freezed,
     Object performDateTime = freezed,
   }) {
     return _then(_HabitPerforming(
       habitId: habitId == freezed ? _value.habitId : habitId as String,
-      repeatIndex:
-          repeatIndex == freezed ? _value.repeatIndex : repeatIndex as int,
       performValue: performValue == freezed
           ? _value.performValue
           : performValue as double,
@@ -1055,11 +1036,9 @@ class __$HabitPerformingCopyWithImpl<$Res>
 class _$_HabitPerforming implements _HabitPerforming {
   _$_HabitPerforming(
       {@required this.habitId,
-      @required this.repeatIndex,
       @required this.performValue,
       @required this.performDateTime})
       : assert(habitId != null),
-        assert(repeatIndex != null),
         assert(performValue != null),
         assert(performDateTime != null);
 
@@ -1072,10 +1051,6 @@ class _$_HabitPerforming implements _HabitPerforming {
   final String habitId;
   @override
 
-  /// Раз выполнения (напр. 1 из 2)
-  final int repeatIndex;
-  @override
-
   /// Значение выполнения (напр. 10 сек)
   final double performValue;
   @override
@@ -1085,7 +1060,7 @@ class _$_HabitPerforming implements _HabitPerforming {
 
   @override
   String toString() {
-    return 'HabitPerforming(habitId: $habitId, repeatIndex: $repeatIndex, performValue: $performValue, performDateTime: $performDateTime)';
+    return 'HabitPerforming(habitId: $habitId, performValue: $performValue, performDateTime: $performDateTime)';
   }
 
   @override
@@ -1095,9 +1070,6 @@ class _$_HabitPerforming implements _HabitPerforming {
             (identical(other.habitId, habitId) ||
                 const DeepCollectionEquality()
                     .equals(other.habitId, habitId)) &&
-            (identical(other.repeatIndex, repeatIndex) ||
-                const DeepCollectionEquality()
-                    .equals(other.repeatIndex, repeatIndex)) &&
             (identical(other.performValue, performValue) ||
                 const DeepCollectionEquality()
                     .equals(other.performValue, performValue)) &&
@@ -1110,7 +1082,6 @@ class _$_HabitPerforming implements _HabitPerforming {
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(habitId) ^
-      const DeepCollectionEquality().hash(repeatIndex) ^
       const DeepCollectionEquality().hash(performValue) ^
       const DeepCollectionEquality().hash(performDateTime);
 
@@ -1128,7 +1099,6 @@ class _$_HabitPerforming implements _HabitPerforming {
 abstract class _HabitPerforming implements HabitPerforming {
   factory _HabitPerforming(
       {@required String habitId,
-      @required int repeatIndex,
       @required double performValue,
       @required DateTime performDateTime}) = _$_HabitPerforming;
 
@@ -1139,10 +1109,6 @@ abstract class _HabitPerforming implements HabitPerforming {
 
   /// Айди привычки
   String get habitId;
-  @override
-
-  /// Раз выполнения (напр. 1 из 2)
-  int get repeatIndex;
   @override
 
   /// Значение выполнения (напр. 10 сек)

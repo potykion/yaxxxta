@@ -156,18 +156,17 @@ class HabitDetailsPage extends HookWidget {
                     ],
                   ),
                 ),
-                HabitRepeatControl(
+                HabitProgressControl(
                   key: Key("HabitDetailsPage_HabitRepeatControl"),
-                  repeats: progress.repeats,
-                  onRepeatIncrement: (repeatIndex, incrementValue, _, [__]) =>
-                      navigatorKey.currentContext
-                          .read(habitPerformingController)
-                          .create(
-                            habitId: habit.id,
-                            repeatIndex: repeatIndex,
-                            performValue: incrementValue,
-                            performDateTime: DateTime.now(),
-                          ),
+                  vm: progress,
+                  onRepeatIncrement: (incrementValue, _, [__]) => navigatorKey
+                      .currentContext
+                      .read(habitPerformingController)
+                      .create(
+                        habitId: habit.id,
+                        performValue: incrementValue,
+                        performDateTime: DateTime.now(),
+                      ),
                   repeatTitle: "Сегодня",
                 ),
                 PaddedContainerCard(

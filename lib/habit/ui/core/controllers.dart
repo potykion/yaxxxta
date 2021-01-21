@@ -36,7 +36,6 @@ class HabitPerformingController {
   /// Создает выполнение привычки, обновляя состояние
   Future<void> create({
     @required String habitId,
-    @required int repeatIndex,
     double performValue = 1,
     DateTime performDateTime,
   }) async {
@@ -44,7 +43,6 @@ class HabitPerformingController {
 
     var performing = HabitPerforming(
       habitId: habitId,
-      repeatIndex: repeatIndex,
       performValue: performValue,
       performDateTime: performDateTime,
     );

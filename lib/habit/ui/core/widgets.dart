@@ -7,16 +7,12 @@ import '../../domain/models.dart';
 import 'view_models.dart';
 
 /// Контрол повторов выполнений привычки
-class HabitRepeatControl extends StatelessWidget {
-  /// ВМки повторов привычек
-  final List<HabitRepeatVM> repeats;
-
-  /// Начальный индекс повтора
-  final int initialRepeatIndex;
+class HabitProgressControl extends StatelessWidget {
+  /// Вью-модель прогресса
+  final HabitProgressVM vm;
 
   /// Событие инкремента привычки
   final void Function(
-    int repeatIndex,
     double incrementValue,
     bool isCompleteOrExceeded, [
     DateTime dateTime,
@@ -25,45 +21,39 @@ class HabitRepeatControl extends StatelessWidget {
   /// Название на карточке с повтором
   final String repeatTitle;
 
-  /// Функция, которая по повтору делает название на карточке с повтором
-  final Widget Function(HabitRepeatVM repeat) repeatTitleBuilder;
-
   /// Начальная дата
   final DateTime initialDate;
 
   /// Контрол повторов выполнений привычки
-  const HabitRepeatControl({
+  const HabitProgressControl({
     @required Key key,
-    @required this.repeats,
+    @required this.vm,
     @required this.onRepeatIncrement,
-    this.initialRepeatIndex = 0,
-    this.repeatTitle = "",
-    this.repeatTitleBuilder,
+    this.repeatTitle,
     this.initialDate,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var repeat = repeats[0];
     return PaddedContainerCard(children: [
-      BiggerText(text: repeatTitle),
+      BiggerText(text: repeatTitle ?? vm.title),
       SizedBox(height: 5),
-      if (repeat.type == HabitType.repeats)
+      if (vm.type == HabitType.repeats)
         RepeatProgressControl(
-          initialValue: repeat.currentValue,
-          goalValue: repeat.goalValue,
+          initialValue: vm.currentValue,
+          goalValue: vm.goalValue,
           onValueIncrement: (value, isCompleteOrExceeded, [dt]) =>
               onRepeatIncrement != null
-                  ? onRepeatIncrement(0, value, isCompleteOrExceeded, dt)
+                  ? onRepeatIncrement(value, isCompleteOrExceeded, dt)
                   : null,
         ),
-      if (repeat.type == HabitType.time)
+      if (vm.type == HabitType.time)
         TimeProgressControl(
-          initialValue: repeat.currentValue,
-          goalValue: repeat.goalValue,
+          initialValue: vm.currentValue,
+          goalValue: vm.goalValue,
           onValueIncrement: (value, isCompleteOrExceeded, [dt]) =>
               onRepeatIncrement != null
-                  ? onRepeatIncrement(0, value, isCompleteOrExceeded, dt)
+                  ? onRepeatIncrement(value, isCompleteOrExceeded, dt)
                   : null,
           initialDate: initialDate,
         ),

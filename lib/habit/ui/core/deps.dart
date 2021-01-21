@@ -84,12 +84,12 @@ Provider<List<HabitProgressVM>> listHabitVMs = Provider((ref) {
       .map((h) => HabitProgressVM.build(h, groupedHabitPerformings[h.id] ?? []))
       .where((h) => settings.showCompleted || !h.isComplete && !h.isExceeded)
       .toList()
-        ..sort((h1, h2) => h1.firstRepeat.performTime == null
-            ? (h2.firstRepeat.performTime == null ? 0 : 1)
-            : (h2.firstRepeat.performTime == null
+        ..sort((h1, h2) => h1.performTime == null
+            ? (h2.performTime == null ? 0 : 1)
+            : (h2.performTime == null
                 ? -1
-                : h1.firstRepeat.performTime
-                    .compareTo(h2.firstRepeat.performTime)));
+                : h1.performTime
+                    .compareTo(h2.performTime)));
   return vms;
 });
 
