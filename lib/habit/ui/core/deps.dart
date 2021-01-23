@@ -21,14 +21,12 @@ Provider<Box<Map>> _habitPerformingBoxProvider =
 
 /// Регает репо привычек
 Provider<BaseHabitRepo> habitRepoProvider = Provider(
-  (ref) =>
-      HiveHabitRepo(ref.watch(_habitBoxProvider)),
-      // FirestoreHabitRepo(ref.watch(habitCollectionRefProvider)),
-);
+    (ref) => FirestoreHabitRepo(ref.watch(habitCollectionRefProvider)));
 
 /// Регает репо выполнений привычек
 Provider<BaseHabitPerformingRepo> habitPerformingRepoProvider = Provider(
-  (ref) => HiveHabitPerformingRepo(ref.watch(_habitPerformingBoxProvider)),
+  (ref) => FireStoreHabitPerformingRepo(
+      ref.watch(habitPerformingCollectionRefProvider)),
 );
 
 /// Провайдер состояния загрузи чего-либо
@@ -88,8 +86,7 @@ Provider<List<HabitProgressVM>> listHabitVMs = Provider((ref) {
             ? (h2.performTime == null ? 0 : 1)
             : (h2.performTime == null
                 ? -1
-                : h1.performTime
-                    .compareTo(h2.performTime)));
+                : h1.performTime.compareTo(h2.performTime)));
   return vms;
 });
 

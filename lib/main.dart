@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info/device_info.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -45,6 +47,12 @@ void main() async {
   /// фаер-бейз
   await Firebase.initializeApp();
 
+  if (!androidInfo.isPhysicalDevice) {
+    var host = Platform.isAndroid ? '10.0.2.2:8080' : 'localhost:8080';
+    FirebaseFirestore.instance.settings =
+        Settings(host: host, sslEnabled: false);
+  }
+
   runApp(ProviderScope(child: MyApp()));
 }
 
@@ -54,7 +62,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) => MaterialApp(
         navigatorKey: navigatorKey,
         routes: routes,
-        home: DeleteMePage(),
+        home: HomePage(),
         theme: buildTheme(context),
       );
 }

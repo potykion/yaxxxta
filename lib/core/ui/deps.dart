@@ -45,5 +45,10 @@ Provider<SignInWithGoogle> signInWithGoogleProvider =
 
 /// Провайдер ссылки на фаер-стор коллекцию с привычками
 Provider<CollectionReference> habitCollectionRefProvider = Provider(
-  (_) => FirebaseFirestore.instance.collection("habits_test"),
+  (_) => FirebaseFirestore.instance.collection("habits"),
+);
+
+/// Провайдер ссылки на фаер-стор коллекцию с выполнениями привычек
+Provider<CollectionReference> habitPerformingCollectionRefProvider = Provider(
+  (_) => FirebaseFirestore.instance.collection("habit_performings"),
 );
