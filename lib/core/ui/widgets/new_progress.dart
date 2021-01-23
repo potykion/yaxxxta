@@ -10,6 +10,7 @@ import '../../utils/dt.dart';
 import '../deps.dart';
 import 'text.dart';
 
+/// Событие изменения значения
 typedef OnValueIncrement = void Function(
     double incrementValue, bool isCompleteOrExceeded,
     [DateTime datetime]);

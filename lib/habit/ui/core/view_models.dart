@@ -43,7 +43,7 @@ abstract class HabitProgressVM with _$HabitProgressVM {
         currentValue: (habitPerformings ?? [])
             .map((p) => p.performValue)
             .fold(0, (v1, v2) => v1 + v2),
-        performTime: (habit.dailyRepeatSettings?.performTimes ?? {})[0],
+        performTime: habit.performTime,
       );
 
   /// Выполнена ли привычка

@@ -143,14 +143,13 @@ class HabitDetailsPage extends HookWidget {
                         backgroundColor: CustomColors.blue,
                       ),
                       Chip(
-                        label: Text(habit.habitPeriod.type.verbose()),
+                        label: Text(habit.periodType.verbose()),
                         backgroundColor: CustomColors.red,
                       ),
-                      if (habit.dailyRepeatSettings?.performTimes != null)
+                      if (habit.performTime != null)
                         Chip(
                           avatar: Icon(Icons.access_time),
-                          label: Text(formatTime(
-                              habit.dailyRepeatSettings.performTimes[0])),
+                          label: Text(formatTime(habit.performTime)),
                           backgroundColor: CustomColors.purple,
                         ),
                     ],

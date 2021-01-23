@@ -30,11 +30,24 @@ abstract class Habit with _$Habit {
     /// Продолжительность / число повторений за раз
     @Default(1) double goalValue,
 
-    /// Настройки повторов в течение дня
-    HabitDailyRepeatSettings dailyRepeatSettings,
+    /// Время выполнения привычки
+    DateTime performTime,
 
-    /// Периодичность
-    @required HabitPeriodSettings habitPeriod,
+    /// Тип периодичности
+    @Default(HabitPeriodType.day) HabitPeriodType periodType,
+
+    /// 1 раз в {periodValue} дней / недель / месяцев
+    @Default(1) int periodValue,
+
+    /// [type=HabitPeriodType.week] Дни выполнения (пн, вт)
+    @Default(<Weekday>[]) List<Weekday> performWeekdays,
+
+    /// [type=HabitPeriodType.month] День выполнения
+    @Default(1) int performMonthDay,
+
+    /// Если false, то {periodValue} = 1; иначе можно задавать {periodValue} > 1
+    /// Вообще тупа в гуи юзается
+    @Default(false) bool isCustomPeriod,
 
     /// Айди девайса
     String deviceId,
@@ -45,7 +58,6 @@ abstract class Habit with _$Habit {
 
   /// Созадет пустую привычку
   factory Habit.blank() => Habit(
-        habitPeriod: HabitPeriodSettings(),
         created: DateTime.now(),
       );
 
@@ -88,88 +100,26 @@ abstract class Habit with _$Habit {
   /// Например, если периодичность еженедельная по пн,
   /// то вызов метода с 2021-01-04 вернет true
   bool matchDate(DateTime date) {
-    switch (habitPeriod.type) {
+    switch (periodType) {
       case HabitPeriodType.day:
         return (yearDayNum(date) - yearDayNum(created)) %
-                habitPeriod.periodValue ==
+                periodValue ==
             0;
 
       case HabitPeriodType.week:
         return (yearWeekNum(date) - yearWeekNum(created)) %
-                    habitPeriod.periodValue ==
+                    periodValue ==
                 0 &&
-            habitPeriod.weekdays.contains(weekdayFromInt(date.weekday));
+            performWeekdays.contains(weekdayFromInt(date.weekday));
 
       case HabitPeriodType.month:
-        return (date.month - created.month) % habitPeriod.periodValue == 0 &&
-            date.day == min(habitPeriod.monthDay, endOfMonth(date));
+        return (date.month - created.month) % periodValue == 0 &&
+            date.day == min(performMonthDay, endOfMonth(date));
 
       default:
-        throw "wtf period.type=${habitPeriod.type}";
+        throw "wtf period.type=$type";
     }
   }
-}
-
-/// Периодичность
-/// Ежедневная периодичность:
-///   - 1 раз в день
-///   - 1 раз в 2 дня
-/// Еженедельная периодичность:
-///   - 1 раз в 1 неделю
-///   - 2 раза в неделю (пн, вт)
-///   - 1 раз в 2 недели
-/// Ежемесячная периодичность:
-///   - каждое 10 число месяца
-@freezed
-abstract class HabitPeriodSettings with _$HabitPeriodSettings {
-  /// Создает периодичность привычки
-
-  const factory HabitPeriodSettings({
-    /// Тип периодичности
-    @Default(HabitPeriodType.day) HabitPeriodType type,
-
-    /// 1 раз в {periodValue} дней / недель / месяцев
-    @Default(1) int periodValue,
-
-    /// [type=HabitPeriodType.week] Дни выполнения (пн, вт)
-    /// Аналог "Число повторений за день" для недель
-    @Default(<Weekday>[]) List<Weekday> weekdays,
-
-    /// [type=HabitPeriodType.month] День выполнения
-    @Default(1) int monthDay,
-
-    /// Если false, то {periodValue} = 1; иначе можно задавать {periodValue} > 1
-    /// Вообще тупа в гуи юзается
-    @Default(false) bool isCustom,
-  }) = _HabitPeriodSettings;
-
-  /// Создает периодичность привычки из словаря
-  factory HabitPeriodSettings.fromJson(Map json) =>
-      _$HabitPeriodSettingsFromJson(Map<String, dynamic>.from(json));
-}
-
-/// Настройки повторов в течение дня
-/// Раньше была идея реализовать их, типа делать что-то 2+ раза в день
-/// Но это сильно усложняет систему, и число повторений за день = 1 всегда
-@freezed
-abstract class HabitDailyRepeatSettings with _$HabitDailyRepeatSettings {
-  /// Настройки повторов в течение дня
-  @Assert("repeatsCount == 1", "Число повторений за день дожно = 1 всегда")
-  const factory HabitDailyRepeatSettings({
-    /// Повторы в течение дня включены
-    @Default(false) bool repeatsEnabled,
-
-    /// Число повторений за день
-    @Default(1) double repeatsCount,
-
-    /// Мапа, где ключ - индекс повтора за день,
-    /// значение - вресмя выполнения привычки
-    @Default(<int, DateTime>{}) Map<int, DateTime> performTimes,
-  }) = _HabitDailyRepeatSettings;
-
-  /// Создает из джсонки
-  factory HabitDailyRepeatSettings.fromJson(Map json) =>
-      _$HabitDailyRepeatSettingsFromJson(Map<String, dynamic>.from(json));
 }
 
 /// День недели

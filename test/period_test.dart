@@ -5,11 +5,9 @@ void main() {
   test("Кастомная периодичность по месяцам", () {
     var monthHabit = Habit(
       created: DateTime(2020, 1, 1),
-      habitPeriod: HabitPeriodSettings(
-        type: HabitPeriodType.month,
-        periodValue: 2,
-        monthDay: 1,
-      ),
+      periodType: HabitPeriodType.month,
+      periodValue: 2,
+      performMonthDay: 1,
     );
 
     expect(monthHabit.matchDate(DateTime(2020, 1, 1)), true);
@@ -21,11 +19,9 @@ void main() {
   test("Кастомная периодичность по неделям", () {
     var monthHabit = Habit(
       created: DateTime(2020, 1, 1),
-      habitPeriod: HabitPeriodSettings(
-        type: HabitPeriodType.week,
-        periodValue: 2,
-        weekdays: [Weekday.wednesday],
-      ),
+      periodType: HabitPeriodType.week,
+      periodValue: 2,
+      performWeekdays: [Weekday.wednesday],
     );
 
     expect(monthHabit.matchDate(DateTime(2020, 1, 1)), true);
@@ -37,10 +33,8 @@ void main() {
   test("Кастомная периодичность по дням", () {
     var monthHabit = Habit(
       created: DateTime(2020, 1, 1),
-      habitPeriod: HabitPeriodSettings(
-        type: HabitPeriodType.day,
-        periodValue: 2,
-      ),
+      periodType: HabitPeriodType.day,
+      periodValue: 2,
     );
 
     expect(monthHabit.matchDate(DateTime(2020, 1, 1)), true);
@@ -52,10 +46,8 @@ void main() {
   test("Кастомная периодичность по дням с кол-вом дней > 7", () {
     var monthHabit = Habit(
       created: DateTime(2020, 1, 1),
-      habitPeriod: HabitPeriodSettings(
-        type: HabitPeriodType.day,
-        periodValue: 12,
-      ),
+      periodType: HabitPeriodType.day,
+      periodValue: 12,
     );
 
     expect(monthHabit.matchDate(DateTime(2020, 1, 1)), true);

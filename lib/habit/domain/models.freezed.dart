@@ -23,8 +23,12 @@ class _$HabitTearOff {
       String title = "",
       HabitType type = HabitType.repeats,
       double goalValue = 1,
-      HabitDailyRepeatSettings dailyRepeatSettings,
-      @required HabitPeriodSettings habitPeriod,
+      DateTime performTime,
+      HabitPeriodType periodType = HabitPeriodType.day,
+      int periodValue = 1,
+      List<Weekday> performWeekdays = const <Weekday>[],
+      int performMonthDay = 1,
+      bool isCustomPeriod = false,
       String deviceId,
       String userId}) {
     return _Habit(
@@ -33,8 +37,12 @@ class _$HabitTearOff {
       title: title,
       type: type,
       goalValue: goalValue,
-      dailyRepeatSettings: dailyRepeatSettings,
-      habitPeriod: habitPeriod,
+      performTime: performTime,
+      periodType: periodType,
+      periodValue: periodValue,
+      performWeekdays: performWeekdays,
+      performMonthDay: performMonthDay,
+      isCustomPeriod: isCustomPeriod,
       deviceId: deviceId,
       userId: userId,
     );
@@ -67,11 +75,24 @@ mixin _$Habit {
   /// Продолжительность / число повторений за раз
   double get goalValue;
 
-  /// Настройки повторов в течение дня
-  HabitDailyRepeatSettings get dailyRepeatSettings;
+  /// Время выполнения привычки
+  DateTime get performTime;
 
-  /// Периодичность
-  HabitPeriodSettings get habitPeriod;
+  /// Тип периодичности
+  HabitPeriodType get periodType;
+
+  /// 1 раз в {periodValue} дней / недель / месяцев
+  int get periodValue;
+
+  /// [type=HabitPeriodType.week] Дни выполнения (пн, вт)
+  List<Weekday> get performWeekdays;
+
+  /// [type=HabitPeriodType.month] День выполнения
+  int get performMonthDay;
+
+  /// Если false, то {periodValue} = 1; иначе можно задавать {periodValue} > 1
+  /// Вообще тупа в гуи юзается
+  bool get isCustomPeriod;
 
   /// Айди девайса
   String get deviceId;
@@ -94,13 +115,14 @@ abstract class $HabitCopyWith<$Res> {
       String title,
       HabitType type,
       double goalValue,
-      HabitDailyRepeatSettings dailyRepeatSettings,
-      HabitPeriodSettings habitPeriod,
+      DateTime performTime,
+      HabitPeriodType periodType,
+      int periodValue,
+      List<Weekday> performWeekdays,
+      int performMonthDay,
+      bool isCustomPeriod,
       String deviceId,
       String userId});
-
-  $HabitDailyRepeatSettingsCopyWith<$Res> get dailyRepeatSettings;
-  $HabitPeriodSettingsCopyWith<$Res> get habitPeriod;
 }
 
 /// @nodoc
@@ -118,8 +140,12 @@ class _$HabitCopyWithImpl<$Res> implements $HabitCopyWith<$Res> {
     Object title = freezed,
     Object type = freezed,
     Object goalValue = freezed,
-    Object dailyRepeatSettings = freezed,
-    Object habitPeriod = freezed,
+    Object performTime = freezed,
+    Object periodType = freezed,
+    Object periodValue = freezed,
+    Object performWeekdays = freezed,
+    Object performMonthDay = freezed,
+    Object isCustomPeriod = freezed,
     Object deviceId = freezed,
     Object userId = freezed,
   }) {
@@ -129,36 +155,25 @@ class _$HabitCopyWithImpl<$Res> implements $HabitCopyWith<$Res> {
       title: title == freezed ? _value.title : title as String,
       type: type == freezed ? _value.type : type as HabitType,
       goalValue: goalValue == freezed ? _value.goalValue : goalValue as double,
-      dailyRepeatSettings: dailyRepeatSettings == freezed
-          ? _value.dailyRepeatSettings
-          : dailyRepeatSettings as HabitDailyRepeatSettings,
-      habitPeriod: habitPeriod == freezed
-          ? _value.habitPeriod
-          : habitPeriod as HabitPeriodSettings,
+      performTime:
+          performTime == freezed ? _value.performTime : performTime as DateTime,
+      periodType: periodType == freezed
+          ? _value.periodType
+          : periodType as HabitPeriodType,
+      periodValue:
+          periodValue == freezed ? _value.periodValue : periodValue as int,
+      performWeekdays: performWeekdays == freezed
+          ? _value.performWeekdays
+          : performWeekdays as List<Weekday>,
+      performMonthDay: performMonthDay == freezed
+          ? _value.performMonthDay
+          : performMonthDay as int,
+      isCustomPeriod: isCustomPeriod == freezed
+          ? _value.isCustomPeriod
+          : isCustomPeriod as bool,
       deviceId: deviceId == freezed ? _value.deviceId : deviceId as String,
       userId: userId == freezed ? _value.userId : userId as String,
     ));
-  }
-
-  @override
-  $HabitDailyRepeatSettingsCopyWith<$Res> get dailyRepeatSettings {
-    if (_value.dailyRepeatSettings == null) {
-      return null;
-    }
-    return $HabitDailyRepeatSettingsCopyWith<$Res>(_value.dailyRepeatSettings,
-        (value) {
-      return _then(_value.copyWith(dailyRepeatSettings: value));
-    });
-  }
-
-  @override
-  $HabitPeriodSettingsCopyWith<$Res> get habitPeriod {
-    if (_value.habitPeriod == null) {
-      return null;
-    }
-    return $HabitPeriodSettingsCopyWith<$Res>(_value.habitPeriod, (value) {
-      return _then(_value.copyWith(habitPeriod: value));
-    });
   }
 }
 
@@ -173,15 +188,14 @@ abstract class _$HabitCopyWith<$Res> implements $HabitCopyWith<$Res> {
       String title,
       HabitType type,
       double goalValue,
-      HabitDailyRepeatSettings dailyRepeatSettings,
-      HabitPeriodSettings habitPeriod,
+      DateTime performTime,
+      HabitPeriodType periodType,
+      int periodValue,
+      List<Weekday> performWeekdays,
+      int performMonthDay,
+      bool isCustomPeriod,
       String deviceId,
       String userId});
-
-  @override
-  $HabitDailyRepeatSettingsCopyWith<$Res> get dailyRepeatSettings;
-  @override
-  $HabitPeriodSettingsCopyWith<$Res> get habitPeriod;
 }
 
 /// @nodoc
@@ -200,8 +214,12 @@ class __$HabitCopyWithImpl<$Res> extends _$HabitCopyWithImpl<$Res>
     Object title = freezed,
     Object type = freezed,
     Object goalValue = freezed,
-    Object dailyRepeatSettings = freezed,
-    Object habitPeriod = freezed,
+    Object performTime = freezed,
+    Object periodType = freezed,
+    Object periodValue = freezed,
+    Object performWeekdays = freezed,
+    Object performMonthDay = freezed,
+    Object isCustomPeriod = freezed,
     Object deviceId = freezed,
     Object userId = freezed,
   }) {
@@ -211,12 +229,22 @@ class __$HabitCopyWithImpl<$Res> extends _$HabitCopyWithImpl<$Res>
       title: title == freezed ? _value.title : title as String,
       type: type == freezed ? _value.type : type as HabitType,
       goalValue: goalValue == freezed ? _value.goalValue : goalValue as double,
-      dailyRepeatSettings: dailyRepeatSettings == freezed
-          ? _value.dailyRepeatSettings
-          : dailyRepeatSettings as HabitDailyRepeatSettings,
-      habitPeriod: habitPeriod == freezed
-          ? _value.habitPeriod
-          : habitPeriod as HabitPeriodSettings,
+      performTime:
+          performTime == freezed ? _value.performTime : performTime as DateTime,
+      periodType: periodType == freezed
+          ? _value.periodType
+          : periodType as HabitPeriodType,
+      periodValue:
+          periodValue == freezed ? _value.periodValue : periodValue as int,
+      performWeekdays: performWeekdays == freezed
+          ? _value.performWeekdays
+          : performWeekdays as List<Weekday>,
+      performMonthDay: performMonthDay == freezed
+          ? _value.performMonthDay
+          : performMonthDay as int,
+      isCustomPeriod: isCustomPeriod == freezed
+          ? _value.isCustomPeriod
+          : isCustomPeriod as bool,
       deviceId: deviceId == freezed ? _value.deviceId : deviceId as String,
       userId: userId == freezed ? _value.userId : userId as String,
     ));
@@ -233,15 +261,23 @@ class _$_Habit extends _Habit {
       this.title = "",
       this.type = HabitType.repeats,
       this.goalValue = 1,
-      this.dailyRepeatSettings,
-      @required this.habitPeriod,
+      this.performTime,
+      this.periodType = HabitPeriodType.day,
+      this.periodValue = 1,
+      this.performWeekdays = const <Weekday>[],
+      this.performMonthDay = 1,
+      this.isCustomPeriod = false,
       this.deviceId,
       this.userId})
       : assert(created != null),
         assert(title != null),
         assert(type != null),
         assert(goalValue != null),
-        assert(habitPeriod != null),
+        assert(periodType != null),
+        assert(periodValue != null),
+        assert(performWeekdays != null),
+        assert(performMonthDay != null),
+        assert(isCustomPeriod != null),
         super._();
 
   factory _$_Habit.fromJson(Map<String, dynamic> json) =>
@@ -272,12 +308,34 @@ class _$_Habit extends _Habit {
   final double goalValue;
   @override
 
-  /// Настройки повторов в течение дня
-  final HabitDailyRepeatSettings dailyRepeatSettings;
+  /// Время выполнения привычки
+  final DateTime performTime;
+  @JsonKey(defaultValue: HabitPeriodType.day)
   @override
 
-  /// Периодичность
-  final HabitPeriodSettings habitPeriod;
+  /// Тип периодичности
+  final HabitPeriodType periodType;
+  @JsonKey(defaultValue: 1)
+  @override
+
+  /// 1 раз в {periodValue} дней / недель / месяцев
+  final int periodValue;
+  @JsonKey(defaultValue: const <Weekday>[])
+  @override
+
+  /// [type=HabitPeriodType.week] Дни выполнения (пн, вт)
+  final List<Weekday> performWeekdays;
+  @JsonKey(defaultValue: 1)
+  @override
+
+  /// [type=HabitPeriodType.month] День выполнения
+  final int performMonthDay;
+  @JsonKey(defaultValue: false)
+  @override
+
+  /// Если false, то {periodValue} = 1; иначе можно задавать {periodValue} > 1
+  /// Вообще тупа в гуи юзается
+  final bool isCustomPeriod;
   @override
 
   /// Айди девайса
@@ -289,7 +347,7 @@ class _$_Habit extends _Habit {
 
   @override
   String toString() {
-    return 'Habit(id: $id, created: $created, title: $title, type: $type, goalValue: $goalValue, dailyRepeatSettings: $dailyRepeatSettings, habitPeriod: $habitPeriod, deviceId: $deviceId, userId: $userId)';
+    return 'Habit(id: $id, created: $created, title: $title, type: $type, goalValue: $goalValue, performTime: $performTime, periodType: $periodType, periodValue: $periodValue, performWeekdays: $performWeekdays, performMonthDay: $performMonthDay, isCustomPeriod: $isCustomPeriod, deviceId: $deviceId, userId: $userId)';
   }
 
   @override
@@ -308,12 +366,24 @@ class _$_Habit extends _Habit {
             (identical(other.goalValue, goalValue) ||
                 const DeepCollectionEquality()
                     .equals(other.goalValue, goalValue)) &&
-            (identical(other.dailyRepeatSettings, dailyRepeatSettings) ||
+            (identical(other.performTime, performTime) ||
                 const DeepCollectionEquality()
-                    .equals(other.dailyRepeatSettings, dailyRepeatSettings)) &&
-            (identical(other.habitPeriod, habitPeriod) ||
+                    .equals(other.performTime, performTime)) &&
+            (identical(other.periodType, periodType) ||
                 const DeepCollectionEquality()
-                    .equals(other.habitPeriod, habitPeriod)) &&
+                    .equals(other.periodType, periodType)) &&
+            (identical(other.periodValue, periodValue) ||
+                const DeepCollectionEquality()
+                    .equals(other.periodValue, periodValue)) &&
+            (identical(other.performWeekdays, performWeekdays) ||
+                const DeepCollectionEquality()
+                    .equals(other.performWeekdays, performWeekdays)) &&
+            (identical(other.performMonthDay, performMonthDay) ||
+                const DeepCollectionEquality()
+                    .equals(other.performMonthDay, performMonthDay)) &&
+            (identical(other.isCustomPeriod, isCustomPeriod) ||
+                const DeepCollectionEquality()
+                    .equals(other.isCustomPeriod, isCustomPeriod)) &&
             (identical(other.deviceId, deviceId) ||
                 const DeepCollectionEquality()
                     .equals(other.deviceId, deviceId)) &&
@@ -329,8 +399,12 @@ class _$_Habit extends _Habit {
       const DeepCollectionEquality().hash(title) ^
       const DeepCollectionEquality().hash(type) ^
       const DeepCollectionEquality().hash(goalValue) ^
-      const DeepCollectionEquality().hash(dailyRepeatSettings) ^
-      const DeepCollectionEquality().hash(habitPeriod) ^
+      const DeepCollectionEquality().hash(performTime) ^
+      const DeepCollectionEquality().hash(periodType) ^
+      const DeepCollectionEquality().hash(periodValue) ^
+      const DeepCollectionEquality().hash(performWeekdays) ^
+      const DeepCollectionEquality().hash(performMonthDay) ^
+      const DeepCollectionEquality().hash(isCustomPeriod) ^
       const DeepCollectionEquality().hash(deviceId) ^
       const DeepCollectionEquality().hash(userId);
 
@@ -353,8 +427,12 @@ abstract class _Habit extends Habit {
       String title,
       HabitType type,
       double goalValue,
-      HabitDailyRepeatSettings dailyRepeatSettings,
-      @required HabitPeriodSettings habitPeriod,
+      DateTime performTime,
+      HabitPeriodType periodType,
+      int periodValue,
+      List<Weekday> performWeekdays,
+      int performMonthDay,
+      bool isCustomPeriod,
       String deviceId,
       String userId}) = _$_Habit;
 
@@ -382,12 +460,29 @@ abstract class _Habit extends Habit {
   double get goalValue;
   @override
 
-  /// Настройки повторов в течение дня
-  HabitDailyRepeatSettings get dailyRepeatSettings;
+  /// Время выполнения привычки
+  DateTime get performTime;
   @override
 
-  /// Периодичность
-  HabitPeriodSettings get habitPeriod;
+  /// Тип периодичности
+  HabitPeriodType get periodType;
+  @override
+
+  /// 1 раз в {periodValue} дней / недель / месяцев
+  int get periodValue;
+  @override
+
+  /// [type=HabitPeriodType.week] Дни выполнения (пн, вт)
+  List<Weekday> get performWeekdays;
+  @override
+
+  /// [type=HabitPeriodType.month] День выполнения
+  int get performMonthDay;
+  @override
+
+  /// Если false, то {periodValue} = 1; иначе можно задавать {periodValue} > 1
+  /// Вообще тупа в гуи юзается
+  bool get isCustomPeriod;
   @override
 
   /// Айди девайса
@@ -399,515 +494,6 @@ abstract class _Habit extends Habit {
   @override
   @JsonKey(ignore: true)
   _$HabitCopyWith<_Habit> get copyWith;
-}
-
-HabitPeriodSettings _$HabitPeriodSettingsFromJson(Map<String, dynamic> json) {
-  return _HabitPeriodSettings.fromJson(json);
-}
-
-/// @nodoc
-class _$HabitPeriodSettingsTearOff {
-  const _$HabitPeriodSettingsTearOff();
-
-// ignore: unused_element
-  _HabitPeriodSettings call(
-      {HabitPeriodType type = HabitPeriodType.day,
-      int periodValue = 1,
-      List<Weekday> weekdays = const <Weekday>[],
-      int monthDay = 1,
-      bool isCustom = false}) {
-    return _HabitPeriodSettings(
-      type: type,
-      periodValue: periodValue,
-      weekdays: weekdays,
-      monthDay: monthDay,
-      isCustom: isCustom,
-    );
-  }
-
-// ignore: unused_element
-  HabitPeriodSettings fromJson(Map<String, Object> json) {
-    return HabitPeriodSettings.fromJson(json);
-  }
-}
-
-/// @nodoc
-// ignore: unused_element
-const $HabitPeriodSettings = _$HabitPeriodSettingsTearOff();
-
-/// @nodoc
-mixin _$HabitPeriodSettings {
-  /// Тип периодичности
-  HabitPeriodType get type;
-
-  /// 1 раз в {periodValue} дней / недель / месяцев
-  int get periodValue;
-
-  /// [type=HabitPeriodType.week] Дни выполнения (пн, вт)
-  /// Аналог "Число повторений за день" для недель
-  List<Weekday> get weekdays;
-
-  /// [type=HabitPeriodType.month] День выполнения
-  int get monthDay;
-
-  /// Если false, то {periodValue} = 1; иначе можно задавать {periodValue} > 1
-  /// Вообще тупа в гуи юзается
-  bool get isCustom;
-
-  Map<String, dynamic> toJson();
-  @JsonKey(ignore: true)
-  $HabitPeriodSettingsCopyWith<HabitPeriodSettings> get copyWith;
-}
-
-/// @nodoc
-abstract class $HabitPeriodSettingsCopyWith<$Res> {
-  factory $HabitPeriodSettingsCopyWith(
-          HabitPeriodSettings value, $Res Function(HabitPeriodSettings) then) =
-      _$HabitPeriodSettingsCopyWithImpl<$Res>;
-  $Res call(
-      {HabitPeriodType type,
-      int periodValue,
-      List<Weekday> weekdays,
-      int monthDay,
-      bool isCustom});
-}
-
-/// @nodoc
-class _$HabitPeriodSettingsCopyWithImpl<$Res>
-    implements $HabitPeriodSettingsCopyWith<$Res> {
-  _$HabitPeriodSettingsCopyWithImpl(this._value, this._then);
-
-  final HabitPeriodSettings _value;
-  // ignore: unused_field
-  final $Res Function(HabitPeriodSettings) _then;
-
-  @override
-  $Res call({
-    Object type = freezed,
-    Object periodValue = freezed,
-    Object weekdays = freezed,
-    Object monthDay = freezed,
-    Object isCustom = freezed,
-  }) {
-    return _then(_value.copyWith(
-      type: type == freezed ? _value.type : type as HabitPeriodType,
-      periodValue:
-          periodValue == freezed ? _value.periodValue : periodValue as int,
-      weekdays:
-          weekdays == freezed ? _value.weekdays : weekdays as List<Weekday>,
-      monthDay: monthDay == freezed ? _value.monthDay : monthDay as int,
-      isCustom: isCustom == freezed ? _value.isCustom : isCustom as bool,
-    ));
-  }
-}
-
-/// @nodoc
-abstract class _$HabitPeriodSettingsCopyWith<$Res>
-    implements $HabitPeriodSettingsCopyWith<$Res> {
-  factory _$HabitPeriodSettingsCopyWith(_HabitPeriodSettings value,
-          $Res Function(_HabitPeriodSettings) then) =
-      __$HabitPeriodSettingsCopyWithImpl<$Res>;
-  @override
-  $Res call(
-      {HabitPeriodType type,
-      int periodValue,
-      List<Weekday> weekdays,
-      int monthDay,
-      bool isCustom});
-}
-
-/// @nodoc
-class __$HabitPeriodSettingsCopyWithImpl<$Res>
-    extends _$HabitPeriodSettingsCopyWithImpl<$Res>
-    implements _$HabitPeriodSettingsCopyWith<$Res> {
-  __$HabitPeriodSettingsCopyWithImpl(
-      _HabitPeriodSettings _value, $Res Function(_HabitPeriodSettings) _then)
-      : super(_value, (v) => _then(v as _HabitPeriodSettings));
-
-  @override
-  _HabitPeriodSettings get _value => super._value as _HabitPeriodSettings;
-
-  @override
-  $Res call({
-    Object type = freezed,
-    Object periodValue = freezed,
-    Object weekdays = freezed,
-    Object monthDay = freezed,
-    Object isCustom = freezed,
-  }) {
-    return _then(_HabitPeriodSettings(
-      type: type == freezed ? _value.type : type as HabitPeriodType,
-      periodValue:
-          periodValue == freezed ? _value.periodValue : periodValue as int,
-      weekdays:
-          weekdays == freezed ? _value.weekdays : weekdays as List<Weekday>,
-      monthDay: monthDay == freezed ? _value.monthDay : monthDay as int,
-      isCustom: isCustom == freezed ? _value.isCustom : isCustom as bool,
-    ));
-  }
-}
-
-@JsonSerializable()
-
-/// @nodoc
-class _$_HabitPeriodSettings implements _HabitPeriodSettings {
-  const _$_HabitPeriodSettings(
-      {this.type = HabitPeriodType.day,
-      this.periodValue = 1,
-      this.weekdays = const <Weekday>[],
-      this.monthDay = 1,
-      this.isCustom = false})
-      : assert(type != null),
-        assert(periodValue != null),
-        assert(weekdays != null),
-        assert(monthDay != null),
-        assert(isCustom != null);
-
-  factory _$_HabitPeriodSettings.fromJson(Map<String, dynamic> json) =>
-      _$_$_HabitPeriodSettingsFromJson(json);
-
-  @JsonKey(defaultValue: HabitPeriodType.day)
-  @override
-
-  /// Тип периодичности
-  final HabitPeriodType type;
-  @JsonKey(defaultValue: 1)
-  @override
-
-  /// 1 раз в {periodValue} дней / недель / месяцев
-  final int periodValue;
-  @JsonKey(defaultValue: const <Weekday>[])
-  @override
-
-  /// [type=HabitPeriodType.week] Дни выполнения (пн, вт)
-  /// Аналог "Число повторений за день" для недель
-  final List<Weekday> weekdays;
-  @JsonKey(defaultValue: 1)
-  @override
-
-  /// [type=HabitPeriodType.month] День выполнения
-  final int monthDay;
-  @JsonKey(defaultValue: false)
-  @override
-
-  /// Если false, то {periodValue} = 1; иначе можно задавать {periodValue} > 1
-  /// Вообще тупа в гуи юзается
-  final bool isCustom;
-
-  @override
-  String toString() {
-    return 'HabitPeriodSettings(type: $type, periodValue: $periodValue, weekdays: $weekdays, monthDay: $monthDay, isCustom: $isCustom)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other is _HabitPeriodSettings &&
-            (identical(other.type, type) ||
-                const DeepCollectionEquality().equals(other.type, type)) &&
-            (identical(other.periodValue, periodValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.periodValue, periodValue)) &&
-            (identical(other.weekdays, weekdays) ||
-                const DeepCollectionEquality()
-                    .equals(other.weekdays, weekdays)) &&
-            (identical(other.monthDay, monthDay) ||
-                const DeepCollectionEquality()
-                    .equals(other.monthDay, monthDay)) &&
-            (identical(other.isCustom, isCustom) ||
-                const DeepCollectionEquality()
-                    .equals(other.isCustom, isCustom)));
-  }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(type) ^
-      const DeepCollectionEquality().hash(periodValue) ^
-      const DeepCollectionEquality().hash(weekdays) ^
-      const DeepCollectionEquality().hash(monthDay) ^
-      const DeepCollectionEquality().hash(isCustom);
-
-  @JsonKey(ignore: true)
-  @override
-  _$HabitPeriodSettingsCopyWith<_HabitPeriodSettings> get copyWith =>
-      __$HabitPeriodSettingsCopyWithImpl<_HabitPeriodSettings>(
-          this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$_$_HabitPeriodSettingsToJson(this);
-  }
-}
-
-abstract class _HabitPeriodSettings implements HabitPeriodSettings {
-  const factory _HabitPeriodSettings(
-      {HabitPeriodType type,
-      int periodValue,
-      List<Weekday> weekdays,
-      int monthDay,
-      bool isCustom}) = _$_HabitPeriodSettings;
-
-  factory _HabitPeriodSettings.fromJson(Map<String, dynamic> json) =
-      _$_HabitPeriodSettings.fromJson;
-
-  @override
-
-  /// Тип периодичности
-  HabitPeriodType get type;
-  @override
-
-  /// 1 раз в {periodValue} дней / недель / месяцев
-  int get periodValue;
-  @override
-
-  /// [type=HabitPeriodType.week] Дни выполнения (пн, вт)
-  /// Аналог "Число повторений за день" для недель
-  List<Weekday> get weekdays;
-  @override
-
-  /// [type=HabitPeriodType.month] День выполнения
-  int get monthDay;
-  @override
-
-  /// Если false, то {periodValue} = 1; иначе можно задавать {periodValue} > 1
-  /// Вообще тупа в гуи юзается
-  bool get isCustom;
-  @override
-  @JsonKey(ignore: true)
-  _$HabitPeriodSettingsCopyWith<_HabitPeriodSettings> get copyWith;
-}
-
-HabitDailyRepeatSettings _$HabitDailyRepeatSettingsFromJson(
-    Map<String, dynamic> json) {
-  return _HabitDailyRepeatSettings.fromJson(json);
-}
-
-/// @nodoc
-class _$HabitDailyRepeatSettingsTearOff {
-  const _$HabitDailyRepeatSettingsTearOff();
-
-// ignore: unused_element
-  _HabitDailyRepeatSettings call(
-      {bool repeatsEnabled = false,
-      double repeatsCount = 1,
-      Map<int, DateTime> performTimes = const <int, DateTime>{}}) {
-    return _HabitDailyRepeatSettings(
-      repeatsEnabled: repeatsEnabled,
-      repeatsCount: repeatsCount,
-      performTimes: performTimes,
-    );
-  }
-
-// ignore: unused_element
-  HabitDailyRepeatSettings fromJson(Map<String, Object> json) {
-    return HabitDailyRepeatSettings.fromJson(json);
-  }
-}
-
-/// @nodoc
-// ignore: unused_element
-const $HabitDailyRepeatSettings = _$HabitDailyRepeatSettingsTearOff();
-
-/// @nodoc
-mixin _$HabitDailyRepeatSettings {
-  /// Повторы в течение дня включены
-  bool get repeatsEnabled;
-
-  /// Число повторений за день
-  double get repeatsCount;
-
-  /// Мапа, где ключ - индекс повтора за день,
-  /// значение - вресмя выполнения привычки
-  Map<int, DateTime> get performTimes;
-
-  Map<String, dynamic> toJson();
-  @JsonKey(ignore: true)
-  $HabitDailyRepeatSettingsCopyWith<HabitDailyRepeatSettings> get copyWith;
-}
-
-/// @nodoc
-abstract class $HabitDailyRepeatSettingsCopyWith<$Res> {
-  factory $HabitDailyRepeatSettingsCopyWith(HabitDailyRepeatSettings value,
-          $Res Function(HabitDailyRepeatSettings) then) =
-      _$HabitDailyRepeatSettingsCopyWithImpl<$Res>;
-  $Res call(
-      {bool repeatsEnabled,
-      double repeatsCount,
-      Map<int, DateTime> performTimes});
-}
-
-/// @nodoc
-class _$HabitDailyRepeatSettingsCopyWithImpl<$Res>
-    implements $HabitDailyRepeatSettingsCopyWith<$Res> {
-  _$HabitDailyRepeatSettingsCopyWithImpl(this._value, this._then);
-
-  final HabitDailyRepeatSettings _value;
-  // ignore: unused_field
-  final $Res Function(HabitDailyRepeatSettings) _then;
-
-  @override
-  $Res call({
-    Object repeatsEnabled = freezed,
-    Object repeatsCount = freezed,
-    Object performTimes = freezed,
-  }) {
-    return _then(_value.copyWith(
-      repeatsEnabled: repeatsEnabled == freezed
-          ? _value.repeatsEnabled
-          : repeatsEnabled as bool,
-      repeatsCount: repeatsCount == freezed
-          ? _value.repeatsCount
-          : repeatsCount as double,
-      performTimes: performTimes == freezed
-          ? _value.performTimes
-          : performTimes as Map<int, DateTime>,
-    ));
-  }
-}
-
-/// @nodoc
-abstract class _$HabitDailyRepeatSettingsCopyWith<$Res>
-    implements $HabitDailyRepeatSettingsCopyWith<$Res> {
-  factory _$HabitDailyRepeatSettingsCopyWith(_HabitDailyRepeatSettings value,
-          $Res Function(_HabitDailyRepeatSettings) then) =
-      __$HabitDailyRepeatSettingsCopyWithImpl<$Res>;
-  @override
-  $Res call(
-      {bool repeatsEnabled,
-      double repeatsCount,
-      Map<int, DateTime> performTimes});
-}
-
-/// @nodoc
-class __$HabitDailyRepeatSettingsCopyWithImpl<$Res>
-    extends _$HabitDailyRepeatSettingsCopyWithImpl<$Res>
-    implements _$HabitDailyRepeatSettingsCopyWith<$Res> {
-  __$HabitDailyRepeatSettingsCopyWithImpl(_HabitDailyRepeatSettings _value,
-      $Res Function(_HabitDailyRepeatSettings) _then)
-      : super(_value, (v) => _then(v as _HabitDailyRepeatSettings));
-
-  @override
-  _HabitDailyRepeatSettings get _value =>
-      super._value as _HabitDailyRepeatSettings;
-
-  @override
-  $Res call({
-    Object repeatsEnabled = freezed,
-    Object repeatsCount = freezed,
-    Object performTimes = freezed,
-  }) {
-    return _then(_HabitDailyRepeatSettings(
-      repeatsEnabled: repeatsEnabled == freezed
-          ? _value.repeatsEnabled
-          : repeatsEnabled as bool,
-      repeatsCount: repeatsCount == freezed
-          ? _value.repeatsCount
-          : repeatsCount as double,
-      performTimes: performTimes == freezed
-          ? _value.performTimes
-          : performTimes as Map<int, DateTime>,
-    ));
-  }
-}
-
-@JsonSerializable()
-
-/// @nodoc
-class _$_HabitDailyRepeatSettings implements _HabitDailyRepeatSettings {
-  const _$_HabitDailyRepeatSettings(
-      {this.repeatsEnabled = false,
-      this.repeatsCount = 1,
-      this.performTimes = const <int, DateTime>{}})
-      : assert(repeatsEnabled != null),
-        assert(repeatsCount != null),
-        assert(performTimes != null),
-        assert(repeatsCount == 1, 'Число повторений за день дожно = 1 всегда');
-
-  factory _$_HabitDailyRepeatSettings.fromJson(Map<String, dynamic> json) =>
-      _$_$_HabitDailyRepeatSettingsFromJson(json);
-
-  @JsonKey(defaultValue: false)
-  @override
-
-  /// Повторы в течение дня включены
-  final bool repeatsEnabled;
-  @JsonKey(defaultValue: 1)
-  @override
-
-  /// Число повторений за день
-  final double repeatsCount;
-  @JsonKey(defaultValue: const <int, DateTime>{})
-  @override
-
-  /// Мапа, где ключ - индекс повтора за день,
-  /// значение - вресмя выполнения привычки
-  final Map<int, DateTime> performTimes;
-
-  @override
-  String toString() {
-    return 'HabitDailyRepeatSettings(repeatsEnabled: $repeatsEnabled, repeatsCount: $repeatsCount, performTimes: $performTimes)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other is _HabitDailyRepeatSettings &&
-            (identical(other.repeatsEnabled, repeatsEnabled) ||
-                const DeepCollectionEquality()
-                    .equals(other.repeatsEnabled, repeatsEnabled)) &&
-            (identical(other.repeatsCount, repeatsCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.repeatsCount, repeatsCount)) &&
-            (identical(other.performTimes, performTimes) ||
-                const DeepCollectionEquality()
-                    .equals(other.performTimes, performTimes)));
-  }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(repeatsEnabled) ^
-      const DeepCollectionEquality().hash(repeatsCount) ^
-      const DeepCollectionEquality().hash(performTimes);
-
-  @JsonKey(ignore: true)
-  @override
-  _$HabitDailyRepeatSettingsCopyWith<_HabitDailyRepeatSettings> get copyWith =>
-      __$HabitDailyRepeatSettingsCopyWithImpl<_HabitDailyRepeatSettings>(
-          this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$_$_HabitDailyRepeatSettingsToJson(this);
-  }
-}
-
-abstract class _HabitDailyRepeatSettings implements HabitDailyRepeatSettings {
-  const factory _HabitDailyRepeatSettings(
-      {bool repeatsEnabled,
-      double repeatsCount,
-      Map<int, DateTime> performTimes}) = _$_HabitDailyRepeatSettings;
-
-  factory _HabitDailyRepeatSettings.fromJson(Map<String, dynamic> json) =
-      _$_HabitDailyRepeatSettings.fromJson;
-
-  @override
-
-  /// Повторы в течение дня включены
-  bool get repeatsEnabled;
-  @override
-
-  /// Число повторений за день
-  double get repeatsCount;
-  @override
-
-  /// Мапа, где ключ - индекс повтора за день,
-  /// значение - вресмя выполнения привычки
-  Map<int, DateTime> get performTimes;
-  @override
-  @JsonKey(ignore: true)
-  _$HabitDailyRepeatSettingsCopyWith<_HabitDailyRepeatSettings> get copyWith;
 }
 
 HabitPerforming _$HabitPerformingFromJson(Map<String, dynamic> json) {

@@ -16,12 +16,19 @@ _$_Habit _$_$_HabitFromJson(Map json) {
     type: _$enumDecodeNullable(_$HabitTypeEnumMap, json['type']) ??
         HabitType.repeats,
     goalValue: (json['goalValue'] as num)?.toDouble() ?? 1,
-    dailyRepeatSettings: json['dailyRepeatSettings'] == null
+    performTime: json['performTime'] == null
         ? null
-        : HabitDailyRepeatSettings.fromJson(json['dailyRepeatSettings'] as Map),
-    habitPeriod: json['habitPeriod'] == null
-        ? null
-        : HabitPeriodSettings.fromJson(json['habitPeriod'] as Map),
+        : DateTime.parse(json['performTime'] as String),
+    periodType:
+        _$enumDecodeNullable(_$HabitPeriodTypeEnumMap, json['periodType']) ??
+            HabitPeriodType.day,
+    periodValue: json['periodValue'] as int ?? 1,
+    performWeekdays: (json['performWeekdays'] as List)
+            ?.map((e) => _$enumDecodeNullable(_$WeekdayEnumMap, e))
+            ?.toList() ??
+        [],
+    performMonthDay: json['performMonthDay'] as int ?? 1,
+    isCustomPeriod: json['isCustomPeriod'] as bool ?? false,
     deviceId: json['deviceId'] as String,
     userId: json['userId'] as String,
   );
@@ -33,8 +40,13 @@ Map<String, dynamic> _$_$_HabitToJson(_$_Habit instance) => <String, dynamic>{
       'title': instance.title,
       'type': _$HabitTypeEnumMap[instance.type],
       'goalValue': instance.goalValue,
-      'dailyRepeatSettings': instance.dailyRepeatSettings?.toJson(),
-      'habitPeriod': instance.habitPeriod?.toJson(),
+      'performTime': instance.performTime?.toIso8601String(),
+      'periodType': _$HabitPeriodTypeEnumMap[instance.periodType],
+      'periodValue': instance.periodValue,
+      'performWeekdays':
+          instance.performWeekdays?.map((e) => _$WeekdayEnumMap[e])?.toList(),
+      'performMonthDay': instance.performMonthDay,
+      'isCustomPeriod': instance.isCustomPeriod,
       'deviceId': instance.deviceId,
       'userId': instance.userId,
     };
@@ -76,30 +88,6 @@ const _$HabitTypeEnumMap = {
   HabitType.repeats: 'repeats',
 };
 
-_$_HabitPeriodSettings _$_$_HabitPeriodSettingsFromJson(Map json) {
-  return _$_HabitPeriodSettings(
-    type: _$enumDecodeNullable(_$HabitPeriodTypeEnumMap, json['type']) ??
-        HabitPeriodType.day,
-    periodValue: json['periodValue'] as int ?? 1,
-    weekdays: (json['weekdays'] as List)
-            ?.map((e) => _$enumDecodeNullable(_$WeekdayEnumMap, e))
-            ?.toList() ??
-        [],
-    monthDay: json['monthDay'] as int ?? 1,
-    isCustom: json['isCustom'] as bool ?? false,
-  );
-}
-
-Map<String, dynamic> _$_$_HabitPeriodSettingsToJson(
-        _$_HabitPeriodSettings instance) =>
-    <String, dynamic>{
-      'type': _$HabitPeriodTypeEnumMap[instance.type],
-      'periodValue': instance.periodValue,
-      'weekdays': instance.weekdays?.map((e) => _$WeekdayEnumMap[e])?.toList(),
-      'monthDay': instance.monthDay,
-      'isCustom': instance.isCustom,
-    };
-
 const _$HabitPeriodTypeEnumMap = {
   HabitPeriodType.day: 'day',
   HabitPeriodType.week: 'week',
@@ -115,27 +103,6 @@ const _$WeekdayEnumMap = {
   Weekday.saturday: 'saturday',
   Weekday.sunday: 'sunday',
 };
-
-_$_HabitDailyRepeatSettings _$_$_HabitDailyRepeatSettingsFromJson(Map json) {
-  return _$_HabitDailyRepeatSettings(
-    repeatsEnabled: json['repeatsEnabled'] as bool ?? false,
-    repeatsCount: (json['repeatsCount'] as num)?.toDouble() ?? 1,
-    performTimes: (json['performTimes'] as Map)?.map(
-          (k, e) => MapEntry(int.parse(k as String),
-              e == null ? null : DateTime.parse(e as String)),
-        ) ??
-        {},
-  );
-}
-
-Map<String, dynamic> _$_$_HabitDailyRepeatSettingsToJson(
-        _$_HabitDailyRepeatSettings instance) =>
-    <String, dynamic>{
-      'repeatsEnabled': instance.repeatsEnabled,
-      'repeatsCount': instance.repeatsCount,
-      'performTimes': instance.performTimes
-          ?.map((k, e) => MapEntry(k.toString(), e?.toIso8601String())),
-    };
 
 _$_HabitPerforming _$_$_HabitPerformingFromJson(Map json) {
   return _$_HabitPerforming(
