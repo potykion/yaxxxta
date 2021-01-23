@@ -1,3 +1,4 @@
+import 'dart:convert';
 
 import 'package:device_info/device_info.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -53,7 +54,30 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) => MaterialApp(
         navigatorKey: navigatorKey,
         routes: routes,
-        home: HomePage(),
+        home: DeleteMePage(),
         theme: buildTheme(context),
       );
+}
+
+/// Страничка, выгружающая содержимое hive-box'ов
+class DeleteMePage extends StatefulWidget {
+  @override
+  _DeleteMePageState createState() => _DeleteMePageState();
+}
+
+class _DeleteMePageState extends State<DeleteMePage> {
+  @override
+  void initState() {
+    super.initState();
+
+    var habits = jsonEncode(Hive.box<Map>("habits").values.toList());
+    var habitPerformings =
+        jsonEncode(Hive.box<Map>("habit_performings").values.toList());
+    var settings = jsonEncode(Hive.box<Map>("settings").values.toList());
+
+    var s = "as";
+  }
+
+  @override
+  Widget build(BuildContext context) => Scaffold();
 }
