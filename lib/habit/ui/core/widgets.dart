@@ -56,6 +56,7 @@ class HabitProgressControl extends StatelessWidget {
                   ? onRepeatIncrement(value, isCompleteOrExceeded, dt)
                   : null,
           initialDate: initialDate,
+          notificationText: 'Привычка "${vm.title}" выполнена',
         ),
     ]);
   }
