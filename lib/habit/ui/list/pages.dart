@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:yaxxxta/habit/domain/models.dart';
 
 import '../../../core/ui/widgets/bottom_nav.dart';
 import '../../../core/ui/widgets/circular_progress.dart';
@@ -63,10 +64,9 @@ class HabitListPage extends HookWidget {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add, size: 50),
         onPressed: () async {
-          var created =
-              await Navigator.of(context).pushNamed(Routes.form) as bool ??
-                  false;
-          if (created) {
+          var habit =
+              (await Navigator.of(context).pushNamed(Routes.form)) as Habit;
+          if (habit.matchDate(context.read(selectedDateProvider).state)) {
             animatedListKey.value.currentState.insertItem(
               vms.length,
               duration: Duration(milliseconds: 500),
@@ -109,8 +109,7 @@ class HabitListPage extends HookWidget {
           vm: vm,
           onRepeatIncrement: removed
               ? null
-              : (incrementValue, isCompleteOrExceeded,
-                  [date]) async {
+              : (incrementValue, isCompleteOrExceeded, [date]) async {
                   context.read(habitPerformingController).create(
                         habitId: vm.id,
                         performValue: incrementValue,

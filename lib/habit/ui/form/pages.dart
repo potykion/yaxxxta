@@ -314,10 +314,10 @@ class HabitFormPage extends HookWidget {
           child: FloatingActionButton.extended(
             onPressed: error.isEmpty
                 ? () async {
-                    var created = await context
+                    var habit = await context
                         .read(habitControllerProvider)
                         .createOrUpdateHabit(vm);
-                    Navigator.of(context).pop(created);
+                    Navigator.of(context).pop(habit);
                   }
                 : null,
             label: SmallerText(

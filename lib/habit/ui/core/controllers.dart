@@ -112,7 +112,7 @@ class HabitController {
   }
 
   /// Создает или обновляет привычку в зависимости от наличия айди
-  Future<bool> createOrUpdateHabit(Habit habit) async {
+  Future<Habit> createOrUpdateHabit(Habit habit) async {
     if (habit.deviceId == null) {
       habit = habit.copyWith(deviceId: deviceInfo.id);
     }
@@ -123,13 +123,11 @@ class HabitController {
         for (var h in habitState.state)
           if (h.id == habit.id) habit else h
       ];
-      return false;
     } else {
-      habitState.state = [
-        ...habitState.state,
-        habit.copyWith(id: await habitRepo.insert(habit))
-      ];
-      return true;
+      habit = habit.copyWith(id: await habitRepo.insert(habit));
+      habitState.state = [...habitState.state, habit];
     }
+
+    return habit;
   }
 }
