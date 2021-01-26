@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' as fs;
 import 'package:device_info/device_info.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +14,6 @@ import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 import 'core/ui/deps.dart';
-import 'core/ui/pages/home.dart';
 import 'routes.dart';
 import 'theme.dart';
 
@@ -23,8 +22,6 @@ void main() async {
 
   /// носкл
   await Hive.initFlutter();
-  await Hive.openBox<Map>("habits");
-  await Hive.openBox<Map>("habit_performings");
   await Hive.openBox<Map>("settings");
 
   /// пуши
@@ -49,8 +46,8 @@ void main() async {
 
   if (!androidInfo.isPhysicalDevice) {
     var host = Platform.isAndroid ? '10.0.2.2:8080' : 'localhost:8080';
-    FirebaseFirestore.instance.settings =
-        Settings(host: host, sslEnabled: false);
+    fs.FirebaseFirestore.instance.settings =
+        fs.Settings(host: host, sslEnabled: false);
   }
 
   runApp(ProviderScope(child: MyApp()));
@@ -62,30 +59,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) => MaterialApp(
         navigatorKey: navigatorKey,
         routes: routes,
-        home: HomePage(),
+        initialRoute: Routes.loading,
         theme: buildTheme(context),
       );
-}
-
-/// Страничка, выгружающая содержимое hive-box'ов
-class DeleteMePage extends StatefulWidget {
-  @override
-  _DeleteMePageState createState() => _DeleteMePageState();
-}
-
-class _DeleteMePageState extends State<DeleteMePage> {
-  @override
-  void initState() {
-    super.initState();
-
-    var habits = jsonEncode(Hive.box<Map>("habits").values.toList());
-    var habitPerformings =
-        jsonEncode(Hive.box<Map>("habit_performings").values.toList());
-    var settings = jsonEncode(Hive.box<Map>("settings").values.toList());
-
-    var s = "as";
-  }
-
-  @override
-  Widget build(BuildContext context) => Scaffold();
 }

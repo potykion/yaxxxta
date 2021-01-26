@@ -31,7 +31,7 @@ class HabitDetailsPage extends HookWidget {
   Widget build(BuildContext context) {
     useEffect(() {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
-        // fixme pizec
+        // fixme pizdec
         context.read(notTodaySelectedHabitPerformingsProvider).state =
             (await context
                     .read(habitPerformingRepoProvider)

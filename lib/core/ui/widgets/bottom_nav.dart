@@ -1,31 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/all.dart';
 
+import '../../../routes.dart';
 import '../../../theme.dart';
-import '../deps.dart';
 
 /// Боттом нав барчик
-class AppBottomNavigationBar extends HookWidget {
+class AppBottomNavigationBar extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    var pageIndexState = useProvider(pageIndexProvider);
+  Widget build(BuildContext context) => BottomNavigationBar(
+        selectedItemColor: CustomColors.almostBlack,
+        unselectedItemColor: CustomColors.grey,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.today),
+            label: "Календарь",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: "Настройки",
+          ),
+        ],
+        currentIndex: getCurrentIndex(context),
+        onTap: (index) =>
+            Navigator.of(context).pushReplacementNamed(bottomNavRoutes[index]),
+      );
 
-    return BottomNavigationBar(
-      selectedItemColor: CustomColors.almostBlack,
-      unselectedItemColor: CustomColors.grey,
-      items: [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.today),
-          label: "Календарь",
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.settings),
-          label: "Настройки",
-        ),
-      ],
-      currentIndex: pageIndexState.state,
-      onTap: (index) => context.read(pageIndexProvider).state = index,
-    );
-  }
+  int getCurrentIndex(BuildContext context) => bottomNavRoutes.entries
+      .firstWhere((e) => e.value == ModalRoute.of(context).settings.name)
+      .key;
 }
