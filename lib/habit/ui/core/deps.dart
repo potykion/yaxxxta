@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:hive/hive.dart';
 import 'package:hooks_riverpod/all.dart';
 import '../../../core/ui/deps.dart';
 
@@ -11,13 +10,6 @@ import '../../infra/db.dart';
 import '../details/view_models.dart';
 import 'controllers.dart';
 import 'view_models.dart';
-
-/// Регает hive-box для привычек
-Provider<Box<Map>> _habitBoxProvider = Provider((_) => Hive.box<Map>("habits"));
-
-/// Регает hive-box для выполнений привычек
-Provider<Box<Map>> _habitPerformingBoxProvider =
-    Provider((_) => Hive.box<Map>("habit_performings"));
 
 /// Регает репо привычек
 Provider<BaseHabitRepo> habitRepoProvider = Provider(

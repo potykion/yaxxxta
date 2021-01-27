@@ -74,15 +74,16 @@ dependencies:
   # Лайтовый персистенс
   shared_preferences: ^0.5.12+4
 
+  # транзишны между страницами
+  page_transition: ^1.1.7+6
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   # кодген
   build_runner:
-
-  # кодген бд
-  hive_generator: ^0.8.2
 
   # линтер
   effective_dart: ^1.3.0
