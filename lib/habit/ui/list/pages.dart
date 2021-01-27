@@ -66,7 +66,8 @@ class HabitListPage extends HookWidget {
         onPressed: () async {
           var habit =
               (await Navigator.of(context).pushNamed(Routes.form)) as Habit;
-          if (habit.matchDate(context.read(selectedDateProvider).state)) {
+          if (habit != null &&
+              habit.matchDate(context.read(selectedDateProvider).state)) {
             animatedListKey.value.currentState.insertItem(
               vms.length,
               duration: Duration(milliseconds: 500),
