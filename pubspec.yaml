@@ -39,10 +39,6 @@ dependencies:
   # json (де)сериализация
   json_serializable: ^3.5.1
 
-  # nosql
-  hive: ^1.4.4+1
-  hive_flutter: ^0.3.1
-
   # пуши
   flutter_local_notifications: ^3.0.3
 

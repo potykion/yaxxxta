@@ -30,14 +30,11 @@ class HiveSettingsRepo implements BaseSettingsRepo {
 /// Репо для настроек на шаред-префах
 class SharedPreferencesSettingsRepo implements BaseSettingsRepo {
   final String _settingsKey = "settingsKey";
-  final SharedPreferences _prefs;
-
-  /// Репо для настроек на шаред-префах
-  SharedPreferencesSettingsRepo(this._prefs);
 
   @override
   Future<Settings> get() async {
-    var settingsJsonStr = _prefs.getString(_settingsKey);
+    var prefs = await SharedPreferences.getInstance();
+    var settingsJsonStr = prefs.getString(_settingsKey);
     var settingsJson = settingsJsonStr != null
         ? jsonDecode(settingsJsonStr) as Map<String, dynamic>
         : null;
@@ -48,6 +45,8 @@ class SharedPreferencesSettingsRepo implements BaseSettingsRepo {
   }
 
   @override
-  Future<void> update(Settings settings) =>
-      _prefs.setString(_settingsKey, jsonEncode(settings.toJson()));
+  Future<void> update(Settings settings) async {
+    var prefs = await SharedPreferences.getInstance();
+    return prefs.setString(_settingsKey, jsonEncode(settings.toJson()));
+  }
 }
