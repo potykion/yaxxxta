@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/all.dart';
-import 'package:yaxxxta/habit/domain/models.dart';
 
 import '../../../core/ui/widgets/bottom_nav.dart';
 import '../../../core/ui/widgets/circular_progress.dart';
@@ -11,6 +10,7 @@ import '../../../core/ui/widgets/time.dart';
 import '../../../core/utils/dt.dart';
 import '../../../routes.dart';
 import '../../../settings/ui/core/deps.dart';
+import '../../domain/models.dart';
 import '../core/deps.dart';
 import '../core/view_models.dart';
 import '../core/widgets.dart';
@@ -110,7 +110,7 @@ class HabitListPage extends HookWidget {
           vm: vm,
           onRepeatIncrement: removed
               ? null
-              : (incrementValue, isCompleteOrExceeded, [date]) async {
+              : (incrementValue, progressStatus, [date]) async {
                   context.read(habitPerformingController).create(
                         habitId: vm.id,
                         performValue: incrementValue,
@@ -118,8 +118,14 @@ class HabitListPage extends HookWidget {
                             await _computePerformDateTime(context, date),
                       );
 
-                  if (isCompleteOrExceeded &&
-                      !context.read(settingsProvider).state.showCompleted) {
+                  var settings = context.read(settingsProvider).state;
+                  var hideHabit = !settings.showCompleted &&
+                          (progressStatus == HabitProgressStatus.complete ||
+                              progressStatus == HabitProgressStatus.exceed) ||
+                      !settings.showCompleted &&
+                          (progressStatus == HabitProgressStatus.partial);
+
+                  if (hideHabit) {
                     AnimatedList.of(context).removeItem(
                       index,
                       (context, animation) => _buildHabitRepeatControl(

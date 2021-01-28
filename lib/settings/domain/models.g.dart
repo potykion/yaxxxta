@@ -9,6 +9,7 @@ part of 'models.dart';
 _$_Settings _$_$_SettingsFromJson(Map json) {
   return _$_Settings(
     showCompleted: json['showCompleted'] as bool ?? true,
+    showPartiallyCompleted: json['showPartiallyCompleted'] as bool ?? true,
     dayStartTime: json['dayStartTime'] == null
         ? null
         : DateTime.parse(json['dayStartTime'] as String),
@@ -21,6 +22,7 @@ _$_Settings _$_$_SettingsFromJson(Map json) {
 Map<String, dynamic> _$_$_SettingsToJson(_$_Settings instance) =>
     <String, dynamic>{
       'showCompleted': instance.showCompleted,
+      'showPartiallyCompleted': instance.showPartiallyCompleted,
       'dayStartTime': instance.dayStartTime?.toIso8601String(),
       'dayEndTime': instance.dayEndTime?.toIso8601String(),
     };

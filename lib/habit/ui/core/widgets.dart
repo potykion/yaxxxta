@@ -14,7 +14,7 @@ class HabitProgressControl extends StatelessWidget {
   /// Событие инкремента привычки
   final void Function(
     double incrementValue,
-    bool isCompleteOrExceeded, [
+    HabitProgressStatus progressStatus, [
     DateTime dateTime,
   ]) onRepeatIncrement;
 
@@ -42,18 +42,18 @@ class HabitProgressControl extends StatelessWidget {
         RepeatProgressControl(
           initialValue: vm.currentValue,
           goalValue: vm.goalValue,
-          onValueIncrement: (value, isCompleteOrExceeded, [dt]) =>
+          onValueIncrement: (value, progressStatus, [dt]) =>
               onRepeatIncrement != null
-                  ? onRepeatIncrement(value, isCompleteOrExceeded, dt)
+                  ? onRepeatIncrement(value, progressStatus, dt)
                   : null,
         ),
       if (vm.type == HabitType.time)
         TimeProgressControl(
           initialValue: vm.currentValue,
           goalValue: vm.goalValue,
-          onValueIncrement: (value, isCompleteOrExceeded, [dt]) =>
+          onValueIncrement: (value, progressStatus, [dt]) =>
               onRepeatIncrement != null
-                  ? onRepeatIncrement(value, isCompleteOrExceeded, dt)
+                  ? onRepeatIncrement(value, progressStatus, dt)
                   : null,
           initialDate: initialDate,
           notificationText: 'Привычка "${vm.title}" выполнена',

@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../habit/ui/core/view_models.dart';
 
 import '../../../theme.dart';
 import '../../utils/dt.dart';
@@ -12,7 +13,7 @@ import 'text.dart';
 
 /// Событие изменения значения
 typedef OnValueIncrement = void Function(
-    double incrementValue, bool isCompleteOrExceeded,
+    double incrementValue, HabitProgressStatus progressStatus,
     [DateTime datetime]);
 
 /// Контролл прогресса на повторы
@@ -48,7 +49,10 @@ class RepeatProgressControl extends HookWidget {
           icon: Icon(Icons.done),
           onPressed: () {
             currentValueState.value += 1;
-            onValueIncrement(1, currentValueState.value >= goalValue);
+            onValueIncrement(
+              1,
+              buildHabitProgessStatus(currentValueState.value, goalValue),
+            );
           },
         ),
         onLongPress: () {
@@ -58,7 +62,7 @@ class RepeatProgressControl extends HookWidget {
           /// Заполняем оставшийся прогресс иначе
           onValueIncrement(
             goalValue - currentValueState.value,
-            true,
+            HabitProgressStatus.complete,
           );
         },
       ),
@@ -130,7 +134,7 @@ class TimeProgressControl extends HookWidget {
       /// и начальным
       onValueIncrement(
         currentValueState.value - initialValue,
-        currentValueState.value >= goalValue,
+        buildHabitProgessStatus(currentValueState.value, goalValue),
         oldDate,
       );
 
@@ -234,7 +238,10 @@ class TimeProgressControl extends HookWidget {
           if (currentValueState.value >= goalValue) return;
 
           /// Заполняем оставшийся прогресс иначе
-          onValueIncrement(goalValue - currentValueState.value, true);
+          onValueIncrement(
+            goalValue - currentValueState.value,
+            HabitProgressStatus.complete,
+          );
         },
       ),
     );

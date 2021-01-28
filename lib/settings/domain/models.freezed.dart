@@ -18,9 +18,13 @@ class _$SettingsTearOff {
 
 // ignore: unused_element
   _Settings call(
-      {bool showCompleted = true, DateTime dayStartTime, DateTime dayEndTime}) {
+      {bool showCompleted = true,
+      bool showPartiallyCompleted = true,
+      DateTime dayStartTime,
+      DateTime dayEndTime}) {
     return _Settings(
       showCompleted: showCompleted,
+      showPartiallyCompleted: showPartiallyCompleted,
       dayStartTime: dayStartTime,
       dayEndTime: dayEndTime,
     );
@@ -41,6 +45,9 @@ mixin _$Settings {
   /// Показывать выполненные привычки
   bool get showCompleted;
 
+  /// Показывать частично выполненные привычки
+  bool get showPartiallyCompleted;
+
   /// Начало дня
   DateTime get dayStartTime;
 
@@ -56,7 +63,11 @@ mixin _$Settings {
 abstract class $SettingsCopyWith<$Res> {
   factory $SettingsCopyWith(Settings value, $Res Function(Settings) then) =
       _$SettingsCopyWithImpl<$Res>;
-  $Res call({bool showCompleted, DateTime dayStartTime, DateTime dayEndTime});
+  $Res call(
+      {bool showCompleted,
+      bool showPartiallyCompleted,
+      DateTime dayStartTime,
+      DateTime dayEndTime});
 }
 
 /// @nodoc
@@ -70,6 +81,7 @@ class _$SettingsCopyWithImpl<$Res> implements $SettingsCopyWith<$Res> {
   @override
   $Res call({
     Object showCompleted = freezed,
+    Object showPartiallyCompleted = freezed,
     Object dayStartTime = freezed,
     Object dayEndTime = freezed,
   }) {
@@ -77,6 +89,9 @@ class _$SettingsCopyWithImpl<$Res> implements $SettingsCopyWith<$Res> {
       showCompleted: showCompleted == freezed
           ? _value.showCompleted
           : showCompleted as bool,
+      showPartiallyCompleted: showPartiallyCompleted == freezed
+          ? _value.showPartiallyCompleted
+          : showPartiallyCompleted as bool,
       dayStartTime: dayStartTime == freezed
           ? _value.dayStartTime
           : dayStartTime as DateTime,
@@ -91,7 +106,11 @@ abstract class _$SettingsCopyWith<$Res> implements $SettingsCopyWith<$Res> {
   factory _$SettingsCopyWith(_Settings value, $Res Function(_Settings) then) =
       __$SettingsCopyWithImpl<$Res>;
   @override
-  $Res call({bool showCompleted, DateTime dayStartTime, DateTime dayEndTime});
+  $Res call(
+      {bool showCompleted,
+      bool showPartiallyCompleted,
+      DateTime dayStartTime,
+      DateTime dayEndTime});
 }
 
 /// @nodoc
@@ -106,6 +125,7 @@ class __$SettingsCopyWithImpl<$Res> extends _$SettingsCopyWithImpl<$Res>
   @override
   $Res call({
     Object showCompleted = freezed,
+    Object showPartiallyCompleted = freezed,
     Object dayStartTime = freezed,
     Object dayEndTime = freezed,
   }) {
@@ -113,6 +133,9 @@ class __$SettingsCopyWithImpl<$Res> extends _$SettingsCopyWithImpl<$Res>
       showCompleted: showCompleted == freezed
           ? _value.showCompleted
           : showCompleted as bool,
+      showPartiallyCompleted: showPartiallyCompleted == freezed
+          ? _value.showPartiallyCompleted
+          : showPartiallyCompleted as bool,
       dayStartTime: dayStartTime == freezed
           ? _value.dayStartTime
           : dayStartTime as DateTime,
@@ -127,8 +150,12 @@ class __$SettingsCopyWithImpl<$Res> extends _$SettingsCopyWithImpl<$Res>
 /// @nodoc
 class _$_Settings implements _Settings {
   const _$_Settings(
-      {this.showCompleted = true, this.dayStartTime, this.dayEndTime})
-      : assert(showCompleted != null);
+      {this.showCompleted = true,
+      this.showPartiallyCompleted = true,
+      this.dayStartTime,
+      this.dayEndTime})
+      : assert(showCompleted != null),
+        assert(showPartiallyCompleted != null);
 
   factory _$_Settings.fromJson(Map<String, dynamic> json) =>
       _$_$_SettingsFromJson(json);
@@ -138,6 +165,11 @@ class _$_Settings implements _Settings {
 
   /// Показывать выполненные привычки
   final bool showCompleted;
+  @JsonKey(defaultValue: true)
+  @override
+
+  /// Показывать частично выполненные привычки
+  final bool showPartiallyCompleted;
   @override
 
   /// Начало дня
@@ -149,7 +181,7 @@ class _$_Settings implements _Settings {
 
   @override
   String toString() {
-    return 'Settings(showCompleted: $showCompleted, dayStartTime: $dayStartTime, dayEndTime: $dayEndTime)';
+    return 'Settings(showCompleted: $showCompleted, showPartiallyCompleted: $showPartiallyCompleted, dayStartTime: $dayStartTime, dayEndTime: $dayEndTime)';
   }
 
   @override
@@ -159,6 +191,9 @@ class _$_Settings implements _Settings {
             (identical(other.showCompleted, showCompleted) ||
                 const DeepCollectionEquality()
                     .equals(other.showCompleted, showCompleted)) &&
+            (identical(other.showPartiallyCompleted, showPartiallyCompleted) ||
+                const DeepCollectionEquality().equals(
+                    other.showPartiallyCompleted, showPartiallyCompleted)) &&
             (identical(other.dayStartTime, dayStartTime) ||
                 const DeepCollectionEquality()
                     .equals(other.dayStartTime, dayStartTime)) &&
@@ -171,6 +206,7 @@ class _$_Settings implements _Settings {
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(showCompleted) ^
+      const DeepCollectionEquality().hash(showPartiallyCompleted) ^
       const DeepCollectionEquality().hash(dayStartTime) ^
       const DeepCollectionEquality().hash(dayEndTime);
 
@@ -188,6 +224,7 @@ class _$_Settings implements _Settings {
 abstract class _Settings implements Settings {
   const factory _Settings(
       {bool showCompleted,
+      bool showPartiallyCompleted,
       DateTime dayStartTime,
       DateTime dayEndTime}) = _$_Settings;
 
@@ -197,6 +234,10 @@ abstract class _Settings implements Settings {
 
   /// Показывать выполненные привычки
   bool get showCompleted;
+  @override
+
+  /// Показывать частично выполненные привычки
+  bool get showPartiallyCompleted;
   @override
 
   /// Начало дня

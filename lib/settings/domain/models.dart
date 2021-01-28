@@ -12,6 +12,9 @@ abstract class Settings with _$Settings {
     /// Показывать выполненные привычки
     @Default(true) bool showCompleted,
 
+    /// Показывать частично выполненные привычки
+    @Default(true) bool showPartiallyCompleted,
+
     /// Начало дня
     DateTime dayStartTime,
 

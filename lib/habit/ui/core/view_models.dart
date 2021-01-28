@@ -59,3 +59,36 @@ abstract class HabitProgressVM with _$HabitProgressVM {
   /// Время выпалнения привычки в виде строки
   String get performTimeStr => formatTime(performTime);
 }
+
+enum HabitProgressStatus {
+  /// Привычка не начинали делать
+  none,
+
+  /// Привычка частично выполнена
+  partial,
+
+  /// Привычка выполнена
+  complete,
+
+  /// Привычка перевыполнена
+  exceed,
+}
+
+HabitProgressStatus buildHabitProgessStatus(
+  double currentValue,
+  double goalValue,
+) {
+  if (currentValue == 0) {
+    return HabitProgressStatus.none;
+  }
+  if (currentValue < goalValue) {
+    return HabitProgressStatus.partial;
+  }
+  if (currentValue == goalValue) {
+    return HabitProgressStatus.complete;
+  }
+  if (currentValue > goalValue) {
+    return HabitProgressStatus.exceed;
+  }
+  throw "Хз как быть с currentValue=$currentValue, goalValue=$goalValue";
+}

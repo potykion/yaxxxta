@@ -19,7 +19,7 @@ class SettingsPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var settingsState = useProvider(settingsProvider);
-    var settings = settingsState.state;
+    Settings settings = settingsState.state;
 
     var version = useProvider(versionProvider);
 
@@ -95,6 +95,18 @@ class SettingsPage extends HookWidget {
                   value: settings.showCompleted,
                   onChanged: (showCompleted) => setSettings(
                     settings.copyWith(showCompleted: showCompleted),
+                  ),
+                  checkColor: CustomColors.almostBlack,
+                ),
+                CheckboxListTile(
+                  controlAffinity: ListTileControlAffinity.leading,
+                  title: BiggerText(
+                      text: "Показывать частично выполненные привычки"),
+                  value: settings.showPartiallyCompleted,
+                  onChanged: (showPartiallyCompleted) => setSettings(
+                    settings.copyWith(
+                      showPartiallyCompleted: showPartiallyCompleted,
+                    ),
                   ),
                   checkColor: CustomColors.almostBlack,
                 ),
