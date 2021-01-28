@@ -294,7 +294,7 @@ class HabitFormPage extends HookWidget {
               TimePickerInput(
                 initial: vm.performTime,
                 change: (time) => setVm(
-                  vm.copyWith(performTime: vm.performTime),
+                  vm.copyWith(performTime: time),
                 ),
               ),
             ],
