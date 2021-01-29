@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hooks_riverpod/all.dart';
 
 import '../../../core/ui/deps.dart';
@@ -170,7 +171,14 @@ class HabitDetailsPage extends HookWidget {
                 ),
                 PaddedContainerCard(
                   children: [
-                    BiggerText(text: "История"),
+                    Row(
+                      children: [
+                        BiggerText(text: "История"),
+                        Spacer(),
+                        // todo
+                        IconButton(icon: Icon(Icons.add), onPressed: null),
+                      ],
+                    ),
                     SizedBox(height: 5),
                     DatePicker(
                       change: (d) => historyDateState.value = d,
@@ -178,19 +186,41 @@ class HabitDetailsPage extends HookWidget {
                     ),
                     if (history.history.containsKey(historyDateState.value))
                       for (var e in history.history[historyDateState.value])
-                        Padding(
-                          padding: const EdgeInsets.all(5),
-                          child: Row(children: [
-                            SmallerText(
-                              text: formatTime(e.time),
-                              dark: true,
+                        Slidable(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 15,
                             ),
-                            Spacer(),
-                            SmallerText(
-                              text: "+ ${e.format(HabitType.time)}",
-                              dark: true,
-                            )
-                          ]),
+                            child: Row(children: [
+                              SmallerText(
+                                text: formatTime(e.time),
+                                dark: true,
+                              ),
+                              Spacer(),
+                              SmallerText(
+                                text: "+ ${e.format(HabitType.time)}",
+                                dark: true,
+                              )
+                            ]),
+                          ),
+                          secondaryActions: [
+                            IconSlideAction(
+                              caption: "Изменить",
+                              color: CustomColors.orange,
+                              icon: Icons.edit,
+                              // todo
+                              // onTap: () => _showSnackBar('Archive'),
+                            ),
+                            IconSlideAction(
+                              caption: "Удалить",
+                              color: CustomColors.red,
+                              icon: Icons.delete,
+                              // todo
+                              // onTap: () => _showSnackBar('Share'),
+                            ),
+                          ],
+                          actionPane: SlidableDrawerActionPane(),
                         )
                   ],
                 ),

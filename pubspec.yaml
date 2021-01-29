@@ -77,6 +77,8 @@ dependencies:
   # транзишны между страницами
   page_transition: ^1.1.7+6
 
+  # слайдабл экшены
+  flutter_slidable:
 
 dev_dependencies:
   flutter_test:
