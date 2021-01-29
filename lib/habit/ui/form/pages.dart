@@ -136,7 +136,7 @@ class HabitFormPage extends HookWidget {
           if (vm.type == HabitType.repeats)
             PaddedContainerCard(
               children: [
-                BiggerText(text: "Число повторений за раз"),
+                BiggerText(text: "Число повторений"),
                 SizedBox(height: 5),
                 TextInput<double>(
                   initial: vm.goalValue,

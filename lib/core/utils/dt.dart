@@ -107,19 +107,24 @@ abstract class DateRange with _$DateRange {
   /// дейт-ренж с 2020-01-01 10:00 по 2020-01-02 02:00 =>
   /// дейт-тайм относится к 2020-01-01, а не к 2020-01-02
   factory DateRange.fromDateTimeAndTimes(
-          DateTime dateTime, DateTime fromTime, DateTime toTime) =>
-      [
-        DateRange.fromDateAndTimes(
-          dateTime,
-          fromTime,
-          toTime,
-        ),
-        DateRange.fromDateAndTimes(
-          dateTime.add(Duration(days: -1)),
-          fromTime,
-          toTime,
-        ),
-      ].firstWhere(
-        (dr) => dr.containsDateTime(dateTime),
-      );
+    DateTime dateTime,
+    DateTime fromTime,
+    DateTime toTime,
+  ) {
+    var dateDateRange = DateRange.fromDateAndTimes(
+      dateTime,
+      fromTime,
+      toTime,
+    );
+    var previousDateDateRange = DateRange.fromDateAndTimes(
+      dateTime.add(Duration(days: -1)),
+      fromTime,
+      toTime,
+    );
+
+    return [dateDateRange, previousDateDateRange].firstWhere(
+      (dr) => dr.containsDateTime(dateTime),
+      orElse: () => dateDateRange,
+    );
+  }
 }

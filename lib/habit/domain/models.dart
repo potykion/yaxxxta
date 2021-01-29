@@ -27,7 +27,7 @@ abstract class Habit with _$Habit {
     /// Тип
     @Default(HabitType.repeats) HabitType type,
 
-    /// Продолжительность / число повторений за раз
+    /// Продолжительность / число повторений
     @Default(1) double goalValue,
 
     /// Время выполнения привычки
