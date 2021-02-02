@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:yaxxxta/core/domain/models.dart';
+import 'package:yaxxxta/core/ui/widgets/duration.dart';
 
 import '../../../core/ui/widgets/card.dart';
 import '../../../core/ui/widgets/input.dart';
@@ -76,35 +78,9 @@ class HabitFormPage extends HookWidget {
               children: [
                 BiggerText(text: "Продолжительность"),
                 SizedBox(height: 5),
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextInput<double>(
-                        suffix: Text("ч", textAlign: TextAlign.center),
-                        initial: vm.goalValueHours,
-                        change: (dynamic h) =>
-                            setVm(vm.setGoalValueHours(h as double)),
-                      ),
-                    ),
-                    SizedBox(width: 10),
-                    Expanded(
-                      child: TextInput<double>(
-                        suffix: Text("мин", textAlign: TextAlign.center),
-                        initial: vm.goalValueMinutes,
-                        change: (dynamic m) =>
-                            setVm(vm.setGoalValueMinutes(m as double)),
-                      ),
-                    ),
-                    SizedBox(width: 10),
-                    Expanded(
-                      child: TextInput<double>(
-                        suffix: Text("сек", textAlign: TextAlign.center),
-                        initial: vm.goalValueSeconds,
-                        change: (dynamic s) =>
-                            setVm(vm.setGoalValueSeconds(s as double)),
-                      ),
-                    ),
-                  ],
+                DurationInput(
+                  initial: DoubleDuration.fromSeconds(vm.goalValue),
+                  change: (newDuration) => setVm(vm.applyDuration(newDuration)),
                 ),
                 SizedBox(height: 5),
                 Row(

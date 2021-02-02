@@ -63,6 +63,8 @@ extension DateTimeUtils on DateTime {
 
   /// Определяет, является ли дата сегодняшней
   bool isToday() => date() == DateTime.now().date();
+
+  String format() => DateFormat.yMd().format(this);
 }
 
 /// Дейт-ренж - класс с двумя дейт-таймами: дейт-тайм с, дейт-тайм по

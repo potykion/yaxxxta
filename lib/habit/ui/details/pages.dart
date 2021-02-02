@@ -175,12 +175,21 @@ class HabitDetailsPage extends HookWidget {
                       children: [
                         BiggerText(text: "История"),
                         Spacer(),
-                        // todo
-                        IconButton(icon: Icon(Icons.add), onPressed: null),
+                        IconButton(
+                          icon: Icon(Icons.add),
+                          onPressed: () => showModalBottomSheet<dynamic>(
+                            context: context,
+                            builder: (context) => HabitPerformingFormModal(
+                              initialHabitPerforming:
+                                  HabitPerforming.blank(habit.id),
+                              habitType: habit.type,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                     SizedBox(height: 5),
-                    DatePicker(
+                    DateCarousel(
                       change: (d) => historyDateState.value = d,
                       highlights: history.highlights,
                     ),

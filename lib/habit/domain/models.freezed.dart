@@ -72,7 +72,7 @@ mixin _$Habit {
   /// Тип
   HabitType get type;
 
-  /// Продолжительность / число повторений за раз
+  /// Продолжительность / число повторений
   double get goalValue;
 
   /// Время выполнения привычки
@@ -304,7 +304,7 @@ class _$_Habit extends _Habit {
   @JsonKey(defaultValue: 1)
   @override
 
-  /// Продолжительность / число повторений за раз
+  /// Продолжительность / число повторений
   final double goalValue;
   @override
 
@@ -456,7 +456,7 @@ abstract class _Habit extends Habit {
   HabitType get type;
   @override
 
-  /// Продолжительность / число повторений за раз
+  /// Продолжительность / число повторений
   double get goalValue;
   @override
 
@@ -619,14 +619,15 @@ class __$HabitPerformingCopyWithImpl<$Res>
 @JsonSerializable()
 
 /// @nodoc
-class _$_HabitPerforming implements _HabitPerforming {
+class _$_HabitPerforming extends _HabitPerforming {
   _$_HabitPerforming(
       {@required this.habitId,
       @required this.performValue,
       @required this.performDateTime})
       : assert(habitId != null),
         assert(performValue != null),
-        assert(performDateTime != null);
+        assert(performDateTime != null),
+        super._();
 
   factory _$_HabitPerforming.fromJson(Map<String, dynamic> json) =>
       _$_$_HabitPerformingFromJson(json);
@@ -682,7 +683,8 @@ class _$_HabitPerforming implements _HabitPerforming {
   }
 }
 
-abstract class _HabitPerforming implements HabitPerforming {
+abstract class _HabitPerforming extends HabitPerforming {
+  _HabitPerforming._() : super._();
   factory _HabitPerforming(
       {@required String habitId,
       @required double performValue,

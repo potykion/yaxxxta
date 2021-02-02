@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:yaxxxta/core/ui/widgets/date.dart';
+import 'package:yaxxxta/core/ui/widgets/input.dart';
+import 'package:yaxxxta/core/ui/widgets/padding.dart';
+import 'package:yaxxxta/core/ui/widgets/time.dart';
+import 'package:yaxxxta/core/utils/dt.dart';
 
 import '../../../core/ui/widgets/card.dart';
 import '../../../core/ui/widgets/new_progress.dart';
@@ -61,3 +67,86 @@ class HabitProgressControl extends StatelessWidget {
     ]);
   }
 }
+
+class HabitPerformingFormModal extends HookWidget {
+  final HabitPerforming initialHabitPerforming;
+
+  final HabitType habitType;
+
+  HabitPerformingFormModal({
+    @required this.initialHabitPerforming,
+    @required this.habitType,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    var vmState = useState(initialHabitPerforming);
+    setVM(HabitPerforming newVM) {
+      vmState.value = newVM;
+    }
+
+    var vm = vmState.value;
+
+    return PaddedContainerCard(
+      padVerticalOnly: true,
+      children: [
+        SmallPadding(
+          child: BiggerText(text: "Дата и время выполнения"),
+        ),
+        ListTile(
+          title: Row(
+            children: [
+              Flexible(
+                child: DatePickerInput(
+                  initial: vm.performDateTime,
+                  change: (date) => setVM(
+                    vm.copyWith(
+                      performDateTime: buildDateTime(date, vm.performDateTime),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 10),
+              Flexible(
+                child: TimePickerInput(
+                  initial: vm.performDateTime,
+                  change: (time) => setVM(
+                    vm.copyWith(
+                      performDateTime: buildDateTime(vm.performDateTime, time),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        if (habitType == HabitType.time) ...[
+          ListTile(
+            title: BiggerText(text: "Продолжительность"),
+          ),
+          SizedBox(height: 5),
+          TextInput<double>(
+            initial: vm.performValue,
+            change: (dynamic v) =>
+                setVM(vm.copyWith(performValue: v as double)),
+          ),
+        ],
+        if (habitType == HabitType.repeats) ...[
+          ListTile(
+            title: BiggerText(text: "Число повторений"),
+          ),
+          SizedBox(height: 5),
+          ListTile(
+            title: TextInput<double>(
+              initial: vm.performValue,
+              change: (dynamic v) =>
+                  setVM(vm.copyWith(performValue: v as double)),
+            ),
+          ),
+        ]
+      ],
+    );
+  }
+}
+
+

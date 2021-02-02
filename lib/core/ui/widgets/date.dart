@@ -6,8 +6,8 @@ import '../../../theme.dart';
 import '../../utils/dt.dart';
 import 'text.dart';
 
-/// Выбор даты
-class DatePicker extends HookWidget {
+/// Барабан с датами
+class DateCarousel extends HookWidget {
   /// Начальная дата
   final DateTime initial;
 
@@ -19,7 +19,7 @@ class DatePicker extends HookWidget {
   final Map<DateTime, double> highlights;
 
   /// Выбор даты
-  DatePicker({
+  DateCarousel({
     Map<DateTime, double> highlights,
     DateTime initial,
     @required this.change,
@@ -47,7 +47,7 @@ class DatePicker extends HookWidget {
               selectedIndexState.value = index;
               change(shiftDate);
             },
-            child: DatePickerItem(
+            child: DateCarouselCell(
               date: shiftDate,
               color: selectedIndexState.value == index
                   ? CustomColors.yellow
@@ -64,8 +64,8 @@ class DatePicker extends HookWidget {
   }
 }
 
-/// Ячейка выбора даты
-class DatePickerItem extends StatelessWidget {
+/// Ячейка барабана с датами
+class DateCarouselCell extends StatelessWidget {
   /// Дата
   final DateTime date;
 
@@ -73,7 +73,7 @@ class DatePickerItem extends StatelessWidget {
   final Color color;
 
   /// Создает ячейку
-  const DatePickerItem({Key key, this.date, this.color = Colors.white})
+  const DateCarouselCell({Key key, this.date, this.color = Colors.white})
       : super(key: key);
 
   String get _dateStr => "${date.day}.\n${date.month}";
@@ -100,6 +100,46 @@ class DatePickerItem extends StatelessWidget {
           ),
           SmallestText(date.isToday() ? "сегодня" : "")
         ],
+      ),
+    );
+  }
+}
+
+/// Выбор даты
+class DatePickerInput extends HookWidget {
+  /// Начальное значение даты
+  final DateTime initial;
+
+  /// Событие изменения даты
+  final Function(DateTime time) change;
+
+  /// Выбор даты
+  DatePickerInput({this.initial, this.change});
+
+  @override
+  Widget build(BuildContext context) {
+    var tec = useTextEditingController(
+      text: initial?.format() ?? "",
+    );
+
+    return TextFormField(
+      controller: tec,
+      readOnly: true,
+      onTap: () async {
+        var selected = (await showDatePicker(
+          context: context,
+          initialDate: initial ?? DateTime.now(),
+          firstDate: DateTime.now().add(Duration(days: -365)),
+          lastDate: DateTime.now().add(Duration(days: 365)),
+        ));
+        tec.text = selected.format();
+        change(selected);
+      },
+      decoration: InputDecoration(
+        suffixIcon: Icon(
+          Icons.calendar_today,
+          color: CustomColors.almostBlack,
+        ),
       ),
     );
   }

@@ -41,7 +41,7 @@ class HabitListPage extends HookWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(height: kToolbarHeight),
-            DatePicker(
+            DateCarousel(
               change: (date) {
                 context.read(selectedDateProvider).state = date;
                 context.read(habitPerformingController).load(date);
