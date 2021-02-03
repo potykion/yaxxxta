@@ -272,7 +272,7 @@ class SimpleButton extends StatelessWidget {
             onTap: onTap,
             child: Padding(
               padding: const EdgeInsets.all(10),
-              child: BiggerText(text: text),
+              child: BiggerText(text: text, align: TextAlign.center),
             ),
           ),
         ),

@@ -48,8 +48,12 @@ class FireStoreHabitPerformingRepo implements BaseHabitPerformingRepo {
   FireStoreHabitPerformingRepo(this._collectionReference);
 
   @override
-  Future<void> insert(HabitPerforming performing) =>
-      _collectionReference.add(_toFireBase(performing));
+  Future<String> insert(HabitPerforming performing) async =>
+      (await _collectionReference.add(_toFireBase(performing))).id;
+
+  @override
+  Future<void> update(HabitPerforming performing) =>
+      _collectionReference.doc(performing.id).update(_toFireBase(performing));
 
   @override
   Future<List<HabitPerforming>> list(DateTime from, DateTime to) async =>
@@ -61,26 +65,28 @@ class FireStoreHabitPerformingRepo implements BaseHabitPerformingRepo {
               )
               .get())
           .docs
-          .map((d) => _fromFireBase(d.data()))
+          .map(_fromFireBase)
           .toList();
 
   @override
   Future<List<HabitPerforming>> listByHabit(String habitId) async =>
-      (await _collectionReference
-              .where(
-                "habitId",
-                isEqualTo: habitId,
-              )
-              .get())
+      (await _collectionReference.where("habitId", isEqualTo: habitId).get())
           .docs
-          .map((d) => _fromFireBase(d.data()))
+          .map(_fromFireBase)
           .toList();
 
   Map<String, dynamic> _toFireBase(HabitPerforming performing) =>
       performing.toJson()
         ..["performDateTime"] = Timestamp.fromDate(performing.performDateTime);
 
-  HabitPerforming _fromFireBase(Map doc) => HabitPerforming.fromJson(doc
-    ..["performDateTime"] =
-        (doc["performDateTime"] as Timestamp).toDate().toIso8601String());
+  HabitPerforming _fromFireBase(DocumentSnapshot doc) {
+    var data = doc.data();
+
+    return HabitPerforming.fromJson(
+      data
+        ..["performDateTime"] =
+            (data["performDateTime"] as Timestamp).toDate().toIso8601String()
+        ..["id"] = doc.id,
+    );
+  }
 }

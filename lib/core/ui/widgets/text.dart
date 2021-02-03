@@ -66,8 +66,15 @@ class BiggerText extends StatelessWidget {
   /// Текст
   final String text;
 
+  /// Выравнивание текста
+  final TextAlign align;
+
   /// Создает текст
-  const BiggerText({Key key, this.text}) : super(key: key);
+  const BiggerText({
+    Key key,
+    this.text,
+    this.align = TextAlign.start,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Text(
@@ -77,6 +84,7 @@ class BiggerText extends StatelessWidget {
           fontWeight: FontWeight.bold,
           color: CustomColors.almostBlack,
         ),
+        textAlign: align,
       );
 }
 

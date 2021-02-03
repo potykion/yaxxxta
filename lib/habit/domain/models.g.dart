@@ -106,6 +106,7 @@ const _$WeekdayEnumMap = {
 
 _$_HabitPerforming _$_$_HabitPerformingFromJson(Map json) {
   return _$_HabitPerforming(
+    id: json['id'] as String,
     habitId: json['habitId'] as String,
     performValue: (json['performValue'] as num)?.toDouble(),
     performDateTime: json['performDateTime'] == null
@@ -116,6 +117,7 @@ _$_HabitPerforming _$_$_HabitPerformingFromJson(Map json) {
 
 Map<String, dynamic> _$_$_HabitPerformingToJson(_$_HabitPerforming instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'habitId': instance.habitId,
       'performValue': instance.performValue,
       'performDateTime': instance.performDateTime?.toIso8601String(),

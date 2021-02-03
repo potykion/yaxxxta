@@ -34,22 +34,38 @@ class HabitPerformingController {
   });
 
   /// Создает выполнение привычки, обновляя состояние
+  /// TODO удалить create, использовать HabitPerforming.blank
   Future<void> create({
     @required String habitId,
     double performValue = 1,
     DateTime performDateTime,
-  }) async {
-    performDateTime = performDateTime ?? DateTime.now();
+  }) =>
+      insert(
+        HabitPerforming(
+          habitId: habitId,
+          performValue: performValue,
+          performDateTime: performDateTime ?? DateTime.now(),
+        ),
+      );
 
-    var performing = HabitPerforming(
-      habitId: habitId,
-      performValue: performValue,
-      performDateTime: performDateTime,
+  Future<void> insert(HabitPerforming habitPerforming) async {
+    habitPerforming = habitPerforming.copyWith(
+      id: await habitPerformingRepo.insert(habitPerforming),
     );
-    await habitPerformingRepo.insert(performing);
+    var stateController = getDateState(habitPerforming.performDateTime);
+    stateController.state = [
+      ...stateController.state,
+      habitPerforming,
+    ];
+  }
 
-    var stateController = getDateState(performDateTime);
-    stateController.state = [...stateController.state, performing];
+  Future<void> update(HabitPerforming habitPerforming) async {
+    await habitPerformingRepo.update(habitPerforming);
+    var stateController = getDateState(habitPerforming.performDateTime);
+    stateController.state = [
+      ...stateController.state.where((hp) => hp.id != habitPerforming.id),
+      habitPerforming
+    ];
   }
 
   /// Загружает выполнения привычек за дату, обновляя состояние

@@ -177,14 +177,22 @@ class HabitDetailsPage extends HookWidget {
                         Spacer(),
                         IconButton(
                           icon: Icon(Icons.add),
-                          onPressed: () => showModalBottomSheet<dynamic>(
-                            context: context,
-                            builder: (context) => HabitPerformingFormModal(
-                              initialHabitPerforming:
-                                  HabitPerforming.blank(habit.id),
-                              habitType: habit.type,
-                            ),
-                          ),
+                          onPressed: () async {
+                            var habitPerforming =
+                                await showModalBottomSheet<HabitPerforming>(
+                              context: context,
+                              builder: (context) => HabitPerformingFormModal(
+                                initialHabitPerforming:
+                                    HabitPerforming.blank(habit.id),
+                                habitType: habit.type,
+                              ),
+                            );
+                            if (habitPerforming != null) {
+                              await context
+                                  .read(habitPerformingController)
+                                  .insert(habitPerforming);
+                            }
+                          },
                         ),
                       ],
                     ),

@@ -21,7 +21,10 @@ abstract class BaseHabitRepo {
 /// Репо для работы с выполнениями привычек
 abstract class BaseHabitPerformingRepo {
   /// Вставляет выполнение привычки в бд, возвращая айди
-  Future<void> insert(HabitPerforming performing);
+  Future<String> insert(HabitPerforming performing);
+
+  /// Обновляет выполнение привычки в бд
+  Future<void> update(HabitPerforming performing);
 
   /// Выводит список выполнений в промежутке
   Future<List<HabitPerforming>> list(DateTime from, DateTime to);

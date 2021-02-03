@@ -121,10 +121,9 @@ class HabitPerformingFormModal extends HookWidget {
           ),
         ),
         if (habitType == HabitType.time) ...[
-          ListTile(
-            title: BiggerText(text: "Продолжительность"),
+          SmallPadding(
+            child: BiggerText(text: "Продолжительность"),
           ),
-          SizedBox(height: 5),
           TextInput<double>(
             initial: vm.performValue,
             change: (dynamic v) =>
@@ -132,10 +131,9 @@ class HabitPerformingFormModal extends HookWidget {
           ),
         ],
         if (habitType == HabitType.repeats) ...[
-          ListTile(
-            title: BiggerText(text: "Число повторений"),
+          SmallPadding(
+            child: BiggerText(text: "Число повторений"),
           ),
-          SizedBox(height: 5),
           ListTile(
             title: TextInput<double>(
               initial: vm.performValue,
@@ -143,10 +141,14 @@ class HabitPerformingFormModal extends HookWidget {
                   setVM(vm.copyWith(performValue: v as double)),
             ),
           ),
-        ]
+        ],
+        ListTile(
+          title: SimpleButton(
+            text: "Сохранить",
+            onTap: () => Navigator.of(context).pop(vm),
+          ),
+        ),
       ],
     );
   }
 }
-
-

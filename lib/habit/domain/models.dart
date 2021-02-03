@@ -262,6 +262,9 @@ abstract class HabitPerforming with _$HabitPerforming {
 
   /// Создает выполнение привычки
   factory HabitPerforming({
+    /// Айди выполнения привычки
+    String id,
+
     /// Айди привычки
     @required String habitId,
 
@@ -275,7 +278,7 @@ abstract class HabitPerforming with _$HabitPerforming {
   /// Создает пустышку
   factory HabitPerforming.blank(String habitId) => HabitPerforming(
         habitId: habitId,
-        performValue: 0,
+        performValue: 1,
         performDateTime: DateTime.now(),
       );
 

@@ -506,10 +506,12 @@ class _$HabitPerformingTearOff {
 
 // ignore: unused_element
   _HabitPerforming call(
-      {@required String habitId,
+      {String id,
+      @required String habitId,
       @required double performValue,
       @required DateTime performDateTime}) {
     return _HabitPerforming(
+      id: id,
       habitId: habitId,
       performValue: performValue,
       performDateTime: performDateTime,
@@ -528,6 +530,9 @@ const $HabitPerforming = _$HabitPerformingTearOff();
 
 /// @nodoc
 mixin _$HabitPerforming {
+  /// Айди выполнения привычки
+  String get id;
+
   /// Айди привычки
   String get habitId;
 
@@ -547,7 +552,11 @@ abstract class $HabitPerformingCopyWith<$Res> {
   factory $HabitPerformingCopyWith(
           HabitPerforming value, $Res Function(HabitPerforming) then) =
       _$HabitPerformingCopyWithImpl<$Res>;
-  $Res call({String habitId, double performValue, DateTime performDateTime});
+  $Res call(
+      {String id,
+      String habitId,
+      double performValue,
+      DateTime performDateTime});
 }
 
 /// @nodoc
@@ -561,11 +570,13 @@ class _$HabitPerformingCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object id = freezed,
     Object habitId = freezed,
     Object performValue = freezed,
     Object performDateTime = freezed,
   }) {
     return _then(_value.copyWith(
+      id: id == freezed ? _value.id : id as String,
       habitId: habitId == freezed ? _value.habitId : habitId as String,
       performValue: performValue == freezed
           ? _value.performValue
@@ -584,7 +595,11 @@ abstract class _$HabitPerformingCopyWith<$Res>
           _HabitPerforming value, $Res Function(_HabitPerforming) then) =
       __$HabitPerformingCopyWithImpl<$Res>;
   @override
-  $Res call({String habitId, double performValue, DateTime performDateTime});
+  $Res call(
+      {String id,
+      String habitId,
+      double performValue,
+      DateTime performDateTime});
 }
 
 /// @nodoc
@@ -600,11 +615,13 @@ class __$HabitPerformingCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object id = freezed,
     Object habitId = freezed,
     Object performValue = freezed,
     Object performDateTime = freezed,
   }) {
     return _then(_HabitPerforming(
+      id: id == freezed ? _value.id : id as String,
       habitId: habitId == freezed ? _value.habitId : habitId as String,
       performValue: performValue == freezed
           ? _value.performValue
@@ -621,7 +638,8 @@ class __$HabitPerformingCopyWithImpl<$Res>
 /// @nodoc
 class _$_HabitPerforming extends _HabitPerforming {
   _$_HabitPerforming(
-      {@required this.habitId,
+      {this.id,
+      @required this.habitId,
       @required this.performValue,
       @required this.performDateTime})
       : assert(habitId != null),
@@ -632,6 +650,10 @@ class _$_HabitPerforming extends _HabitPerforming {
   factory _$_HabitPerforming.fromJson(Map<String, dynamic> json) =>
       _$_$_HabitPerformingFromJson(json);
 
+  @override
+
+  /// Айди выполнения привычки
+  final String id;
   @override
 
   /// Айди привычки
@@ -647,13 +669,15 @@ class _$_HabitPerforming extends _HabitPerforming {
 
   @override
   String toString() {
-    return 'HabitPerforming(habitId: $habitId, performValue: $performValue, performDateTime: $performDateTime)';
+    return 'HabitPerforming(id: $id, habitId: $habitId, performValue: $performValue, performDateTime: $performDateTime)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _HabitPerforming &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.habitId, habitId) ||
                 const DeepCollectionEquality()
                     .equals(other.habitId, habitId)) &&
@@ -668,6 +692,7 @@ class _$_HabitPerforming extends _HabitPerforming {
   @override
   int get hashCode =>
       runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(habitId) ^
       const DeepCollectionEquality().hash(performValue) ^
       const DeepCollectionEquality().hash(performDateTime);
@@ -686,13 +711,18 @@ class _$_HabitPerforming extends _HabitPerforming {
 abstract class _HabitPerforming extends HabitPerforming {
   _HabitPerforming._() : super._();
   factory _HabitPerforming(
-      {@required String habitId,
+      {String id,
+      @required String habitId,
       @required double performValue,
       @required DateTime performDateTime}) = _$_HabitPerforming;
 
   factory _HabitPerforming.fromJson(Map<String, dynamic> json) =
       _$_HabitPerforming.fromJson;
 
+  @override
+
+  /// Айди выполнения привычки
+  String get id;
   @override
 
   /// Айди привычки
