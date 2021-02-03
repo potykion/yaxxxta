@@ -19,7 +19,7 @@ class SettingsPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var settingsState = useProvider(settingsProvider);
-    Settings settings = settingsState.state;
+    var settings = settingsState.state;
 
     var version = useProvider(versionProvider);
 

@@ -48,6 +48,7 @@ class HabitPerformingController {
         ),
       );
 
+  /// Вставляет выполнение привычки и обновляет состояние
   Future<void> insert(HabitPerforming habitPerforming) async {
     habitPerforming = habitPerforming.copyWith(
       id: await habitPerformingRepo.insert(habitPerforming),
@@ -59,6 +60,7 @@ class HabitPerformingController {
     ];
   }
 
+  /// Обновляет выполнение привычки и обновляет состояние
   Future<void> update(HabitPerforming habitPerforming) async {
     await habitPerformingRepo.update(habitPerforming);
     var stateController = getDateState(habitPerforming.performDateTime);

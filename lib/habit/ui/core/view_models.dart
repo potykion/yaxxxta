@@ -60,6 +60,7 @@ abstract class HabitProgressVM with _$HabitProgressVM {
   String get performTimeStr => formatTime(performTime);
 }
 
+/// Статут выполнения привычки
 enum HabitProgressStatus {
   /// Привычка не начинали делать
   none,
@@ -74,7 +75,8 @@ enum HabitProgressStatus {
   exceed,
 }
 
-HabitProgressStatus buildHabitProgessStatus(
+/// Создает прогресс на основе текущего и целевого значений
+HabitProgressStatus buildHabitProgressStatus(
   double currentValue,
   double goalValue,
 ) {

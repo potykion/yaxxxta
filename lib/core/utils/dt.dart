@@ -64,6 +64,7 @@ extension DateTimeUtils on DateTime {
   /// Определяет, является ли дата сегодняшней
   bool isToday() => date() == DateTime.now().date();
 
+  /// Форматирует дату в формате 2/3/2021
   String format() => DateFormat.yMd().format(this);
 }
 

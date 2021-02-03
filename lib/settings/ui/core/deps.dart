@@ -1,5 +1,5 @@
 import 'package:hooks_riverpod/all.dart';
-import 'package:yaxxxta/settings/domain/db.dart';
+import '../../domain/db.dart';
 import '../../domain/models.dart';
 import '../../infra/db.dart';
 import 'controllers.dart';
@@ -12,6 +12,10 @@ Provider<BaseSettingsRepo> settingsRepoProvider = Provider(
 /// Регает настройки
 StateProvider<Settings> settingsProvider = StateProvider((ref) => null);
 
-var settingsControllerProvider = Provider((ref) => SettingsController(
+/// Провайдер котроллера настроек
+Provider<SettingsController> settingsControllerProvider = Provider(
+  (ref) => SettingsController(
     settingsState: ref.watch(settingsProvider),
-    settingsRepo: ref.watch(settingsRepoProvider)));
+    settingsRepo: ref.watch(settingsRepoProvider),
+  ),
+);

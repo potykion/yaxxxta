@@ -34,6 +34,7 @@ final Map<String, Widget Function(BuildContext context)> routes = {
   Routes.settings: (_) => SettingsPage(),
 };
 
+/// Маппинг индексов bottomNavBar'а в роуты
 Map<int, String> bottomNavRoutes = {
   0: Routes.list,
   1: Routes.settings,

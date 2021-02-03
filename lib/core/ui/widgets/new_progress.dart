@@ -51,7 +51,7 @@ class RepeatProgressControl extends HookWidget {
             currentValueState.value += 1;
             onValueIncrement(
               1,
-              buildHabitProgessStatus(currentValueState.value, goalValue),
+              buildHabitProgressStatus(currentValueState.value, goalValue),
             );
           },
         ),
@@ -134,7 +134,7 @@ class TimeProgressControl extends HookWidget {
       /// и начальным
       onValueIncrement(
         currentValueState.value - initialValue,
-        buildHabitProgessStatus(currentValueState.value, goalValue),
+        buildHabitProgressStatus(currentValueState.value, goalValue),
         oldDate,
       );
 

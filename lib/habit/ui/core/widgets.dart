@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:yaxxxta/core/ui/widgets/date.dart';
-import 'package:yaxxxta/core/ui/widgets/input.dart';
-import 'package:yaxxxta/core/ui/widgets/padding.dart';
-import 'package:yaxxxta/core/ui/widgets/time.dart';
-import 'package:yaxxxta/core/utils/dt.dart';
 
 import '../../../core/ui/widgets/card.dart';
+import '../../../core/ui/widgets/date.dart';
+import '../../../core/ui/widgets/input.dart';
 import '../../../core/ui/widgets/new_progress.dart';
+import '../../../core/ui/widgets/padding.dart';
 import '../../../core/ui/widgets/text.dart';
+import '../../../core/ui/widgets/time.dart';
+import '../../../core/utils/dt.dart';
 import '../../domain/models.dart';
 import 'view_models.dart';
 
@@ -68,11 +68,16 @@ class HabitProgressControl extends StatelessWidget {
   }
 }
 
+/// Модалька выполнения привычки
 class HabitPerformingFormModal extends HookWidget {
+  /// Начальное выполнение привычки
   final HabitPerforming initialHabitPerforming;
 
+  /// Тип привычки
+  /// Используется чтобы показывать "Число повторений" / "Продолжительность"
   final HabitType habitType;
 
+  /// Модалька выполнения привычки
   HabitPerformingFormModal({
     @required this.initialHabitPerforming,
     @required this.habitType,

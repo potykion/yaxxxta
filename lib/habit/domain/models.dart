@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:yaxxxta/core/domain/models.dart';
+import '../../core/domain/models.dart';
 import '../../core/utils/dt.dart';
 
 part 'models.g.dart';
@@ -77,6 +77,7 @@ abstract class Habit with _$Habit {
   double get goalValueSeconds =>
       goalValue - goalValueHours * 3600 - goalValueMinutes * 60;
 
+  /// Выставляет целевое значение из длительности
   Habit applyDuration(DoubleDuration duration) => copyWith(
         goalValue:
             duration.hours * 3600 + duration.minutes * 60 + duration.seconds,

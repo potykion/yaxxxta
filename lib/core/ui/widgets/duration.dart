@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:yaxxxta/core/domain/models.dart';
+import '../../domain/models.dart';
 
 import 'input.dart';
 
+/// Инпут длительности
 class DurationInput extends StatelessWidget {
+  /// Начальное значение длительности
   final DoubleDuration initial;
+
+  /// Событие изменения длительности
   final Function(DoubleDuration newDuration) change;
 
+  /// Инпут длительности
   const DurationInput({
     Key key,
     this.initial,
