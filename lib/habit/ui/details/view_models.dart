@@ -21,9 +21,11 @@ class HabitHistory {
     Settings settings,
   ) =>
       HabitHistory(
-        /// Группируем выполнения по дате
+        /// Сортируем + группируем выполнения по дате
         groupBy<HabitPerforming, DateTime>(
-          performings,
+          performings
+            ..sort((hp1, hp2) =>
+                hp2.performDateTime.compareTo(hp1.performDateTime)),
           (hp) => DateRange.fromDateTimeAndTimes(
             hp.performDateTime,
             settings.dayStartTime,
@@ -36,14 +38,14 @@ class HabitHistory {
             /// Группируем выполнения по времени в рамках одной даты
             groupBy<HabitPerforming, DateTime>(
               value,
-              (hp) => hp.performDateTime.time(),
+              (hp) => hp.performDateTime.time(date: hp.performDateTime),
             )
                 .entries
 
                 /// Создаем записи истории, суммируя значения выполнений
                 .map(
                   (e) => HabitHistoryEntry(
-                    time: e.key.time(),
+                    time: e.key,
                     value: e.value.fold(0, (sum, hp) => sum + hp.performValue),
                   ),
                 )

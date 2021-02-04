@@ -52,13 +52,16 @@ extension DateTimeUtils on DateTime {
   DateTime date() => DateTime(year, month, day);
 
   /// Создает дейт тайм с фиксированной датой, то есть просто тайм
-  DateTime time({bool withSeconds = false}) => DateTime(
-        2020,
-        1,
-        1,
-        hour,
-        minute,
-        withSeconds ? second : 0,
+  DateTime time({bool withSeconds = false, DateTime date}) => buildDateTime(
+        date ?? DateTime(2020, 1, 1),
+        DateTime(
+          2020,
+          1,
+          1,
+          hour,
+          minute,
+          withSeconds ? second : 0,
+        ),
       );
 
   /// Определяет, является ли дата сегодняшней
@@ -128,6 +131,27 @@ abstract class DateRange with _$DateRange {
     return [dateDateRange, previousDateDateRange].firstWhere(
       (dr) => dr.containsDateTime(dateTime),
       orElse: () => dateDateRange,
+    );
+  }
+
+  /// Создает дейтренж в ределах минуты
+  factory DateRange.withinMinute(DateTime dateTimeWithoutSeconds) {
+    return DateRange(
+      DateTime(
+        dateTimeWithoutSeconds.year,
+        dateTimeWithoutSeconds.month,
+        dateTimeWithoutSeconds.day,
+        dateTimeWithoutSeconds.hour,
+        dateTimeWithoutSeconds.minute,
+      ),
+      DateTime(
+        dateTimeWithoutSeconds.year,
+        dateTimeWithoutSeconds.month,
+        dateTimeWithoutSeconds.day,
+        dateTimeWithoutSeconds.hour,
+        dateTimeWithoutSeconds.minute,
+        59,
+      ),
     );
   }
 }

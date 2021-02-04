@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:yaxxxta/core/utils/dt.dart';
 import '../domain/db.dart';
 
 import '../domain/models.dart';
@@ -52,10 +53,6 @@ class FireStoreHabitPerformingRepo implements BaseHabitPerformingRepo {
       (await _collectionReference.add(_toFireBase(performing))).id;
 
   @override
-  Future<void> update(HabitPerforming performing) =>
-      _collectionReference.doc(performing.id).update(_toFireBase(performing));
-
-  @override
   Future<List<HabitPerforming>> list(DateTime from, DateTime to) async =>
       (await _collectionReference
               .where(
@@ -74,6 +71,25 @@ class FireStoreHabitPerformingRepo implements BaseHabitPerformingRepo {
           .docs
           .map(_fromFireBase)
           .toList();
+
+  @override
+  Future<void> delete(DateTime from, DateTime to) async {
+    var batch = FirebaseFirestore.instance.batch();
+
+    var performingsToDelete = (await _collectionReference
+            .where(
+              "performDateTime",
+              isGreaterThanOrEqualTo: from,
+              isLessThanOrEqualTo: to,
+            )
+            .get())
+        .docs;
+    for (var hpDoc in performingsToDelete) {
+      batch.delete(hpDoc.reference);
+    }
+
+    await batch.commit();
+  }
 
   Map<String, dynamic> _toFireBase(HabitPerforming performing) =>
       performing.toJson()

@@ -226,15 +226,34 @@ class HabitDetailsPage extends HookWidget {
                               caption: "Изменить",
                               color: CustomColors.orange,
                               icon: Icons.edit,
-                              // todo
-                              // onTap: () => _showSnackBar('Archive'),
+                              onTap: () async {
+                                var habitPerforming =
+                                    await showModalBottomSheet<HabitPerforming>(
+                                  context: context,
+                                  builder: (context) =>
+                                      HabitPerformingFormModal(
+                                    initialHabitPerforming: HabitPerforming(
+                                      habitId: habit.id,
+                                      performValue: e.value,
+                                      performDateTime: e.time,
+                                    ),
+                                    habitType: habit.type,
+                                  ),
+                                );
+                                if (habitPerforming != null) {
+                                  await context
+                                      .read(habitPerformingController)
+                                      .update(habitPerforming);
+                                }
+                              },
                             ),
                             IconSlideAction(
                               caption: "Удалить",
                               color: CustomColors.red,
                               icon: Icons.delete,
-                              // todo
-                              // onTap: () => _showSnackBar('Share'),
+                              onTap: () => context
+                                  .read(habitPerformingController)
+                                  .deleteForDateTime(e.time),
                             ),
                           ],
                           actionPane: SlidableDrawerActionPane(),

@@ -60,16 +60,6 @@ class HabitPerformingController {
     ];
   }
 
-  /// Обновляет выполнение привычки и обновляет состояние
-  Future<void> update(HabitPerforming habitPerforming) async {
-    await habitPerformingRepo.update(habitPerforming);
-    var stateController = getDateState(habitPerforming.performDateTime);
-    stateController.state = [
-      ...stateController.state.where((hp) => hp.id != habitPerforming.id),
-      habitPerforming
-    ];
-  }
-
   /// Загружает выполнения привычек за дату, обновляя состояние
   Future<void> load(DateTime date) async {
     loadingState.state = true;
@@ -98,6 +88,22 @@ class HabitPerformingController {
   /// Получает состояние выполнений привычек за дату
   StateController<List<HabitPerforming>> getDateState(DateTime date) =>
       date.isToday() ? todayHabitPerformingsState : dateHabitPerformingsState;
+
+  Future<void> deleteForDateTime(DateTime dateTime) async {
+    var dateRange = DateRange.withinMinute(dateTime);
+    await habitPerformingRepo.delete(dateRange.from, dateRange.to);
+    var state = getDateState(dateTime);
+    state.state = state.state
+        .where((hp) => dateRange.containsDateTime(hp.performDateTime))
+        .toList();
+  }
+
+  /// Обновление выполнения привычки: удаление привычек в пределах минуты +
+  /// вставка выполнения привычки
+  Future<void> update(HabitPerforming habitPerforming) async {
+    await deleteForDateTime(habitPerforming.performDateTime);
+    await insert(habitPerforming);
+  }
 }
 
 /// Контроллер привычек
