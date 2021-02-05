@@ -68,7 +68,6 @@ class RepeatProgressControl extends HookWidget {
       ),
       progressPercentage: min(currentValueState.value / goalValue, 1),
       progressStr: "${currentValueState.value.toInt()} / ${goalValue.toInt()}",
-      showProgressStr: goalValue.toInt() != 1,
     );
   }
 }
@@ -251,7 +250,6 @@ class TimeProgressControl extends HookWidget {
 class _BaseProgressControl extends StatelessWidget {
   final double progressPercentage;
   final String progressStr;
-  final bool showProgressStr;
   final Widget incrementButton;
 
   const _BaseProgressControl({
@@ -259,7 +257,6 @@ class _BaseProgressControl extends StatelessWidget {
     @required this.progressPercentage,
     @required this.progressStr,
     @required this.incrementButton,
-    this.showProgressStr = true,
   }) : super(key: key);
 
   @override
@@ -283,11 +280,10 @@ class _BaseProgressControl extends StatelessWidget {
               child: incrementButton,
             ),
           ),
-          if (showProgressStr)
-            Positioned(
-              child: SmallerText(text: progressStr, dark: true),
-              right: 20,
-            )
+          Positioned(
+            child: SmallerText(text: progressStr, dark: true),
+            right: 20,
+          )
         ],
       );
 }
