@@ -216,7 +216,7 @@ class HabitDetailsPage extends HookWidget {
                               ),
                               Spacer(),
                               SmallerText(
-                                text: "+ ${e.format(HabitType.time)}",
+                                text: "+ ${e.format(habit.type)}",
                                 dark: true,
                               )
                             ]),

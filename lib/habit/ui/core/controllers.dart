@@ -94,7 +94,7 @@ class HabitPerformingController {
     await habitPerformingRepo.delete(dateRange.from, dateRange.to);
     var state = getDateState(dateTime);
     state.state = state.state
-        .where((hp) => dateRange.containsDateTime(hp.performDateTime))
+        .where((hp) => !dateRange.containsDateTime(hp.performDateTime))
         .toList();
   }
 

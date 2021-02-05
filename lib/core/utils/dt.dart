@@ -8,14 +8,16 @@ extension DurationUtils on Duration {
   /// Форматирует дюрейшн без нулей впереди и без миллисекунд, типа 1:02:03
   String format() => [
         inHours > 0 ? inHours : null,
-        inMinutes > 0 ? inMinutes % 60 : null,
+        // Если минуток 0, то все равно показываем 0,
+        // чтобы было не +10, а +00:10
+        inMinutes > 0 ? inMinutes % 60 : 0,
         inSeconds % 60
       ]
           .where((d) => d != null)
           .toList()
           .asMap()
           .entries
-          .map((e) => e.key == 0 ? e.value : e.value.toString().padLeft(2, "0"))
+          .map((e) => e.value.toString().padLeft(2, "0"))
           .join(":");
 }
 
