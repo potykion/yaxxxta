@@ -54,6 +54,32 @@ class HabitHistory {
         ),
       );
 
+  factory HabitHistory.fromMap(Map<DateTime, List<HabitPerforming>> map) {
+    return HabitHistory(
+      map.map(
+        (key, value) => MapEntry(
+          key,
+
+          /// Группируем выполнения по времени в рамках одной даты
+          groupBy<HabitPerforming, DateTime>(
+            value,
+            (hp) => hp.performDateTime.time(date: hp.performDateTime),
+          )
+              .entries
+
+              /// Создаем записи истории, суммируя значения выполнений
+              .map(
+                (e) => HabitHistoryEntry(
+                  time: e.key,
+                  value: e.value.fold(0, (sum, hp) => sum + hp.performValue),
+                ),
+              )
+              .toList(),
+        ),
+      ),
+    );
+  }
+
   /// Хайлаты истории - мапа,
   /// где ключ - дата, значение была ли выполнения привычка в эту дату
   Map<DateTime, double> get highlights =>

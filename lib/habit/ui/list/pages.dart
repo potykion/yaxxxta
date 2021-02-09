@@ -22,12 +22,13 @@ class HabitListPage extends HookWidget {
     useEffect(() {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         await context.read(habitControllerProvider).list();
-        context.read(habitPerformingController).load(DateTime.now());
+        await context
+            .read(habitPerformingController)
+            .loadDateHabitPerformings(DateTime.now());
       });
       return;
     }, []);
     var vms = useProvider(listHabitVMs);
-    var loading = useProvider(loadingState).state;
 
     var animatedListKey = useState(GlobalKey<AnimatedListState>());
     resetAnimatedList() {
@@ -44,16 +45,17 @@ class HabitListPage extends HookWidget {
             DateCarousel(
               change: (date) {
                 context.read(selectedDateProvider).state = date;
-                context.read(habitPerformingController).load(date);
+                context
+                    .read(habitPerformingController)
+                    .loadDateHabitPerformings(date);
                 resetAnimatedList();
               },
             ),
           ],
         ),
       ),
-      body: loading
-          ? CenteredCircularProgress()
-          : AnimatedList(
+      body:
+          AnimatedList(
               key: animatedListKey.value,
               initialItemCount: vms.length,
               itemBuilder: (context, index, animation) =>
@@ -111,12 +113,14 @@ class HabitListPage extends HookWidget {
           onRepeatIncrement: removed
               ? null
               : (incrementValue, progressStatus, [date]) async {
-                  context.read(habitPerformingController).create(
+                  context
+                      .read(habitPerformingController)
+                      .insert(HabitPerforming(
                         habitId: vm.id,
                         performValue: incrementValue,
                         performDateTime:
                             await _computePerformDateTime(context, date),
-                      );
+                      ));
 
                   var settings = context.read(settingsProvider).state;
                   var hideHabit = !settings.showCompleted &&

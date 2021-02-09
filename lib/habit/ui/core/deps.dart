@@ -22,27 +22,16 @@ Provider<BaseHabitPerformingRepo> habitPerformingRepoProvider = Provider(
 );
 
 /// Провайдер состояния загрузи чего-либо
-StateProvider<bool> loadingState = StateProvider((_) => true);
+StateProvider<bool> loadingState = StateProvider((_) => false);
 
 /// Провайдер привычек
 StateProvider<List<Habit>> habitsProvider = StateProvider((ref) => []);
 
-/// Провайдер выполнений привычек за сегодня
-StateProvider<List<HabitPerforming>> todayHabitPerformingsProvider =
-    StateProvider((ref) => <HabitPerforming>[]);
-
-/// Провайдер выполнений привычек за дату
-StateProvider<List<HabitPerforming>> dateHabitPerformingsProvider =
-    StateProvider((ref) => <HabitPerforming>[]);
-
 /// Провайдер контроллера выполнений привычек
-Provider<HabitPerformingController> habitPerformingController =
-    Provider((ref) => HabitPerformingController(
-          habitPerformingRepo: ref.watch(habitPerformingRepoProvider),
-          dateHabitPerformingsState: ref.watch(dateHabitPerformingsProvider),
-          todayHabitPerformingsState: ref.watch(todayHabitPerformingsProvider),
+StateNotifierProvider<HabitPerformingController> habitPerformingController =
+    StateNotifierProvider((ref) => HabitPerformingController(
+          repo: ref.watch(habitPerformingRepoProvider),
           settings: ref.watch(settingsProvider).state,
-          loadingState: ref.watch(loadingState),
         ));
 
 /// Провайдер контроллера привычек
@@ -60,11 +49,25 @@ Provider<HabitController> habitControllerProvider =
 StateProvider<DateTime> selectedDateProvider =
     StateProvider((ref) => DateTime.now().date());
 
+// List<HabitPerforming> getForDateTime(DateTime dateTime) =>
+//     getForDate(_dateFromDateTime(dateTime));
+//
+// List<HabitPerforming> getForDate(DateTime date) => state[date] ?? [];
+//
+// Map<DateTime, List<HabitPerforming>> getForHabit(String habitId) =>
+//     state.map((key, value) =>
+//         MapEntry(key, value.where((hp) => hp.habitId == habitId).toList()));
+
+var selectedDateHabitPerformings = Provider((ref) {
+  var selectedDate = ref.watch(selectedDateProvider).state;
+  var dateHabitPerformings = ref.watch(habitPerformingController.state);
+  return dateHabitPerformings[selectedDate] ?? [];
+});
+
 /// Провайдер ВМок для страницы со списком привычек
 Provider<List<HabitProgressVM>> listHabitVMs = Provider((ref) {
   var selectedDate = ref.watch(selectedDateProvider).state;
-  var habitPerformings =
-      ref.watch(habitPerformingController).getDateState(selectedDate).state;
+  var habitPerformings = ref.watch(selectedDateHabitPerformings);
   var groupedHabitPerformings =
       groupBy<HabitPerforming, String>(habitPerformings, (hp) => hp.habitId);
   var habits = ref.watch(habitsProvider).state;
@@ -96,27 +99,28 @@ Provider<Habit> selectedHabitProvider = Provider(
       ),
 );
 
-/// Провайдер выполнений выбранной привычки за сегодня
-Provider<List<HabitPerforming>> todaySelectedHabitPerformingsProvider =
-    Provider(
-  (ref) => ref
-      .watch(todayHabitPerformingsProvider)
-      .state
-      .where((hp) => hp.habitId == ref.watch(selectedHabitId).state)
-      .toList(),
-);
-
 /// Провайдер выполнений выбранной привычки за все время, кроме сегодня
 StateProvider<List<HabitPerforming>> notTodaySelectedHabitPerformingsProvider =
     StateProvider((ref) => []);
 
-/// Провадер выполнений выбранной привычки
-Provider<List<HabitPerforming>> selectedHabitPerformingsProvider = Provider(
-  (ref) => [
-    ...ref.watch(todaySelectedHabitPerformingsProvider),
-    ...ref.watch(notTodaySelectedHabitPerformingsProvider).state
-  ],
-);
+var selectedHabitPerformingsProvider = Provider((ref) {
+  var habitId = ref.watch(selectedHabitId);
+  return ref.watch(habitPerformingController.state).map((key, value) =>
+      MapEntry(key, value.where((hp) => hp.habitId == habitId).toList()));
+});
+
+var todayDateRange = Provider((ref) {
+  var settings = ref.watch(settingsProvider).state;
+
+  return DateRange.fromDateAndTimes(
+    DateTime.now(),
+    settings.dayStartTime,
+    settings.dayEndTime,
+  );
+});
+
+var todaySelectedHabitPerformingsProvider = Provider((ref) => ref
+    .watch(selectedHabitPerformingsProvider)[ref.watch(todayDateRange).date]);
 
 /// Повайдер вмки прогресса выбранной привычки
 Provider<HabitProgressVM> selectedHabitProgressProvider = Provider(
@@ -130,8 +134,7 @@ Provider<HabitProgressVM> selectedHabitProgressProvider = Provider(
 
 /// Провайдер истории выбранной привычки
 Provider<HabitHistory> selectedHabitHistoryProvider = Provider(
-  (ref) => HabitHistory.fromPerformings(
+  (ref) => HabitHistory.fromMap(
     ref.watch(selectedHabitPerformingsProvider),
-    ref.watch(settingsProvider).state,
   ),
 );

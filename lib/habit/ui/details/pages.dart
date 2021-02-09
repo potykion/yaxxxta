@@ -32,15 +32,9 @@ class HabitDetailsPage extends HookWidget {
   Widget build(BuildContext context) {
     useEffect(() {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
-        // fixme pizdec
-        context.read(notTodaySelectedHabitPerformingsProvider).state =
-            (await context
-                    .read(habitPerformingRepoProvider)
-                    .listByHabit(context.read(selectedHabitId).state))
-                .where((hp) => !context
-                    .read(todaySelectedHabitPerformingsProvider)
-                    .contains(hp))
-                .toList();
+        context
+            .read(habitPerformingController)
+            .loadSelectedHabitPerformings(context.read(selectedHabitId).state);
       });
       return;
     }, []);
@@ -162,11 +156,11 @@ class HabitDetailsPage extends HookWidget {
                   onRepeatIncrement: (incrementValue, _, [__]) => navigatorKey
                       .currentContext
                       .read(habitPerformingController)
-                      .create(
+                      .insert(HabitPerforming(
                         habitId: habit.id,
                         performValue: incrementValue,
                         performDateTime: DateTime.now(),
-                      ),
+                      )),
                   repeatTitle: "Сегодня",
                 ),
                 PaddedContainerCard(
