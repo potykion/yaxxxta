@@ -4,10 +4,10 @@ import 'package:hooks_riverpod/all.dart';
 import 'package:meta/meta.dart';
 
 import '../../../core/utils/dt.dart';
+import '../../../core/utils/list.dart';
 import '../../../settings/domain/models.dart';
 import '../../domain/db.dart';
 import '../../domain/models.dart';
-import '../../../core/utils/list.dart';
 
 /// Контроллер привычек
 class HabitController {
@@ -60,7 +60,7 @@ class HabitController {
 }
 
 class HabitPerformingController
-    extends StateNotifier<Map<DateTime, List<HabitPerforming>>> {
+    extends StateNotifier<AsyncValue<Map<DateTime, List<HabitPerforming>>>> {
   final Settings settings;
   final BaseHabitPerformingRepo repo;
 
@@ -68,10 +68,14 @@ class HabitPerformingController
     this.repo,
     this.settings,
     Map<DateTime, List<HabitPerforming>> state = const {},
-  }) : super(state);
+  }) : super(AsyncValue.data(state));
 
   Future<void> loadDateHabitPerformings(DateTime date) async {
     date = date.date();
+
+    var newState = _createNewState();
+
+    state = AsyncValue.loading();
 
     var dateRange = DateRange.fromDateAndTimes(
       date,
@@ -79,17 +83,18 @@ class HabitPerformingController
       settings.dayEndTime,
     );
 
-    var newState = Map.of(state);
     newState[date] = <HabitPerforming>[
       ...(newState[date] ?? []),
       ...await repo.list(dateRange.from, dateRange.to)
     ].distinctBy((item) => item.id);
 
-    state = newState;
-
+    state = AsyncValue.data(newState);
   }
 
   Future<void> loadSelectedHabitPerformings(String habitId) async {
+    var newState = _createNewState();
+
+    state = AsyncValue.loading();
 
     var performings = await repo.listByHabit(habitId);
 
@@ -102,7 +107,6 @@ class HabitPerformingController
       ).date,
     );
 
-    var newState = Map.of(state);
     for (var dateAndPerformings in datePerformings.entries) {
       newState[dateAndPerformings.key] = <HabitPerforming>[
         ...(newState[dateAndPerformings.key] ?? []),
@@ -110,9 +114,11 @@ class HabitPerformingController
       ].distinctBy((item) => item.id);
     }
 
-    state = newState;
-
+    state = AsyncValue.data(newState);
   }
+
+  Map<DateTime, List<HabitPerforming>> _createNewState() =>
+      Map.of(state.data?.value ?? <DateTime, List<HabitPerforming>>{});
 
   DateTime _dateFromDateTime(DateTime dateTime) =>
       DateRange.fromDateTimeAndTimes(
@@ -122,26 +128,27 @@ class HabitPerformingController
       ).date;
 
   Future<void> insert(HabitPerforming hp) async {
-    hp = hp.copyWith(id: await repo.insert(hp));
+    var newState = _createNewState();
 
-    var newState = Map.of(state);
+    hp = hp.copyWith(id: await repo.insert(hp));
     var date = _dateFromDateTime(hp.performDateTime);
     newState[date] = [...(newState[date] ?? []), hp];
 
-    state = newState;
+    state = AsyncValue.data(newState);
   }
 
   Future<void> deleteForDateTime(DateTime dateTime) async {
+    var newState = _createNewState();
+
     var dateRange = DateRange.withinMinute(dateTime);
     await repo.delete(dateRange.from, dateRange.to);
     var date = _dateFromDateTime(dateTime);
 
-    var newState = Map.of(state);
     newState[date] = (newState[date] ?? <HabitPerforming>[])
         .where((hp) => !dateRange.containsDateTime(hp.performDateTime))
         .toList();
 
-    state = newState;
+    state = AsyncValue.data(newState);
   }
 
   /// Обновление выполнения привычки: удаление привычек в пределах минуты +
@@ -150,7 +157,4 @@ class HabitPerformingController
     await deleteForDateTime(hp.performDateTime);
     await insert(hp);
   }
-
-
-
 }
