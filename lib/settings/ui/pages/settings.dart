@@ -28,12 +28,12 @@ class SettingsPage extends HookWidget {
       context.read(settingsRepoProvider).update(newSettings);
     }
 
-    return StreamBuilder<User>(
-      stream: FirebaseAuth.instance
-          .authStateChanges()
-          .map((user) => user != null ? User.fromFireBase(user) : null),
-      builder: (context, snapshot) => Scaffold(
-        body: ListView(
+    return Scaffold(
+      body: StreamBuilder<User>(
+        stream: FirebaseAuth.instance
+            .authStateChanges()
+            .map((user) => user != null ? User.fromFireBase(user) : null),
+        builder: (context, snapshot) => ListView(
           children: [
             PaddedContainerCard(
               padVerticalOnly: true,
@@ -121,8 +121,8 @@ class SettingsPage extends HookWidget {
             )
           ],
         ),
-        bottomNavigationBar: AppBottomNavigationBar(),
       ),
+      bottomNavigationBar: AppBottomNavigationBar(),
     );
   }
 }

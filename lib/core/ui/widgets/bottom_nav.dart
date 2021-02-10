@@ -21,6 +21,10 @@ class AppBottomNavigationBar extends StatelessWidget {
           label: "Календарь",
         ),
         BottomNavigationBarItem(
+          icon: Icon(Icons.list),
+          label: "Привычки",
+        ),
+        BottomNavigationBarItem(
           icon: Icon(Icons.settings),
           label: "Настройки",
         ),

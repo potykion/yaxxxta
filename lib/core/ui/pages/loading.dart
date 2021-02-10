@@ -50,7 +50,7 @@ class LoadingPage extends HookWidget {
 
         await context.read(settingsControllerProvider).loadSettings();
 
-        Navigator.pushReplacementNamed(context, Routes.list);
+        Navigator.pushReplacementNamed(context, Routes.calendar);
       });
       return;
     }, []);
