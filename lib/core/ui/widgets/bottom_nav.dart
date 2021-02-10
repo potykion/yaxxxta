@@ -1,5 +1,7 @@
+import '../../utils/list.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:tuple/tuple.dart';
 
 import '../../../routes.dart';
 import '../../../theme.dart';
@@ -8,39 +10,77 @@ import '../../../theme.dart';
 class AppBottomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var currentIndex = bottomNavRoutes.entries
-        .firstWhere((e) => e.value == ModalRoute.of(context).settings.name)
-        .key;
+    var currentRoute = ModalRoute.of(context).settings.name;
 
-    return BottomNavigationBar(
-      selectedItemColor: CustomColors.almostBlack,
-      unselectedItemColor: CustomColors.grey,
-      items: [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.today),
-          label: "Календарь",
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.list),
-          label: "Привычки",
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.settings),
-          label: "Настройки",
-        ),
-      ],
-      currentIndex: currentIndex,
-      onTap: (index) => Navigator.pushReplacement<dynamic, dynamic>(
-        context,
-        PageTransition<dynamic>(
-          child: routes[bottomNavRoutes[index]](context),
-          type: currentIndex < index
-              ? PageTransitionType.rightToLeftJoined
-              : PageTransitionType.leftToRightJoined,
-          childCurrent: routes[bottomNavRoutes[currentIndex]](context),
-          settings: RouteSettings(name: bottomNavRoutes[index]),
+    var currentIndex =
+        bottomNavRoutes.entries.firstWhere((e) => e.value == currentRoute).key;
+
+    return BottomAppBar(
+      child: Container(
+        height: 70,
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: Row(
+            children: [
+              Tuple2<String, IconData>("Календарь", Icons.today),
+              Tuple2<String, IconData>("Привычки", Icons.list),
+              Tuple2<String, IconData>("Настройки", Icons.settings),
+            ]
+                .mapWithIndex(
+                  (textAndIcon, index) => AppBottomNavBarItem(
+                      text: textAndIcon.item1,
+                      icon: textAndIcon.item2,
+                      selected: bottomNavRoutes[index] == currentRoute,
+                      onTap: () => Navigator.pushReplacement<dynamic, dynamic>(
+                            context,
+                            PageTransition<dynamic>(
+                              child: routes[bottomNavRoutes[index]](context),
+                              type: currentIndex < index
+                                  ? PageTransitionType.rightToLeftJoined
+                                  : PageTransitionType.leftToRightJoined,
+                              childCurrent:
+                                  routes[bottomNavRoutes[currentIndex]](
+                                      context),
+                              settings:
+                                  RouteSettings(name: bottomNavRoutes[index]),
+                            ),
+                          )),
+                )
+                .toList(),
+          ),
         ),
       ),
     );
   }
+}
+
+class AppBottomNavBarItem extends StatelessWidget {
+  final IconData icon;
+  final String text;
+  final bool selected;
+  final void Function() onTap;
+
+  const AppBottomNavBarItem({
+    Key key,
+    this.icon,
+    this.text,
+    this.selected = false,
+    this.onTap,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => GestureDetector(
+        onTap: onTap,
+        child: Container(
+          decoration: BoxDecoration(
+            color: selected ? CustomColors.yellow : Colors.transparent,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          width: 90,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [Icon(icon), Text(text)],
+          ),
+        ),
+      );
 }
