@@ -6,6 +6,7 @@ extension ListExtensions<E> on List<E> {
     return this..retainWhere((item) => uniqueByValues.remove(by(item)));
   }
 
+  /// Применяет функцию с индексом
   Iterable<T> mapWithIndex<T>(T f(E item, int index)) =>
       asMap().entries.map((e) => f(e.value, e.key));
 }

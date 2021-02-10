@@ -1,10 +1,10 @@
-import '../../utils/list.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../../routes.dart';
 import '../../../theme.dart';
+import '../../utils/list.dart';
 
 /// Боттом нав барчик
 class AppBottomNavigationBar extends StatelessWidget {
@@ -54,12 +54,21 @@ class AppBottomNavigationBar extends StatelessWidget {
   }
 }
 
+/// Кнопочка в боттом апп баре
 class AppBottomNavBarItem extends StatelessWidget {
+  /// Иконка
   final IconData icon;
+
+  /// Текст
   final String text;
+
+  /// Выбрана ли кнопка
   final bool selected;
+
+  /// Событие нажатия
   final void Function() onTap;
 
+  /// Кнопочка в боттом апп баре
   const AppBottomNavBarItem({
     Key key,
     this.icon,
