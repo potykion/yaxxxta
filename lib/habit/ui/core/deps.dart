@@ -81,24 +81,9 @@ Provider<AsyncValue<List<HabitProgressVM>>> listHabitVMs = Provider((ref) {
 // HABIT DETAILS PAGE
 ////////////////////////////////////////////////////////////////////////////////
 
-StateProvider<String> selectedHabitId = StateProvider((ref) => null);
+StateProvider<String> selectedHabitIdProvider = StateProvider((ref) => null);
 
-/// Провайдер выбранной привычки
-Provider<Habit> selectedHabitProvider = Provider(
-  (ref) => ref.watch(habitsProvider).state.firstWhere(
-        (h) => h.id == ref.watch(selectedHabitId).state,
-        orElse: () => null,
-      ),
-);
-
-var selectedHabitPerformingsProvider = Provider((ref) {
-  var habitId = ref.watch(selectedHabitId);
-  return ref.watch(habitPerformingController.state).whenData((value) =>
-      value.map((key, value) =>
-          MapEntry(key, value.where((hp) => hp.habitId == habitId).toList())));
-});
-
-var todayDateRange = Provider((ref) {
+Provider<DateRange> todayDateRange = Provider((ref) {
   var settings = ref.watch(settingsProvider).state;
 
   return DateRange.fromDateAndTimes(
@@ -108,25 +93,33 @@ var todayDateRange = Provider((ref) {
   );
 });
 
-var todaySelectedHabitPerformingsProvider = Provider((ref) => ref
-    .watch(selectedHabitPerformingsProvider)
-    .whenData((value) => value[ref.watch(todayDateRange).date]));
+Provider<AsyncValue<HabitDetailsPageVM>> habitDetailsPageVMProvider = Provider(
+  (ref) => ref.watch(habitPerformingController.state).whenData((performings) {
+    var selectedHabitId = ref.watch(selectedHabitIdProvider).state;
+    var selectedHabit = ref.watch(habitsProvider).state.firstWhere(
+          (h) => h.id == selectedHabitId,
+          orElse: () => null,
+        );
+    var selectedHabitPerformings = performings.map(
+      (key, value) => MapEntry(
+        key,
+        value.where((hp) => hp.habitId == selectedHabitId).toList(),
+      ),
+    );
 
-/// Повайдер вмки прогресса выбранной привычки
-Provider<AsyncValue<HabitProgressVM>> selectedHabitProgressProvider = Provider(
-  (ref) => ref.watch(selectedHabitProvider) != null
-      ? ref
-          .watch(todaySelectedHabitPerformingsProvider)
-          .whenData((value) => HabitProgressVM.build(
-                ref.watch(selectedHabitProvider),
-                value,
-              ))
-      : null,
-);
+    var todaySelectedHabitPerformings =
+        selectedHabitPerformings[ref.watch(todayDateRange).date];
+    var progress = HabitProgressVM.build(
+      selectedHabit,
+      todaySelectedHabitPerformings,
+    );
 
-/// Провайдер истории выбранной привычки
-Provider<AsyncValue<HabitHistory>> selectedHabitHistoryProvider = Provider(
-  (ref) => ref
-      .watch(selectedHabitPerformingsProvider)
-      .whenData((value) => HabitHistory.fromMap(value)),
+    var history = HabitHistory.fromMap(selectedHabitPerformings);
+
+    return HabitDetailsPageVM(
+      habit: selectedHabit,
+      progress: progress,
+      history: history,
+    );
+  }),
 );

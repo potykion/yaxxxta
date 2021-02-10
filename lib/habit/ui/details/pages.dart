@@ -32,22 +32,25 @@ class HabitDetailsPage extends HookWidget {
   Widget build(BuildContext context) {
     useEffect(() {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
-        context
-            .read(habitPerformingController)
-            .loadSelectedHabitPerformings(context.read(selectedHabitId).state);
+        context.read(habitPerformingController).loadSelectedHabitPerformings(
+            context.read(selectedHabitIdProvider).state);
       });
       return;
     }, []);
 
-    var habit = useProvider(selectedHabitProvider);
+    var vmAsyncValue = useProvider(habitDetailsPageVMProvider);
     var historyDateState = useState(DateTime.now().date());
-    var progress = useProvider(selectedHabitProgressProvider);
-    var history = useProvider(selectedHabitHistoryProvider);
 
     return Scaffold(
-      key: _scaffold,
-      body: habit != null
-          ? ListView(
+        key: _scaffold,
+        body: vmAsyncValue.maybeMap(
+          data: (maybeVM) {
+            var vm = maybeVM.value;
+            var habit = vm.habit;
+            var progress = vm.progress;
+            var history = vm.history;
+
+            return ListView(
               children: [
                 // todo отдельным компонентом + в апп-бар перенести
                 Padding(
@@ -57,7 +60,7 @@ class HabitDetailsPage extends HookWidget {
                       IconButton(
                           icon: Icon(Icons.arrow_back),
                           onPressed: () => Navigator.of(context).pop()),
-                      Expanded(child: BiggestText(text: habit.title)),
+                      Expanded(child: BiggestText(text: vm.habit.title)),
                       IconButton(
                           icon: Icon(Icons.more_vert),
                           onPressed: () async {
@@ -150,126 +153,111 @@ class HabitDetailsPage extends HookWidget {
                     ],
                   ),
                 ),
-                progress.maybeMap(
-                  data: (value) => HabitProgressControl(
-                    key: Key("HabitDetailsPage_HabitRepeatControl"),
-                    vm: value.value,
-                    onRepeatIncrement: (incrementValue, _, [__]) => navigatorKey
-                        .currentContext
-                        .read(habitPerformingController)
-                        .insert(HabitPerforming(
-                          habitId: habit.id,
-                          performValue: incrementValue,
-                          performDateTime: DateTime.now(),
-                        )),
-                    repeatTitle: "Сегодня",
-                  ),
-                  orElse: () => CircularProgressIndicator(
-                    valueColor:
-                        AlwaysStoppedAnimation<Color>(CustomColors.almostBlack),
-                  ),
+                HabitProgressControl(
+                  key: Key("HabitDetailsPage_HabitRepeatControl"),
+                  vm: progress,
+                  onRepeatIncrement: (incrementValue, _, [__]) => navigatorKey
+                      .currentContext
+                      .read(habitPerformingController)
+                      .insert(HabitPerforming(
+                        habitId: habit.id,
+                        performValue: incrementValue,
+                        performDateTime: DateTime.now(),
+                      )),
+                  repeatTitle: "Сегодня",
                 ),
-                PaddedContainerCard(
-                  children: [
-                    Row(
-                      children: [
-                        BiggerText(text: "История"),
-                        Spacer(),
-                        IconButton(
-                          icon: Icon(Icons.add),
-                          onPressed: () async {
-                            var habitPerforming =
-                                await showModalBottomSheet<HabitPerforming>(
-                              context: context,
-                              builder: (context) => HabitPerformingFormModal(
-                                initialHabitPerforming:
-                                    HabitPerforming.blank(habit.id),
-                                habitType: habit.type,
-                              ),
-                            );
-                            if (habitPerforming != null) {
-                              await context
-                                  .read(habitPerformingController)
-                                  .insert(habitPerforming);
-                            }
-                          },
+                PaddedContainerCard(children: [
+                  Row(
+                    children: [
+                      BiggerText(text: "История"),
+                      Spacer(),
+                      IconButton(
+                        icon: Icon(Icons.add),
+                        onPressed: () async {
+                          var habitPerforming =
+                              await showModalBottomSheet<HabitPerforming>(
+                            context: context,
+                            builder: (context) => HabitPerformingFormModal(
+                              initialHabitPerforming:
+                                  HabitPerforming.blank(habit.id),
+                              habitType: habit.type,
+                            ),
+                          );
+                          if (habitPerforming != null) {
+                            await context
+                                .read(habitPerformingController)
+                                .insert(habitPerforming);
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 5),
+                  DateCarousel(
+                    change: (d) => historyDateState.value = d,
+                    highlights: history.highlights,
+                  ),
+                  if (history.history.containsKey(historyDateState.value))
+                    for (var e in history.history[historyDateState.value])
+                      Slidable(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 15,
+                          ),
+                          child: Row(children: [
+                            SmallerText(
+                              text: formatTime(e.time),
+                              dark: true,
+                            ),
+                            Spacer(),
+                            SmallerText(
+                              text: "+ ${e.format(habit.type)}",
+                              dark: true,
+                            )
+                          ]),
                         ),
-                      ],
-                    ),
-                    SizedBox(height: 5),
-                    ...history
-                        .whenData((h) => [
-                              DateCarousel(
-                                change: (d) => historyDateState.value = d,
-                                highlights: h.highlights,
-                              ),
-                              if (h.history.containsKey(historyDateState.value))
-                                for (var e in h.history[historyDateState.value])
-                                  Slidable(
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 10,
-                                        vertical: 15,
-                                      ),
-                                      child: Row(children: [
-                                        SmallerText(
-                                          text: formatTime(e.time),
-                                          dark: true,
-                                        ),
-                                        Spacer(),
-                                        SmallerText(
-                                          text: "+ ${e.format(habit.type)}",
-                                          dark: true,
-                                        )
-                                      ]),
-                                    ),
-                                    secondaryActions: [
-                                      IconSlideAction(
-                                        caption: "Изменить",
-                                        color: CustomColors.orange,
-                                        icon: Icons.edit,
-                                        onTap: () async {
-                                          var habitPerforming =
-                                              await showModalBottomSheet<
-                                                  HabitPerforming>(
-                                            context: context,
-                                            builder: (context) =>
-                                                HabitPerformingFormModal(
-                                              initialHabitPerforming:
-                                                  HabitPerforming(
-                                                habitId: habit.id,
-                                                performValue: e.value,
-                                                performDateTime: e.time,
-                                              ),
-                                              habitType: habit.type,
-                                            ),
-                                          );
-                                          if (habitPerforming != null) {
-                                            await context
-                                                .read(habitPerformingController)
-                                                .update(habitPerforming);
-                                          }
-                                        },
-                                      ),
-                                      IconSlideAction(
-                                        caption: "Удалить",
-                                        color: CustomColors.red,
-                                        icon: Icons.delete,
-                                        onTap: () => context
-                                            .read(habitPerformingController)
-                                            .deleteForDateTime(e.time),
-                                      ),
-                                    ],
-                                    actionPane: SlidableDrawerActionPane(),
-                                  )
-                            ])
-                        .data
-                        .value
-                  ],
-                ),
+                        secondaryActions: [
+                          IconSlideAction(
+                            caption: "Изменить",
+                            color: CustomColors.orange,
+                            icon: Icons.edit,
+                            onTap: () async {
+                              var habitPerforming =
+                                  await showModalBottomSheet<HabitPerforming>(
+                                context: context,
+                                builder: (context) => HabitPerformingFormModal(
+                                  initialHabitPerforming: HabitPerforming(
+                                    habitId: habit.id,
+                                    performValue: e.value,
+                                    performDateTime: e.time,
+                                  ),
+                                  habitType: habit.type,
+                                ),
+                              );
+                              if (habitPerforming != null) {
+                                await context
+                                    .read(habitPerformingController)
+                                    .update(habitPerforming);
+                              }
+                            },
+                          ),
+                          IconSlideAction(
+                            caption: "Удалить",
+                            color: CustomColors.red,
+                            icon: Icons.delete,
+                            onTap: () => context
+                                .read(habitPerformingController)
+                                .deleteForDateTime(e.time),
+                          ),
+                        ],
+                        actionPane: SlidableDrawerActionPane(),
+                      )
+                ])
               ],
-            )
-          : CenteredCircularProgress(),
-    );
+            );
+          },
+          orElse: () => CenteredCircularProgress(),
+        ));
   }
 }

@@ -1,10 +1,23 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:yaxxxta/habit/ui/core/view_models.dart';
 
 import '../../../core/utils/dt.dart';
 import '../../../settings/domain/models.dart';
 import '../../domain/models.dart';
 
 part 'view_models.freezed.dart';
+
+class HabitDetailsPageVM {
+  final Habit habit;
+  final HabitProgressVM progress;
+  final HabitHistory history;
+
+  HabitDetailsPageVM({
+    @required this.habit,
+    @required this.progress,
+    @required this.history,
+  });
+}
 
 /// История привычки
 class HabitHistory {

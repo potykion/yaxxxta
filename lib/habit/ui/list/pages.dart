@@ -28,7 +28,7 @@ class HabitListPage extends HookWidget {
       });
       return;
     }, []);
-    var vms = useProvider(listHabitVMs);
+    var vmsAsyncValue = useProvider(listHabitVMs);
 
     var animatedListKey = useState(GlobalKey<AnimatedListState>());
     resetAnimatedList() {
@@ -54,27 +54,32 @@ class HabitListPage extends HookWidget {
           ],
         ),
       ),
-      body:
-          AnimatedList(
-              key: animatedListKey.value,
-              initialItemCount: vms.length,
-              itemBuilder: (context, index, animation) =>
-                  _buildHabitRepeatControl(
-                      context, index, vms[index], animation),
-            ),
+      body: vmsAsyncValue.maybeMap(
+        data: (vmValue) {
+          var vms = vmValue.value;
+
+          return AnimatedList(
+            key: animatedListKey.value,
+            initialItemCount: vms.length,
+            itemBuilder: (context, index, animation) =>
+                _buildHabitRepeatControl(context, index, vms[index], animation),
+          );
+        },
+        orElse: () => CenteredCircularProgress(),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add, size: 50),
         onPressed: () async {
           var habit =
               (await Navigator.of(context).pushNamed(Routes.form)) as Habit;
-          if (habit != null &&
-              habit.matchDate(context.read(selectedDateProvider).state)) {
-            animatedListKey.value.currentState.insertItem(
-              vms.length,
-              duration: Duration(milliseconds: 500),
-            );
-          }
+          // if (habit != null &&
+          //     habit.matchDate(context.read(selectedDateProvider).state)) {
+          //   animatedListKey.value.currentState.insertItem(
+          //     vms.length,
+          //     duration: Duration(milliseconds: 500),
+          //   );
+          // }
         },
       ),
       bottomNavigationBar: AppBottomNavigationBar(),
@@ -90,7 +95,7 @@ class HabitListPage extends HookWidget {
         onTap: removed
             ? null
             : () async {
-                context.read(selectedHabitId).state = vm.id;
+                context.read(selectedHabitIdProvider).state = vm.id;
                 var deleted = await Navigator.of(context)
                         .pushNamed(Routes.details) as bool ??
                     false;
