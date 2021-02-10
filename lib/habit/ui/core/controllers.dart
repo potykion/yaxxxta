@@ -59,17 +59,23 @@ class HabitController {
   }
 }
 
+/// Контроллер выполнений привычек
 class HabitPerformingController
     extends StateNotifier<AsyncValue<Map<DateTime, List<HabitPerforming>>>> {
+  /// Настроечки
   final Settings settings;
+
+  /// Репо выполнений привычек
   final BaseHabitPerformingRepo repo;
 
+  /// Контроллер выполнений привычек
   HabitPerformingController({
     this.repo,
     this.settings,
     Map<DateTime, List<HabitPerforming>> state = const {},
   }) : super(AsyncValue.data(state));
 
+  /// Грузит выполнения за дату
   Future<void> loadDateHabitPerformings(DateTime date) async {
     date = date.date();
 
@@ -91,6 +97,7 @@ class HabitPerformingController
     state = AsyncValue.data(newState);
   }
 
+  /// Грузит выполнения для определенной привычки
   Future<void> loadSelectedHabitPerformings(String habitId) async {
     var newState = _createNewState();
 
@@ -127,6 +134,7 @@ class HabitPerformingController
         settings.dayEndTime,
       ).date;
 
+  /// Вставка выполнения
   Future<void> insert(HabitPerforming hp) async {
     var newState = _createNewState();
 
@@ -137,6 +145,9 @@ class HabitPerformingController
     state = AsyncValue.data(newState);
   }
 
+  /// Удаляет выполнения за дату и время в пределах минуты
+  /// Напр. для 2020-01-01 10:00 удаляет привычки в промежутке:
+  /// 2020-01-01 10:00:00, 2020-01-01 10:59
   Future<void> deleteForDateTime(DateTime dateTime) async {
     var newState = _createNewState();
 

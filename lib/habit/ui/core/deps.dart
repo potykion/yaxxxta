@@ -83,6 +83,7 @@ Provider<AsyncValue<List<HabitProgressVM>>> listHabitVMs = Provider((ref) {
 
 StateProvider<String> selectedHabitIdProvider = StateProvider((ref) => null);
 
+/// Дейтренж текущего дня
 Provider<DateRange> todayDateRange = Provider((ref) {
   var settings = ref.watch(settingsProvider).state;
 
@@ -93,6 +94,7 @@ Provider<DateRange> todayDateRange = Provider((ref) {
   );
 });
 
+/// Провайдер ВМ страницы деталей привычки
 Provider<AsyncValue<HabitDetailsPageVM>> habitDetailsPageVMProvider = Provider(
   (ref) => ref.watch(habitPerformingController.state).whenData((performings) {
     var selectedHabitId = ref.watch(selectedHabitIdProvider).state;

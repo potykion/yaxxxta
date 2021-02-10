@@ -71,8 +71,8 @@ class HabitListPage extends HookWidget {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add, size: 50),
         onPressed: () async {
-          var habit =
-              (await Navigator.of(context).pushNamed(Routes.form)) as Habit;
+          // var habit =
+          (await Navigator.of(context).pushNamed(Routes.form)) as Habit;
           // if (habit != null &&
           //     habit.matchDate(context.read(selectedDateProvider).state)) {
           //   animatedListKey.value.currentState.insertItem(
