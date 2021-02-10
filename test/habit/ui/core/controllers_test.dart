@@ -31,7 +31,7 @@ void main() {
       await controller.loadDateHabitPerformings(DateTime(2020, 1, 1));
 
       expect(
-        controller.debugState,
+        controller.debugState.data.value,
         {
           DateTime(2020, 1, 1): [hp]
         },
@@ -63,7 +63,7 @@ void main() {
       await controller.loadDateHabitPerformings(DateTime(2020, 1, 1));
 
       expect(
-        controller.debugState,
+        controller.debugState.data.value,
         {
           DateTime(2020, 1, 1): [hp2, hp1]
         },
@@ -95,7 +95,7 @@ void main() {
       await controller.loadDateHabitPerformings(DateTime(2020, 1, 1));
 
       expect(
-        controller.debugState,
+        controller.debugState.data.value,
         {
           DateTime(2020, 1, 1): [hp2]
         },
@@ -124,7 +124,7 @@ void main() {
       await controller.loadSelectedHabitPerformings(hp1.habitId);
 
       expect(
-        controller.debugState,
+        controller.debugState.data.value,
         {
           DateTime(2020, 1, 1): [hp1],
           DateTime(2020, 1, 2): [hp2],
@@ -147,7 +147,7 @@ void main() {
       await controller.insert(hp1);
 
       expect(
-        controller.debugState,
+        controller.debugState.data.value,
         {
           DateTime(2020, 1, 1): [hp1.copyWith(id: "hp1")],
         },
@@ -171,7 +171,7 @@ void main() {
       await controller.deleteForDateTime(hp1.performDateTime);
 
       expect(
-        controller.debugState,
+        controller.debugState.data.value,
         {
           DateTime(2020, 1, 1): <HabitPerforming>[],
         },
@@ -196,7 +196,7 @@ void main() {
       await controller.update(hp1);
 
       expect(
-        controller.debugState,
+        controller.debugState.data.value,
         {
           DateTime(2020, 1, 1): [hp1.copyWith(id: "hp1")],
         },
