@@ -159,9 +159,12 @@ class HabitPerformingFormModal extends HookWidget {
   }
 }
 
+/// Чипы, описывающие свойства привычки: тип, периодичность, время выполнения
 class HabitChips extends StatelessWidget {
+  /// Привычка
   final Habit habit;
 
+  /// Чипы, описывающие свойства привычки: тип, периодичность, время выполнения
   const HabitChips({Key key, this.habit}) : super(key: key);
 
   @override

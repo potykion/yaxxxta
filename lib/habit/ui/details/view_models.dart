@@ -61,6 +61,7 @@ class HabitHistory {
     );
   }
 
+  /// Получает историю выполнения привычек за дату
   List<HabitHistoryEntry> getForDate(DateTime date) =>
       history[date] ?? <HabitHistoryEntry>[];
 

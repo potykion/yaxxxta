@@ -40,7 +40,7 @@ class HabitDetailsPage extends HookWidget {
 
         return Scaffold(
           key: _scaffold,
-          appBar: RegularAppBar(
+          appBar: buildAppBar(
             child: Row(
               children: [
                 BackButton(),

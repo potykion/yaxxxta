@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:yaxxxta/core/utils/dt.dart';
-import 'package:yaxxxta/habit/ui/core/deps.dart';
-import 'package:yaxxxta/habit/ui/core/widgets.dart';
-import 'package:yaxxxta/habit/ui/details/view_models.dart';
 
 import '../../../core/ui/widgets/text.dart';
+import '../../../core/utils/dt.dart';
 import '../../../routes.dart';
 import '../../../theme.dart';
 import '../../domain/models.dart';
+import '../core/deps.dart';
+import '../core/widgets.dart';
+import 'view_models.dart';
 
 /// Тип действия над привычкой
 enum HabitActionType {
@@ -20,9 +20,12 @@ enum HabitActionType {
   delete
 }
 
+/// Кнопочка, открывающая меню с действиями над привычкой
 class HabitActionsButton extends StatelessWidget {
+  /// Привычка
   final Habit habit;
 
+  /// Кнопочка, открывающая меню с действиями над привычкой
   const HabitActionsButton({Key key, this.habit}) : super(key: key);
 
   @override
@@ -84,12 +87,20 @@ class HabitActionsButton extends StatelessWidget {
       });
 }
 
+/// Инфа о выполнении выпривычки + действия над ней
 class HabitHistoryEntrySlidable extends StatelessWidget {
+  /// Запись о выполнении привычки
   final HabitHistoryEntry historyEntry;
+
+  /// Привычка
   final Habit habit;
 
-  const HabitHistoryEntrySlidable({Key key, this.historyEntry, this.habit})
-      : super(key: key);
+  /// Инфа о выполнении выпривычки + действия над ней
+  const HabitHistoryEntrySlidable({
+    Key key,
+    this.historyEntry,
+    this.habit,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -149,30 +160,28 @@ class HabitHistoryEntrySlidable extends StatelessWidget {
   }
 }
 
-
+/// Кнопка, открывающая форму создания выполнения привычки
 class CreateHabitPerformingButton extends StatelessWidget {
+  /// Привычка
   final Habit habit;
 
+  /// Кнопка, открывающая форму создания выполнения привычки
   const CreateHabitPerformingButton({Key key, this.habit}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return                     IconButton(
+    return IconButton(
       icon: Icon(Icons.add),
       onPressed: () async {
-        var habitPerforming =
-        await showModalBottomSheet<HabitPerforming>(
+        var habitPerforming = await showModalBottomSheet<HabitPerforming>(
           context: context,
           builder: (context) => HabitPerformingFormModal(
-            initialHabitPerforming:
-            HabitPerforming.blank(habit.id),
+            initialHabitPerforming: HabitPerforming.blank(habit.id),
             habitType: habit.type,
           ),
         );
         if (habitPerforming != null) {
-          await context
-              .read(habitPerformingController)
-              .insert(habitPerforming);
+          await context.read(habitPerformingController).insert(habitPerforming);
         }
       },
     );

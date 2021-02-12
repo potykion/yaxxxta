@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
-import 'package:yaxxxta/core/ui/widgets/card.dart';
-import 'package:yaxxxta/core/ui/widgets/padding.dart';
-import 'package:yaxxxta/core/ui/widgets/text.dart';
-import 'package:yaxxxta/core/utils/dt.dart';
-import 'package:yaxxxta/habit/ui/core/widgets.dart';
 
 import '../../../core/ui/widgets/bottom_nav.dart';
+import '../../../core/ui/widgets/card.dart';
 import '../../../core/ui/widgets/circular_progress.dart';
+import '../../../core/ui/widgets/text.dart';
 import '../../../routes.dart';
-import '../../../theme.dart';
 import '../core/deps.dart';
-import '../../domain/models.dart';
+import '../core/widgets.dart';
 
 /// Страница со списком привычек
 class HabitListPage extends HookWidget {
