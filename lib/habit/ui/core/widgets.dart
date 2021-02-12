@@ -9,6 +9,7 @@ import '../../../core/ui/widgets/padding.dart';
 import '../../../core/ui/widgets/text.dart';
 import '../../../core/ui/widgets/time.dart';
 import '../../../core/utils/dt.dart';
+import '../../../theme.dart';
 import '../../domain/models.dart';
 import 'view_models.dart';
 
@@ -153,6 +154,35 @@ class HabitPerformingFormModal extends HookWidget {
             onTap: () => Navigator.of(context).pop(vm),
           ),
         ),
+      ],
+    );
+  }
+}
+
+class HabitChips extends StatelessWidget {
+  final Habit habit;
+
+  const HabitChips({Key key, this.habit}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: 5,
+      children: [
+        Chip(
+          label: Text(habit.type.verbose()),
+          backgroundColor: CustomColors.blue,
+        ),
+        Chip(
+          label: Text(habit.periodType.verbose()),
+          backgroundColor: CustomColors.red,
+        ),
+        if (habit.performTime != null)
+          Chip(
+            avatar: Icon(Icons.access_time),
+            label: Text(formatTime(habit.performTime)),
+            backgroundColor: CustomColors.purple,
+          ),
       ],
     );
   }

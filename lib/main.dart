@@ -15,5 +15,6 @@ class MyApp extends StatelessWidget {
         routes: routes,
         initialRoute: Routes.loading,
         theme: buildTheme(context),
+        debugShowCheckedModeBanner: false,
       );
 }

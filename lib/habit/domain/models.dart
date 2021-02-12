@@ -277,10 +277,15 @@ abstract class HabitPerforming with _$HabitPerforming {
   }) = _HabitPerforming;
 
   /// Создает пустышку
-  factory HabitPerforming.blank(String habitId) => HabitPerforming(
+  factory HabitPerforming.blank(
+    String habitId, {
+    double performValue = 1,
+    DateTime performDateTime,
+  }) =>
+      HabitPerforming(
         habitId: habitId,
-        performValue: 1,
-        performDateTime: DateTime.now(),
+        performValue: performValue,
+        performDateTime: performDateTime ?? DateTime.now(),
       );
 
   /// Создает выполнение привычки из словаря

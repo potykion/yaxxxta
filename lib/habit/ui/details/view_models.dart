@@ -61,6 +61,9 @@ class HabitHistory {
     );
   }
 
+  List<HabitHistoryEntry> getForDate(DateTime date) =>
+      history[date] ?? <HabitHistoryEntry>[];
+
   /// Хайлаты истории - мапа,
   /// где ключ - дата, значение была ли выполнения привычка в эту дату
   Map<DateTime, double> get highlights =>

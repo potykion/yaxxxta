@@ -5,6 +5,7 @@ import 'package:yaxxxta/core/ui/widgets/card.dart';
 import 'package:yaxxxta/core/ui/widgets/padding.dart';
 import 'package:yaxxxta/core/ui/widgets/text.dart';
 import 'package:yaxxxta/core/utils/dt.dart';
+import 'package:yaxxxta/habit/ui/core/widgets.dart';
 
 import '../../../core/ui/widgets/bottom_nav.dart';
 import '../../../core/ui/widgets/circular_progress.dart';
@@ -41,25 +42,7 @@ class HabitListPage extends HookWidget {
                   children: [
                     ListTile(
                       title: BiggerText(text: habit.title),
-                      subtitle: Wrap(
-                        spacing: 5,
-                        children: [
-                          Chip(
-                            label: Text(habit.type.verbose()),
-                            backgroundColor: CustomColors.blue,
-                          ),
-                          Chip(
-                            label: Text(habit.periodType.verbose()),
-                            backgroundColor: CustomColors.red,
-                          ),
-                          if (habit.performTime != null)
-                            Chip(
-                              avatar: Icon(Icons.access_time),
-                              label: Text(formatTime(habit.performTime)),
-                              backgroundColor: CustomColors.purple,
-                            ),
-                        ],
-                      ),
+                      subtitle: HabitChips(habit: habit),
                     ),
                   ],
                 ),
