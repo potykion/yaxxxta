@@ -10,12 +10,9 @@ import '../../domain/db.dart';
 import '../../domain/models.dart';
 
 /// Контроллер привычек
-class HabitController {
+class HabitController extends StateNotifier<AsyncValue<List<Habit>>> {
   /// Репо привычек
   final BaseHabitRepo habitRepo;
-
-  /// Стейт привычек
-  final StateController<List<Habit>> habitState;
 
   /// Инфа о ведре
   final AndroidDeviceInfo deviceInfo;
@@ -23,19 +20,22 @@ class HabitController {
   /// Контроллер привычек
   HabitController({
     @required this.habitRepo,
-    @required this.habitState,
     @required this.deviceInfo,
-  });
+    List<Habit> state = const [],
+  }) : super(AsyncValue.data(state));
 
   /// Грузит список привычек и сеттит в стейт
   Future<void> list() async {
-    habitState.state = await habitRepo.list();
+    state = AsyncValue.loading();
+    state = AsyncValue.data(await habitRepo.list());
   }
 
   /// Удаляет привычку
   Future<void> delete(String habitId) async {
     await habitRepo.delete(habitId);
-    habitState.state = [...habitState.state.where((h) => h.id != habitId)];
+    state = AsyncValue.data([
+      ...state.data.value.where((h) => h.id != habitId),
+    ]);
   }
 
   /// Создает или обновляет привычку в зависимости от наличия айди
@@ -46,13 +46,13 @@ class HabitController {
 
     if (habit.isUpdate) {
       await habitRepo.update(habit);
-      habitState.state = [
-        for (var h in habitState.state)
+      state = AsyncValue.data([
+        for (var h in state.data.value)
           if (h.id == habit.id) habit else h
-      ];
+      ]);
     } else {
       habit = habit.copyWith(id: await habitRepo.insert(habit));
-      habitState.state = [...habitState.state, habit];
+      state = AsyncValue.data([...state.data.value, habit]);
     }
 
     return habit;

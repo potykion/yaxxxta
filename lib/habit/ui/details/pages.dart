@@ -52,7 +52,7 @@ class HabitDetailsPage extends HookWidget {
 
             return ListView(
               children: [
-                // todo отдельным компонентом + в апп-бар перенести
+                // TODO TODO TODO TODO TODO TODO отдельным компонентом + в апп-бар перенести
                 Padding(
                   padding: const EdgeInsets.only(left: 10),
                   child: Row(
