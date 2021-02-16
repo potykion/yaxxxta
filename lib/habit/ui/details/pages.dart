@@ -90,7 +90,7 @@ class HabitDetailsPage extends HookWidget {
             .currentContext
             .read(habitPerformingController)
             .insert(HabitPerforming.blank(
-              habit.id,
+              habitId: habit.id,
               performValue: incrementValue,
             )),
         repeatTitle: "Сегодня",

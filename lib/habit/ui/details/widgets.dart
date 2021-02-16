@@ -176,7 +176,7 @@ class CreateHabitPerformingButton extends StatelessWidget {
         var habitPerforming = await showModalBottomSheet<HabitPerforming>(
           context: context,
           builder: (context) => HabitPerformingFormModal(
-            initialHabitPerforming: HabitPerforming.blank(habit.id),
+            initialHabitPerforming: HabitPerforming.blank(habitId: habit.id),
             habitType: habit.type,
           ),
         );

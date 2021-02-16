@@ -6,12 +6,13 @@ import 'package:json_annotation/json_annotation.dart';
 import '../../core/domain/models.dart';
 import '../../core/utils/dt.dart';
 
+part 'models.g.dart';
 
 part 'models.freezed.dart';
 
 /// Привычка
 @freezed
-abstract class Habit with _$Habit {
+abstract class Habit implements _$Habit {
   const Habit._();
 
   /// Создает привычку
@@ -52,12 +53,12 @@ abstract class Habit with _$Habit {
 
     /// Включены ли уведомления
     @Default(false) bool isNotificationsEnabled,
+
     /// Айди девайса
     String deviceId,
 
     /// Айди юзера
     String userId,
-
   }) = _Habit;
 
   /// Созадет пустую привычку
@@ -174,7 +175,6 @@ abstract class Habit with _$Habit {
       }
     }
   }
-
 }
 
 /// День недели
@@ -310,7 +310,7 @@ extension HabitTypeToStr on HabitType {
 
 /// Выполнение прички
 @freezed
-abstract class HabitPerforming with _$HabitPerforming {
+abstract class HabitPerforming implements _$HabitPerforming {
   const HabitPerforming._();
 
   /// Создает выполнение привычки
@@ -329,16 +329,17 @@ abstract class HabitPerforming with _$HabitPerforming {
   }) = _HabitPerforming;
 
   /// Создает пустышку
-  factory HabitPerforming.blank(
-    String habitId, {
+  factory HabitPerforming.blank({
+    @required String habitId,
     double performValue = 1,
     DateTime performDateTime,
-  }) =>
-      HabitPerforming(
+  }) {
+    return HabitPerforming(
         habitId: habitId,
         performValue: performValue,
         performDateTime: performDateTime ?? DateTime.now(),
       );
+  }
 
   /// Создает выполнение привычки из словаря
   factory HabitPerforming.fromJson(Map json) =>
