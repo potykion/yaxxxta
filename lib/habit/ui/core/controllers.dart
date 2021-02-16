@@ -8,6 +8,7 @@ import '../../../core/utils/list.dart';
 import '../../../settings/domain/models.dart';
 import '../../domain/db.dart';
 import '../../domain/models.dart';
+import '../../domain/services.dart';
 
 /// Контроллер привычек
 class HabitController extends StateNotifier<AsyncValue<List<Habit>>> {
@@ -17,10 +18,13 @@ class HabitController extends StateNotifier<AsyncValue<List<Habit>>> {
   /// Инфа о ведре
   final AndroidDeviceInfo deviceInfo;
 
+  final NotifyDoHabit notifyDoHabit;
+
   /// Контроллер привычек
   HabitController({
     @required this.habitRepo,
     @required this.deviceInfo,
+    @required this.notifyDoHabit,
     List<Habit> state = const [],
   }) : super(AsyncValue.data(state));
 
@@ -53,6 +57,10 @@ class HabitController extends StateNotifier<AsyncValue<List<Habit>>> {
     } else {
       habit = habit.copyWith(id: await habitRepo.insert(habit));
       state = AsyncValue.data([...state.data.value, habit]);
+    }
+
+    if (habit.isNotificationsEnabled) {
+      await notifyDoHabit(habit: habit, resetPending: habit.isUpdate);
     }
 
     return habit;

@@ -71,6 +71,16 @@ extension DateTimeUtils on DateTime {
 
   /// Форматирует дату в формате 2/3/2021
   String format() => DateFormat.yMd().format(this);
+
+  /// Создает новый дейт-тайм с измененной компонентой
+  DateTime copyWith({int year, int month, int day, int hour, int minute}) =>
+      DateTime(
+        year ?? this.year,
+        month ?? this.month,
+        day ?? this.day,
+        hour ?? this.hour,
+        minute ?? this.minute,
+      );
 }
 
 /// Дейт-ренж - класс с двумя дейт-таймами: дейт-тайм с, дейт-тайм по

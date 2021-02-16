@@ -2,10 +2,10 @@ import 'dart:math';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:json_annotation/json_annotation.dart';
+
 import '../../core/domain/models.dart';
 import '../../core/utils/dt.dart';
 
-part 'models.g.dart';
 
 part 'models.freezed.dart';
 
@@ -50,11 +50,14 @@ abstract class Habit with _$Habit {
     /// Вообще тупа в гуи юзается
     @Default(false) bool isCustomPeriod,
 
+    /// Включены ли уведомления
+    @Default(false) bool isNotificationsEnabled,
     /// Айди девайса
     String deviceId,
 
     /// Айди юзера
     String userId,
+
   }) = _Habit;
 
   /// Созадет пустую привычку
@@ -123,6 +126,55 @@ abstract class Habit with _$Habit {
         throw "wtf period.type=$type";
     }
   }
+
+  Iterable<DateTime> nextPerformDateTime([DateTime now]) sync* {
+    assert(performTime != null);
+
+    now = now ?? DateTime.now();
+
+    var current = buildDateTime(created, performTime);
+
+    if (periodType == HabitPeriodType.day) {
+      while (true) {
+        if (current.isAfter(now) && matchDate(current)) {
+          yield current;
+        }
+        current = current.add(Duration(days: periodValue));
+      }
+    }
+    if (periodType == HabitPeriodType.week) {
+      var weekStart = current.add(Duration(days: -current.weekday + 1));
+      var weekRepeats = performWeekdays
+          .map((w) => weekStart.add(Duration(days: w.index)))
+          .toList();
+      var weekRepeatIndexes =
+          List.generate(weekRepeats.length, (index) => index);
+
+      while (true) {
+        for (var index in weekRepeatIndexes) {
+          if (weekRepeats[index].isAfter(now) &&
+              matchDate(weekRepeats[index])) {
+            yield weekRepeats[index];
+          }
+          weekRepeats[index] =
+              weekRepeats[index].add(Duration(days: periodValue * 7));
+        }
+      }
+    }
+    if (periodType == HabitPeriodType.month) {
+      while (true) {
+        current =
+            current.copyWith(day: min(performMonthDay, endOfMonth(current)));
+
+        if (current.isAfter(now) && matchDate(current)) {
+          yield current;
+        }
+
+        current = current.copyWith(month: current.month + periodValue);
+      }
+    }
+  }
+
 }
 
 /// День недели
