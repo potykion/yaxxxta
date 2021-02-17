@@ -1,16 +1,20 @@
 import 'dart:convert';
 
-import 'package:yaxxxta/core/infra/push.dart';
-import 'package:yaxxxta/habit/domain/db.dart';
-import 'package:yaxxxta/habit/domain/models.dart';
+import '../../core/infra/push.dart';
+import 'db.dart';
+import 'models.dart';
 
+/// Планирует уведомление о выполнении привычки
 class ScheduleSingleHabitNotification {
+  /// Отправщик уведомлений
   final NotificationSender notificationSender;
 
+  /// Планирует уведомление о выполнении привычки
   ScheduleSingleHabitNotification({
     this.notificationSender,
   });
 
+  /// Планирует уведомление о выполнении привычки
   Future<void> call({Habit habit, bool resetPending = false}) async {
     if (resetPending) {
       var allPendingNotifications = await notificationSender.getAllPending();
@@ -43,16 +47,24 @@ class ScheduleSingleHabitNotification {
   }
 }
 
+/// Планирует уведомления о выполнении привычки для всех привычек,
+/// у которых нет запланированных уведомлений
 class ScheduleNotificationsForHabitsWithoutNotifications {
+  /// Отправщик уведомлений
   final NotificationSender notificationSender;
 
+  /// Репо привычек
   final BaseHabitRepo habitRepo;
 
+  /// Планирует уведомления о выполнении привычки для всех привычек,
+  /// у которых нет запланированных уведомлений
   ScheduleNotificationsForHabitsWithoutNotifications({
     this.notificationSender,
     this.habitRepo,
   });
 
+  /// Планирует уведомления о выполнении привычки для всех привычек,
+  /// у которых нет запланированных уведомлений
   Future<void> call() async {
     //  Берем все привычки со временем выполнения и флагом отправки уведомления
     var habits = (await habitRepo.list())

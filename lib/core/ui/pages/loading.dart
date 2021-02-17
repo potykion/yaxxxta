@@ -11,7 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info/package_info.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
-import 'package:yaxxxta/habit/ui/core/deps.dart';
+import '../../../habit/ui/core/deps.dart';
 
 import '../../../routes.dart';
 import '../../../settings/ui/core/deps.dart';

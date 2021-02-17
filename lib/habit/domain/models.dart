@@ -128,6 +128,11 @@ abstract class Habit implements _$Habit {
     }
   }
 
+  /// Вычисляет очередное время выполнения привычки
+  ///
+  /// Напр. если привычка ежедневная и время выполнения 14:00,
+  /// а сегодня 2020-01-01 15:00,
+  /// то след время выполнения будет 2020-01-02 14:00
   Iterable<DateTime> nextPerformDateTime([DateTime now]) sync* {
     assert(performTime != null);
 
@@ -335,10 +340,10 @@ abstract class HabitPerforming implements _$HabitPerforming {
     DateTime performDateTime,
   }) {
     return HabitPerforming(
-        habitId: habitId,
-        performValue: performValue,
-        performDateTime: performDateTime ?? DateTime.now(),
-      );
+      habitId: habitId,
+      performValue: performValue,
+      performDateTime: performDateTime ?? DateTime.now(),
+    );
   }
 
   /// Создает выполнение привычки из словаря

@@ -23,6 +23,7 @@ Provider<BaseHabitPerformingRepo> habitPerformingRepoProvider = Provider(
       ref.watch(habitPerformingCollectionRefProvider)),
 );
 
+/// Провайдер функции планирования уведомл. о выполнении привычки
 Provider<ScheduleSingleHabitNotification>
     schedulePerformHabitNotificationsProvider = Provider(
   (ref) => ScheduleSingleHabitNotification(
@@ -36,7 +37,7 @@ StateNotifierProvider<HabitController> habitControllerProvider =
   (ref) => HabitController(
     habitRepo: ref.watch(habitRepoProvider),
     deviceInfo: androidInfo,
-    schedulePerformHabitNotifications:
+    scheduleSingleHabitNotification:
         ref.watch(schedulePerformHabitNotificationsProvider),
   ),
 );
@@ -141,7 +142,10 @@ Provider<AsyncValue<HabitDetailsPageVM>> habitDetailsPageVMProvider = Provider(
   }),
 );
 
-var scheduleNotificationsForHabitsWithoutNotificationsProvider = Provider(
+/// Провайдер функции планирования уведомл. для привычек
+/// без запланированных уведомл.
+Provider<ScheduleNotificationsForHabitsWithoutNotifications>
+    scheduleNotificationsForHabitsWithoutNotificationsProvider = Provider(
   (ref) => ScheduleNotificationsForHabitsWithoutNotifications(
     notificationSender: ref.watch(notificationSenderProvider),
     habitRepo: ref.watch(habitRepoProvider),

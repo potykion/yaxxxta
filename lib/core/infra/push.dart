@@ -63,6 +63,7 @@ class NotificationSender {
   /// Отменяет уведомление
   Future<void> cancel(int id) => _flutterLocalNotificationsPlugin.cancel(id);
 
+  /// Получает все уведомления на очереди
   Future<List<PendingNotificationRequest>> getAllPending() async =>
       await _flutterLocalNotificationsPlugin.pendingNotificationRequests();
 }
