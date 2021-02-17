@@ -270,11 +270,20 @@ class HabitFormPage extends HookWidget {
               SizedBox(height: 5),
               TimePickerInput(
                 initial: vm.performTime,
-                change: (time) => setVm(
-                  vm.copyWith(performTime: time),
-                ),
+                change: (time) => setVm(vm.copyWith(performTime: time)),
               ),
-              // if (vm.performTime != null)
+              if (vm.performTime != null)
+                CheckboxListTile(
+                  controlAffinity: ListTileControlAffinity.leading,
+                  title: BiggerText(
+                    text: "Отправить уведомление перед выполнением?",
+                  ),
+                  value: vm.isNotificationsEnabled,
+                  onChanged: (isNotificationsEnabled) => setVm(
+                    vm.copyWith(isNotificationsEnabled: isNotificationsEnabled),
+                  ),
+                  checkColor: CustomColors.almostBlack,
+                )
             ],
           ),
 

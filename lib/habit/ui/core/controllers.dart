@@ -18,13 +18,13 @@ class HabitController extends StateNotifier<AsyncValue<List<Habit>>> {
   /// Инфа о ведре
   final AndroidDeviceInfo deviceInfo;
 
-  final NotifyDoHabit notifyDoHabit;
+  final SchedulePerformHabitNotifications schedulePerformHabitNotifications;
 
   /// Контроллер привычек
   HabitController({
     @required this.habitRepo,
     @required this.deviceInfo,
-    @required this.notifyDoHabit,
+    @required this.schedulePerformHabitNotifications,
     List<Habit> state = const [],
   }) : super(AsyncValue.data(state));
 
@@ -60,7 +60,7 @@ class HabitController extends StateNotifier<AsyncValue<List<Habit>>> {
     }
 
     if (habit.isNotificationsEnabled) {
-      await notifyDoHabit(habit: habit, resetPending: habit.isUpdate);
+      await schedulePerformHabitNotifications(habit: habit, resetPending: habit.isUpdate);
     }
 
     return habit;

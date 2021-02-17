@@ -1,12 +1,13 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/all.dart';
+
 import '../../../core/ui/deps.dart';
 import '../../../core/utils/async_value.dart';
-
 import '../../../core/utils/dt.dart';
 import '../../../settings/ui/core/deps.dart';
 import '../../domain/db.dart';
 import '../../domain/models.dart';
+import '../../domain/services.dart';
 import '../../infra/db.dart';
 import '../details/view_models.dart';
 import 'controllers.dart';
@@ -22,12 +23,21 @@ Provider<BaseHabitPerformingRepo> habitPerformingRepoProvider = Provider(
       ref.watch(habitPerformingCollectionRefProvider)),
 );
 
+Provider<SchedulePerformHabitNotifications>
+    schedulePerformHabitNotificationsProvider = Provider(
+  (ref) => SchedulePerformHabitNotifications(
+    notificationSender: ref.watch(notificationSenderProvider),
+  ),
+);
+
 /// Провайдер контроллера привычек
 StateNotifierProvider<HabitController> habitControllerProvider =
     StateNotifierProvider(
   (ref) => HabitController(
     habitRepo: ref.watch(habitRepoProvider),
     deviceInfo: androidInfo,
+    schedulePerformHabitNotifications:
+        ref.watch(schedulePerformHabitNotificationsProvider),
   ),
 );
 

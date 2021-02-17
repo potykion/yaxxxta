@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:yaxxxta/core/infra/push.dart';
 import 'package:yaxxxta/habit/domain/models.dart';
 
-class NotifyDoHabit {
+class SchedulePerformHabitNotifications {
   final NotificationSender notificationSender;
 
-  NotifyDoHabit({
+  SchedulePerformHabitNotifications({
     this.notificationSender,
   });
 
@@ -24,11 +24,12 @@ class NotifyDoHabit {
       );
     }
 
+    var nextPerformDateTime = habit.nextPerformDateTime().first;
     notificationSender.schedule(
       title: habit.title,
       body: "Пора выполнить привычку",
-      sendAfterSeconds: DateTime.now()
-          .difference(habit.nextPerformDateTime().first)
+      sendAfterSeconds: nextPerformDateTime
+          .difference(DateTime.now())
           .inSeconds,
       payload: jsonEncode({"habitId": habit.id}),
       repeatDaily:

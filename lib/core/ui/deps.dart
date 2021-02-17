@@ -20,7 +20,7 @@ Provider<FlutterLocalNotificationsPlugin>
     Provider((_) => flutterLocalNotificationsPlugin);
 
 /// Провайдер отправщика уведомлений
-Provider<NotificationSender> notificationSender = Provider(
+Provider<NotificationSender> notificationSenderProvider = Provider(
   (ref) =>
       NotificationSender(ref.watch(flutterLocalNotificationsPluginProvider)),
 );
