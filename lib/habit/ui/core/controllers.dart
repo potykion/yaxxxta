@@ -18,7 +18,7 @@ class HabitController extends StateNotifier<AsyncValue<List<Habit>>> {
   /// Инфа о ведре
   final AndroidDeviceInfo deviceInfo;
 
-  final SchedulePerformHabitNotifications schedulePerformHabitNotifications;
+  final ScheduleSingleHabitNotification schedulePerformHabitNotifications;
 
   /// Контроллер привычек
   HabitController({
@@ -29,7 +29,7 @@ class HabitController extends StateNotifier<AsyncValue<List<Habit>>> {
   }) : super(AsyncValue.data(state));
 
   /// Грузит список привычек и сеттит в стейт
-  Future<void> list() async {
+  Future<void> load() async {
     state = AsyncValue.loading();
     state = AsyncValue.data(await habitRepo.list());
   }

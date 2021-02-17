@@ -21,7 +21,7 @@ class HabitCalendarPage extends HookWidget {
   Widget build(BuildContext context) {
     useEffect(() {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
-        await context.read(habitControllerProvider).list();
+        await context.read(habitControllerProvider).load();
         await context
             .read(habitPerformingController)
             .loadDateHabitPerformings(DateTime.now());

@@ -16,7 +16,7 @@ class HabitListPage extends HookWidget {
   Widget build(BuildContext context) {
     useEffect(() {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
-        context.read(habitControllerProvider).list();
+        context.read(habitControllerProvider).load();
       });
       return;
     }, []);

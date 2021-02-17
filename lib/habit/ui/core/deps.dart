@@ -23,9 +23,9 @@ Provider<BaseHabitPerformingRepo> habitPerformingRepoProvider = Provider(
       ref.watch(habitPerformingCollectionRefProvider)),
 );
 
-Provider<SchedulePerformHabitNotifications>
+Provider<ScheduleSingleHabitNotification>
     schedulePerformHabitNotificationsProvider = Provider(
-  (ref) => SchedulePerformHabitNotifications(
+  (ref) => ScheduleSingleHabitNotification(
     notificationSender: ref.watch(notificationSenderProvider),
   ),
 );
@@ -139,4 +139,11 @@ Provider<AsyncValue<HabitDetailsPageVM>> habitDetailsPageVMProvider = Provider(
       history: history,
     );
   }),
+);
+
+var scheduleNotificationsForHabitsWithoutNotificationsProvider = Provider(
+  (ref) => ScheduleNotificationsForHabitsWithoutNotifications(
+    notificationSender: ref.watch(notificationSenderProvider),
+    habitRepo: ref.watch(habitRepoProvider),
+  ),
 );
