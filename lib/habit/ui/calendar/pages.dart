@@ -30,9 +30,9 @@ class HabitCalendarPage extends HookWidget {
     }, []);
     var vmsAsyncValue = useProvider(listHabitVMs);
 
-    var animatedListKey = useState(GlobalKey<AnimatedListState>());
+    var animatedListKey = useProvider(habitAnimatedListStateProvider);
     resetAnimatedList() {
-      animatedListKey.value = GlobalKey<AnimatedListState>();
+      animatedListKey.state = GlobalKey<AnimatedListState>();
     }
 
     return Scaffold(
@@ -54,37 +54,33 @@ class HabitCalendarPage extends HookWidget {
           ],
         ),
       ),
-      body: vmsAsyncValue.maybeMap(
-        data: (vmValue) {
-          var vms = vmValue.value;
-
-          return AnimatedList(
-            key: animatedListKey.value,
-            initialItemCount: vms.length,
-            itemBuilder: (context, index, animation) =>
-                _buildHabitRepeatControl(context, index, vms[index], animation),
-          );
-        },
+      body: vmsAsyncValue.maybeWhen(
+        data: (vms) => AnimatedList(
+          key: animatedListKey.state,
+          initialItemCount: vms.length,
+          itemBuilder: (context, index, animation) =>
+              _buildHabitRepeatControl(context, index, vms[index], animation),
+        ),
         orElse: () => CenteredCircularProgress(),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      floatingActionButton: FloatingActionButton(
-        // mini: true,
-        child: Icon(
-          Icons.add,
-          size: 50,
+      floatingActionButton: vmsAsyncValue.maybeWhen(
+        data: (vms) => FloatingActionButton(
+          heroTag: null,
+          child: Icon(Icons.add, size: 50),
+          onPressed: () async {
+            var habit =
+                (await Navigator.of(context).pushNamed(Routes.form)) as Habit;
+            if (habit != null &&
+                habit.matchDate(context.read(selectedDateProvider).state)) {
+              animatedListKey.state.currentState.insertItem(
+                vms.length,
+                duration: Duration(milliseconds: 500),
+              );
+            }
+          },
         ),
-        onPressed: () async {
-          // var habit =
-          (await Navigator.of(context).pushNamed(Routes.form)) as Habit;
-          // if (habit != null &&
-          //     habit.matchDate(context.read(selectedDateProvider).state)) {
-          //   animatedListKey.value.currentState.insertItem(
-          //     vms.length,
-          //     duration: Duration(milliseconds: 500),
-          //   );
-          // }
-        },
+        orElse: () => null,
       ),
       bottomNavigationBar: AppBottomNavigationBar(),
     );

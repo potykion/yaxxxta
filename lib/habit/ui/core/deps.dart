@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/all.dart';
 
@@ -150,4 +151,8 @@ Provider<ScheduleNotificationsForHabitsWithoutNotifications>
     notificationSender: ref.watch(notificationSenderProvider),
     habitRepo: ref.watch(habitRepoProvider),
   ),
+);
+
+var habitAnimatedListStateProvider = StateProvider<GlobalKey<AnimatedListState>>(
+  (ref) => GlobalKey<AnimatedListState>(),
 );
