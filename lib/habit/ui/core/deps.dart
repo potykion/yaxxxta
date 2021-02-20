@@ -1,12 +1,14 @@
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/all.dart';
+
 import '../../../core/ui/deps.dart';
 import '../../../core/utils/async_value.dart';
-
 import '../../../core/utils/dt.dart';
 import '../../../settings/ui/core/deps.dart';
 import '../../domain/db.dart';
 import '../../domain/models.dart';
+import '../../domain/services.dart';
 import '../../infra/db.dart';
 import '../details/view_models.dart';
 import 'controllers.dart';
@@ -22,12 +24,22 @@ Provider<BaseHabitPerformingRepo> habitPerformingRepoProvider = Provider(
       ref.watch(habitPerformingCollectionRefProvider)),
 );
 
+/// Провайдер функции планирования уведомл. о выполнении привычки
+Provider<ScheduleSingleHabitNotification>
+    schedulePerformHabitNotificationsProvider = Provider(
+  (ref) => ScheduleSingleHabitNotification(
+    notificationSender: ref.watch(notificationSenderProvider),
+  ),
+);
+
 /// Провайдер контроллера привычек
 StateNotifierProvider<HabitController> habitControllerProvider =
     StateNotifierProvider(
   (ref) => HabitController(
     habitRepo: ref.watch(habitRepoProvider),
     deviceInfo: androidInfo,
+    scheduleSingleHabitNotification:
+        ref.watch(schedulePerformHabitNotificationsProvider),
   ),
 );
 
@@ -129,4 +141,18 @@ Provider<AsyncValue<HabitDetailsPageVM>> habitDetailsPageVMProvider = Provider(
       history: history,
     );
   }),
+);
+
+/// Провайдер функции планирования уведомл. для привычек
+/// без запланированных уведомл.
+Provider<ScheduleNotificationsForHabitsWithoutNotifications>
+    scheduleNotificationsForHabitsWithoutNotificationsProvider = Provider(
+  (ref) => ScheduleNotificationsForHabitsWithoutNotifications(
+    notificationSender: ref.watch(notificationSenderProvider),
+    habitRepo: ref.watch(habitRepoProvider),
+  ),
+);
+
+var habitAnimatedListStateProvider = StateProvider<GlobalKey<AnimatedListState>>(
+  (ref) => GlobalKey<AnimatedListState>(),
 );

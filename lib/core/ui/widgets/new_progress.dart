@@ -126,7 +126,7 @@ class TimeProgressControl extends HookWidget {
 
       /// Отменяем уведомление, если withCancelNotification = true
       if (withCancelNotification && notificationId.value != null) {
-        context.read(notificationSender).cancel(notificationId.value);
+        context.read(notificationSenderProvider).cancel(notificationId.value);
       }
 
       /// Обновляем прогресс = разницы между текущим значение таймера
@@ -191,7 +191,7 @@ class TimeProgressControl extends HookWidget {
               /// через кол-во сек до цели
               if (currentValueState.value < goalValue) {
                 notificationId.value =
-                    await context.read(notificationSender).schedule(
+                    await context.read(notificationSenderProvider).schedule(
                           title: notificationText,
                           sendAfterSeconds:
                               (goalValue - currentValueState.value).toInt(),

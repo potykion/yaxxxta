@@ -29,6 +29,7 @@ _$_Habit _$_$_HabitFromJson(Map json) {
         [],
     performMonthDay: json['performMonthDay'] as int ?? 1,
     isCustomPeriod: json['isCustomPeriod'] as bool ?? false,
+    isNotificationsEnabled: json['isNotificationsEnabled'] as bool ?? false,
     deviceId: json['deviceId'] as String,
     userId: json['userId'] as String,
   );
@@ -47,6 +48,7 @@ Map<String, dynamic> _$_$_HabitToJson(_$_Habit instance) => <String, dynamic>{
           instance.performWeekdays?.map((e) => _$WeekdayEnumMap[e])?.toList(),
       'performMonthDay': instance.performMonthDay,
       'isCustomPeriod': instance.isCustomPeriod,
+      'isNotificationsEnabled': instance.isNotificationsEnabled,
       'deviceId': instance.deviceId,
       'userId': instance.userId,
     };

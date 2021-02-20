@@ -11,6 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info/package_info.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+import '../../../habit/ui/core/deps.dart';
 
 import '../../../routes.dart';
 import '../../../settings/ui/core/deps.dart';
@@ -49,6 +50,8 @@ class LoadingPage extends HookWidget {
         }
 
         await context.read(settingsControllerProvider).loadSettings();
+        await context
+            .read(scheduleNotificationsForHabitsWithoutNotificationsProvider)();
 
         Navigator.pushReplacementNamed(context, Routes.calendar);
       });

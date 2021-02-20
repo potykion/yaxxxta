@@ -199,64 +199,65 @@ class HabitFormPage extends HookWidget {
                     ),
                   ),
                 ],
-              )
-            ],
-          ),
-          if (vm.isCustomPeriod)
-            PaddedContainerCard(
-              children: [
-                BiggerText(text: "Периодичность"),
-                SizedBox(height: 5),
-                Row(
+              ),
+              if (vm.isCustomPeriod)
+                Column(children: [
+                  SizedBox(height: 5),
+                  Row(
+                    children: [
+                      Flexible(
+                          child: TextInput<int>(
+                        initial: vm.periodValue,
+                        change: (dynamic v) => setVm(
+                          vm.copyWith(periodValue: v as int),
+                        ),
+                      )),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: HabitPeriodTypeSelect(
+                          initial: vm.periodType,
+                          change: (t) => setVm(vm.copyWith(periodType: t)),
+                        ),
+                        flex: 3,
+                      )
+                    ],
+                  ),
+                ]),
+              if (vm.periodType == HabitPeriodType.week)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Flexible(
-                        child: TextInput<int>(
-                      initial: vm.periodValue,
-                      change: (dynamic v) => setVm(
-                        vm.copyWith(periodValue: v as int),
-                      ),
-                    )),
-                    SizedBox(width: 10),
-                    Expanded(
-                      child: HabitPeriodTypeSelect(
-                        initial: vm.periodType,
-                        change: (t) => setVm(vm.copyWith(periodType: t)),
-                      ),
-                      flex: 3,
+                    SizedBox(height: 5),
+                    BiggerText(text: "Дни выполнения"),
+                    SizedBox(height: 5),
+                    WeekdaysPicker(
+                      initial: vm.performWeekdays,
+                      change: (ws) => setVm(vm.copyWith(performWeekdays: ws)),
                     )
                   ],
                 ),
-              ],
-            ),
-          if (vm.periodType == HabitPeriodType.week)
-            PaddedContainerCard(
-              children: [
-                BiggerText(text: "Дни выполнения"),
-                SizedBox(height: 5),
-                WeekdaysPicker(
-                  initial: vm.performWeekdays,
-                  change: (ws) => setVm(vm.copyWith(performWeekdays: ws)),
-                )
-              ],
-            ),
-          if (vm.periodType == HabitPeriodType.month)
-            PaddedContainerCard(
-              children: [
-                Row(
+              if (vm.periodType == HabitPeriodType.month)
+                Column(
                   children: [
-                    BiggerText(text: "День выполнения"),
-                    Spacer(),
-                    SmallerText(text: "1 .. 31"),
+                    SizedBox(height: 5),
+                    Row(
+                      children: [
+                        BiggerText(text: "День выполнения"),
+                        Spacer(),
+                        SmallerText(text: "1 .. 31"),
+                      ],
+                    ),
+                    SizedBox(height: 5),
+                    TextInput<int>(
+                      initial: vm.performMonthDay,
+                      change: (dynamic d) =>
+                          setVm(vm.copyWith(performMonthDay: d as int)),
+                    ),
                   ],
                 ),
-                SizedBox(height: 5),
-                TextInput<int>(
-                  initial: vm.performMonthDay,
-                  change: (dynamic d) =>
-                      setVm(vm.copyWith(performMonthDay: d as int)),
-                ),
-              ],
-            ),
+            ],
+          ),
+
           // endregion
 
           //////////////////////////////////////////////////////////////////////
@@ -269,10 +270,20 @@ class HabitFormPage extends HookWidget {
               SizedBox(height: 5),
               TimePickerInput(
                 initial: vm.performTime,
-                change: (time) => setVm(
-                  vm.copyWith(performTime: time),
-                ),
+                change: (time) => setVm(vm.copyWith(performTime: time)),
               ),
+              if (vm.performTime != null)
+                CheckboxListTile(
+                  controlAffinity: ListTileControlAffinity.leading,
+                  title: BiggerText(
+                    text: "Отправить уведомление перед выполнением?",
+                  ),
+                  value: vm.isNotificationsEnabled,
+                  onChanged: (isNotificationsEnabled) => setVm(
+                    vm.copyWith(isNotificationsEnabled: isNotificationsEnabled),
+                  ),
+                  checkColor: CustomColors.almostBlack,
+                )
             ],
           ),
 

@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:json_annotation/json_annotation.dart';
+
 import '../../core/domain/models.dart';
 import '../../core/utils/dt.dart';
 
@@ -11,7 +12,7 @@ part 'models.freezed.dart';
 
 /// Привычка
 @freezed
-abstract class Habit with _$Habit {
+abstract class Habit implements _$Habit {
   const Habit._();
 
   /// Создает привычку
@@ -49,6 +50,9 @@ abstract class Habit with _$Habit {
     /// Если false, то {periodValue} = 1; иначе можно задавать {periodValue} > 1
     /// Вообще тупа в гуи юзается
     @Default(false) bool isCustomPeriod,
+
+    /// Включены ли уведомления
+    @Default(false) bool isNotificationsEnabled,
 
     /// Айди девайса
     String deviceId,
@@ -121,6 +125,59 @@ abstract class Habit with _$Habit {
 
       default:
         throw "wtf period.type=$type";
+    }
+  }
+
+  /// Вычисляет очередное время выполнения привычки
+  ///
+  /// Напр. если привычка ежедневная и время выполнения 14:00,
+  /// а сегодня 2020-01-01 15:00,
+  /// то след время выполнения будет 2020-01-02 14:00
+  Iterable<DateTime> nextPerformDateTime([DateTime now]) sync* {
+    assert(performTime != null);
+
+    now = now ?? DateTime.now();
+
+    var current = buildDateTime(created, performTime);
+
+    if (periodType == HabitPeriodType.day) {
+      while (true) {
+        if (current.isAfter(now) && matchDate(current)) {
+          yield current;
+        }
+        current = current.add(Duration(days: periodValue));
+      }
+    }
+    if (periodType == HabitPeriodType.week) {
+      var weekStart = current.add(Duration(days: -current.weekday + 1));
+      var weekRepeats = performWeekdays
+          .map((w) => weekStart.add(Duration(days: w.index)))
+          .toList();
+      var weekRepeatIndexes =
+          List.generate(weekRepeats.length, (index) => index);
+
+      while (true) {
+        for (var index in weekRepeatIndexes) {
+          if (weekRepeats[index].isAfter(now) &&
+              matchDate(weekRepeats[index])) {
+            yield weekRepeats[index];
+          }
+          weekRepeats[index] =
+              weekRepeats[index].add(Duration(days: periodValue * 7));
+        }
+      }
+    }
+    if (periodType == HabitPeriodType.month) {
+      while (true) {
+        current =
+            current.copyWith(day: min(performMonthDay, endOfMonth(current)));
+
+        if (current.isAfter(now) && matchDate(current)) {
+          yield current;
+        }
+
+        current = current.copyWith(month: current.month + periodValue);
+      }
     }
   }
 }
@@ -258,7 +315,7 @@ extension HabitTypeToStr on HabitType {
 
 /// Выполнение прички
 @freezed
-abstract class HabitPerforming with _$HabitPerforming {
+abstract class HabitPerforming implements _$HabitPerforming {
   const HabitPerforming._();
 
   /// Создает выполнение привычки
@@ -277,16 +334,17 @@ abstract class HabitPerforming with _$HabitPerforming {
   }) = _HabitPerforming;
 
   /// Создает пустышку
-  factory HabitPerforming.blank(
-    String habitId, {
+  factory HabitPerforming.blank({
+    @required String habitId,
     double performValue = 1,
     DateTime performDateTime,
-  }) =>
-      HabitPerforming(
-        habitId: habitId,
-        performValue: performValue,
-        performDateTime: performDateTime ?? DateTime.now(),
-      );
+  }) {
+    return HabitPerforming(
+      habitId: habitId,
+      performValue: performValue,
+      performDateTime: performDateTime ?? DateTime.now(),
+    );
+  }
 
   /// Создает выполнение привычки из словаря
   factory HabitPerforming.fromJson(Map json) =>

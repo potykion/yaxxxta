@@ -8,6 +8,7 @@ import '../../../core/utils/list.dart';
 import '../../../settings/domain/models.dart';
 import '../../domain/db.dart';
 import '../../domain/models.dart';
+import '../../domain/services.dart';
 
 /// Контроллер привычек
 class HabitController extends StateNotifier<AsyncValue<List<Habit>>> {
@@ -17,15 +18,19 @@ class HabitController extends StateNotifier<AsyncValue<List<Habit>>> {
   /// Инфа о ведре
   final AndroidDeviceInfo deviceInfo;
 
+  /// Планирование оправки уведомл.
+  final ScheduleSingleHabitNotification scheduleSingleHabitNotification;
+
   /// Контроллер привычек
   HabitController({
     @required this.habitRepo,
     @required this.deviceInfo,
+    @required this.scheduleSingleHabitNotification,
     List<Habit> state = const [],
   }) : super(AsyncValue.data(state));
 
   /// Грузит список привычек и сеттит в стейт
-  Future<void> list() async {
+  Future<void> load() async {
     state = AsyncValue.loading();
     state = AsyncValue.data(await habitRepo.list());
   }
@@ -53,6 +58,13 @@ class HabitController extends StateNotifier<AsyncValue<List<Habit>>> {
     } else {
       habit = habit.copyWith(id: await habitRepo.insert(habit));
       state = AsyncValue.data([...state.data.value, habit]);
+    }
+
+    if (habit.isNotificationsEnabled) {
+      await scheduleSingleHabitNotification(
+        habit: habit,
+        resetPending: habit.isUpdate,
+      );
     }
 
     return habit;

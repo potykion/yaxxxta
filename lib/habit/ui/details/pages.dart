@@ -52,7 +52,7 @@ class HabitDetailsPage extends HookWidget {
           body: ListView(
             children: [
               ListTile(title: HabitChips(habit: habit)),
-              _buildTodayHabitProgressControl(habit, progress),
+              _buildTodayHabitProgressControl(context, habit, progress),
               PaddedContainerCard(children: [
                 Row(
                   children: [
@@ -80,19 +80,24 @@ class HabitDetailsPage extends HookWidget {
   }
 
   HabitProgressControl _buildTodayHabitProgressControl(
+    BuildContext context,
     Habit habit,
     HabitProgressVM progress,
   ) =>
       HabitProgressControl(
         key: Key("HabitDetailsPage_HabitRepeatControl"),
         vm: progress,
-        onRepeatIncrement: (incrementValue, _, [__]) => navigatorKey
-            .currentContext
-            .read(habitPerformingController)
-            .insert(HabitPerforming.blank(
-              habit.id,
-              performValue: incrementValue,
-            )),
+        onRepeatIncrement: (incrementValue, _, [__]) async {
+          await navigatorKey.currentContext
+              .read(habitPerformingController)
+              .insert(HabitPerforming.blank(
+                habitId: habit.id,
+                performValue: incrementValue,
+              ));
+
+          context.read(habitAnimatedListStateProvider).state =
+              GlobalKey<AnimatedListState>();
+        },
         repeatTitle: "Сегодня",
       );
 }
