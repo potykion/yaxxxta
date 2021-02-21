@@ -165,8 +165,15 @@ class CreateHabitPerformingButton extends StatelessWidget {
   /// Привычка
   final Habit habit;
 
+  /// Дата выполнения
+  final DateTime initialDate;
+
   /// Кнопка, открывающая форму создания выполнения привычки
-  const CreateHabitPerformingButton({Key key, this.habit}) : super(key: key);
+  const CreateHabitPerformingButton({
+    Key key,
+    @required this.habit,
+    @required this.initialDate,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -176,7 +183,13 @@ class CreateHabitPerformingButton extends StatelessWidget {
         var habitPerforming = await showModalBottomSheet<HabitPerforming>(
           context: context,
           builder: (context) => HabitPerformingFormModal(
-            initialHabitPerforming: HabitPerforming.blank(habitId: habit.id),
+            initialHabitPerforming: HabitPerforming.blank(
+              habitId: habit.id,
+              performDateTime: buildDateTime(
+                initialDate,
+                DateTime.now(),
+              ),
+            ),
             habitType: habit.type,
           ),
         );

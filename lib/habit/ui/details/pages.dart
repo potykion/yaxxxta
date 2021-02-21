@@ -58,7 +58,10 @@ class HabitDetailsPage extends HookWidget {
                   children: [
                     BiggerText(text: "История"),
                     Spacer(),
-                    CreateHabitPerformingButton(habit: habit),
+                    CreateHabitPerformingButton(
+                      habit: habit,
+                      initialDate: historyDateState.value,
+                    ),
                   ],
                 ),
                 SizedBox(height: 5),
