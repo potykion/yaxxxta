@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import '../../../core/ui/widgets/app_bars.dart';
 
 import '../../../core/domain/models.dart';
 import '../../../core/ui/widgets/card.dart';
@@ -29,12 +30,23 @@ class HabitFormPage extends HookWidget {
   Widget build(BuildContext context) {
     var vmState = useState(ModalRoute.of(context).settings.arguments as Habit ??
         Habit(created: DateTime.now()));
-    var vm = vmState.value;
+    var habit = vmState.value;
     setVm(Habit newVm) => vmState.value = newVm;
 
-    var error = useProvider(_error(vm));
+    var error = useProvider(_error(habit));
 
     return Scaffold(
+      appBar: buildAppBar(
+        context: context,
+        children: [
+          BiggestText(
+            text: habit.isUpdate
+                ? "Редактирование привычки"
+                : "Создание привычки",
+            withPadding: true,
+          )
+        ],
+      ),
       body: ListView(
         children: [
           //////////////////////////////////////////////////////////////////////
@@ -45,8 +57,9 @@ class HabitFormPage extends HookWidget {
               BiggerText(text: "Название"),
               SizedBox(height: 5),
               TextInput(
-                initial: vm.title,
-                change: (dynamic t) => setVm(vm.copyWith(title: t as String)),
+                initial: habit.title,
+                change: (dynamic t) =>
+                    setVm(habit.copyWith(title: t as String)),
               ),
             ],
           ),
@@ -62,25 +75,27 @@ class HabitFormPage extends HookWidget {
                 children: [
                   BiggerText(text: "Тип"),
                   Spacer(),
-                  if (vm.isUpdate) SmallerText(text: "нельзя изменить")
+                  if (habit.isUpdate) SmallerText(text: "нельзя изменить")
                 ],
               ),
               SizedBox(height: 5),
               HabitTypeRadioGroup(
-                initial: vm.type,
-                change: (type) => setVm(vm.copyWith(type: type, goalValue: 1)),
-                setBefore: vm.isUpdate,
+                initial: habit.type,
+                change: (type) =>
+                    setVm(habit.copyWith(type: type, goalValue: 1)),
+                setBefore: habit.isUpdate,
               ),
             ],
           ),
-          if (vm.type == HabitType.time)
+          if (habit.type == HabitType.time)
             PaddedContainerCard(
               children: [
                 BiggerText(text: "Продолжительность"),
                 SizedBox(height: 5),
                 DurationInput(
-                  initial: DoubleDuration.fromSeconds(vm.goalValue),
-                  change: (newDuration) => setVm(vm.applyDuration(newDuration)),
+                  initial: DoubleDuration.fromSeconds(habit.goalValue),
+                  change: (newDuration) =>
+                      setVm(habit.applyDuration(newDuration)),
                 ),
                 SizedBox(height: 5),
                 Row(
@@ -88,36 +103,36 @@ class HabitFormPage extends HookWidget {
                   children: [
                     SimpleButton(
                       text: "+ 1 %",
-                      onTap: () => setVm(vm.increaseGoalValueByPercent()),
+                      onTap: () => setVm(habit.increaseGoalValueByPercent()),
                     ),
                     SimpleButton(
                       text: "+ 1 сек",
                       onTap: () =>
-                          setVm(vm.copyWith(goalValue: vm.goalValue + 1)),
+                          setVm(habit.copyWith(goalValue: habit.goalValue + 1)),
                     ),
                     SimpleButton(
                       text: "+ 1 мин",
-                      onTap: () =>
-                          setVm(vm.copyWith(goalValue: vm.goalValue + 1 * 60)),
+                      onTap: () => setVm(
+                          habit.copyWith(goalValue: habit.goalValue + 1 * 60)),
                     ),
                     SimpleButton(
                       text: "+ 1 ч",
-                      onTap: () => setVm(
-                          vm.copyWith(goalValue: vm.goalValue + 1 * 3600)),
+                      onTap: () => setVm(habit.copyWith(
+                          goalValue: habit.goalValue + 1 * 3600)),
                     ),
                   ],
                 ),
               ],
             ),
-          if (vm.type == HabitType.repeats)
+          if (habit.type == HabitType.repeats)
             PaddedContainerCard(
               children: [
                 BiggerText(text: "Число повторений"),
                 SizedBox(height: 5),
                 TextInput<double>(
-                  initial: vm.goalValue,
+                  initial: habit.goalValue,
                   change: (dynamic v) =>
-                      setVm(vm.copyWith(goalValue: v as double)),
+                      setVm(habit.copyWith(goalValue: v as double)),
                 ),
                 SizedBox(height: 5),
                 Row(
@@ -125,22 +140,22 @@ class HabitFormPage extends HookWidget {
                   children: [
                     SimpleButton(
                       text: "+ 1 %",
-                      onTap: () => setVm(vm.increaseGoalValueByPercent()),
+                      onTap: () => setVm(habit.increaseGoalValueByPercent()),
                     ),
                     SimpleButton(
                       text: "+ 1",
                       onTap: () =>
-                          setVm(vm.copyWith(goalValue: vm.goalValue + 1)),
+                          setVm(habit.copyWith(goalValue: habit.goalValue + 1)),
                     ),
                     SimpleButton(
                       text: "+ 10",
-                      onTap: () =>
-                          setVm(vm.copyWith(goalValue: vm.goalValue + 10)),
+                      onTap: () => setVm(
+                          habit.copyWith(goalValue: habit.goalValue + 10)),
                     ),
                     SimpleButton(
                       text: "+ 100",
-                      onTap: () =>
-                          setVm(vm.copyWith(goalValue: vm.goalValue + 100)),
+                      onTap: () => setVm(
+                          habit.copyWith(goalValue: habit.goalValue + 100)),
                     ),
                   ],
                 )
@@ -160,10 +175,10 @@ class HabitFormPage extends HookWidget {
                 children: [
                   SimpleChip(
                     text: HabitPeriodType.day.verbose(),
-                    selected: !vm.isCustomPeriod &&
-                        vm.periodType == HabitPeriodType.day,
+                    selected: !habit.isCustomPeriod &&
+                        habit.periodType == HabitPeriodType.day,
                     change: (_) => setVm(
-                      vm.copyWith(
+                      habit.copyWith(
                         periodType: HabitPeriodType.day,
                         isCustomPeriod: false,
                       ),
@@ -171,10 +186,10 @@ class HabitFormPage extends HookWidget {
                   ),
                   SimpleChip(
                     text: HabitPeriodType.week.verbose(),
-                    selected: !vm.isCustomPeriod &&
-                        vm.periodType == HabitPeriodType.week,
+                    selected: !habit.isCustomPeriod &&
+                        habit.periodType == HabitPeriodType.week,
                     change: (_) => setVm(
-                      vm.copyWith(
+                      habit.copyWith(
                         periodType: HabitPeriodType.week,
                         isCustomPeriod: false,
                       ),
@@ -182,10 +197,10 @@ class HabitFormPage extends HookWidget {
                   ),
                   SimpleChip(
                     text: HabitPeriodType.month.verbose(),
-                    selected: !vm.isCustomPeriod &&
-                        vm.periodType == HabitPeriodType.month,
+                    selected: !habit.isCustomPeriod &&
+                        habit.periodType == HabitPeriodType.month,
                     change: (_) => setVm(
-                      vm.copyWith(
+                      habit.copyWith(
                         periodType: HabitPeriodType.month,
                         isCustomPeriod: false,
                       ),
@@ -193,37 +208,37 @@ class HabitFormPage extends HookWidget {
                   ),
                   SimpleChip(
                     text: "Другая",
-                    selected: vm.isCustomPeriod,
+                    selected: habit.isCustomPeriod,
                     change: (_) => setVm(
-                      vm.copyWith(isCustomPeriod: true),
+                      habit.copyWith(isCustomPeriod: true),
                     ),
                   ),
                 ],
               ),
-              if (vm.isCustomPeriod)
+              if (habit.isCustomPeriod)
                 Column(children: [
                   SizedBox(height: 5),
                   Row(
                     children: [
                       Flexible(
                           child: TextInput<int>(
-                        initial: vm.periodValue,
+                        initial: habit.periodValue,
                         change: (dynamic v) => setVm(
-                          vm.copyWith(periodValue: v as int),
+                          habit.copyWith(periodValue: v as int),
                         ),
                       )),
                       SizedBox(width: 10),
                       Expanded(
                         child: HabitPeriodTypeSelect(
-                          initial: vm.periodType,
-                          change: (t) => setVm(vm.copyWith(periodType: t)),
+                          initial: habit.periodType,
+                          change: (t) => setVm(habit.copyWith(periodType: t)),
                         ),
                         flex: 3,
                       )
                     ],
                   ),
                 ]),
-              if (vm.periodType == HabitPeriodType.week)
+              if (habit.periodType == HabitPeriodType.week)
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -231,12 +246,13 @@ class HabitFormPage extends HookWidget {
                     BiggerText(text: "Дни выполнения"),
                     SizedBox(height: 5),
                     WeekdaysPicker(
-                      initial: vm.performWeekdays,
-                      change: (ws) => setVm(vm.copyWith(performWeekdays: ws)),
+                      initial: habit.performWeekdays,
+                      change: (ws) =>
+                          setVm(habit.copyWith(performWeekdays: ws)),
                     )
                   ],
                 ),
-              if (vm.periodType == HabitPeriodType.month)
+              if (habit.periodType == HabitPeriodType.month)
                 Column(
                   children: [
                     SizedBox(height: 5),
@@ -249,9 +265,9 @@ class HabitFormPage extends HookWidget {
                     ),
                     SizedBox(height: 5),
                     TextInput<int>(
-                      initial: vm.performMonthDay,
+                      initial: habit.performMonthDay,
                       change: (dynamic d) =>
-                          setVm(vm.copyWith(performMonthDay: d as int)),
+                          setVm(habit.copyWith(performMonthDay: d as int)),
                     ),
                   ],
                 ),
@@ -269,18 +285,19 @@ class HabitFormPage extends HookWidget {
               BiggerText(text: "Время выполнения"),
               SizedBox(height: 5),
               TimePickerInput(
-                initial: vm.performTime,
-                change: (time) => setVm(vm.copyWith(performTime: time)),
+                initial: habit.performTime,
+                change: (time) => setVm(habit.copyWith(performTime: time)),
               ),
-              if (vm.performTime != null)
+              if (habit.performTime != null)
                 CheckboxListTile(
                   controlAffinity: ListTileControlAffinity.leading,
                   title: BiggerText(
                     text: "Отправить уведомление перед выполнением?",
                   ),
-                  value: vm.isNotificationsEnabled,
+                  value: habit.isNotificationsEnabled,
                   onChanged: (isNotificationsEnabled) => setVm(
-                    vm.copyWith(isNotificationsEnabled: isNotificationsEnabled),
+                    habit.copyWith(
+                        isNotificationsEnabled: isNotificationsEnabled),
                   ),
                   checkColor: CustomColors.almostBlack,
                 )
@@ -301,10 +318,10 @@ class HabitFormPage extends HookWidget {
           child: FloatingActionButton.extended(
             onPressed: error.isEmpty
                 ? () async {
-                    var habit = await context
+                    var createdHabit = await context
                         .read(habitControllerProvider)
-                        .createOrUpdateHabit(vm);
-                    Navigator.of(context).pop(habit);
+                        .createOrUpdateHabit(habit);
+                    Navigator.of(context).pop(createdHabit);
                   }
                 : null,
             label: SmallerText(

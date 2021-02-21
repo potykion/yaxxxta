@@ -31,6 +31,7 @@ class HabitActionsButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => IconButton(
       icon: Icon(Icons.more_vert),
+      color: CustomColors.almostBlack,
       onPressed: () async {
         var actionType = await showModalBottomSheet<HabitActionType>(
           context: context,

@@ -31,7 +31,7 @@ class DateCarousel extends HookWidget {
     var selectedIndexState = useState(0);
 
     return SizedBox(
-      height: 70,
+      height: 75,
       child: InfiniteListView.builder(
         /// Сдвигаем лист-вью на половину экрана + 3 паддинга по 10,
         /// чтобы текущий день был посерединке

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:yaxxxta/core/ui/widgets/app_bars.dart';
 
 import '../../../core/ui/widgets/bottom_nav.dart';
 import '../../../core/ui/widgets/circular_progress.dart';
@@ -100,23 +101,23 @@ class HabitCalendarPage extends HookWidget {
     }
 
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(120),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+      appBar: buildAppBar(
+        context: context,
           children: [
-            SizedBox(height: kToolbarHeight),
-            DateCarousel(
-              change: (date) {
-                context.read(selectedDateProvider).state = date;
-                context
-                    .read(habitPerformingController)
-                    .loadDateHabitPerformings(date);
-                resetAnimatedList();
-              },
+            Expanded(
+              child: DateCarousel(
+                change: (date) {
+                  context.read(selectedDateProvider).state = date;
+                  context
+                      .read(habitPerformingController)
+                      .loadDateHabitPerformings(date);
+                  resetAnimatedList();
+                },
+              ),
             ),
           ],
-        ),
+        transparent: true,
+        big: true
       ),
       body: vmsAsyncValue.maybeWhen(
         data: (vms) => AnimatedList(

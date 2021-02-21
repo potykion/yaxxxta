@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:yaxxxta/theme.dart';
 
 import '../../../core/ui/deps.dart';
 import '../../../core/ui/widgets/app_bars.dart';
@@ -41,13 +42,12 @@ class HabitDetailsPage extends HookWidget {
         return Scaffold(
           key: _scaffold,
           appBar: buildAppBar(
-            child: Row(
-              children: [
-                BackButton(),
-                Expanded(child: BiggestText(text: habit.title)),
-                HabitActionsButton(habit: habit),
-              ],
-            ),
+            context: context,
+            children: [
+              BackButton(),
+              Expanded(child: BiggestText(text: habit.title)),
+              HabitActionsButton(habit: habit),
+            ],
           ),
           body: ListView(
             children: [

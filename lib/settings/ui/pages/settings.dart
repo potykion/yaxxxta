@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth;
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:yaxxxta/core/ui/widgets/app_bars.dart';
 import '../../../auth/models.dart';
 import '../../../core/ui/deps.dart';
 
@@ -29,6 +30,10 @@ class SettingsPage extends HookWidget {
     }
 
     return Scaffold(
+      appBar: buildAppBar(
+        context: context,
+        children: [BiggestText(text: "Настроечки", withPadding: true)],
+      ),
       body: StreamBuilder<User>(
         stream: FirebaseAuth.instance
             .authStateChanges()

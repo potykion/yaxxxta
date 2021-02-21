@@ -93,16 +93,30 @@ class BiggestText extends StatelessWidget {
   /// Текст
   final String text;
 
+  final bool withPadding;
+
   /// Создает текст
-  const BiggestText({Key key, this.text}) : super(key: key);
+  const BiggestText({Key key, this.text, this.withPadding = false})
+      : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Text(
-        text,
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          color: CustomColors.almostBlack,
-        ),
+  Widget build(BuildContext context) {
+    Widget res = Text(
+      text,
+      style: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+        color: CustomColors.almostBlack,
+      ),
+    );
+
+    if (withPadding) {
+      res = Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: res,
       );
+    }
+
+    return res;
+  }
 }
