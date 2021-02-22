@@ -39,6 +39,7 @@ abstract class CustomColors {
 
 /// Создает тему приложухи
 ThemeData buildTheme(BuildContext context) => ThemeData(
+      primaryColor: CustomColors.almostBlack,
       accentColor: CustomColors.yellow,
       textTheme: GoogleFonts.montserratTextTheme(
         Theme.of(context).textTheme,
@@ -51,5 +52,21 @@ ThemeData buildTheme(BuildContext context) => ThemeData(
         ),
         filled: true,
         contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      ),
+      timePickerTheme: TimePickerThemeData(
+        // Цвет текста в таймпикере
+        hourMinuteTextColor: CustomColors.almostBlack,
+        // Цвет периода дня (am/pm)
+        dayPeriodTextColor: CustomColors.almostBlack,
+      ),
+      // Хайлайт выбора часа/минут в таймпикере
+      colorScheme: Theme.of(context).colorScheme.copyWith(
+            primary: CustomColors.yellow,
+            onPrimary: CustomColors.almostBlack,
+          ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          primary: CustomColors.almostBlack,
+        ),
       ),
     );

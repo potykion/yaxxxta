@@ -28,6 +28,10 @@ class TimePickerInput extends HookWidget {
         var selectedTimeDateTime = (await showTimePicker(
           context: context,
           initialTime: TimeOfDay.fromDateTime(initial ?? DateTime.now()),
+          cancelText: "Отменить",
+          confirmText: "ОК",
+          helpText: "Выбери время",
+
         ))
             .toDateTime();
         tec.text = formatTime(selectedTimeDateTime);
