@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -31,12 +32,15 @@ class HabitCalendarPage extends HookWidget {
     var animatedListKey =
         useProvider(habitCalendarPage_AnimatedListState_Provider.state);
 
+    var pageViewController = useState(PageController(initialPage: 1));
+
     return Scaffold(
       appBar: buildAppBar(
         context: context,
         children: [
           Expanded(
             child: DateCarousel(
+              initial: context.read(selectedDateProvider).state,
               change: (date) {
                 context.read(selectedDateProvider).state = date;
                 context
@@ -51,27 +55,44 @@ class HabitCalendarPage extends HookWidget {
         big: true,
       ),
       body: vmsAsyncValue.maybeWhen(
-        data: (vms) => vms.isNotEmpty
-            ? AnimatedList(
-                key: animatedListKey,
-                initialItemCount: vms.length,
-                itemBuilder: (context, index, animation) => vms.length != index
-                    ? HabitCalendarPage_HabitProgressControl(
-                        index: index,
-                        vm: vms[index],
-                        animation: animation,
-                      )
-                    : null,
-              )
-            : Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    BiggerText(text: "Все привычки выполнены!"),
-                    SmallerText(text: "Или нечего выполнять"),
-                  ],
-                ),
-              ),
+        data: (vms) => PageView.builder(
+          itemCount: 3,
+          controller: pageViewController.value,
+          onPageChanged: (index) {
+            var newDate = context
+                .read(selectedDateProvider)
+                .state
+                .add(Duration(days: index > 1 ? 1 : -1));
+            context.read(selectedDateProvider).state = newDate;
+            context
+                .read(habitPerformingController)
+                .loadDateHabitPerformings(newDate);
+          },
+          itemBuilder: (BuildContext context, int index) {
+            return vms.isNotEmpty
+                ? AnimatedList(
+                    key: animatedListKey,
+                    initialItemCount: vms.length,
+                    itemBuilder: (context, index, animation) =>
+                        vms.length != index
+                            ? HabitCalendarPage_HabitProgressControl(
+                                index: index,
+                                vm: vms[index],
+                                animation: animation,
+                              )
+                            : null,
+                  )
+                : Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        BiggerText(text: "Все привычки выполнены!"),
+                        SmallerText(text: "Или нечего выполнять"),
+                      ],
+                    ),
+                  );
+          },
+        ),
         orElse: () => CenteredCircularProgress(),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
