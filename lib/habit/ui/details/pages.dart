@@ -98,8 +98,7 @@ class HabitDetailsPage extends HookWidget {
                 performValue: incrementValue,
               ));
 
-          context.read(habitAnimatedListStateProvider).state =
-              GlobalKey<AnimatedListState>();
+          context.read(habitCalendarPage_AnimatedListState_Provider).reset();
         },
         repeatTitle: "Сегодня",
       );

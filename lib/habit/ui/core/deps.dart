@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:yaxxxta/habit/ui/calendar/controllers.dart';
 
 import '../../../core/ui/deps.dart';
 import '../../../core/utils/async_value.dart';
@@ -153,6 +154,7 @@ Provider<ScheduleNotificationsForHabitsWithoutNotifications>
   ),
 );
 
-var habitAnimatedListStateProvider = StateProvider.autoDispose<GlobalKey<AnimatedListState>>(
-  (ref) => GlobalKey<AnimatedListState>(),
+
+var habitCalendarPage_AnimatedListState_Provider = StateNotifierProvider(
+  (ref) => HabitCalendarPage_AnimatedListState(GlobalKey<AnimatedListState>()),
 );

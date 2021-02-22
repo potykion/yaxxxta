@@ -51,10 +51,14 @@ class HabitListPage extends HookWidget {
                     )
                 ],
               )
-            : ListTile(
-                title: BiggerText(text: "Что-то не видать привычек"),
-                subtitle: BiggerText(text: "Самое время завести одну"),
-              ),
+            : Center(
+                child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SmallerText(text: "Что-то не видать привычек"),
+                  BiggerText(text: "Самое время завести одну!"),
+                ],
+              )),
         orElse: () => CenteredCircularProgress(),
       ),
       bottomNavigationBar: AppBottomNavigationBar(),

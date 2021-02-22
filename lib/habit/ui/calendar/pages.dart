@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:yaxxxta/core/ui/widgets/text.dart';
 
 import '../../../core/ui/widgets/app_bars.dart';
 import '../../../core/ui/widgets/bottom_nav.dart';
@@ -27,7 +28,8 @@ class HabitCalendarPage extends HookWidget {
     }, []);
     var vmsAsyncValue = useProvider(listHabitVMs);
 
-    var animatedListKey = useProvider(habitAnimatedListStateProvider);
+    var animatedListKey =
+        useProvider(habitCalendarPage_AnimatedListState_Provider.state);
 
     return Scaffold(
       appBar: buildAppBar(
@@ -49,37 +51,46 @@ class HabitCalendarPage extends HookWidget {
         big: true,
       ),
       body: vmsAsyncValue.maybeWhen(
-        data: (vms) => AnimatedList(
-          key: animatedListKey.state,
-          initialItemCount: vms.length,
-          itemBuilder: (context, index, animation) => vms.length != index
-              ? HabitCalendarPage_HabitProgressControl(
-                  index: index,
-                  vm: vms[index],
-                  animation: animation,
-                )
-              : null,
-        ),
+        data: (vms) => vms.isNotEmpty
+            ? AnimatedList(
+                key: animatedListKey,
+                initialItemCount: vms.length,
+                itemBuilder: (context, index, animation) => vms.length != index
+                    ? HabitCalendarPage_HabitProgressControl(
+                        index: index,
+                        vm: vms[index],
+                        animation: animation,
+                      )
+                    : null,
+              )
+            : Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    BiggerText(text: "Все привычки выполнены!"),
+                    SmallerText(text: "Или нечего выполнять"),
+                  ],
+                ),
+              ),
         orElse: () => CenteredCircularProgress(),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      floatingActionButton: vmsAsyncValue.maybeWhen(
-        data: (vms) => FloatingActionButton(
-          heroTag: "HabitCalendarPage",
-          child: Icon(Icons.add, size: 50),
-          onPressed: () async {
-            var habit =
-                (await Navigator.of(context).pushNamed(Routes.form)) as Habit;
-            if (habit != null &&
-                habit.matchDate(context.read(selectedDateProvider).state)) {
-              animatedListKey.state.currentState.insertItem(
-                vms.length,
-                duration: Duration(milliseconds: 500),
-              );
-            }
-          },
-        ),
-        orElse: () => null,
+      floatingActionButton: FloatingActionButton(
+        heroTag: "HabitCalendarPage",
+        child: Icon(Icons.add, size: 50),
+        onPressed: () async {
+          var habit =
+              (await Navigator.of(context).pushNamed(Routes.form)) as Habit;
+          if (habit != null &&
+              habit.matchDate(context.read(selectedDateProvider).state)) {
+            vmsAsyncValue.maybeWhen(
+              data: (vms) => context
+                  .read(habitCalendarPage_AnimatedListState_Provider)
+                  .insertItem(vms.length),
+              orElse: () => null,
+            );
+          }
+        },
       ),
       bottomNavigationBar: AppBottomNavigationBar(),
     );

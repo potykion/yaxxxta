@@ -27,76 +27,64 @@ class HabitCalendarPage_HabitProgressControl extends HookWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    var animatedListKey = useProvider(habitAnimatedListStateProvider);
-
-    return FadeTransition(
-      opacity: animation,
-      child: GestureDetector(
-        onTap: removed
-            ? null
-            : () async {
-                context.read(selectedHabitIdProvider).state = vm.id;
-                var deleted = await Navigator.of(context)
-                        .pushNamed(Routes.details) as bool ??
-                    false;
-                if (deleted) {
-                  animatedListKey.state.currentState.removeItem(
-                    index,
-                    (context, animation) =>
-                        HabitCalendarPage_HabitProgressControl(
-                      index: index,
-                      vm: vm,
-                      animation: animation,
-                      removed: true,
-                    ),
-                    duration: Duration(milliseconds: 500),
-                  );
-                }
-              },
-        child: HabitProgressControl(
-          key: Key(vm.id),
-          repeatTitle: vm.performTime != null
-              ? "${vm.performTimeStr}: ${vm.title}"
-              : vm.title,
-          vm: vm,
-          onRepeatIncrement: removed
+  Widget build(BuildContext context) => FadeTransition(
+        opacity: animation,
+        child: GestureDetector(
+          onTap: removed
               ? null
-              : (incrementValue, progressStatus, [date]) async {
-                  context.read(habitPerformingController).insert(
-                        HabitPerforming(
-                          habitId: vm.id,
-                          performValue: incrementValue,
-                          performDateTime:
-                              await _computePerformDateTime(context, date),
-                        ),
-                      );
-
-                  var settings = context.read(settingsProvider).state;
-                  var hideHabit = !settings.showCompleted &&
-                          (progressStatus == HabitProgressStatus.complete ||
-                              progressStatus == HabitProgressStatus.exceed) ||
-                      !settings.showCompleted &&
-                          (progressStatus == HabitProgressStatus.partial);
-
-                  if (hideHabit) {
-                    animatedListKey.state.currentState.removeItem(
-                      index,
-                      (context, animation) =>
-                          HabitCalendarPage_HabitProgressControl(
-                        index: index,
-                        vm: vm,
-                        animation: animation,
-                        removed: true,
-                      ),
-                      duration: Duration(milliseconds: 500),
-                    );
+              : () async {
+                  context.read(selectedHabitIdProvider).state = vm.id;
+                  var deleted = await Navigator.of(context)
+                          .pushNamed(Routes.details) as bool ??
+                      false;
+                  if (deleted) {
+                    _removeSelf(context);
                   }
                 },
-          initialDate: context.read(selectedDateProvider).state,
+          child: HabitProgressControl(
+            key: Key(vm.id),
+            repeatTitle: vm.performTime != null
+                ? "${vm.performTimeStr}: ${vm.title}"
+                : vm.title,
+            vm: vm,
+            onRepeatIncrement: removed
+                ? null
+                : (incrementValue, progressStatus, [date]) async {
+                    context.read(habitPerformingController).insert(
+                          HabitPerforming(
+                            habitId: vm.id,
+                            performValue: incrementValue,
+                            performDateTime:
+                                await _computePerformDateTime(context, date),
+                          ),
+                        );
+
+                    var settings = context.read(settingsProvider).state;
+                    var hideHabit = !settings.showCompleted &&
+                            (progressStatus == HabitProgressStatus.complete ||
+                                progressStatus == HabitProgressStatus.exceed) ||
+                        !settings.showCompleted &&
+                            (progressStatus == HabitProgressStatus.partial);
+
+                    if (hideHabit) {
+                      _removeSelf(context);
+                    }
+                  },
+            initialDate: context.read(selectedDateProvider).state,
+          ),
         ),
-      ),
-    );
+      );
+
+  void _removeSelf(BuildContext context) {
+    context.read(habitCalendarPage_AnimatedListState_Provider).removeItem(
+          index,
+          (_, animation) => HabitCalendarPage_HabitProgressControl(
+            index: index,
+            vm: vm,
+            animation: animation,
+            removed: true,
+          ),
+        );
   }
 
   Future<DateTime> _computePerformDateTime(
