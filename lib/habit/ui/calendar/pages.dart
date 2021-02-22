@@ -132,7 +132,7 @@ class HabitCalendarPage extends HookWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: vmsAsyncValue.maybeWhen(
         data: (vms) => FloatingActionButton(
-          heroTag: null,
+          heroTag: "HabitCalendarPage",
           child: Icon(Icons.add, size: 50),
           onPressed: () async {
             var habit =

@@ -153,6 +153,6 @@ Provider<ScheduleNotificationsForHabitsWithoutNotifications>
   ),
 );
 
-var habitAnimatedListStateProvider = StateProvider<GlobalKey<AnimatedListState>>(
+var habitAnimatedListStateProvider = StateProvider.autoDispose<GlobalKey<AnimatedListState>>(
   (ref) => GlobalKey<AnimatedListState>(),
 );

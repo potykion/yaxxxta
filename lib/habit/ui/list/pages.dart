@@ -30,29 +30,40 @@ class HabitListPage extends HookWidget {
         children: [BiggestText(text: "Привычки", withPadding: true)],
       ),
       body: habitsAsyncValue.maybeWhen(
-        data: (habits) => ListView(
-          children: [
-            for (var habit in habits)
-              GestureDetector(
-                onTap: () async {
-                  context.read(selectedHabitIdProvider).state = habit.id;
-                  await Navigator.of(context).pushNamed(Routes.details);
-                },
-                child: PaddedContainerCard(
-                  padVerticalOnly: true,
-                  children: [
-                    ListTile(
-                      title: BiggerText(text: habit.title),
-                      subtitle: HabitChips(habit: habit),
-                    ),
-                  ],
-                ),
+        data: (habits) => habits.isNotEmpty
+            ? ListView(
+                children: [
+                  for (var habit in habits)
+                    GestureDetector(
+                      onTap: () async {
+                        context.read(selectedHabitIdProvider).state = habit.id;
+                        await Navigator.of(context).pushNamed(Routes.details);
+                      },
+                      child: PaddedContainerCard(
+                        padVerticalOnly: true,
+                        children: [
+                          ListTile(
+                            title: BiggerText(text: habit.title),
+                            subtitle: HabitChips(habit: habit),
+                          ),
+                        ],
+                      ),
+                    )
+                ],
               )
-          ],
-        ),
+            : ListTile(
+                title: BiggerText(text: "Что-то не видать привычек"),
+                subtitle: BiggerText(text: "Самое время завести одну"),
+              ),
         orElse: () => CenteredCircularProgress(),
       ),
       bottomNavigationBar: AppBottomNavigationBar(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      floatingActionButton: FloatingActionButton(
+        heroTag: "HabitListPage",
+        child: Icon(Icons.add, size: 50),
+        onPressed: () => Navigator.of(context).pushNamed(Routes.form),
+      ),
     );
   }
 }
