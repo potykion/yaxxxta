@@ -69,4 +69,8 @@ ThemeData buildTheme(BuildContext context) => ThemeData(
           primary: CustomColors.almostBlack,
         ),
       ),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        foregroundColor: CustomColors.almostBlack,
+        backgroundColor: CustomColors.yellow,
+      ),
     );
