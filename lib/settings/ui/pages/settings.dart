@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:yaxxxta/core/ui/widgets/app_bars.dart';
+import 'package:yaxxxta/core/ui/widgets/input.dart';
 import '../../../core/ui/deps.dart';
 
 import '../../../core/ui/widgets/bottom_nav.dart';
@@ -41,13 +42,24 @@ class SettingsPage extends HookWidget {
               padVerticalOnly: true,
               children: [
                 if (snapshot.hasData)
-                  ListTile(
-                    leading: CircleAvatar(
-                      backgroundImage: NetworkImage(snapshot.data.photoURL),
-                    ),
-                    title: BiggerText(text: snapshot.data.displayName),
-                    trailing: Icon(Icons.logout),
-                    onTap: () => context.read(authProvider).signOut(),
+                  Column(
+                    children: [
+                      ListTile(
+                        leading: CircleAvatar(
+                          backgroundImage: NetworkImage(snapshot.data.photoURL),
+                        ),
+                        title: BiggerText(text: snapshot.data.displayName),
+                        subtitle: SmallerText(text: "Бесплатный аккаунт"),
+                        trailing: IconButton(
+                          icon: Icon(Icons.logout),
+                          onPressed: () => context.read(authProvider).signOut(),
+                        ),
+                      ),
+                      ElevatedButton(
+                        child: BiggerText(text: "Перейти на платный аккаунт"),
+                        onPressed: () {},
+                      )
+                    ],
                   )
                 else
                   ListTile(

@@ -73,4 +73,5 @@ ThemeData buildTheme(BuildContext context) => ThemeData(
         foregroundColor: CustomColors.almostBlack,
         backgroundColor: CustomColors.yellow,
       ),
+
     );
