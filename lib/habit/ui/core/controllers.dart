@@ -1,4 +1,5 @@
 import 'package:device_info/device_info.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:meta/meta.dart';
@@ -18,6 +19,9 @@ class HabitController extends StateNotifier<AsyncValue<List<Habit>>> {
   /// Инфа о ведре
   final AndroidDeviceInfo deviceInfo;
 
+  /// Инфа об аутентификации через фб
+  final FirebaseAuth fbAuth;
+
   /// Планирование оправки уведомл.
   final ScheduleSingleHabitNotification scheduleSingleHabitNotification;
 
@@ -26,6 +30,7 @@ class HabitController extends StateNotifier<AsyncValue<List<Habit>>> {
     @required this.habitRepo,
     @required this.deviceInfo,
     @required this.scheduleSingleHabitNotification,
+    @required this.fbAuth,
     List<Habit> state = const [],
   }) : super(AsyncValue.data(state));
 
@@ -47,6 +52,10 @@ class HabitController extends StateNotifier<AsyncValue<List<Habit>>> {
   Future<Habit> createOrUpdateHabit(Habit habit) async {
     if (habit.deviceId == null) {
       habit = habit.copyWith(deviceId: deviceInfo.id);
+    }
+
+    if (habit.userId == null) {
+      habit = habit.copyWith(userId: fbAuth.currentUser?.uid);
     }
 
     if (habit.isUpdate) {

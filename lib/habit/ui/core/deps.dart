@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/all.dart';
@@ -41,6 +42,7 @@ StateNotifierProvider<HabitController> habitControllerProvider =
     deviceInfo: androidInfo,
     scheduleSingleHabitNotification:
         ref.watch(schedulePerformHabitNotificationsProvider),
+    fbAuth: FirebaseAuth.instance,
   ),
 );
 
@@ -153,7 +155,6 @@ Provider<ScheduleNotificationsForHabitsWithoutNotifications>
     habitRepo: ref.watch(habitRepoProvider),
   ),
 );
-
 
 var habitCalendarPage_AnimatedListState_Provider = StateNotifierProvider(
   (ref) => HabitCalendarPage_AnimatedListState(GlobalKey<AnimatedListState>()),

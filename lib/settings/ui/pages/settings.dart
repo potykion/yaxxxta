@@ -49,14 +49,14 @@ class SettingsPage extends HookWidget {
                           backgroundImage: NetworkImage(snapshot.data.photoURL),
                         ),
                         title: BiggerText(text: snapshot.data.displayName),
-                        subtitle: SmallerText(text: "Бесплатный аккаунт"),
+                        subtitle: SmallerText(text: "Синхронизация отключена"),
                         trailing: IconButton(
                           icon: Icon(Icons.logout),
                           onPressed: () => context.read(authProvider).signOut(),
                         ),
                       ),
                       ElevatedButton(
-                        child: BiggerText(text: "Перейти на платный аккаунт"),
+                        child: BiggerText(text: "Включить синхронизацию"),
                         onPressed: () {},
                       )
                     ],
