@@ -40,8 +40,7 @@ Provider<String> versionProvider =
     Provider((ref) => "${packageInfo.version}+${packageInfo.buildNumber}");
 
 /// Провайдер входа через гугл
-Provider<SignInWithGoogle> signInWithGoogleProvider =
-    Provider((_) => SignInWithGoogle());
+Provider<Auth> authProvider = Provider((_) => Auth());
 
 /// Провайдер ссылки на фаер-стор коллекцию с привычками
 Provider<CollectionReference> habitCollectionRefProvider = Provider(

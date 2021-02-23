@@ -1,9 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth;
+import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth, User;
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:yaxxxta/core/ui/widgets/app_bars.dart';
-import '../../../auth/models.dart';
 import '../../../core/ui/deps.dart';
 
 import '../../../core/ui/widgets/bottom_nav.dart';
@@ -35,9 +34,7 @@ class SettingsPage extends HookWidget {
         children: [BiggestText(text: "Настроечки", withPadding: true)],
       ),
       body: StreamBuilder<User>(
-        stream: FirebaseAuth.instance
-            .authStateChanges()
-            .map((user) => user != null ? User.fromFireBase(user) : null),
+        stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) => ListView(
           children: [
             PaddedContainerCard(
@@ -49,13 +46,13 @@ class SettingsPage extends HookWidget {
                       backgroundImage: NetworkImage(snapshot.data.photoURL),
                     ),
                     title: BiggerText(text: snapshot.data.displayName),
+                    trailing: Icon(Icons.logout),
+                    onTap: () => context.read(authProvider).signOut(),
                   )
                 else
                   ListTile(
                     title: BiggerText(text: "Войти"),
-                    onTap: () async {
-                      await context.read(signInWithGoogleProvider)();
-                    },
+                    onTap: () => context.read(authProvider).signInByGoogle(),
                     trailing: Icon(Icons.login),
                   )
               ],

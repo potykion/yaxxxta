@@ -1,13 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart'
-    show FirebaseAuth, GoogleAuthProvider;
+    show FirebaseAuth, GoogleAuthProvider, User;
 import 'package:google_sign_in/google_sign_in.dart';
 
-import 'models.dart';
-
 /// Аутентификация через гугл
-class SignInWithGoogle {
+class Auth {
   /// https://firebase.flutter.dev/docs/auth/social/
-  Future<User> call() async {
+  Future<User> signInByGoogle() async {
     // Trigger the authentication flow
     final googleUser = await GoogleSignIn().signIn();
 
@@ -23,6 +21,10 @@ class SignInWithGoogle {
     // Once signed in, return the UserCredential
     var cred = await FirebaseAuth.instance.signInWithCredential(credential);
 
-    return User.fromFireBase(cred.user);
+    return cred.user;
+  }
+
+  Future<void> signOut() async {
+    await FirebaseAuth.instance.signOut();
   }
 }

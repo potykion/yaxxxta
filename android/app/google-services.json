@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "843289797199-u43ajunvqgk7laug99oet34msgqc0tpj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dev.palka.yaxxxta",
+            "certificate_hash": "040724a800c5d918f7ad803eb637d438825ad2bd"
+          }
+        },
+        {
           "client_id": "843289797199-9ec777eampm8koufhi0u8i22chomvg3g.apps.googleusercontent.com",
           "client_type": 3
         }
