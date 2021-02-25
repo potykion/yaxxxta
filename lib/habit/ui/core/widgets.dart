@@ -1,5 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:yaxxxta/core/domain/models.dart';
+import 'package:yaxxxta/core/ui/widgets/duration.dart';
 
 import '../../../core/ui/widgets/card.dart';
 import '../../../core/ui/widgets/date.dart';
@@ -130,10 +134,10 @@ class HabitPerformingFormModal extends HookWidget {
           SmallPadding(
             child: BiggerText(text: "Продолжительность"),
           ),
-          TextInput<double>(
-            initial: vm.performValue,
-            change: (dynamic v) =>
-                setVM(vm.copyWith(performValue: v as double)),
+          DurationInput(
+            initial: DoubleDuration.fromSeconds(vm.performValue),
+            change: (newDuration) =>
+                setVM(vm.copyWith(performValue: newDuration.asSeconds)),
           ),
         ],
         if (habitType == HabitType.repeats) ...[
@@ -148,10 +152,18 @@ class HabitPerformingFormModal extends HookWidget {
             ),
           ),
         ],
-        ListTile(
-          title: SimpleButton(
-            text: "Сохранить",
-            onTap: () => Navigator.of(context).pop(vm),
+        SizedBox(height: 10),
+        Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: SizedBox(
+            height: 45,
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(vm),
+              child: BiggerText(text: "Сохранить"),
+            ),
           ),
         ),
       ],

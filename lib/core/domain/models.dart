@@ -26,4 +26,6 @@ abstract class DoubleDuration implements _$DoubleDuration {
       seconds: remainingSeconds,
     );
   }
+
+  double get asSeconds => seconds + minutes * 60 + hours * 3600;
 }

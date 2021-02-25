@@ -31,7 +31,7 @@ class HabitFormPage extends HookWidget {
     var vmState = useState(ModalRoute.of(context).settings.arguments as Habit ??
         Habit(created: DateTime.now()));
     var habit = vmState.value;
-    setVm(Habit newVm) => vmState.value = newVm;
+    setVM(Habit newVm) => vmState.value = newVm;
 
     var error = useProvider(_error(habit));
 
@@ -59,7 +59,7 @@ class HabitFormPage extends HookWidget {
               TextInput(
                 initial: habit.title,
                 change: (dynamic t) =>
-                    setVm(habit.copyWith(title: t as String)),
+                    setVM(habit.copyWith(title: t as String)),
               ),
             ],
           ),
@@ -82,7 +82,7 @@ class HabitFormPage extends HookWidget {
               HabitTypeRadioGroup(
                 initial: habit.type,
                 change: (type) =>
-                    setVm(habit.copyWith(type: type, goalValue: 1)),
+                    setVM(habit.copyWith(type: type, goalValue: 1)),
                 setBefore: habit.isUpdate,
               ),
             ],
@@ -95,7 +95,7 @@ class HabitFormPage extends HookWidget {
                 DurationInput(
                   initial: DoubleDuration.fromSeconds(habit.goalValue),
                   change: (newDuration) =>
-                      setVm(habit.applyDuration(newDuration)),
+                      setVM(habit.applyDuration(newDuration)),
                 ),
                 SizedBox(height: 5),
                 Row(
@@ -103,21 +103,21 @@ class HabitFormPage extends HookWidget {
                   children: [
                     SimpleButton(
                       text: "+ 1 %",
-                      onTap: () => setVm(habit.increaseGoalValueByPercent()),
+                      onTap: () => setVM(habit.increaseGoalValueByPercent()),
                     ),
                     SimpleButton(
                       text: "+ 1 сек",
                       onTap: () =>
-                          setVm(habit.copyWith(goalValue: habit.goalValue + 1)),
+                          setVM(habit.copyWith(goalValue: habit.goalValue + 1)),
                     ),
                     SimpleButton(
                       text: "+ 1 мин",
-                      onTap: () => setVm(
+                      onTap: () => setVM(
                           habit.copyWith(goalValue: habit.goalValue + 1 * 60)),
                     ),
                     SimpleButton(
                       text: "+ 1 ч",
-                      onTap: () => setVm(habit.copyWith(
+                      onTap: () => setVM(habit.copyWith(
                           goalValue: habit.goalValue + 1 * 3600)),
                     ),
                   ],
@@ -132,7 +132,7 @@ class HabitFormPage extends HookWidget {
                 TextInput<double>(
                   initial: habit.goalValue,
                   change: (dynamic v) =>
-                      setVm(habit.copyWith(goalValue: v as double)),
+                      setVM(habit.copyWith(goalValue: v as double)),
                 ),
                 SizedBox(height: 5),
                 Row(
@@ -140,21 +140,21 @@ class HabitFormPage extends HookWidget {
                   children: [
                     SimpleButton(
                       text: "+ 1 %",
-                      onTap: () => setVm(habit.increaseGoalValueByPercent()),
+                      onTap: () => setVM(habit.increaseGoalValueByPercent()),
                     ),
                     SimpleButton(
                       text: "+ 1",
                       onTap: () =>
-                          setVm(habit.copyWith(goalValue: habit.goalValue + 1)),
+                          setVM(habit.copyWith(goalValue: habit.goalValue + 1)),
                     ),
                     SimpleButton(
                       text: "+ 10",
-                      onTap: () => setVm(
+                      onTap: () => setVM(
                           habit.copyWith(goalValue: habit.goalValue + 10)),
                     ),
                     SimpleButton(
                       text: "+ 100",
-                      onTap: () => setVm(
+                      onTap: () => setVM(
                           habit.copyWith(goalValue: habit.goalValue + 100)),
                     ),
                   ],
@@ -177,7 +177,7 @@ class HabitFormPage extends HookWidget {
                     text: HabitPeriodType.day.verbose(),
                     selected: !habit.isCustomPeriod &&
                         habit.periodType == HabitPeriodType.day,
-                    change: (_) => setVm(
+                    change: (_) => setVM(
                       habit.copyWith(
                         periodType: HabitPeriodType.day,
                         isCustomPeriod: false,
@@ -188,7 +188,7 @@ class HabitFormPage extends HookWidget {
                     text: HabitPeriodType.week.verbose(),
                     selected: !habit.isCustomPeriod &&
                         habit.periodType == HabitPeriodType.week,
-                    change: (_) => setVm(
+                    change: (_) => setVM(
                       habit.copyWith(
                         periodType: HabitPeriodType.week,
                         isCustomPeriod: false,
@@ -199,7 +199,7 @@ class HabitFormPage extends HookWidget {
                     text: HabitPeriodType.month.verbose(),
                     selected: !habit.isCustomPeriod &&
                         habit.periodType == HabitPeriodType.month,
-                    change: (_) => setVm(
+                    change: (_) => setVM(
                       habit.copyWith(
                         periodType: HabitPeriodType.month,
                         isCustomPeriod: false,
@@ -209,7 +209,7 @@ class HabitFormPage extends HookWidget {
                   SimpleChip(
                     text: "Другая",
                     selected: habit.isCustomPeriod,
-                    change: (_) => setVm(
+                    change: (_) => setVM(
                       habit.copyWith(isCustomPeriod: true),
                     ),
                   ),
@@ -223,7 +223,7 @@ class HabitFormPage extends HookWidget {
                       Flexible(
                           child: TextInput<int>(
                         initial: habit.periodValue,
-                        change: (dynamic v) => setVm(
+                        change: (dynamic v) => setVM(
                           habit.copyWith(periodValue: v as int),
                         ),
                       )),
@@ -231,7 +231,7 @@ class HabitFormPage extends HookWidget {
                       Expanded(
                         child: HabitPeriodTypeSelect(
                           initial: habit.periodType,
-                          change: (t) => setVm(habit.copyWith(periodType: t)),
+                          change: (t) => setVM(habit.copyWith(periodType: t)),
                         ),
                         flex: 3,
                       )
@@ -248,7 +248,7 @@ class HabitFormPage extends HookWidget {
                     WeekdaysPicker(
                       initial: habit.performWeekdays,
                       change: (ws) =>
-                          setVm(habit.copyWith(performWeekdays: ws)),
+                          setVM(habit.copyWith(performWeekdays: ws)),
                     )
                   ],
                 ),
@@ -267,7 +267,7 @@ class HabitFormPage extends HookWidget {
                     TextInput<int>(
                       initial: habit.performMonthDay,
                       change: (dynamic d) =>
-                          setVm(habit.copyWith(performMonthDay: d as int)),
+                          setVM(habit.copyWith(performMonthDay: d as int)),
                     ),
                   ],
                 ),
@@ -286,7 +286,7 @@ class HabitFormPage extends HookWidget {
               SizedBox(height: 5),
               TimePickerInput(
                 initial: habit.performTime,
-                change: (time) => setVm(habit.copyWith(performTime: time)),
+                change: (time) => setVM(habit.copyWith(performTime: time)),
               ),
               if (habit.performTime != null)
                 CheckboxListTile(
@@ -295,7 +295,7 @@ class HabitFormPage extends HookWidget {
                     text: "Отправить уведомление перед выполнением?",
                   ),
                   value: habit.isNotificationsEnabled,
-                  onChanged: (isNotificationsEnabled) => setVm(
+                  onChanged: (isNotificationsEnabled) => setVM(
                     habit.copyWith(
                         isNotificationsEnabled: isNotificationsEnabled),
                   ),

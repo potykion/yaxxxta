@@ -130,6 +130,7 @@ class HabitHistoryEntrySlidable extends StatelessWidget {
           icon: Icons.edit,
           onTap: () async {
             var habitPerforming = await showModalBottomSheet<HabitPerforming>(
+              isScrollControlled: true,
               context: context,
               builder: (context) => HabitPerformingFormModal(
                 initialHabitPerforming: HabitPerforming(
