@@ -23,13 +23,11 @@ class DateCarousel extends HookWidget {
     Map<DateTime, double> highlights,
     DateTime initial,
     @required this.change,
-  })  : initial = initial ?? DateTime.now().date(),
+  })  : initial = (initial ?? DateTime.now()).date(),
         highlights = highlights ?? {};
 
   @override
   Widget build(BuildContext context) {
-    var selectedIndexState = useState(0);
-
     return SizedBox(
       height: 75,
       child: InfiniteListView.builder(
@@ -40,16 +38,13 @@ class DateCarousel extends HookWidget {
         ),
         scrollDirection: Axis.horizontal,
         itemBuilder: (_, index) {
-          var shiftDate = initial.add(Duration(days: index));
+          var shiftDate = DateTime.now().date().add(Duration(days: index));
 
           return GestureDetector(
-            onTap: () {
-              selectedIndexState.value = index;
-              change(shiftDate);
-            },
+            onTap: () => change(shiftDate),
             child: DateCarouselCell(
               date: shiftDate,
-              color: selectedIndexState.value == index
+              color: shiftDate == initial
                   ? CustomColors.yellow
                   : CustomColors.green.withAlpha(
                       highlights.containsKey(shiftDate)
