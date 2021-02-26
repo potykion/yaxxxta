@@ -12,12 +12,22 @@ import '../core/deps.dart';
 import '../core/view_models.dart';
 import '../core/widgets.dart';
 
+/// Контрол прогресса привычки для страницы календаря
+// ignore: camel_case_types
 class HabitCalendarPage_HabitProgressControl extends HookWidget {
+  /// Индекс в списке
   final int index;
+
+  /// Вм прогресса привычки
   final HabitProgressVM vm;
+
+  /// Анимация при создании/удалении контрола
   final Animation<double> animation;
+
+  /// Улален ли контрол
   final bool removed;
 
+  /// Контрол прогресса привычки для страницы календаря
   const HabitCalendarPage_HabitProgressControl({
     Key key,
     this.index,

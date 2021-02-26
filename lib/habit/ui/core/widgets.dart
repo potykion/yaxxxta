@@ -1,12 +1,10 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:yaxxxta/core/domain/models.dart';
-import 'package:yaxxxta/core/ui/widgets/duration.dart';
 
+import '../../../core/domain/models.dart';
 import '../../../core/ui/widgets/card.dart';
 import '../../../core/ui/widgets/date.dart';
+import '../../../core/ui/widgets/duration.dart';
 import '../../../core/ui/widgets/input.dart';
 import '../../../core/ui/widgets/new_progress.dart';
 import '../../../core/ui/widgets/padding.dart';

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../../core/ui/widgets/app_bars.dart';
 
 import '../../../core/domain/models.dart';
+import '../../../core/ui/widgets/app_bars.dart';
 import '../../../core/ui/widgets/card.dart';
 import '../../../core/ui/widgets/duration.dart';
 import '../../../core/ui/widgets/input.dart';

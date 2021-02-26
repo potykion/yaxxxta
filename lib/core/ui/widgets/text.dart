@@ -93,6 +93,7 @@ class BiggestText extends StatelessWidget {
   /// Текст
   final String text;
 
+  /// Добавить ли горизонтальный отступ
   final bool withPadding;
 
   /// Создает текст

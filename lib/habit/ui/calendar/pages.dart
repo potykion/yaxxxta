@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/all.dart';
-import 'package:yaxxxta/core/ui/widgets/text.dart';
 
 import '../../../core/ui/widgets/app_bars.dart';
 import '../../../core/ui/widgets/bottom_nav.dart';
 import '../../../core/ui/widgets/circular_progress.dart';
 import '../../../core/ui/widgets/date.dart';
+import '../../../core/ui/widgets/text.dart';
 import '../../../routes.dart';
 import '../../domain/models.dart';
 import '../core/deps.dart';
@@ -71,7 +71,7 @@ class HabitCalendarPage extends HookWidget {
                 .read(habitPerformingController)
                 .loadDateHabitPerformings(newDate);
           },
-          itemBuilder: (BuildContext context, int index) {
+          itemBuilder: (context, index) {
             return vms.isNotEmpty
                 ? AnimatedList(
                     key: animatedListKey,

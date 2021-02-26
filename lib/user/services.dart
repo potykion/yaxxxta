@@ -24,6 +24,7 @@ class Auth {
     return cred.user;
   }
 
+  /// Выход из акка
   Future<void> signOut() async {
     await FirebaseAuth.instance.signOut();
   }

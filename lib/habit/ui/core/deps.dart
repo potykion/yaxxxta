@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/all.dart';
-import 'package:yaxxxta/habit/ui/calendar/controllers.dart';
 
 import '../../../core/ui/deps.dart';
 import '../../../core/utils/async_value.dart';
@@ -12,6 +11,7 @@ import '../../domain/db.dart';
 import '../../domain/models.dart';
 import '../../domain/services.dart';
 import '../../infra/db.dart';
+import '../calendar/controllers.dart';
 import '../details/view_models.dart';
 import 'controllers.dart';
 import 'view_models.dart';
@@ -156,6 +156,9 @@ Provider<ScheduleNotificationsForHabitsWithoutNotifications>
   ),
 );
 
-var habitCalendarPage_AnimatedListState_Provider = StateNotifierProvider(
+/// Провайдер стейта анимированного списка на странице календаря
+StateNotifierProvider<HabitCalendarPage_AnimatedListState>
+    // ignore: non_constant_identifier_names
+    habitCalendarPage_AnimatedListState_Provider = StateNotifierProvider(
   (ref) => HabitCalendarPage_AnimatedListState(GlobalKey<AnimatedListState>()),
 );
