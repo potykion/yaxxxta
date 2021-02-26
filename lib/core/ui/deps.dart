@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:package_info/package_info.dart';
-import '../../auth/services.dart';
+import '../../user/services.dart';
+
 import '../infra/push.dart';
 
 /// Регает индекс выбранной странички
