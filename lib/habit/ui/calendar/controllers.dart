@@ -25,7 +25,7 @@ class HabitCalendarPage_AnimatedListState
     );
   }
 
-  void reset() {
-    state = GlobalKey<AnimatedListState>();
+  void reset({bool delete = false}) {
+    state = delete ? null : GlobalKey<AnimatedListState>();
   }
 }

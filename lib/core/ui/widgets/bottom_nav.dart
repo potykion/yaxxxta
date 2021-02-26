@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:tuple/tuple.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:yaxxxta/habit/ui/core/deps.dart';
 
 import '../../../routes.dart';
 import '../../../theme.dart';
@@ -31,20 +33,25 @@ class AppBottomNavigationBar extends StatelessWidget {
                       text: textAndIcon.item1,
                       icon: textAndIcon.item2,
                       selected: bottomNavRoutes[index] == currentRoute,
-                      onTap: () => Navigator.pushReplacement<dynamic, dynamic>(
-                            context,
-                            PageTransition<dynamic>(
-                              child: routes[bottomNavRoutes[index]](context),
-                              type: currentIndex < index
-                                  ? PageTransitionType.rightToLeftJoined
-                                  : PageTransitionType.leftToRightJoined,
-                              childCurrent:
-                                  routes[bottomNavRoutes[currentIndex]](
-                                      context),
-                              settings:
-                                  RouteSettings(name: bottomNavRoutes[index]),
-                            ),
-                          )),
+                      onTap: () {
+                        context
+                            .read(habitCalendarPage_AnimatedListState_Provider)
+                            .reset(delete: true);
+
+                        return Navigator.pushReplacement<dynamic, dynamic>(
+                          context,
+                          PageTransition<dynamic>(
+                            child: routes[bottomNavRoutes[index]](context),
+                            type: currentIndex < index
+                                ? PageTransitionType.rightToLeftJoined
+                                : PageTransitionType.leftToRightJoined,
+                            childCurrent:
+                                routes[bottomNavRoutes[currentIndex]](context),
+                            settings:
+                                RouteSettings(name: bottomNavRoutes[index]),
+                          ),
+                        );
+                      }),
                 )
                 .toList(),
           ),
