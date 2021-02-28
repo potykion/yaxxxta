@@ -14,14 +14,15 @@ class FirestoreUserDataRepo implements UserDataRepo {
   @override
   Future<UserData> getByDeviceId(String deviceId) async {
     try {
-      (await _collectionReference
-              .where("deviceId", arrayContains: deviceId)
-              .where("userId", isNull: true)
+      return (await _collectionReference
+              .where("deviceIds", arrayContains: deviceId)
               .get())
           .docs
           .map((doc) => UserData.fromJson(doc.data()))
+          .where((ud) => ud.userId == null)
           .first;
-    } on Exception {
+      // ignore: avoid_catching_errors
+    } on StateError {
       return null;
     }
   }
@@ -29,11 +30,14 @@ class FirestoreUserDataRepo implements UserDataRepo {
   @override
   Future<UserData> getByUserId(String userId) async {
     try {
-      (await _collectionReference.where("userId", isEqualTo: userId).get())
+      return (await _collectionReference
+              .where("userId", isEqualTo: userId)
+              .get())
           .docs
           .map((doc) => UserData.fromJson(doc.data()))
           .first;
-    } on Exception {
+      // ignore: avoid_catching_errors
+    } on StateError {
       return null;
     }
   }

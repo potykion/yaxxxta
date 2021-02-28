@@ -21,9 +21,10 @@ abstract class UserData implements _$UserData {
 
   factory UserData.blank({
     @required String deviceId,
+    String userId,
   }) {
     return UserData(
-      userId: null,
+      userId: userId,
       deviceIds: [deviceId],
       habitIds: [],
       settings: Settings.createDefault(),
