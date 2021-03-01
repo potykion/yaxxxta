@@ -6,6 +6,7 @@ import '../../../core/ui/widgets/app_bars.dart';
 import '../../../core/ui/widgets/bottom_nav.dart';
 import '../../../core/ui/widgets/card.dart';
 import '../../../core/ui/widgets/circular_progress.dart';
+import '../../../core/ui/widgets/padding.dart';
 import '../../../core/ui/widgets/text.dart';
 import '../../../deps.dart';
 import '../../../routes.dart';
@@ -39,13 +40,13 @@ class HabitListPage extends HookWidget {
                         context.read(selectedHabitIdProvider).state = habit.id;
                         await Navigator.of(context).pushNamed(Routes.details);
                       },
-                      child: PaddedContainerCard(
-                        padVerticalOnly: true,
+                      child: ContainerCard(
                         children: [
                           ListTile(
                             title: BiggerText(text: habit.title),
-                            subtitle: HabitChips(habit: habit),
+                            dense: true,
                           ),
+                          SmallPadding(child: HabitChips(habit: habit)),
                         ],
                       ),
                     )
