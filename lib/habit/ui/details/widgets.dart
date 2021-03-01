@@ -108,19 +108,15 @@ class HabitHistoryEntrySlidable extends StatelessWidget {
     return Slidable(
       child: Padding(
         padding: const EdgeInsets.symmetric(
-          horizontal: 10,
+          horizontal: 15,
           vertical: 15,
         ),
         child: Row(children: [
-          SmallerText(
-            text: formatTime(historyEntry.time),
-            dark: true,
-          ),
+          SmallerText(text: historyEntry.time.format()),
+          SizedBox(width: 5),
+          SmallerText(text: formatTime(historyEntry.time), dark: true),
           Spacer(),
-          SmallerText(
-            text: "+ ${historyEntry.format(habit.type)}",
-            dark: true,
-          )
+          SmallerText(text: "+ ${historyEntry.format(habit.type)}", dark: true)
         ]),
       ),
       secondaryActions: [

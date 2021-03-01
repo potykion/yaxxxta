@@ -51,25 +51,23 @@ class HabitDetailsPage extends HookWidget {
             children: [
               ListTile(title: HabitChips(habit: habit)),
               _buildTodayHabitProgressControl(context, habit, progress),
-              PaddedContainerCard(children: [
-                Row(
-                  children: [
-                    BiggerText(text: "История"),
-                    Spacer(),
-                    CreateHabitPerformingButton(
+              ContainerCard(
+                children: [
+                  ListTile(
+                    title: BiggerText(text: "История"),
+                    trailing: CreateHabitPerformingButton(
                       habit: habit,
                       initialDate: historyDateState.value,
                     ),
-                  ],
-                ),
-                SizedBox(height: 5),
-                DateCarousel(
-                  change: (d) => historyDateState.value = d,
-                  highlights: history.highlights,
-                ),
-                for (var e in history.getForDate(historyDateState.value))
-                  HabitHistoryEntrySlidable(historyEntry: e, habit: habit)
-              ])
+                  ),
+                  DateCarousel(
+                    change: (d) => historyDateState.value = d,
+                    highlights: history.highlights,
+                  ),
+                  for (var e in history.getForDate(historyDateState.value))
+                    HabitHistoryEntrySlidable(historyEntry: e, habit: habit)
+                ],
+              )
             ],
           ),
         );
