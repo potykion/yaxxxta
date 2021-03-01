@@ -10,5 +10,11 @@ class SmallPadding extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-      padding: const EdgeInsets.only(left: 15, bottom: 5), child: child);
+        padding: const EdgeInsets.only(
+          left: 15,
+          right: 15,
+          bottom: 10,
+        ),
+        child: child,
+      );
 }
