@@ -39,11 +39,11 @@ class HabitFormPage extends HookWidget {
       appBar: buildAppBar(
         context: context,
         children: [
+          BackButton(),
           BiggestText(
             text: habit.isUpdate
                 ? "Редактирование привычки"
                 : "Создание привычки",
-            withPadding: true,
           )
         ],
       ),
