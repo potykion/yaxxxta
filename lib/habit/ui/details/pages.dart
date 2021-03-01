@@ -54,6 +54,7 @@ class HabitDetailsPage extends HookWidget {
               ContainerCard(
                 children: [
                   ListTile(
+                    dense: true,
                     title: BiggerText(text: "История"),
                     trailing: CreateHabitPerformingButton(
                       habit: habit,

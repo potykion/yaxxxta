@@ -106,18 +106,13 @@ class HabitHistoryEntrySlidable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Slidable(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 15,
-          vertical: 15,
+      child: ListTile(
+        dense: true,
+        title: SmallerText(text: formatTime(historyEntry.time), dark: true),
+        trailing: SmallerText(
+          text: "+ ${historyEntry.format(habit.type)}",
+          dark: true,
         ),
-        child: Row(children: [
-          SmallerText(text: historyEntry.time.format()),
-          SizedBox(width: 5),
-          SmallerText(text: formatTime(historyEntry.time), dark: true),
-          Spacer(),
-          SmallerText(text: "+ ${historyEntry.format(habit.type)}", dark: true)
-        ]),
       ),
       secondaryActions: [
         IconSlideAction(
