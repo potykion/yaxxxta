@@ -9,9 +9,9 @@ import '../../../core/ui/widgets/duration.dart';
 import '../../../core/ui/widgets/input.dart';
 import '../../../core/ui/widgets/text.dart';
 import '../../../core/ui/widgets/time.dart';
+import '../../../deps.dart';
 import '../../../theme.dart';
 import '../../domain/models.dart';
-import '../core/deps.dart';
 import 'widgets.dart';
 
 var _error = Provider.family<String, Habit>((ref, habit) {

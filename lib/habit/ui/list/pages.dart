@@ -7,8 +7,8 @@ import '../../../core/ui/widgets/bottom_nav.dart';
 import '../../../core/ui/widgets/card.dart';
 import '../../../core/ui/widgets/circular_progress.dart';
 import '../../../core/ui/widgets/text.dart';
+import '../../../deps.dart';
 import '../../../routes.dart';
-import '../core/deps.dart';
 import '../core/widgets.dart';
 
 /// Страница со списком привычек

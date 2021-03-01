@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:tuple/tuple.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../habit/ui/core/deps.dart';
 
+import '../../../deps.dart';
 import '../../../routes.dart';
 import '../../../theme.dart';
 import '../../utils/list.dart';

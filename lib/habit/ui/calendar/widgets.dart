@@ -5,10 +5,9 @@ import 'package:hooks_riverpod/all.dart';
 
 import '../../../core/ui/widgets/time.dart';
 import '../../../core/utils/dt.dart';
+import '../../../deps.dart';
 import '../../../routes.dart';
-import '../../../settings/ui/core/deps.dart';
 import '../../domain/models.dart';
-import '../core/deps.dart';
 import '../core/view_models.dart';
 import '../core/widgets.dart';
 

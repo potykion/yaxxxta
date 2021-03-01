@@ -4,10 +4,10 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../../../core/ui/widgets/text.dart';
 import '../../../core/utils/dt.dart';
+import '../../../deps.dart';
 import '../../../routes.dart';
 import '../../../theme.dart';
 import '../../domain/models.dart';
-import '../core/deps.dart';
 import '../core/widgets.dart';
 import 'view_models.dart';
 
