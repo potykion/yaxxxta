@@ -49,7 +49,7 @@ class HabitDetailsPage extends HookWidget {
           ),
           body: ListView(
             children: [
-              ListTile(title: HabitChips(habit: habit)),
+              ListTile(title: HabitChips(habit: habit), dense: true),
               _buildTodayHabitProgressControl(context, habit, progress),
               ContainerCard(
                 children: [

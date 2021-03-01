@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -43,32 +44,34 @@ class HabitProgressControl extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return PaddedContainerCard(children: [
-      BiggerText(text: repeatTitle ?? vm.title),
-      SizedBox(height: 5),
-      if (vm.type == HabitType.repeats)
-        RepeatProgressControl(
-          initialValue: vm.currentValue,
-          goalValue: vm.goalValue,
-          onValueIncrement: (value, progressStatus, [dt]) =>
-              onRepeatIncrement != null
-                  ? onRepeatIncrement(value, progressStatus, dt)
+  Widget build(BuildContext context) => ContainerCard(children: [
+        ListTile(title: BiggerText(text: repeatTitle ?? vm.title), dense: true),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: vm.type == HabitType.repeats
+              ? RepeatProgressControl(
+                  initialValue: vm.currentValue,
+                  goalValue: vm.goalValue,
+                  onValueIncrement: (value, progressStatus, [dt]) =>
+                      onRepeatIncrement != null
+                          ? onRepeatIncrement(value, progressStatus, dt)
+                          : null,
+                )
+              : vm.type == HabitType.time
+                  ? TimeProgressControl(
+                      initialValue: vm.currentValue,
+                      goalValue: vm.goalValue,
+                      onValueIncrement: (value, progressStatus, [dt]) =>
+                          onRepeatIncrement != null
+                              ? onRepeatIncrement(value, progressStatus, dt)
+                              : null,
+                      initialDate: initialDate,
+                      notificationText: 'Привычка "${vm.title}" выполнена',
+                    )
                   : null,
         ),
-      if (vm.type == HabitType.time)
-        TimeProgressControl(
-          initialValue: vm.currentValue,
-          goalValue: vm.goalValue,
-          onValueIncrement: (value, progressStatus, [dt]) =>
-              onRepeatIncrement != null
-                  ? onRepeatIncrement(value, progressStatus, dt)
-                  : null,
-          initialDate: initialDate,
-          notificationText: 'Привычка "${vm.title}" выполнена',
-        ),
-    ]);
-  }
+        SizedBox(height: 10),
+      ]);
 }
 
 /// Модалька выполнения привычки
