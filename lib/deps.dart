@@ -23,7 +23,7 @@ import 'settings/domain/db.dart';
 import 'settings/domain/models.dart';
 import 'settings/infra/db.dart';
 import 'settings/ui/core/controllers.dart';
-import 'user/services.dart';
+import 'user/domain/services.dart';
 
 /// Регает индекс выбранной странички
 StateProvider<int> pageIndexProvider = StateProvider((_) => 0);
