@@ -36,8 +36,7 @@ class SettingsPage extends HookWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) => ListView(
           children: [
-            PaddedContainerCard(
-              padVerticalOnly: true,
+            ContainerCard(
               children: [
                 if (snapshot.hasData)
                   Column(
@@ -53,9 +52,14 @@ class SettingsPage extends HookWidget {
                           onPressed: () => context.read(authProvider).signOut(),
                         ),
                       ),
-                      ElevatedButton(
-                        child: BiggerText(text: "Включить синхронизацию"),
-                        onPressed: () {},
+                      SmallPadding(
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            child: BiggerText(text: "Включить синхронизацию"),
+                            onPressed: () {},
+                          ),
+                        ),
                       )
                     ],
                   )
@@ -67,14 +71,14 @@ class SettingsPage extends HookWidget {
                   )
               ],
             ),
-            PaddedContainerCard(
-              padVerticalOnly: true,
+            ContainerCard(
               children: [
-                SmallPadding(
-                  child: BiggerText(text: "Начало и конец дня"),
-                ),
                 ListTile(
-                  title: Row(
+                  title: BiggerText(text: "Начало и конец дня"),
+                  dense: true,
+                ),
+                SmallPadding(
+                  child: Row(
                     children: [
                       Flexible(
                         child: TimePickerInput(
@@ -98,9 +102,12 @@ class SettingsPage extends HookWidget {
                 ),
               ],
             ),
-            PaddedContainerCard(
-              padVerticalOnly: true,
+            ContainerCard(
               children: [
+                ListTile(
+                  title: BiggerText(text: 'Экран "Календарь"'),
+                  dense: true,
+                ),
                 CheckboxListTile(
                   controlAffinity: ListTileControlAffinity.leading,
                   title: BiggerText(text: "Показывать выполненные привычки"),
@@ -122,13 +129,14 @@ class SettingsPage extends HookWidget {
                   ),
                   checkColor: CustomColors.almostBlack,
                 ),
+                SizedBox(height: 10),
               ],
             ),
-            PaddedContainerCard(
-              padVerticalOnly: true,
+            ContainerCard(
               children: [
                 ListTile(
-                    title: BiggerText(text: "Версия приложения: $version")),
+                  title: BiggerText(text: "Версия приложения: $version"),
+                ),
               ],
             )
           ],
