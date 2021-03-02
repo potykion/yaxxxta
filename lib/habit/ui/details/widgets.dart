@@ -4,10 +4,10 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../../../core/ui/widgets/text.dart';
 import '../../../core/utils/dt.dart';
+import '../../../deps.dart';
 import '../../../routes.dart';
 import '../../../theme.dart';
 import '../../domain/models.dart';
-import '../core/deps.dart';
 import '../core/widgets.dart';
 import 'view_models.dart';
 
@@ -106,22 +106,13 @@ class HabitHistoryEntrySlidable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Slidable(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 10,
-          vertical: 15,
+      child: ListTile(
+        dense: true,
+        title: SmallerText(text: formatTime(historyEntry.time), dark: true),
+        trailing: SmallerText(
+          text: "+ ${historyEntry.format(habit.type)}",
+          dark: true,
         ),
-        child: Row(children: [
-          SmallerText(
-            text: formatTime(historyEntry.time),
-            dark: true,
-          ),
-          Spacer(),
-          SmallerText(
-            text: "+ ${historyEntry.format(habit.type)}",
-            dark: true,
-          )
-        ]),
       ),
       secondaryActions: [
         IconSlideAction(

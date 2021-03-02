@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -43,32 +44,32 @@ class HabitProgressControl extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return PaddedContainerCard(children: [
-      BiggerText(text: repeatTitle ?? vm.title),
-      SizedBox(height: 5),
-      if (vm.type == HabitType.repeats)
-        RepeatProgressControl(
-          initialValue: vm.currentValue,
-          goalValue: vm.goalValue,
-          onValueIncrement: (value, progressStatus, [dt]) =>
-              onRepeatIncrement != null
-                  ? onRepeatIncrement(value, progressStatus, dt)
+  Widget build(BuildContext context) => ContainerCard(children: [
+        ListTile(title: BiggerText(text: repeatTitle ?? vm.title), dense: true),
+        SmallPadding(
+          child: vm.type == HabitType.repeats
+              ? RepeatProgressControl(
+                  initialValue: vm.currentValue,
+                  goalValue: vm.goalValue,
+                  onValueIncrement: (value, progressStatus, [dt]) =>
+                      onRepeatIncrement != null
+                          ? onRepeatIncrement(value, progressStatus, dt)
+                          : null,
+                )
+              : vm.type == HabitType.time
+                  ? TimeProgressControl(
+                      initialValue: vm.currentValue,
+                      goalValue: vm.goalValue,
+                      onValueIncrement: (value, progressStatus, [dt]) =>
+                          onRepeatIncrement != null
+                              ? onRepeatIncrement(value, progressStatus, dt)
+                              : null,
+                      initialDate: initialDate,
+                      notificationText: 'Привычка "${vm.title}" выполнена',
+                    )
                   : null,
         ),
-      if (vm.type == HabitType.time)
-        TimeProgressControl(
-          initialValue: vm.currentValue,
-          goalValue: vm.goalValue,
-          onValueIncrement: (value, progressStatus, [dt]) =>
-              onRepeatIncrement != null
-                  ? onRepeatIncrement(value, progressStatus, dt)
-                  : null,
-          initialDate: initialDate,
-          notificationText: 'Привычка "${vm.title}" выполнена',
-        ),
-    ]);
-  }
+      ]);
 }
 
 /// Модалька выполнения привычки
@@ -95,72 +96,70 @@ class HabitPerformingFormModal extends HookWidget {
 
     var vm = vmState.value;
 
-    return PaddedContainerCard(
-      padVerticalOnly: true,
+    return ContainerCard(
       children: [
-        SmallPadding(
-          child: BiggerText(text: "Дата и время выполнения"),
-        ),
         ListTile(
-          title: Row(
-            children: [
-              Flexible(
-                child: DatePickerInput(
-                  initial: vm.performDateTime,
-                  change: (date) => setVM(
-                    vm.copyWith(
-                      performDateTime: buildDateTime(date, vm.performDateTime),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(width: 10),
-              Flexible(
-                child: TimePickerInput(
-                  initial: vm.performDateTime,
-                  change: (time) => setVM(
-                    vm.copyWith(
-                      performDateTime: buildDateTime(vm.performDateTime, time),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+          title: BiggerText(text: "Дата и время выполнения"),
+          dense: true,
         ),
+        SmallPadding(
+            child: Row(
+          children: [
+            Flexible(
+              child: DatePickerInput(
+                initial: vm.performDateTime,
+                change: (date) => setVM(
+                  vm.copyWith(
+                    performDateTime: buildDateTime(date, vm.performDateTime),
+                  ),
+                ),
+              ),
+            ),
+            SmallPadding.between(),
+            Flexible(
+              child: TimePickerInput(
+                initial: vm.performDateTime,
+                change: (time) => setVM(
+                  vm.copyWith(
+                    performDateTime: buildDateTime(vm.performDateTime, time),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        )),
         if (habitType == HabitType.time) ...[
+          ListTile(title: BiggerText(text: "Продолжительность"), dense: true),
           SmallPadding(
-            child: BiggerText(text: "Продолжительность"),
-          ),
-          DurationInput(
-            initial: DoubleDuration.fromSeconds(vm.performValue),
-            change: (newDuration) =>
-                setVM(vm.copyWith(performValue: newDuration.asSeconds)),
+            child: DurationInput(
+              initial: DoubleDuration.fromSeconds(vm.performValue),
+              change: (newDuration) =>
+                  setVM(vm.copyWith(performValue: newDuration.asSeconds)),
+            ),
           ),
         ],
         if (habitType == HabitType.repeats) ...[
+          ListTile(title: BiggerText(text: "Число повторений"), dense: true),
           SmallPadding(
-            child: BiggerText(text: "Число повторений"),
-          ),
-          ListTile(
-            title: TextInput<double>(
+            child: TextInput<double>(
               initial: vm.performValue,
               change: (dynamic v) =>
                   setVM(vm.copyWith(performValue: v as double)),
             ),
           ),
         ],
-        SizedBox(height: 10),
         Padding(
           padding: EdgeInsets.only(
             bottom: MediaQuery.of(context).viewInsets.bottom,
           ),
-          child: SizedBox(
-            height: 45,
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () => Navigator.of(context).pop(vm),
-              child: BiggerText(text: "Сохранить"),
+          child: SmallPadding(
+            child: SizedBox(
+              height: 45,
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () => Navigator.of(context).pop(vm),
+                child: BiggerText(text: "Сохранить"),
+              ),
             ),
           ),
         ),

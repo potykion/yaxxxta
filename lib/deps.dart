@@ -1,20 +1,90 @@
+import 'package:cloud_firestore/cloud_firestore.dart'
+    show CollectionReference, FirebaseFirestore;
+import 'package:device_info/device_info.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:hooks_riverpod/all.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:package_info/package_info.dart';
+import 'package:collection/collection.dart';
 
-import '../../../core/ui/deps.dart';
-import '../../../core/utils/async_value.dart';
-import '../../../core/utils/dt.dart';
-import '../../../settings/ui/core/deps.dart';
-import '../../domain/db.dart';
-import '../../domain/models.dart';
-import '../../domain/services.dart';
-import '../../infra/db.dart';
-import '../calendar/controllers.dart';
-import '../details/view_models.dart';
-import 'controllers.dart';
-import 'view_models.dart';
+import 'core/infra/push.dart';
+import 'core/utils/async_value.dart';
+import 'core/utils/dt.dart';
+import 'habit/domain/db.dart';
+import 'habit/domain/models.dart';
+import 'habit/domain/services.dart';
+import 'habit/infra/db.dart';
+import 'habit/ui/calendar/controllers.dart';
+import 'habit/ui/core/controllers.dart';
+import 'habit/ui/core/view_models.dart';
+import 'habit/ui/details/view_models.dart';
+import 'settings/domain/db.dart';
+import 'settings/domain/models.dart';
+import 'settings/infra/db.dart';
+import 'settings/ui/core/controllers.dart';
+import 'user/services.dart';
+
+/// Регает индекс выбранной странички
+StateProvider<int> pageIndexProvider = StateProvider((_) => 0);
+
+/// Плагин для отправки локальных пушей
+FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+/// Регает плагин для отправки локальных пушей
+Provider<FlutterLocalNotificationsPlugin>
+    flutterLocalNotificationsPluginProvider =
+    Provider((_) => flutterLocalNotificationsPlugin);
+
+/// Провайдер отправщика уведомлений
+Provider<NotificationSender> notificationSenderProvider = Provider(
+  (ref) =>
+      NotificationSender(ref.watch(flutterLocalNotificationsPluginProvider)),
+);
+
+/// АЙдишник открытой странички
+/// Используется для получения контекста страницы, после вызова Navigator.pop
+GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+/// Инфа о приложении
+PackageInfo packageInfo;
+
+/// Инфа о девайсе
+AndroidDeviceInfo androidInfo;
+
+/// Провайдер версии
+Provider<String> versionProvider =
+    Provider((ref) => "${packageInfo.version}+${packageInfo.buildNumber}");
+
+/// Провайдер входа через гугл
+Provider<Auth> authProvider = Provider((_) => Auth());
+
+/// Провайдер ссылки на фаер-стор коллекцию с привычками
+Provider<CollectionReference> habitCollectionRefProvider = Provider(
+  (_) => FirebaseFirestore.instance.collection("habits"),
+);
+
+/// Провайдер ссылки на фаер-стор коллекцию с выполнениями привычек
+Provider<CollectionReference> habitPerformingCollectionRefProvider = Provider(
+  (_) => FirebaseFirestore.instance.collection("habit_performings"),
+);
+
+/// Регает репо настроек
+Provider<BaseSettingsRepo> settingsRepoProvider = Provider(
+  (ref) => SharedPreferencesSettingsRepo(),
+);
+
+/// Регает настройки
+StateProvider<Settings> settingsProvider = StateProvider((ref) => null);
+
+/// Провайдер котроллера настроек
+Provider<SettingsController> settingsControllerProvider = Provider(
+  (ref) => SettingsController(
+    settingsState: ref.watch(settingsProvider),
+    settingsRepo: ref.watch(settingsRepoProvider),
+  ),
+);
 
 /// Регает репо привычек
 Provider<BaseHabitRepo> habitRepoProvider = Provider(
@@ -158,7 +228,7 @@ Provider<ScheduleNotificationsForHabitsWithoutNotifications>
 
 /// Провайдер стейта анимированного списка на странице календаря
 StateNotifierProvider<HabitCalendarPage_AnimatedListState>
-    // ignore: non_constant_identifier_names
+// ignore: non_constant_identifier_names
     habitCalendarPage_AnimatedListState_Provider = StateNotifierProvider(
   (ref) => HabitCalendarPage_AnimatedListState(GlobalKey<AnimatedListState>()),
 );

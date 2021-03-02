@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
 
-import '../../../core/ui/deps.dart';
 import '../../../core/ui/widgets/app_bars.dart';
 import '../../../core/ui/widgets/card.dart';
 import '../../../core/ui/widgets/circular_progress.dart';
 import '../../../core/ui/widgets/date.dart';
 import '../../../core/ui/widgets/text.dart';
 import '../../../core/utils/dt.dart';
+import '../../../deps.dart';
 import '../../domain/models.dart';
-import '../core/deps.dart';
 import '../core/view_models.dart';
 import '../core/widgets.dart';
 import 'widgets.dart';
@@ -50,27 +49,26 @@ class HabitDetailsPage extends HookWidget {
           ),
           body: ListView(
             children: [
-              ListTile(title: HabitChips(habit: habit)),
+              ListTile(title: HabitChips(habit: habit), dense: true),
               _buildTodayHabitProgressControl(context, habit, progress),
-              PaddedContainerCard(children: [
-                Row(
-                  children: [
-                    BiggerText(text: "История"),
-                    Spacer(),
-                    CreateHabitPerformingButton(
+              ContainerCard(
+                children: [
+                  ListTile(
+                    dense: true,
+                    title: BiggerText(text: "История"),
+                    trailing: CreateHabitPerformingButton(
                       habit: habit,
                       initialDate: historyDateState.value,
                     ),
-                  ],
-                ),
-                SizedBox(height: 5),
-                DateCarousel(
-                  change: (d) => historyDateState.value = d,
-                  highlights: history.highlights,
-                ),
-                for (var e in history.getForDate(historyDateState.value))
-                  HabitHistoryEntrySlidable(historyEntry: e, habit: habit)
-              ])
+                  ),
+                  DateCarousel(
+                    change: (d) => historyDateState.value = d,
+                    highlights: history.highlights,
+                  ),
+                  for (var e in history.getForDate(historyDateState.value))
+                    HabitHistoryEntrySlidable(historyEntry: e, habit: habit)
+                ],
+              )
             ],
           ),
         );

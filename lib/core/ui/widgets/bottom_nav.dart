@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:tuple/tuple.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../habit/ui/core/deps.dart';
 
+import '../../../deps.dart';
 import '../../../routes.dart';
 import '../../../theme.dart';
 import '../../utils/list.dart';
@@ -34,11 +34,19 @@ class AppBottomNavigationBar extends StatelessWidget {
                       icon: textAndIcon.item2,
                       selected: bottomNavRoutes[index] == currentRoute,
                       onTap: () {
+                        /// Не меняем страницу, если индекс не изменился
+                         if (currentIndex == index) {
+                          return;
+                        }
+
+                        /// Сбрасываем анимейтед лист, чтоб не было ошибок:
+                        /// Error: Duplicate GlobalKey detected in widget tree.
+                        /// Error: Multiple widgets used the same GlobalKey.
                         context
                             .read(habitCalendarPage_AnimatedListState_Provider)
                             .reset(delete: true);
 
-                        return Navigator.pushReplacement<dynamic, dynamic>(
+                        Navigator.pushReplacement<dynamic, dynamic>(
                           context,
                           PageTransition<dynamic>(
                             child: routes[bottomNavRoutes[index]](context),

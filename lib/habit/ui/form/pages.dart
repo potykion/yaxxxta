@@ -7,11 +7,12 @@ import '../../../core/ui/widgets/app_bars.dart';
 import '../../../core/ui/widgets/card.dart';
 import '../../../core/ui/widgets/duration.dart';
 import '../../../core/ui/widgets/input.dart';
+import '../../../core/ui/widgets/padding.dart';
 import '../../../core/ui/widgets/text.dart';
 import '../../../core/ui/widgets/time.dart';
+import '../../../deps.dart';
 import '../../../theme.dart';
 import '../../domain/models.dart';
-import '../core/deps.dart';
 import 'widgets.dart';
 
 var _error = Provider.family<String, Habit>((ref, habit) {
@@ -39,11 +40,11 @@ class HabitFormPage extends HookWidget {
       appBar: buildAppBar(
         context: context,
         children: [
+          BackButton(),
           BiggestText(
             text: habit.isUpdate
                 ? "Редактирование привычки"
                 : "Создание привычки",
-            withPadding: true,
           )
         ],
       ),
@@ -52,14 +53,18 @@ class HabitFormPage extends HookWidget {
           //////////////////////////////////////////////////////////////////////
           // Название
           //////////////////////////////////////////////////////////////////////
-          PaddedContainerCard(
+          ContainerCard(
             children: [
-              BiggerText(text: "Название"),
-              SizedBox(height: 5),
-              TextInput(
-                initial: habit.title,
-                change: (dynamic t) =>
-                    setVM(habit.copyWith(title: t as String)),
+              ListTile(
+                title: BiggerText(text: "Название"),
+                dense: true,
+              ),
+              SmallPadding(
+                child: TextInput(
+                  initial: habit.title,
+                  change: (dynamic t) =>
+                      setVM(habit.copyWith(title: t as String)),
+                ),
               ),
             ],
           ),
@@ -67,97 +72,107 @@ class HabitFormPage extends HookWidget {
           // Тип + продолжительность / повыторы
           //////////////////////////////////////////////////////////////////////
           // region
-          PaddedContainerCard(
+          ContainerCard(
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.baseline,
-                textBaseline: TextBaseline.alphabetic,
-                children: [
-                  BiggerText(text: "Тип"),
-                  Spacer(),
-                  if (habit.isUpdate) SmallerText(text: "нельзя изменить")
-                ],
+              ListTile(
+                title: BiggerText(text: "Тип"),
+                trailing: habit.isUpdate
+                    ? SmallerText(text: "нельзя изменить")
+                    : null,
+                dense: true,
               ),
-              SizedBox(height: 5),
-              HabitTypeRadioGroup(
-                initial: habit.type,
-                change: (type) =>
-                    setVM(habit.copyWith(type: type, goalValue: 1)),
-                setBefore: habit.isUpdate,
+              SmallPadding(
+                child: HabitTypeRadioGroup(
+                  initial: habit.type,
+                  change: (type) =>
+                      setVM(habit.copyWith(type: type, goalValue: 1)),
+                  setBefore: habit.isUpdate,
+                ),
               ),
             ],
           ),
           if (habit.type == HabitType.time)
-            PaddedContainerCard(
+            ContainerCard(
               children: [
-                BiggerText(text: "Продолжительность"),
-                SizedBox(height: 5),
-                DurationInput(
-                  initial: DoubleDuration.fromSeconds(habit.goalValue),
-                  change: (newDuration) =>
-                      setVM(habit.applyDuration(newDuration)),
+                ListTile(
+                  title: BiggerText(text: "Продолжительность"),
+                  dense: true,
                 ),
-                SizedBox(height: 5),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SimpleButton(
-                      text: "+ 1 %",
-                      onTap: () => setVM(habit.increaseGoalValueByPercent()),
-                    ),
-                    SimpleButton(
-                      text: "+ 1 сек",
-                      onTap: () =>
-                          setVM(habit.copyWith(goalValue: habit.goalValue + 1)),
-                    ),
-                    SimpleButton(
-                      text: "+ 1 мин",
-                      onTap: () => setVM(
-                          habit.copyWith(goalValue: habit.goalValue + 1 * 60)),
-                    ),
-                    SimpleButton(
-                      text: "+ 1 ч",
-                      onTap: () => setVM(habit.copyWith(
-                          goalValue: habit.goalValue + 1 * 3600)),
-                    ),
-                  ],
+                SmallPadding(
+                  child: DurationInput(
+                    initial: DoubleDuration.fromSeconds(habit.goalValue),
+                    change: (newDuration) =>
+                        setVM(habit.applyDuration(newDuration)),
+                  ),
+                ),
+                // todo extract to component
+                SmallPadding(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SimpleButton(
+                        text: "+ 1 %",
+                        onTap: () => setVM(habit.increaseGoalValueByPercent()),
+                      ),
+                      SimpleButton(
+                        text: "+ 1 сек",
+                        onTap: () => setVM(
+                            habit.copyWith(goalValue: habit.goalValue + 1)),
+                      ),
+                      SimpleButton(
+                        text: "+ 1 мин",
+                        onTap: () => setVM(habit.copyWith(
+                            goalValue: habit.goalValue + 1 * 60)),
+                      ),
+                      SimpleButton(
+                        text: "+ 1 ч",
+                        onTap: () => setVM(habit.copyWith(
+                            goalValue: habit.goalValue + 1 * 3600)),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
           if (habit.type == HabitType.repeats)
-            PaddedContainerCard(
+            ContainerCard(
               children: [
-                BiggerText(text: "Число повторений"),
-                SizedBox(height: 5),
-                TextInput<double>(
-                  initial: habit.goalValue,
-                  change: (dynamic v) =>
-                      setVM(habit.copyWith(goalValue: v as double)),
+                ListTile(
+                  title: BiggerText(text: "Число повторений"),
+                  dense: true,
                 ),
-                SizedBox(height: 5),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SimpleButton(
-                      text: "+ 1 %",
-                      onTap: () => setVM(habit.increaseGoalValueByPercent()),
-                    ),
-                    SimpleButton(
-                      text: "+ 1",
-                      onTap: () =>
-                          setVM(habit.copyWith(goalValue: habit.goalValue + 1)),
-                    ),
-                    SimpleButton(
-                      text: "+ 10",
-                      onTap: () => setVM(
-                          habit.copyWith(goalValue: habit.goalValue + 10)),
-                    ),
-                    SimpleButton(
-                      text: "+ 100",
-                      onTap: () => setVM(
-                          habit.copyWith(goalValue: habit.goalValue + 100)),
-                    ),
-                  ],
+                SmallPadding(
+                  child: TextInput<double>(
+                    initial: habit.goalValue,
+                    change: (dynamic v) =>
+                        setVM(habit.copyWith(goalValue: v as double)),
+                  ),
+                ),
+                SmallPadding(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SimpleButton(
+                        text: "+ 1 %",
+                        onTap: () => setVM(habit.increaseGoalValueByPercent()),
+                      ),
+                      SimpleButton(
+                        text: "+ 1",
+                        onTap: () => setVM(
+                            habit.copyWith(goalValue: habit.goalValue + 1)),
+                      ),
+                      SimpleButton(
+                        text: "+ 10",
+                        onTap: () => setVM(
+                            habit.copyWith(goalValue: habit.goalValue + 10)),
+                      ),
+                      SimpleButton(
+                        text: "+ 100",
+                        onTap: () => setVM(
+                            habit.copyWith(goalValue: habit.goalValue + 100)),
+                      ),
+                    ],
+                  ),
                 )
               ],
             ),
@@ -166,59 +181,62 @@ class HabitFormPage extends HookWidget {
           // Периодичность
           //////////////////////////////////////////////////////////////////////
           // region
-          PaddedContainerCard(
+          ContainerCard(
             children: [
-              BiggerText(text: "Периодичность"),
-              SizedBox(height: 5),
-              Wrap(
-                spacing: 10,
-                children: [
-                  SimpleChip(
-                    text: HabitPeriodType.day.verbose(),
-                    selected: !habit.isCustomPeriod &&
-                        habit.periodType == HabitPeriodType.day,
-                    change: (_) => setVM(
-                      habit.copyWith(
-                        periodType: HabitPeriodType.day,
-                        isCustomPeriod: false,
+              ListTile(
+                title: BiggerText(text: "Периодичность"),
+                dense: true,
+              ),
+              SmallPadding(
+                child: Wrap(
+                  spacing: 10,
+                  children: [
+                    SimpleChip(
+                      text: HabitPeriodType.day.verbose(),
+                      selected: !habit.isCustomPeriod &&
+                          habit.periodType == HabitPeriodType.day,
+                      change: (_) => setVM(
+                        habit.copyWith(
+                          periodType: HabitPeriodType.day,
+                          isCustomPeriod: false,
+                        ),
                       ),
                     ),
-                  ),
-                  SimpleChip(
-                    text: HabitPeriodType.week.verbose(),
-                    selected: !habit.isCustomPeriod &&
-                        habit.periodType == HabitPeriodType.week,
-                    change: (_) => setVM(
-                      habit.copyWith(
-                        periodType: HabitPeriodType.week,
-                        isCustomPeriod: false,
+                    SimpleChip(
+                      text: HabitPeriodType.week.verbose(),
+                      selected: !habit.isCustomPeriod &&
+                          habit.periodType == HabitPeriodType.week,
+                      change: (_) => setVM(
+                        habit.copyWith(
+                          periodType: HabitPeriodType.week,
+                          isCustomPeriod: false,
+                        ),
                       ),
                     ),
-                  ),
-                  SimpleChip(
-                    text: HabitPeriodType.month.verbose(),
-                    selected: !habit.isCustomPeriod &&
-                        habit.periodType == HabitPeriodType.month,
-                    change: (_) => setVM(
-                      habit.copyWith(
-                        periodType: HabitPeriodType.month,
-                        isCustomPeriod: false,
+                    SimpleChip(
+                      text: HabitPeriodType.month.verbose(),
+                      selected: !habit.isCustomPeriod &&
+                          habit.periodType == HabitPeriodType.month,
+                      change: (_) => setVM(
+                        habit.copyWith(
+                          periodType: HabitPeriodType.month,
+                          isCustomPeriod: false,
+                        ),
                       ),
                     ),
-                  ),
-                  SimpleChip(
-                    text: "Другая",
-                    selected: habit.isCustomPeriod,
-                    change: (_) => setVM(
-                      habit.copyWith(isCustomPeriod: true),
+                    SimpleChip(
+                      text: "Другая",
+                      selected: habit.isCustomPeriod,
+                      change: (_) => setVM(
+                        habit.copyWith(isCustomPeriod: true),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               if (habit.isCustomPeriod)
-                Column(children: [
-                  SizedBox(height: 5),
-                  Row(
+                SmallPadding(
+                  child: Row(
                     children: [
                       Flexible(
                           child: TextInput<int>(
@@ -227,7 +245,7 @@ class HabitFormPage extends HookWidget {
                           habit.copyWith(periodValue: v as int),
                         ),
                       )),
-                      SizedBox(width: 10),
+                      SmallPadding.between(),
                       Expanded(
                         child: HabitPeriodTypeSelect(
                           initial: habit.periodType,
@@ -237,37 +255,39 @@ class HabitFormPage extends HookWidget {
                       )
                     ],
                   ),
-                ]),
+                ),
               if (habit.periodType == HabitPeriodType.week)
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 5),
-                    BiggerText(text: "Дни выполнения"),
-                    SizedBox(height: 5),
-                    WeekdaysPicker(
-                      initial: habit.performWeekdays,
-                      change: (ws) =>
-                          setVM(habit.copyWith(performWeekdays: ws)),
+                    ListTile(
+                      title: BiggerText(text: "Дни выполнения"),
+                      dense: true,
+                    ),
+                    SmallPadding(
+                      child: WeekdaysPicker(
+                        initial: habit.performWeekdays,
+                        change: (ws) => setVM(
+                          habit.copyWith(performWeekdays: ws),
+                        ),
+                      ),
                     )
                   ],
                 ),
               if (habit.periodType == HabitPeriodType.month)
                 Column(
                   children: [
-                    SizedBox(height: 5),
-                    Row(
-                      children: [
-                        BiggerText(text: "День выполнения"),
-                        Spacer(),
-                        SmallerText(text: "1 .. 31"),
-                      ],
+                    ListTile(
+                      title: BiggerText(text: "День выполнения"),
+                      dense: true,
+                      trailing: SmallerText(text: "1 .. 31"),
                     ),
-                    SizedBox(height: 5),
-                    TextInput<int>(
-                      initial: habit.performMonthDay,
-                      change: (dynamic d) =>
-                          setVM(habit.copyWith(performMonthDay: d as int)),
+                    SmallPadding(
+                      child: TextInput<int>(
+                        initial: habit.performMonthDay,
+                        change: (dynamic d) =>
+                            setVM(habit.copyWith(performMonthDay: d as int)),
+                      ),
                     ),
                   ],
                 ),
@@ -280,13 +300,17 @@ class HabitFormPage extends HookWidget {
           // Время выполнения
           //////////////////////////////////////////////////////////////////////
 
-          PaddedContainerCard(
+          ContainerCard(
             children: [
-              BiggerText(text: "Время выполнения"),
-              SizedBox(height: 5),
-              TimePickerInput(
-                initial: habit.performTime,
-                change: (time) => setVM(habit.copyWith(performTime: time)),
+              ListTile(
+                title: BiggerText(text: "Время выполнения"),
+                dense: true,
+              ),
+              SmallPadding(
+                child: TimePickerInput(
+                  initial: habit.performTime,
+                  change: (time) => setVM(habit.copyWith(performTime: time)),
+                ),
               ),
               if (habit.performTime != null)
                 CheckboxListTile(

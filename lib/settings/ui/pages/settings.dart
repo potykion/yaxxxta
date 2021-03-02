@@ -3,16 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
 
-import '../../../core/ui/deps.dart';
 import '../../../core/ui/widgets/app_bars.dart';
 import '../../../core/ui/widgets/bottom_nav.dart';
 import '../../../core/ui/widgets/card.dart';
 import '../../../core/ui/widgets/padding.dart';
 import '../../../core/ui/widgets/text.dart';
 import '../../../core/ui/widgets/time.dart';
+import '../../../deps.dart';
 import '../../../theme.dart';
 import '../../domain/models.dart';
-import '../core/deps.dart';
 
 /// Страница с настройками
 class SettingsPage extends HookWidget {
@@ -37,8 +36,7 @@ class SettingsPage extends HookWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) => ListView(
           children: [
-            PaddedContainerCard(
-              padVerticalOnly: true,
+            ContainerCard(
               children: [
                 if (snapshot.hasData)
                   Column(
@@ -54,9 +52,14 @@ class SettingsPage extends HookWidget {
                           onPressed: () => context.read(authProvider).signOut(),
                         ),
                       ),
-                      ElevatedButton(
-                        child: BiggerText(text: "Включить синхронизацию"),
-                        onPressed: () {},
+                      SmallPadding(
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            child: BiggerText(text: "Включить синхронизацию"),
+                            onPressed: () {},
+                          ),
+                        ),
                       )
                     ],
                   )
@@ -68,14 +71,14 @@ class SettingsPage extends HookWidget {
                   )
               ],
             ),
-            PaddedContainerCard(
-              padVerticalOnly: true,
+            ContainerCard(
               children: [
-                SmallPadding(
-                  child: BiggerText(text: "Начало и конец дня"),
-                ),
                 ListTile(
-                  title: Row(
+                  title: BiggerText(text: "Начало и конец дня"),
+                  dense: true,
+                ),
+                SmallPadding(
+                  child: Row(
                     children: [
                       Flexible(
                         child: TimePickerInput(
@@ -85,7 +88,7 @@ class SettingsPage extends HookWidget {
                           ),
                         ),
                       ),
-                      SizedBox(width: 10),
+                      SmallPadding.between(),
                       Flexible(
                         child: TimePickerInput(
                           initial: settings.dayEndTime,
@@ -99,9 +102,12 @@ class SettingsPage extends HookWidget {
                 ),
               ],
             ),
-            PaddedContainerCard(
-              padVerticalOnly: true,
+            ContainerCard(
               children: [
+                ListTile(
+                  title: BiggerText(text: 'Экран "Календарь"'),
+                  dense: true,
+                ),
                 CheckboxListTile(
                   controlAffinity: ListTileControlAffinity.leading,
                   title: BiggerText(text: "Показывать выполненные привычки"),
@@ -123,13 +129,14 @@ class SettingsPage extends HookWidget {
                   ),
                   checkColor: CustomColors.almostBlack,
                 ),
+                SmallPadding.onlyBottom(),
               ],
             ),
-            PaddedContainerCard(
-              padVerticalOnly: true,
+            ContainerCard(
               children: [
                 ListTile(
-                    title: BiggerText(text: "Версия приложения: $version")),
+                  title: BiggerText(text: "Версия приложения: $version"),
+                ),
               ],
             )
           ],
