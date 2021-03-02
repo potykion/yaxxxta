@@ -88,7 +88,7 @@ class SettingsPage extends HookWidget {
                           ),
                         ),
                       ),
-                      SizedBox(width: 10),
+                      SmallPadding.between(),
                       Flexible(
                         child: TimePickerInput(
                           initial: settings.dayEndTime,
@@ -129,7 +129,7 @@ class SettingsPage extends HookWidget {
                   ),
                   checkColor: CustomColors.almostBlack,
                 ),
-                SizedBox(height: 10),
+                SmallPadding.onlyBottom(),
               ],
             ),
             ContainerCard(

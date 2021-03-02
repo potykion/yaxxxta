@@ -115,7 +115,7 @@ class HabitPerformingFormModal extends HookWidget {
                 ),
               ),
             ),
-            SizedBox(width: 10),
+            SmallPadding.between(),
             Flexible(
               child: TimePickerInput(
                 initial: vm.performDateTime,

@@ -55,7 +55,10 @@ class HabitFormPage extends HookWidget {
           //////////////////////////////////////////////////////////////////////
           ContainerCard(
             children: [
-              ListTile(title: BiggerText(text: "Название"), dense: true),
+              ListTile(
+                title: BiggerText(text: "Название"),
+                dense: true,
+              ),
               SmallPadding(
                 child: TextInput(
                   initial: habit.title,
@@ -242,7 +245,7 @@ class HabitFormPage extends HookWidget {
                           habit.copyWith(periodValue: v as int),
                         ),
                       )),
-                      SizedBox(width: 10),
+                      SmallPadding.between(),
                       Expanded(
                         child: HabitPeriodTypeSelect(
                           initial: habit.periodType,

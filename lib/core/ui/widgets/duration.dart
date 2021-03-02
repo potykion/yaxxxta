@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yaxxxta/core/ui/widgets/padding.dart';
 import '../../domain/models.dart';
 
 import 'input.dart';
@@ -29,7 +30,7 @@ class DurationInput extends StatelessWidget {
                   change(initial.copyWith(hours: h as double)),
             ),
           ),
-          SizedBox(width: 10),
+          SmallPadding.between(),
           Expanded(
             child: TextInput<double>(
               suffix: Text("мин", textAlign: TextAlign.center),
@@ -38,7 +39,7 @@ class DurationInput extends StatelessWidget {
                   change(initial.copyWith(minutes: m as double)),
             ),
           ),
-          SizedBox(width: 10),
+          SmallPadding.between(),
           Expanded(
             child: TextInput<double>(
               suffix: Text("сек", textAlign: TextAlign.center),
