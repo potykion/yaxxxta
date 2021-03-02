@@ -23,7 +23,15 @@ import 'settings/domain/db.dart';
 import 'settings/domain/models.dart';
 import 'settings/infra/db.dart';
 import 'settings/ui/core/controllers.dart';
+import 'user/domain/db.dart';
 import 'user/domain/services.dart';
+import 'user/infra/db.dart';
+
+////////////////////////////////////////////////////////////////////////////////
+/// ОБЩЕЕ
+////////////////////////////////////////////////////////////////////////////////
+
+// region
 
 /// Регает индекс выбранной странички
 StateProvider<int> pageIndexProvider = StateProvider((_) => 0);
@@ -57,19 +65,6 @@ AndroidDeviceInfo androidInfo;
 Provider<String> versionProvider =
     Provider((ref) => "${packageInfo.version}+${packageInfo.buildNumber}");
 
-/// Провайдер входа через гугл
-Provider<Auth> authProvider = Provider((_) => Auth());
-
-/// Провайдер ссылки на фаер-стор коллекцию с привычками
-Provider<CollectionReference> habitCollectionRefProvider = Provider(
-  (_) => FirebaseFirestore.instance.collection("habits"),
-);
-
-/// Провайдер ссылки на фаер-стор коллекцию с выполнениями привычек
-Provider<CollectionReference> habitPerformingCollectionRefProvider = Provider(
-  (_) => FirebaseFirestore.instance.collection("habit_performings"),
-);
-
 /// Регает репо настроек
 Provider<BaseSettingsRepo> settingsRepoProvider = Provider(
   (ref) => SharedPreferencesSettingsRepo(),
@@ -84,6 +79,43 @@ Provider<SettingsController> settingsControllerProvider = Provider(
     settingsState: ref.watch(settingsProvider),
     settingsRepo: ref.watch(settingsRepoProvider),
   ),
+);
+
+// endregion
+
+////////////////////////////////////////////////////////////////////////////////
+/// ЮЗЕР
+////////////////////////////////////////////////////////////////////////////////
+
+// region
+
+/// Провайдер аутентификации
+Provider<Auth> authProvider = Provider((_) => Auth());
+
+Provider<UserDataRepo> userDataRepoProvider = Provider<UserDataRepo>(
+  (_) =>
+      FirestoreUserDataRepo(FirebaseFirestore.instance.collection("user_data")),
+);
+
+Provider<LoadUserData> loadUserDataProvider =
+    Provider((ref) => LoadUserData(ref.watch(userDataRepoProvider)));
+
+// endregion
+
+////////////////////////////////////////////////////////////////////////////////
+/// ПРИВЫЧКИ
+////////////////////////////////////////////////////////////////////////////////
+
+// region
+
+/// Провайдер ссылки на фаер-стор коллекцию с привычками
+Provider<CollectionReference> habitCollectionRefProvider = Provider(
+  (_) => FirebaseFirestore.instance.collection("habits"),
+);
+
+/// Провайдер ссылки на фаер-стор коллекцию с выполнениями привычек
+Provider<CollectionReference> habitPerformingCollectionRefProvider = Provider(
+  (_) => FirebaseFirestore.instance.collection("habit_performings"),
 );
 
 /// Регает репо привычек
@@ -125,10 +157,6 @@ StateNotifierProvider<HabitPerformingController> habitPerformingController =
   ),
 );
 
-////////////////////////////////////////////////////////////////////////////////
-// HABIT LIST PAGE
-////////////////////////////////////////////////////////////////////////////////
-
 StateProvider<DateTime> selectedDateProvider =
     StateProvider((ref) => DateTime.now().date());
 
@@ -160,10 +188,6 @@ Provider<AsyncValue<List<HabitProgressVM>>> listHabitVMs = Provider(
                   : h1.performTime.compareTo(h2.performTime)));
   }),
 );
-
-////////////////////////////////////////////////////////////////////////////////
-// HABIT DETAILS PAGE
-////////////////////////////////////////////////////////////////////////////////
 
 StateProvider<String> selectedHabitIdProvider = StateProvider((ref) => null);
 
@@ -232,3 +256,5 @@ StateNotifierProvider<HabitCalendarPage_AnimatedListState>
     habitCalendarPage_AnimatedListState_Provider = StateNotifierProvider(
   (ref) => HabitCalendarPage_AnimatedListState(GlobalKey<AnimatedListState>()),
 );
+
+// endregion

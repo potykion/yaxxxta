@@ -1,33 +1,38 @@
+import 'package:meta/meta.dart';
 import 'package:firebase_auth/firebase_auth.dart'
     show FirebaseAuth, GoogleAuthProvider, User;
-import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:yaxxxta/user/domain/db.dart';
 import 'models.dart';
 
-/// Аутентификация через гугл
+/// Класс для работы с аутентификацией
 class Auth {
-  /// https://firebase.flutter.dev/docs/auth/social/
+  /// Аутентификация через гугл
+  /// https://firebase.flutter.dev/docs/auth/social#google
   Future<User> signInByGoogle() async {
-    // Trigger the authentication flow
     final googleUser = await GoogleSignIn().signIn();
-
-    // Obtain the auth details from the request
     var googleAuth = await googleUser.authentication;
-
-    // Create a new credential
     var credential = GoogleAuthProvider.credential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
-
-    // Once signed in, return the UserCredential
-    var cred = await FirebaseAuth.instance.signInWithCredential(credential);
-
-    return cred.user;
+    var fbCredential =
+        await FirebaseAuth.instance.signInWithCredential(credential);
+    return fbCredential.user;
   }
 
+  /// Анонимная аутентификация
+  /// https://firebase.flutter.dev/docs/auth/usage#anonymous-sign-in
+  Future<User> signInAnon() async {
+    var fbCredential = await FirebaseAuth.instance.signInAnonymously();
+    return fbCredential.user;
+  }
+
+  /// Пробует получить текущего юзера
+  User tryGetUser() => FirebaseAuth.instance.currentUser;
+
   /// Выход из акка
+  /// https://firebase.flutter.dev/docs/auth/usage#signing-out
   Future<void> signOut() async {
     await FirebaseAuth.instance.signOut();
   }
@@ -36,7 +41,7 @@ class Auth {
 class LoadUserData {
   final UserDataRepo repo;
 
-  LoadUserData({this.repo});
+  LoadUserData(this.repo);
 
   Future<UserData> call({
     @required User user,
