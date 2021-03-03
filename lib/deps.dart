@@ -9,7 +9,6 @@ import 'package:package_info/package_info.dart';
 import 'package:collection/collection.dart';
 
 import 'core/infra/push.dart';
-import 'core/utils/async_value.dart';
 import 'core/utils/dt.dart';
 import 'habit/domain/db.dart';
 import 'habit/domain/models.dart';
@@ -163,11 +162,9 @@ StateProvider<DateTime> selectedDateProvider =
 /// Провайдер ВМок для страницы со списком привычек
 Provider<AsyncValue<List<HabitProgressVM>>> listHabitVMs = Provider(
   (ref) => ref
-      .watch(habitControllerProvider.state)
-      .merge2(ref.watch(habitPerformingController.state))
-      .whenData((habitsAndPerformings) {
-    var habits = habitsAndPerformings.item1;
-    var dateHabitPerformings = habitsAndPerformings.item2;
+      .watch(habitPerformingController.state)
+      .whenData((dateHabitPerformings) {
+    var habits = ref.watch(habitControllerProvider.state);
 
     var selectedDate = ref.watch(selectedDateProvider).state;
     var settings = ref.watch(settingsProvider).state;
@@ -204,12 +201,8 @@ Provider<DateRange> todayDateRange = Provider((ref) {
 
 /// Провайдер ВМ страницы деталей привычки
 Provider<AsyncValue<HabitDetailsPageVM>> habitDetailsPageVMProvider = Provider(
-  (ref) => ref
-      .watch(habitControllerProvider.state)
-      .merge2(ref.watch(habitPerformingController.state))
-      .whenData((habitsAndPerformings) {
-    var habits = habitsAndPerformings.item1;
-    var performings = habitsAndPerformings.item2;
+  (ref) => ref.watch(habitPerformingController.state).whenData((performings) {
+    var habits = ref.watch(habitControllerProvider.state);
 
     var selectedHabitId = ref.watch(selectedHabitIdProvider).state;
     var selectedHabit = habits.firstWhere(
@@ -246,7 +239,6 @@ Provider<ScheduleNotificationsForHabitsWithoutNotifications>
     scheduleNotificationsForHabitsWithoutNotificationsProvider = Provider(
   (ref) => ScheduleNotificationsForHabitsWithoutNotifications(
     notificationSender: ref.watch(notificationSenderProvider),
-    habitRepo: ref.watch(habitRepoProvider),
   ),
 );
 

@@ -23,7 +23,6 @@ class HabitCalendarPage extends HookWidget {
             .read(habitCalendarPage_AnimatedListState_Provider)
             .reset();
 
-        await context.read(habitControllerProvider).load();
         await context
             .read(habitPerformingController)
             .loadDateHabitPerformings(DateTime.now());

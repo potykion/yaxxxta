@@ -6,9 +6,10 @@ abstract class BaseHabitRepo {
   Future<String> insert(Habit habit);
 
   /// Выводит список привычек
-  Future<List<Habit>> list();
+  Future<List<Habit>> listByIds(List<String> habitIds);
 
   /// Получает привычку по айди
+  @deprecated
   Future<Habit> get(String id);
 
   /// Обновляет привычку в бд

@@ -22,8 +22,16 @@ class FirestoreHabitRepo implements BaseHabitRepo {
       (await _collectionReference.add(_habitToFireStore(habit))).id;
 
   @override
-  Future<List<Habit>> list() async =>
-      (await _collectionReference.get()).docs.map(_habitFromFireStore).toList();
+  Future<List<Habit>> listByIds(List<String> habitIds) async {
+    if (habitIds.isEmpty) return [];
+
+    return (await _collectionReference
+            .where(FieldPath.documentId, whereIn: habitIds)
+            .get())
+        .docs
+        .map(_habitFromFireStore)
+        .toList();
+  }
 
   @override
   Future<void> update(Habit habit) =>

@@ -48,8 +48,6 @@ class LoadingPage extends HookWidget {
         }
 
         await context.read(settingsControllerProvider).loadSettings();
-        await context
-            .read(scheduleNotificationsForHabitsWithoutNotificationsProvider)();
 
         var auth = context.read(authProvider);
         var user = auth.tryGetUser() ?? (await auth.signInAnon());
@@ -58,8 +56,14 @@ class LoadingPage extends HookWidget {
           deviceId: androidInfo.id,
         );
 
-        // todo грузим привычки
-        // var habits = await context.read(provider)
+        await context
+            .read(habitControllerProvider)
+            .loadByIds(userData.habitIds);
+
+        await context
+            .read(scheduleNotificationsForHabitsWithoutNotificationsProvider)(
+          context.read(habitControllerProvider.state),
+        );
 
         Navigator.pushReplacementNamed(context, Routes.calendar);
       });

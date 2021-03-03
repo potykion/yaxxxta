@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import '../../core/infra/push.dart';
-import 'db.dart';
 import 'models.dart';
 
 /// Планирует уведомление о выполнении привычки
@@ -53,21 +52,17 @@ class ScheduleNotificationsForHabitsWithoutNotifications {
   /// Отправщик уведомлений
   final NotificationSender notificationSender;
 
-  /// Репо привычек
-  final BaseHabitRepo habitRepo;
-
   /// Планирует уведомления о выполнении привычки для всех привычек,
   /// у которых нет запланированных уведомлений
   ScheduleNotificationsForHabitsWithoutNotifications({
     this.notificationSender,
-    this.habitRepo,
   });
 
   /// Планирует уведомления о выполнении привычки для всех привычек,
   /// у которых нет запланированных уведомлений
-  Future<void> call() async {
+  Future<void> call(List<Habit> habits) async {
     //  Берем все привычки со временем выполнения и флагом отправки уведомления
-    var habits = (await habitRepo.list())
+    habits = habits
         .where((h) => h.isNotificationsEnabled && h.performTime != null)
         .toList();
 
