@@ -24,6 +24,6 @@ class SharedPreferencesSettingsRepo implements BaseSettingsRepo {
   @override
   Future<void> update(Settings settings) async {
     var prefs = await SharedPreferences.getInstance();
-    return prefs.setString(_settingsKey, jsonEncode(settings.toJson()));
+    prefs.setString(_settingsKey, jsonEncode(settings.toJson()));
   }
 }

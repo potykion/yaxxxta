@@ -1,8 +1,7 @@
 import 'package:device_info/device_info.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:hooks_riverpod/all.dart';
-import 'package:meta/meta.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../core/utils/dt.dart';
 import '../../../core/utils/list.dart';
@@ -27,10 +26,10 @@ class HabitController extends StateNotifier<List<Habit>> {
 
   /// Контроллер привычек
   HabitController({
-    @required this.habitRepo,
-    @required this.deviceInfo,
-    @required this.scheduleSingleHabitNotification,
-    @required this.fbAuth,
+    required this.habitRepo,
+    required this.deviceInfo,
+    required this.scheduleSingleHabitNotification,
+    required this.fbAuth,
     List<Habit> state = const [],
   }) : super(state);
 
@@ -49,13 +48,13 @@ class HabitController extends StateNotifier<List<Habit>> {
 
   /// Создает или обновляет привычку в зависимости от наличия айди
   Future<Habit> createOrUpdateHabit(Habit habit) async {
-    if (habit.deviceId == null) {
-      habit = habit.copyWith(deviceId: deviceInfo.id);
-    }
-
-    if (habit.userId == null) {
-      habit = habit.copyWith(userId: fbAuth.currentUser?.uid);
-    }
+    // if (habit.deviceId == null) {
+    //   habit = habit.copyWith(deviceId: deviceInfo.id);
+    // }
+    //
+    // if (habit.userId == null) {
+    //   habit = habit.copyWith(userId: fbAuth.currentUser?.uid);
+    // }
 
     if (habit.isUpdate) {
       await habitRepo.update(habit);
@@ -90,8 +89,8 @@ class HabitPerformingController
 
   /// Контроллер выполнений привычек
   HabitPerformingController({
-    this.repo,
-    this.settings,
+    required this.repo,
+    required this.settings,
     Map<DateTime, List<HabitPerforming>> state = const {},
   }) : super(AsyncValue.data(state));
 

@@ -29,8 +29,9 @@ var _error = Provider.family<String, Habit>((ref, habit) {
 class HabitFormPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    var vmState = useState(ModalRoute.of(context).settings.arguments as Habit ??
-        Habit(created: DateTime.now()));
+    var vmState = useState(
+        ModalRoute.of(context)!.settings.arguments as Habit? ??
+            Habit(created: DateTime.now()));
     var habit = vmState.value;
     setVM(Habit newVm) => vmState.value = newVm;
 
@@ -321,7 +322,7 @@ class HabitFormPage extends HookWidget {
                   value: habit.isNotificationsEnabled,
                   onChanged: (isNotificationsEnabled) => setVM(
                     habit.copyWith(
-                        isNotificationsEnabled: isNotificationsEnabled),
+                        isNotificationsEnabled: isNotificationsEnabled!),
                   ),
                   checkColor: CustomColors.almostBlack,
                 )

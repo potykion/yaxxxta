@@ -10,18 +10,18 @@ class ScheduleSingleHabitNotification {
 
   /// Планирует уведомление о выполнении привычки
   ScheduleSingleHabitNotification({
-    this.notificationSender,
+    required this.notificationSender,
   });
 
   /// Планирует уведомление о выполнении привычки
-  Future<void> call({Habit habit, bool resetPending = false}) async {
+  Future<void> call({required Habit habit, bool resetPending = false}) async {
     if (resetPending) {
       var allPendingNotifications = await notificationSender.getAllPending();
       var habitPendingNotifications = allPendingNotifications.where(
         (n) =>
             n.payload != null &&
-            n.payload.isNotEmpty &&
-            jsonDecode(n.payload)["habitId"] == habit.id,
+            n.payload!.isNotEmpty &&
+            jsonDecode(n.payload!)["habitId"] == habit.id,
       );
       await Future.wait(
         habitPendingNotifications.map((n) => notificationSender.cancel(n.id)),
@@ -55,7 +55,7 @@ class ScheduleNotificationsForHabitsWithoutNotifications {
   /// Планирует уведомления о выполнении привычки для всех привычек,
   /// у которых нет запланированных уведомлений
   ScheduleNotificationsForHabitsWithoutNotifications({
-    this.notificationSender,
+    required this.notificationSender,
   });
 
   /// Планирует уведомления о выполнении привычки для всех привычек,
@@ -71,8 +71,8 @@ class ScheduleNotificationsForHabitsWithoutNotifications {
 
     //  Фильтруем привычки, у которых нет уведомлений
     var notificationHabitIds = allPendingNotifications
-        .where((n) => n.payload != null && n.payload.isNotEmpty)
-        .map((n) => jsonDecode(n.payload)["habitId"] as String)
+        .where((n) => n.payload != null && n.payload!.isNotEmpty)
+        .map((n) => jsonDecode(n.payload!)["habitId"] as String)
         .toSet();
     var habitsWithoutNotifications =
         habits.where((h) => !notificationHabitIds.contains(h.id));

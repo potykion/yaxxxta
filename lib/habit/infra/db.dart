@@ -41,7 +41,7 @@ class FirestoreHabitRepo implements BaseHabitRepo {
       habit.toJson()..["created"] = Timestamp.fromDate(habit.created);
 
   Habit _habitFromFireStore(DocumentSnapshot doc) {
-    var data = doc.data();
+    var data = doc.data()!;
     data["created"] = (data["created"] as Timestamp).toDate().toIso8601String();
     data["id"] = doc.id;
     return Habit.fromJson(data);
@@ -103,7 +103,7 @@ class FireStoreHabitPerformingRepo implements BaseHabitPerformingRepo {
         ..["performDateTime"] = Timestamp.fromDate(performing.performDateTime);
 
   HabitPerforming _fromFireBase(DocumentSnapshot doc) {
-    var data = doc.data();
+    var data = doc.data()!;
 
     return HabitPerforming.fromJson(
       data

@@ -15,8 +15,8 @@ class SmallerText extends StatelessWidget {
 
   /// Создает текст
   const SmallerText({
-    Key key,
-    this.text,
+    Key? key,
+    required this.text,
     this.dark = false,
     this.light = false,
   }) : super(key: key);
@@ -71,8 +71,8 @@ class BiggerText extends StatelessWidget {
 
   /// Создает текст
   const BiggerText({
-    Key key,
-    this.text,
+    Key? key,
+    required this.text,
     this.align = TextAlign.start,
   }) : super(key: key);
 
@@ -97,7 +97,7 @@ class BiggestText extends StatelessWidget {
   final bool withPadding;
 
   /// Создает текст
-  const BiggestText({Key key, this.text, this.withPadding = false})
+  const BiggestText({Key? key, required this.text, this.withPadding = false})
       : super(key: key);
 
   @override

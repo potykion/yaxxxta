@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
 
 part of 'view_models.dart';
 
@@ -9,12 +9,14 @@ part of 'view_models.dart';
 
 T _$identity<T>(T value) => value;
 
+final _privateConstructorUsedError = UnsupportedError(
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+
 /// @nodoc
 class _$HabitHistoryEntryTearOff {
   const _$HabitHistoryEntryTearOff();
 
-// ignore: unused_element
-  _HabitHistoryEntry call({DateTime time, double value}) {
+  _HabitHistoryEntry call({required DateTime time, required double value}) {
     return _HabitHistoryEntry(
       time: time,
       value: value,
@@ -23,19 +25,19 @@ class _$HabitHistoryEntryTearOff {
 }
 
 /// @nodoc
-// ignore: unused_element
 const $HabitHistoryEntry = _$HabitHistoryEntryTearOff();
 
 /// @nodoc
 mixin _$HabitHistoryEntry {
   /// Время
-  DateTime get time;
+  DateTime get time => throw _privateConstructorUsedError;
 
   /// Изменеие значения привычки
-  double get value;
+  double get value => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $HabitHistoryEntryCopyWith<HabitHistoryEntry> get copyWith;
+  $HabitHistoryEntryCopyWith<HabitHistoryEntry> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -57,8 +59,8 @@ class _$HabitHistoryEntryCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object time = freezed,
-    Object value = freezed,
+    Object? time = freezed,
+    Object? value = freezed,
   }) {
     return _then(_value.copyWith(
       time: time == freezed ? _value.time : time as DateTime,
@@ -90,8 +92,8 @@ class __$HabitHistoryEntryCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object time = freezed,
-    Object value = freezed,
+    Object? time = freezed,
+    Object? value = freezed,
   }) {
     return _then(_HabitHistoryEntry(
       time: time == freezed ? _value.time : time as DateTime,
@@ -102,7 +104,7 @@ class __$HabitHistoryEntryCopyWithImpl<$Res>
 
 /// @nodoc
 class _$_HabitHistoryEntry extends _HabitHistoryEntry {
-  _$_HabitHistoryEntry({this.time, this.value}) : super._();
+  _$_HabitHistoryEntry({required this.time, required this.value}) : super._();
 
   @override
 
@@ -142,18 +144,19 @@ class _$_HabitHistoryEntry extends _HabitHistoryEntry {
 
 abstract class _HabitHistoryEntry extends HabitHistoryEntry {
   _HabitHistoryEntry._() : super._();
-  factory _HabitHistoryEntry({DateTime time, double value}) =
+  factory _HabitHistoryEntry({required DateTime time, required double value}) =
       _$_HabitHistoryEntry;
 
   @override
 
   /// Время
-  DateTime get time;
+  DateTime get time => throw _privateConstructorUsedError;
   @override
 
   /// Изменеие значения привычки
-  double get value;
+  double get value => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$HabitHistoryEntryCopyWith<_HabitHistoryEntry> get copyWith;
+  _$HabitHistoryEntryCopyWith<_HabitHistoryEntry> get copyWith =>
+      throw _privateConstructorUsedError;
 }

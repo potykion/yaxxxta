@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:infinite_listview/infinite_listview.dart';
+// import 'package:infinite_listview/infinite_listview.dart';
 
 import '../../../theme.dart';
 import '../../utils/dt.dart';
@@ -20,22 +20,23 @@ class DateCarousel extends HookWidget {
 
   /// Выбор даты
   DateCarousel({
-    Map<DateTime, double> highlights,
-    DateTime initial,
-    @required this.change,
-  })  : initial = (initial ?? DateTime.now()).date(),
+    Map<DateTime, double>? highlights,
+    DateTime? initial,
+    required this.change,
+  })   : initial = (initial ?? DateTime.now()).date(),
         highlights = highlights ?? {};
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 75,
-      child: InfiniteListView.builder(
+      // child: InfiniteListView.builder(
+      child: ListView.builder(
         /// Сдвигаем лист-вью на половину экрана + 3 паддинга по 10,
         /// чтобы текущий день был посерединке
-        controller: InfiniteScrollController(
-          initialScrollOffset: -MediaQuery.of(context).size.width / 2 + 3 * 10,
-        ),
+        // controller: InfiniteScrollController(
+        //   initialScrollOffset: -MediaQuery.of(context).size.width / 2 + 3 * 10,
+        // ),
         scrollDirection: Axis.horizontal,
         itemBuilder: (_, index) {
           var shiftDate = DateTime.now().date().add(Duration(days: index));
@@ -48,7 +49,7 @@ class DateCarousel extends HookWidget {
                   ? CustomColors.yellow
                   : CustomColors.green.withAlpha(
                       highlights.containsKey(shiftDate)
-                          ? (255 * highlights[shiftDate]).toInt()
+                          ? (255 * highlights[shiftDate]!).toInt()
                           : 0,
                     ),
             ),
@@ -68,7 +69,8 @@ class DateCarouselCell extends StatelessWidget {
   final Color color;
 
   /// Создает ячейку
-  const DateCarouselCell({Key key, this.date, this.color = Colors.white})
+  const DateCarouselCell(
+      {Key? key, required this.date, this.color = Colors.white})
       : super(key: key);
 
   String get _dateStr => "${date.day}.\n${date.month}";
@@ -103,13 +105,13 @@ class DateCarouselCell extends StatelessWidget {
 /// Выбор даты
 class DatePickerInput extends HookWidget {
   /// Начальное значение даты
-  final DateTime initial;
+  final DateTime? initial;
 
   /// Событие изменения даты
   final Function(DateTime time) change;
 
   /// Выбор даты
-  DatePickerInput({this.initial, this.change});
+  DatePickerInput({this.initial, required this.change});
 
   @override
   Widget build(BuildContext context) {
@@ -122,11 +124,12 @@ class DatePickerInput extends HookWidget {
       readOnly: true,
       onTap: () async {
         var selected = (await showDatePicker(
-          context: context,
-          initialDate: initial ?? DateTime.now(),
-          firstDate: DateTime.now().add(Duration(days: -365)),
-          lastDate: DateTime.now().add(Duration(days: 365)),
-        ));
+              context: context,
+              initialDate: initial ?? DateTime.now(),
+              firstDate: DateTime.now().add(Duration(days: -365)),
+              lastDate: DateTime.now().add(Duration(days: 365)),
+            )) ??
+            DateTime.now();
         tec.text = selected.format();
         change(selected);
       },

@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
 
 part of 'models.dart';
 
@@ -8,6 +8,10 @@ part of 'models.dart';
 // **************************************************************************
 
 T _$identity<T>(T value) => value;
+
+final _privateConstructorUsedError = UnsupportedError(
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+
 UserData _$UserDataFromJson(Map<String, dynamic> json) {
   return _UserData.fromJson(json);
 }
@@ -16,12 +20,11 @@ UserData _$UserDataFromJson(Map<String, dynamic> json) {
 class _$UserDataTearOff {
   const _$UserDataTearOff();
 
-// ignore: unused_element
   _UserData call(
-      {String userId,
-      List<String> deviceIds,
-      List<String> habitIds,
-      Settings settings}) {
+      {String? userId,
+      required List<String> deviceIds,
+      required List<String> habitIds,
+      required Settings settings}) {
     return _UserData(
       userId: userId,
       deviceIds: deviceIds,
@@ -30,26 +33,25 @@ class _$UserDataTearOff {
     );
   }
 
-// ignore: unused_element
   UserData fromJson(Map<String, Object> json) {
     return UserData.fromJson(json);
   }
 }
 
 /// @nodoc
-// ignore: unused_element
 const $UserData = _$UserDataTearOff();
 
 /// @nodoc
 mixin _$UserData {
-  String get userId;
-  List<String> get deviceIds;
-  List<String> get habitIds;
-  Settings get settings;
+  String? get userId => throw _privateConstructorUsedError;
+  List<String> get deviceIds => throw _privateConstructorUsedError;
+  List<String> get habitIds => throw _privateConstructorUsedError;
+  Settings get settings => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson();
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $UserDataCopyWith<UserData> get copyWith;
+  $UserDataCopyWith<UserData> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -57,7 +59,7 @@ abstract class $UserDataCopyWith<$Res> {
   factory $UserDataCopyWith(UserData value, $Res Function(UserData) then) =
       _$UserDataCopyWithImpl<$Res>;
   $Res call(
-      {String userId,
+      {String? userId,
       List<String> deviceIds,
       List<String> habitIds,
       Settings settings});
@@ -75,13 +77,13 @@ class _$UserDataCopyWithImpl<$Res> implements $UserDataCopyWith<$Res> {
 
   @override
   $Res call({
-    Object userId = freezed,
-    Object deviceIds = freezed,
-    Object habitIds = freezed,
-    Object settings = freezed,
+    Object? userId = freezed,
+    Object? deviceIds = freezed,
+    Object? habitIds = freezed,
+    Object? settings = freezed,
   }) {
     return _then(_value.copyWith(
-      userId: userId == freezed ? _value.userId : userId as String,
+      userId: userId == freezed ? _value.userId : userId as String?,
       deviceIds:
           deviceIds == freezed ? _value.deviceIds : deviceIds as List<String>,
       habitIds:
@@ -92,9 +94,6 @@ class _$UserDataCopyWithImpl<$Res> implements $UserDataCopyWith<$Res> {
 
   @override
   $SettingsCopyWith<$Res> get settings {
-    if (_value.settings == null) {
-      return null;
-    }
     return $SettingsCopyWith<$Res>(_value.settings, (value) {
       return _then(_value.copyWith(settings: value));
     });
@@ -107,7 +106,7 @@ abstract class _$UserDataCopyWith<$Res> implements $UserDataCopyWith<$Res> {
       __$UserDataCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String userId,
+      {String? userId,
       List<String> deviceIds,
       List<String> habitIds,
       Settings settings});
@@ -127,13 +126,13 @@ class __$UserDataCopyWithImpl<$Res> extends _$UserDataCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object userId = freezed,
-    Object deviceIds = freezed,
-    Object habitIds = freezed,
-    Object settings = freezed,
+    Object? userId = freezed,
+    Object? deviceIds = freezed,
+    Object? habitIds = freezed,
+    Object? settings = freezed,
   }) {
     return _then(_UserData(
-      userId: userId == freezed ? _value.userId : userId as String,
+      userId: userId == freezed ? _value.userId : userId as String?,
       deviceIds:
           deviceIds == freezed ? _value.deviceIds : deviceIds as List<String>,
       habitIds:
@@ -147,14 +146,18 @@ class __$UserDataCopyWithImpl<$Res> extends _$UserDataCopyWithImpl<$Res>
 
 /// @nodoc
 class _$_UserData extends _UserData {
-  _$_UserData({this.userId, this.deviceIds, this.habitIds, this.settings})
+  _$_UserData(
+      {this.userId,
+      required this.deviceIds,
+      required this.habitIds,
+      required this.settings})
       : super._();
 
   factory _$_UserData.fromJson(Map<String, dynamic> json) =>
       _$_$_UserDataFromJson(json);
 
   @override
-  final String userId;
+  final String? userId;
   @override
   final List<String> deviceIds;
   @override
@@ -206,22 +209,23 @@ class _$_UserData extends _UserData {
 abstract class _UserData extends UserData {
   _UserData._() : super._();
   factory _UserData(
-      {String userId,
-      List<String> deviceIds,
-      List<String> habitIds,
-      Settings settings}) = _$_UserData;
+      {String? userId,
+      required List<String> deviceIds,
+      required List<String> habitIds,
+      required Settings settings}) = _$_UserData;
 
   factory _UserData.fromJson(Map<String, dynamic> json) = _$_UserData.fromJson;
 
   @override
-  String get userId;
+  String? get userId => throw _privateConstructorUsedError;
   @override
-  List<String> get deviceIds;
+  List<String> get deviceIds => throw _privateConstructorUsedError;
   @override
-  List<String> get habitIds;
+  List<String> get habitIds => throw _privateConstructorUsedError;
   @override
-  Settings get settings;
+  Settings get settings => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$UserDataCopyWith<_UserData> get copyWith;
+  _$UserDataCopyWith<_UserData> get copyWith =>
+      throw _privateConstructorUsedError;
 }

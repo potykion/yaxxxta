@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
 
 part of 'view_models.dart';
 
@@ -9,18 +9,20 @@ part of 'view_models.dart';
 
 T _$identity<T>(T value) => value;
 
+final _privateConstructorUsedError = UnsupportedError(
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+
 /// @nodoc
 class _$HabitProgressVMTearOff {
   const _$HabitProgressVMTearOff();
 
-// ignore: unused_element
   _HabitProgressVM call(
-      {String id,
-      String title,
+      {required String id,
+      required String title,
       double currentValue = 0,
-      double goalValue,
-      DateTime performTime,
-      HabitType type}) {
+      required double goalValue,
+      DateTime? performTime,
+      required HabitType type}) {
     return _HabitProgressVM(
       id: id,
       title: title,
@@ -33,30 +35,30 @@ class _$HabitProgressVMTearOff {
 }
 
 /// @nodoc
-// ignore: unused_element
 const $HabitProgressVM = _$HabitProgressVMTearOff();
 
 /// @nodoc
 mixin _$HabitProgressVM {
-  String get id;
+  String get id => throw _privateConstructorUsedError;
 
   /// Название
-  String get title;
+  String get title => throw _privateConstructorUsedError;
 
   /// Текущее значение (4 раза из 10)
-  double get currentValue;
+  double get currentValue => throw _privateConstructorUsedError;
 
   /// Целевое значение (10 раз)
-  double get goalValue;
+  double get goalValue => throw _privateConstructorUsedError;
 
   /// Время выполнения
-  DateTime get performTime;
+  DateTime? get performTime => throw _privateConstructorUsedError;
 
   /// Тип
-  HabitType get type;
+  HabitType get type => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $HabitProgressVMCopyWith<HabitProgressVM> get copyWith;
+  $HabitProgressVMCopyWith<HabitProgressVM> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -69,7 +71,7 @@ abstract class $HabitProgressVMCopyWith<$Res> {
       String title,
       double currentValue,
       double goalValue,
-      DateTime performTime,
+      DateTime? performTime,
       HabitType type});
 }
 
@@ -84,12 +86,12 @@ class _$HabitProgressVMCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object id = freezed,
-    Object title = freezed,
-    Object currentValue = freezed,
-    Object goalValue = freezed,
-    Object performTime = freezed,
-    Object type = freezed,
+    Object? id = freezed,
+    Object? title = freezed,
+    Object? currentValue = freezed,
+    Object? goalValue = freezed,
+    Object? performTime = freezed,
+    Object? type = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed ? _value.id : id as String,
@@ -98,8 +100,9 @@ class _$HabitProgressVMCopyWithImpl<$Res>
           ? _value.currentValue
           : currentValue as double,
       goalValue: goalValue == freezed ? _value.goalValue : goalValue as double,
-      performTime:
-          performTime == freezed ? _value.performTime : performTime as DateTime,
+      performTime: performTime == freezed
+          ? _value.performTime
+          : performTime as DateTime?,
       type: type == freezed ? _value.type : type as HabitType,
     ));
   }
@@ -117,7 +120,7 @@ abstract class _$HabitProgressVMCopyWith<$Res>
       String title,
       double currentValue,
       double goalValue,
-      DateTime performTime,
+      DateTime? performTime,
       HabitType type});
 }
 
@@ -134,12 +137,12 @@ class __$HabitProgressVMCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object id = freezed,
-    Object title = freezed,
-    Object currentValue = freezed,
-    Object goalValue = freezed,
-    Object performTime = freezed,
-    Object type = freezed,
+    Object? id = freezed,
+    Object? title = freezed,
+    Object? currentValue = freezed,
+    Object? goalValue = freezed,
+    Object? performTime = freezed,
+    Object? type = freezed,
   }) {
     return _then(_HabitProgressVM(
       id: id == freezed ? _value.id : id as String,
@@ -148,8 +151,9 @@ class __$HabitProgressVMCopyWithImpl<$Res>
           ? _value.currentValue
           : currentValue as double,
       goalValue: goalValue == freezed ? _value.goalValue : goalValue as double,
-      performTime:
-          performTime == freezed ? _value.performTime : performTime as DateTime,
+      performTime: performTime == freezed
+          ? _value.performTime
+          : performTime as DateTime?,
       type: type == freezed ? _value.type : type as HabitType,
     ));
   }
@@ -158,14 +162,13 @@ class __$HabitProgressVMCopyWithImpl<$Res>
 /// @nodoc
 class _$_HabitProgressVM extends _HabitProgressVM {
   _$_HabitProgressVM(
-      {this.id,
-      this.title,
+      {required this.id,
+      required this.title,
       this.currentValue = 0,
-      this.goalValue,
+      required this.goalValue,
       this.performTime,
-      this.type})
-      : assert(currentValue != null),
-        super._();
+      required this.type})
+      : super._();
 
   @override
   final String id;
@@ -185,7 +188,7 @@ class _$_HabitProgressVM extends _HabitProgressVM {
   @override
 
   /// Время выполнения
-  final DateTime performTime;
+  final DateTime? performTime;
   @override
 
   /// Тип
@@ -236,36 +239,37 @@ class _$_HabitProgressVM extends _HabitProgressVM {
 abstract class _HabitProgressVM extends HabitProgressVM {
   _HabitProgressVM._() : super._();
   factory _HabitProgressVM(
-      {String id,
-      String title,
+      {required String id,
+      required String title,
       double currentValue,
-      double goalValue,
-      DateTime performTime,
-      HabitType type}) = _$_HabitProgressVM;
+      required double goalValue,
+      DateTime? performTime,
+      required HabitType type}) = _$_HabitProgressVM;
 
   @override
-  String get id;
+  String get id => throw _privateConstructorUsedError;
   @override
 
   /// Название
-  String get title;
+  String get title => throw _privateConstructorUsedError;
   @override
 
   /// Текущее значение (4 раза из 10)
-  double get currentValue;
+  double get currentValue => throw _privateConstructorUsedError;
   @override
 
   /// Целевое значение (10 раз)
-  double get goalValue;
+  double get goalValue => throw _privateConstructorUsedError;
   @override
 
   /// Время выполнения
-  DateTime get performTime;
+  DateTime? get performTime => throw _privateConstructorUsedError;
   @override
 
   /// Тип
-  HabitType get type;
+  HabitType get type => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$HabitProgressVMCopyWith<_HabitProgressVM> get copyWith;
+  _$HabitProgressVMCopyWith<_HabitProgressVM> get copyWith =>
+      throw _privateConstructorUsedError;
 }

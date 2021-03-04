@@ -12,7 +12,7 @@ import '../../utils/list.dart';
 class AppBottomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var currentRoute = ModalRoute.of(context).settings.name;
+    var currentRoute = ModalRoute.of(context)!.settings.name;
 
     var currentIndex =
         bottomNavRoutes.entries.firstWhere((e) => e.value == currentRoute).key;
@@ -49,12 +49,12 @@ class AppBottomNavigationBar extends StatelessWidget {
                         Navigator.pushReplacement<dynamic, dynamic>(
                           context,
                           PageTransition<dynamic>(
-                            child: routes[bottomNavRoutes[index]](context),
+                            child: routes[bottomNavRoutes[index]]!(context),
                             type: currentIndex < index
                                 ? PageTransitionType.rightToLeftJoined
                                 : PageTransitionType.leftToRightJoined,
                             childCurrent:
-                                routes[bottomNavRoutes[currentIndex]](context),
+                                routes[bottomNavRoutes[currentIndex]]!(context),
                             settings:
                                 RouteSettings(name: bottomNavRoutes[index]),
                           ),
@@ -85,11 +85,11 @@ class AppBottomNavBarItem extends StatelessWidget {
 
   /// Кнопочка в боттом апп баре
   const AppBottomNavBarItem({
-    Key key,
-    this.icon,
-    this.text,
+    Key? key,
+    required this.icon,
+    required this.text,
     this.selected = false,
-    this.onTap,
+    required this.onTap,
   }) : super(key: key);
 
   @override

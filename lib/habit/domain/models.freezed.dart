@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
 
 part of 'models.dart';
 
@@ -8,6 +8,10 @@ part of 'models.dart';
 // **************************************************************************
 
 T _$identity<T>(T value) => value;
+
+final _privateConstructorUsedError = UnsupportedError(
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+
 Habit _$HabitFromJson(Map<String, dynamic> json) {
   return _Habit.fromJson(json);
 }
@@ -16,22 +20,19 @@ Habit _$HabitFromJson(Map<String, dynamic> json) {
 class _$HabitTearOff {
   const _$HabitTearOff();
 
-// ignore: unused_element
   _Habit call(
-      {String id,
-      @required DateTime created,
+      {String? id,
+      required DateTime created,
       String title = "",
       HabitType type = HabitType.repeats,
       double goalValue = 1,
-      DateTime performTime,
+      DateTime? performTime,
       HabitPeriodType periodType = HabitPeriodType.day,
       int periodValue = 1,
       List<Weekday> performWeekdays = const <Weekday>[],
       int performMonthDay = 1,
       bool isCustomPeriod = false,
-      bool isNotificationsEnabled = false,
-      String deviceId,
-      String userId}) {
+      bool isNotificationsEnabled = false}) {
     return _Habit(
       id: id,
       created: created,
@@ -45,69 +46,59 @@ class _$HabitTearOff {
       performMonthDay: performMonthDay,
       isCustomPeriod: isCustomPeriod,
       isNotificationsEnabled: isNotificationsEnabled,
-      deviceId: deviceId,
-      userId: userId,
     );
   }
 
-// ignore: unused_element
   Habit fromJson(Map<String, Object> json) {
     return Habit.fromJson(json);
   }
 }
 
 /// @nodoc
-// ignore: unused_element
 const $Habit = _$HabitTearOff();
 
 /// @nodoc
 mixin _$Habit {
   /// Айдишник
-  String get id;
+  String? get id => throw _privateConstructorUsedError;
 
   /// Дата создания
-  DateTime get created;
+  DateTime get created => throw _privateConstructorUsedError;
 
   /// Название
-  String get title;
+  String get title => throw _privateConstructorUsedError;
 
   /// Тип
-  HabitType get type;
+  HabitType get type => throw _privateConstructorUsedError;
 
   /// Продолжительность / число повторений
-  double get goalValue;
+  double get goalValue => throw _privateConstructorUsedError;
 
   /// Время выполнения привычки
-  DateTime get performTime;
+  DateTime? get performTime => throw _privateConstructorUsedError;
 
   /// Тип периодичности
-  HabitPeriodType get periodType;
+  HabitPeriodType get periodType => throw _privateConstructorUsedError;
 
   /// 1 раз в {periodValue} дней / недель / месяцев
-  int get periodValue;
+  int get periodValue => throw _privateConstructorUsedError;
 
   /// [type=HabitPeriodType.week] Дни выполнения (пн, вт)
-  List<Weekday> get performWeekdays;
+  List<Weekday> get performWeekdays => throw _privateConstructorUsedError;
 
   /// [type=HabitPeriodType.month] День выполнения
-  int get performMonthDay;
+  int get performMonthDay => throw _privateConstructorUsedError;
 
   /// Если false, то {periodValue} = 1; иначе можно задавать {periodValue} > 1
   /// Вообще тупа в гуи юзается
-  bool get isCustomPeriod;
+  bool get isCustomPeriod => throw _privateConstructorUsedError;
 
   /// Включены ли уведомления
-  bool get isNotificationsEnabled;
+  bool get isNotificationsEnabled => throw _privateConstructorUsedError;
 
-  /// Айди девайса
-  String get deviceId;
-
-  /// Айди юзера
-  String get userId;
-
-  Map<String, dynamic> toJson();
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $HabitCopyWith<Habit> get copyWith;
+  $HabitCopyWith<Habit> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -115,20 +106,18 @@ abstract class $HabitCopyWith<$Res> {
   factory $HabitCopyWith(Habit value, $Res Function(Habit) then) =
       _$HabitCopyWithImpl<$Res>;
   $Res call(
-      {String id,
+      {String? id,
       DateTime created,
       String title,
       HabitType type,
       double goalValue,
-      DateTime performTime,
+      DateTime? performTime,
       HabitPeriodType periodType,
       int periodValue,
       List<Weekday> performWeekdays,
       int performMonthDay,
       bool isCustomPeriod,
-      bool isNotificationsEnabled,
-      String deviceId,
-      String userId});
+      bool isNotificationsEnabled});
 }
 
 /// @nodoc
@@ -141,29 +130,28 @@ class _$HabitCopyWithImpl<$Res> implements $HabitCopyWith<$Res> {
 
   @override
   $Res call({
-    Object id = freezed,
-    Object created = freezed,
-    Object title = freezed,
-    Object type = freezed,
-    Object goalValue = freezed,
-    Object performTime = freezed,
-    Object periodType = freezed,
-    Object periodValue = freezed,
-    Object performWeekdays = freezed,
-    Object performMonthDay = freezed,
-    Object isCustomPeriod = freezed,
-    Object isNotificationsEnabled = freezed,
-    Object deviceId = freezed,
-    Object userId = freezed,
+    Object? id = freezed,
+    Object? created = freezed,
+    Object? title = freezed,
+    Object? type = freezed,
+    Object? goalValue = freezed,
+    Object? performTime = freezed,
+    Object? periodType = freezed,
+    Object? periodValue = freezed,
+    Object? performWeekdays = freezed,
+    Object? performMonthDay = freezed,
+    Object? isCustomPeriod = freezed,
+    Object? isNotificationsEnabled = freezed,
   }) {
     return _then(_value.copyWith(
-      id: id == freezed ? _value.id : id as String,
+      id: id == freezed ? _value.id : id as String?,
       created: created == freezed ? _value.created : created as DateTime,
       title: title == freezed ? _value.title : title as String,
       type: type == freezed ? _value.type : type as HabitType,
       goalValue: goalValue == freezed ? _value.goalValue : goalValue as double,
-      performTime:
-          performTime == freezed ? _value.performTime : performTime as DateTime,
+      performTime: performTime == freezed
+          ? _value.performTime
+          : performTime as DateTime?,
       periodType: periodType == freezed
           ? _value.periodType
           : periodType as HabitPeriodType,
@@ -181,8 +169,6 @@ class _$HabitCopyWithImpl<$Res> implements $HabitCopyWith<$Res> {
       isNotificationsEnabled: isNotificationsEnabled == freezed
           ? _value.isNotificationsEnabled
           : isNotificationsEnabled as bool,
-      deviceId: deviceId == freezed ? _value.deviceId : deviceId as String,
-      userId: userId == freezed ? _value.userId : userId as String,
     ));
   }
 }
@@ -193,20 +179,18 @@ abstract class _$HabitCopyWith<$Res> implements $HabitCopyWith<$Res> {
       __$HabitCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String id,
+      {String? id,
       DateTime created,
       String title,
       HabitType type,
       double goalValue,
-      DateTime performTime,
+      DateTime? performTime,
       HabitPeriodType periodType,
       int periodValue,
       List<Weekday> performWeekdays,
       int performMonthDay,
       bool isCustomPeriod,
-      bool isNotificationsEnabled,
-      String deviceId,
-      String userId});
+      bool isNotificationsEnabled});
 }
 
 /// @nodoc
@@ -220,29 +204,28 @@ class __$HabitCopyWithImpl<$Res> extends _$HabitCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object id = freezed,
-    Object created = freezed,
-    Object title = freezed,
-    Object type = freezed,
-    Object goalValue = freezed,
-    Object performTime = freezed,
-    Object periodType = freezed,
-    Object periodValue = freezed,
-    Object performWeekdays = freezed,
-    Object performMonthDay = freezed,
-    Object isCustomPeriod = freezed,
-    Object isNotificationsEnabled = freezed,
-    Object deviceId = freezed,
-    Object userId = freezed,
+    Object? id = freezed,
+    Object? created = freezed,
+    Object? title = freezed,
+    Object? type = freezed,
+    Object? goalValue = freezed,
+    Object? performTime = freezed,
+    Object? periodType = freezed,
+    Object? periodValue = freezed,
+    Object? performWeekdays = freezed,
+    Object? performMonthDay = freezed,
+    Object? isCustomPeriod = freezed,
+    Object? isNotificationsEnabled = freezed,
   }) {
     return _then(_Habit(
-      id: id == freezed ? _value.id : id as String,
+      id: id == freezed ? _value.id : id as String?,
       created: created == freezed ? _value.created : created as DateTime,
       title: title == freezed ? _value.title : title as String,
       type: type == freezed ? _value.type : type as HabitType,
       goalValue: goalValue == freezed ? _value.goalValue : goalValue as double,
-      performTime:
-          performTime == freezed ? _value.performTime : performTime as DateTime,
+      performTime: performTime == freezed
+          ? _value.performTime
+          : performTime as DateTime?,
       periodType: periodType == freezed
           ? _value.periodType
           : periodType as HabitPeriodType,
@@ -260,8 +243,6 @@ class __$HabitCopyWithImpl<$Res> extends _$HabitCopyWithImpl<$Res>
       isNotificationsEnabled: isNotificationsEnabled == freezed
           ? _value.isNotificationsEnabled
           : isNotificationsEnabled as bool,
-      deviceId: deviceId == freezed ? _value.deviceId : deviceId as String,
-      userId: userId == freezed ? _value.userId : userId as String,
     ));
   }
 }
@@ -272,7 +253,7 @@ class __$HabitCopyWithImpl<$Res> extends _$HabitCopyWithImpl<$Res>
 class _$_Habit extends _Habit {
   const _$_Habit(
       {this.id,
-      @required this.created,
+      required this.created,
       this.title = "",
       this.type = HabitType.repeats,
       this.goalValue = 1,
@@ -282,20 +263,8 @@ class _$_Habit extends _Habit {
       this.performWeekdays = const <Weekday>[],
       this.performMonthDay = 1,
       this.isCustomPeriod = false,
-      this.isNotificationsEnabled = false,
-      this.deviceId,
-      this.userId})
-      : assert(created != null),
-        assert(title != null),
-        assert(type != null),
-        assert(goalValue != null),
-        assert(periodType != null),
-        assert(periodValue != null),
-        assert(performWeekdays != null),
-        assert(performMonthDay != null),
-        assert(isCustomPeriod != null),
-        assert(isNotificationsEnabled != null),
-        super._();
+      this.isNotificationsEnabled = false})
+      : super._();
 
   factory _$_Habit.fromJson(Map<String, dynamic> json) =>
       _$_$_HabitFromJson(json);
@@ -303,7 +272,7 @@ class _$_Habit extends _Habit {
   @override
 
   /// Айдишник
-  final String id;
+  final String? id;
   @override
 
   /// Дата создания
@@ -326,7 +295,7 @@ class _$_Habit extends _Habit {
   @override
 
   /// Время выполнения привычки
-  final DateTime performTime;
+  final DateTime? performTime;
   @JsonKey(defaultValue: HabitPeriodType.day)
   @override
 
@@ -358,18 +327,10 @@ class _$_Habit extends _Habit {
 
   /// Включены ли уведомления
   final bool isNotificationsEnabled;
-  @override
-
-  /// Айди девайса
-  final String deviceId;
-  @override
-
-  /// Айди юзера
-  final String userId;
 
   @override
   String toString() {
-    return 'Habit(id: $id, created: $created, title: $title, type: $type, goalValue: $goalValue, performTime: $performTime, periodType: $periodType, periodValue: $periodValue, performWeekdays: $performWeekdays, performMonthDay: $performMonthDay, isCustomPeriod: $isCustomPeriod, isNotificationsEnabled: $isNotificationsEnabled, deviceId: $deviceId, userId: $userId)';
+    return 'Habit(id: $id, created: $created, title: $title, type: $type, goalValue: $goalValue, performTime: $performTime, periodType: $periodType, periodValue: $periodValue, performWeekdays: $performWeekdays, performMonthDay: $performMonthDay, isCustomPeriod: $isCustomPeriod, isNotificationsEnabled: $isNotificationsEnabled)';
   }
 
   @override
@@ -408,12 +369,7 @@ class _$_Habit extends _Habit {
                     .equals(other.isCustomPeriod, isCustomPeriod)) &&
             (identical(other.isNotificationsEnabled, isNotificationsEnabled) ||
                 const DeepCollectionEquality().equals(
-                    other.isNotificationsEnabled, isNotificationsEnabled)) &&
-            (identical(other.deviceId, deviceId) ||
-                const DeepCollectionEquality()
-                    .equals(other.deviceId, deviceId)) &&
-            (identical(other.userId, userId) ||
-                const DeepCollectionEquality().equals(other.userId, userId)));
+                    other.isNotificationsEnabled, isNotificationsEnabled)));
   }
 
   @override
@@ -430,9 +386,7 @@ class _$_Habit extends _Habit {
       const DeepCollectionEquality().hash(performWeekdays) ^
       const DeepCollectionEquality().hash(performMonthDay) ^
       const DeepCollectionEquality().hash(isCustomPeriod) ^
-      const DeepCollectionEquality().hash(isNotificationsEnabled) ^
-      const DeepCollectionEquality().hash(deviceId) ^
-      const DeepCollectionEquality().hash(userId);
+      const DeepCollectionEquality().hash(isNotificationsEnabled);
 
   @JsonKey(ignore: true)
   @override
@@ -448,83 +402,73 @@ class _$_Habit extends _Habit {
 abstract class _Habit extends Habit {
   const _Habit._() : super._();
   const factory _Habit(
-      {String id,
-      @required DateTime created,
+      {String? id,
+      required DateTime created,
       String title,
       HabitType type,
       double goalValue,
-      DateTime performTime,
+      DateTime? performTime,
       HabitPeriodType periodType,
       int periodValue,
       List<Weekday> performWeekdays,
       int performMonthDay,
       bool isCustomPeriod,
-      bool isNotificationsEnabled,
-      String deviceId,
-      String userId}) = _$_Habit;
+      bool isNotificationsEnabled}) = _$_Habit;
 
   factory _Habit.fromJson(Map<String, dynamic> json) = _$_Habit.fromJson;
 
   @override
 
   /// Айдишник
-  String get id;
+  String? get id => throw _privateConstructorUsedError;
   @override
 
   /// Дата создания
-  DateTime get created;
+  DateTime get created => throw _privateConstructorUsedError;
   @override
 
   /// Название
-  String get title;
+  String get title => throw _privateConstructorUsedError;
   @override
 
   /// Тип
-  HabitType get type;
+  HabitType get type => throw _privateConstructorUsedError;
   @override
 
   /// Продолжительность / число повторений
-  double get goalValue;
+  double get goalValue => throw _privateConstructorUsedError;
   @override
 
   /// Время выполнения привычки
-  DateTime get performTime;
+  DateTime? get performTime => throw _privateConstructorUsedError;
   @override
 
   /// Тип периодичности
-  HabitPeriodType get periodType;
+  HabitPeriodType get periodType => throw _privateConstructorUsedError;
   @override
 
   /// 1 раз в {periodValue} дней / недель / месяцев
-  int get periodValue;
+  int get periodValue => throw _privateConstructorUsedError;
   @override
 
   /// [type=HabitPeriodType.week] Дни выполнения (пн, вт)
-  List<Weekday> get performWeekdays;
+  List<Weekday> get performWeekdays => throw _privateConstructorUsedError;
   @override
 
   /// [type=HabitPeriodType.month] День выполнения
-  int get performMonthDay;
+  int get performMonthDay => throw _privateConstructorUsedError;
   @override
 
   /// Если false, то {periodValue} = 1; иначе можно задавать {periodValue} > 1
   /// Вообще тупа в гуи юзается
-  bool get isCustomPeriod;
+  bool get isCustomPeriod => throw _privateConstructorUsedError;
   @override
 
   /// Включены ли уведомления
-  bool get isNotificationsEnabled;
-  @override
-
-  /// Айди девайса
-  String get deviceId;
-  @override
-
-  /// Айди юзера
-  String get userId;
+  bool get isNotificationsEnabled => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$HabitCopyWith<_Habit> get copyWith;
+  _$HabitCopyWith<_Habit> get copyWith => throw _privateConstructorUsedError;
 }
 
 HabitPerforming _$HabitPerformingFromJson(Map<String, dynamic> json) {
@@ -535,12 +479,11 @@ HabitPerforming _$HabitPerformingFromJson(Map<String, dynamic> json) {
 class _$HabitPerformingTearOff {
   const _$HabitPerformingTearOff();
 
-// ignore: unused_element
   _HabitPerforming call(
-      {String id,
-      @required String habitId,
-      @required double performValue,
-      @required DateTime performDateTime}) {
+      {String? id,
+      required String habitId,
+      required double performValue,
+      required DateTime performDateTime}) {
     return _HabitPerforming(
       id: id,
       habitId: habitId,
@@ -549,33 +492,32 @@ class _$HabitPerformingTearOff {
     );
   }
 
-// ignore: unused_element
   HabitPerforming fromJson(Map<String, Object> json) {
     return HabitPerforming.fromJson(json);
   }
 }
 
 /// @nodoc
-// ignore: unused_element
 const $HabitPerforming = _$HabitPerformingTearOff();
 
 /// @nodoc
 mixin _$HabitPerforming {
   /// Айди выполнения привычки
-  String get id;
+  String? get id => throw _privateConstructorUsedError;
 
   /// Айди привычки
-  String get habitId;
+  String get habitId => throw _privateConstructorUsedError;
 
   /// Значение выполнения (напр. 10 сек)
-  double get performValue;
+  double get performValue => throw _privateConstructorUsedError;
 
   /// Время выполнения
-  DateTime get performDateTime;
+  DateTime get performDateTime => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson();
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $HabitPerformingCopyWith<HabitPerforming> get copyWith;
+  $HabitPerformingCopyWith<HabitPerforming> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -584,7 +526,7 @@ abstract class $HabitPerformingCopyWith<$Res> {
           HabitPerforming value, $Res Function(HabitPerforming) then) =
       _$HabitPerformingCopyWithImpl<$Res>;
   $Res call(
-      {String id,
+      {String? id,
       String habitId,
       double performValue,
       DateTime performDateTime});
@@ -601,13 +543,13 @@ class _$HabitPerformingCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object id = freezed,
-    Object habitId = freezed,
-    Object performValue = freezed,
-    Object performDateTime = freezed,
+    Object? id = freezed,
+    Object? habitId = freezed,
+    Object? performValue = freezed,
+    Object? performDateTime = freezed,
   }) {
     return _then(_value.copyWith(
-      id: id == freezed ? _value.id : id as String,
+      id: id == freezed ? _value.id : id as String?,
       habitId: habitId == freezed ? _value.habitId : habitId as String,
       performValue: performValue == freezed
           ? _value.performValue
@@ -627,7 +569,7 @@ abstract class _$HabitPerformingCopyWith<$Res>
       __$HabitPerformingCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String id,
+      {String? id,
       String habitId,
       double performValue,
       DateTime performDateTime});
@@ -646,13 +588,13 @@ class __$HabitPerformingCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object id = freezed,
-    Object habitId = freezed,
-    Object performValue = freezed,
-    Object performDateTime = freezed,
+    Object? id = freezed,
+    Object? habitId = freezed,
+    Object? performValue = freezed,
+    Object? performDateTime = freezed,
   }) {
     return _then(_HabitPerforming(
-      id: id == freezed ? _value.id : id as String,
+      id: id == freezed ? _value.id : id as String?,
       habitId: habitId == freezed ? _value.habitId : habitId as String,
       performValue: performValue == freezed
           ? _value.performValue
@@ -670,13 +612,10 @@ class __$HabitPerformingCopyWithImpl<$Res>
 class _$_HabitPerforming extends _HabitPerforming {
   _$_HabitPerforming(
       {this.id,
-      @required this.habitId,
-      @required this.performValue,
-      @required this.performDateTime})
-      : assert(habitId != null),
-        assert(performValue != null),
-        assert(performDateTime != null),
-        super._();
+      required this.habitId,
+      required this.performValue,
+      required this.performDateTime})
+      : super._();
 
   factory _$_HabitPerforming.fromJson(Map<String, dynamic> json) =>
       _$_$_HabitPerformingFromJson(json);
@@ -684,7 +623,7 @@ class _$_HabitPerforming extends _HabitPerforming {
   @override
 
   /// Айди выполнения привычки
-  final String id;
+  final String? id;
   @override
 
   /// Айди привычки
@@ -742,10 +681,10 @@ class _$_HabitPerforming extends _HabitPerforming {
 abstract class _HabitPerforming extends HabitPerforming {
   _HabitPerforming._() : super._();
   factory _HabitPerforming(
-      {String id,
-      @required String habitId,
-      @required double performValue,
-      @required DateTime performDateTime}) = _$_HabitPerforming;
+      {String? id,
+      required String habitId,
+      required double performValue,
+      required DateTime performDateTime}) = _$_HabitPerforming;
 
   factory _HabitPerforming.fromJson(Map<String, dynamic> json) =
       _$_HabitPerforming.fromJson;
@@ -753,20 +692,21 @@ abstract class _HabitPerforming extends HabitPerforming {
   @override
 
   /// Айди выполнения привычки
-  String get id;
+  String? get id => throw _privateConstructorUsedError;
   @override
 
   /// Айди привычки
-  String get habitId;
+  String get habitId => throw _privateConstructorUsedError;
   @override
 
   /// Значение выполнения (напр. 10 сек)
-  double get performValue;
+  double get performValue => throw _privateConstructorUsedError;
   @override
 
   /// Время выполнения
-  DateTime get performDateTime;
+  DateTime get performDateTime => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$HabitPerformingCopyWith<_HabitPerforming> get copyWith;
+  _$HabitPerformingCopyWith<_HabitPerforming> get copyWith =>
+      throw _privateConstructorUsedError;
 }

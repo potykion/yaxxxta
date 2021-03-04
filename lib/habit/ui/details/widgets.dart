@@ -26,7 +26,7 @@ class HabitActionsButton extends StatelessWidget {
   final Habit habit;
 
   /// Кнопочка, открывающая меню с действиями над привычкой
-  const HabitActionsButton({Key key, this.habit}) : super(key: key);
+  const HabitActionsButton({Key? key, required this.habit}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => IconButton(
@@ -81,7 +81,7 @@ class HabitActionsButton extends StatelessWidget {
             ),
           );
           if (isDelete ?? false) {
-            await context.read(habitControllerProvider).delete(habit.id);
+            await context.read(habitControllerProvider).delete(habit.id!);
             Navigator.of(context).pop(true);
           }
         }
@@ -98,9 +98,9 @@ class HabitHistoryEntrySlidable extends StatelessWidget {
 
   /// Инфа о выполнении выпривычки + действия над ней
   const HabitHistoryEntrySlidable({
-    Key key,
-    this.historyEntry,
-    this.habit,
+    Key? key,
+    required this.historyEntry,
+    required this.habit,
   }) : super(key: key);
 
   @override
@@ -125,7 +125,7 @@ class HabitHistoryEntrySlidable extends StatelessWidget {
               context: context,
               builder: (context) => HabitPerformingFormModal(
                 initialHabitPerforming: HabitPerforming(
-                  habitId: habit.id,
+                  habitId: habit.id!,
                   performValue: historyEntry.value,
                   performDateTime: historyEntry.time,
                 ),
@@ -163,9 +163,9 @@ class CreateHabitPerformingButton extends StatelessWidget {
 
   /// Кнопка, открывающая форму создания выполнения привычки
   const CreateHabitPerformingButton({
-    Key key,
-    @required this.habit,
-    @required this.initialDate,
+    Key? key,
+    required this.habit,
+    required this.initialDate,
   }) : super(key: key);
 
   @override
@@ -177,7 +177,7 @@ class CreateHabitPerformingButton extends StatelessWidget {
           context: context,
           builder: (context) => HabitPerformingFormModal(
             initialHabitPerforming: HabitPerforming.blank(
-              habitId: habit.id,
+              habitId: habit.id!,
               performDateTime: buildDateTime(
                 initialDate,
                 DateTime.now(),

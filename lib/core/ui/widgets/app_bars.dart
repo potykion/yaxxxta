@@ -4,8 +4,8 @@ import '../../../theme.dart';
 
 /// Создает апп бар
 PreferredSize buildAppBar({
-  @required BuildContext context,
-  @required List<Widget> children,
+  required BuildContext context,
+  required List<Widget> children,
   bool transparent = false,
   bool big = false,
 }) {

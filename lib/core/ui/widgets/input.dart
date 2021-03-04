@@ -1,4 +1,3 @@
-import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -18,13 +17,13 @@ class TextInput<T> extends StatefulWidget {
 
   /// Виджет, который показывать на конце инпута
   /// Например обозначения
-  final Widget suffix;
+  final Widget? suffix;
 
   /// Создает инпут
   const TextInput({
-    Key key,
-    @required this.initial,
-    @required this.change,
+    Key? key,
+    required this.initial,
+    required this.change,
     this.suffix,
   }) : super(key: key);
 
@@ -34,7 +33,6 @@ class TextInput<T> extends StatefulWidget {
 
 class _TextInputState<T> extends State<TextInput> {
   TextEditingController tec = TextEditingController();
-  Timer _debounce;
 
   bool get isNumberInput => T == double || T == int;
 
@@ -65,7 +63,6 @@ class _TextInputState<T> extends State<TextInput> {
   void dispose() {
     tec.removeListener(_change);
     tec.dispose();
-    _debounce?.cancel();
     super.dispose();
   }
 
@@ -111,7 +108,7 @@ class Selectable extends StatefulWidget {
   final String biggerText;
 
   /// Маленький текст
-  final String smallerText;
+  final String? smallerText;
 
   /// Начальное значение выбранности
   final bool initial;
@@ -120,7 +117,7 @@ class Selectable extends StatefulWidget {
   final Function(bool selected) onSelected;
 
   /// Виджет отображаемый перед выбором, например радио или чекбокс
-  final Widget prefix;
+  final Widget? prefix;
 
   /// Цвет выбора
   final Color selectedColor;
@@ -130,11 +127,11 @@ class Selectable extends StatefulWidget {
 
   /// Создает выбор
   const Selectable({
-    Key key,
-    this.biggerText,
+    Key? key,
+    required this.biggerText,
     this.smallerText,
-    this.initial,
-    this.onSelected,
+    required this.initial,
+    required this.onSelected,
     this.prefix,
     this.selectedColor = CustomColors.blue,
     this.unselectedColor = CustomColors.lightGrey,
@@ -145,7 +142,7 @@ class Selectable extends StatefulWidget {
 }
 
 class _SelectableState extends State<Selectable> {
-  bool selected;
+  late bool selected;
 
   @override
   void initState() {
@@ -174,7 +171,7 @@ class _SelectableState extends State<Selectable> {
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
             child: Row(
               children: [
-                if (widget.prefix != null) widget.prefix,
+                if (widget.prefix != null) widget.prefix!,
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -182,7 +179,7 @@ class _SelectableState extends State<Selectable> {
                     BiggerText(text: widget.biggerText),
                     if (widget.smallerText != null)
                       SmallerText(
-                        text: widget.smallerText,
+                        text: widget.smallerText!,
                         light: widget.selectedColor != widget.unselectedColor &&
                             selected,
                       )
@@ -217,8 +214,12 @@ class SelectableCheckbox extends HookWidget {
   final String smallerText;
 
   /// @nodoc
-  SelectableCheckbox(
-      {this.initial, this.change, this.biggerText, this.smallerText});
+  SelectableCheckbox({
+    required this.initial,
+    required this.change,
+    required this.biggerText,
+    required this.smallerText,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -226,7 +227,7 @@ class SelectableCheckbox extends HookWidget {
 
     useValueChanged<bool, void>(
       selectedState.value,
-      (_, __) => WidgetsBinding.instance.addPostFrameCallback(
+      (_, __) => WidgetsBinding.instance!.addPostFrameCallback(
         (_) => change(selectedState.value),
       ),
     );
@@ -235,7 +236,7 @@ class SelectableCheckbox extends HookWidget {
       biggerText: biggerText,
       smallerText: smallerText,
       prefix: Checkbox(
-        onChanged: (selected) => selectedState.value = selected,
+        onChanged: (selected) => selectedState.value = selected!,
         value: selectedState.value,
         activeColor: CustomColors.yellow,
         checkColor: CustomColors.almostBlack,
@@ -257,7 +258,7 @@ class SimpleButton extends StatelessWidget {
   final void Function() onTap;
 
   /// Создает кнопку
-  const SimpleButton({Key key, this.text, this.onTap}) : super(key: key);
+  const SimpleButton({Key? key, required this.text, required this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Container(
@@ -298,10 +299,10 @@ class SimpleChip extends StatelessWidget {
 
   /// Создает чип
   const SimpleChip({
-    Key key,
-    this.text,
-    this.selected,
-    this.change,
+    Key? key,
+    required this.text,
+    required this.selected,
+    required this.change,
     this.color = CustomColors.red,
     this.padding = const EdgeInsets.all(10),
   }) : super(key: key);
@@ -328,7 +329,7 @@ class HabitPeriodTypeSelect extends StatefulWidget {
 
   /// Создает селект
   const HabitPeriodTypeSelect(
-      {Key key, @required this.initial, @required this.change})
+      {Key? key, required this.initial, required this.change})
       : super(key: key);
 
   @override
@@ -336,7 +337,7 @@ class HabitPeriodTypeSelect extends StatefulWidget {
 }
 
 class _HabitPeriodTypeSelectState extends State<HabitPeriodTypeSelect> {
-  HabitPeriodType type;
+  late HabitPeriodType type;
 
   @override
   void initState() {
@@ -367,8 +368,8 @@ class _HabitPeriodTypeSelectState extends State<HabitPeriodTypeSelect> {
                 )
                 .toList(),
         onChanged: (v) {
-          setState(() => type = v);
-          widget.change(v);
+          setState(() => type = v!);
+          widget.change(v!);
         },
       );
 }
@@ -382,7 +383,7 @@ class WeekdaysPicker extends StatefulWidget {
   final Function(List<Weekday> w) change;
 
   /// Создает пикер
-  const WeekdaysPicker({Key key, @required this.initial, @required this.change})
+  const WeekdaysPicker({Key? key, required this.initial, required this.change})
       : super(key: key);
 
   @override
@@ -390,7 +391,7 @@ class WeekdaysPicker extends StatefulWidget {
 }
 
 class _WeekdaysPickerState extends State<WeekdaysPicker> {
-  List<Weekday> weekdays;
+  late List<Weekday> weekdays;
 
   @override
   void initState() {

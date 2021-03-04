@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hooks_riverpod/all.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../core/ui/widgets/app_bars.dart';
 import '../../../core/ui/widgets/bottom_nav.dart';
@@ -18,10 +18,8 @@ class HabitCalendarPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     useEffect(() {
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
-        context
-            .read(habitCalendarPage_AnimatedListState_Provider)
-            .reset();
+      WidgetsBinding.instance!.addPostFrameCallback((_) async {
+        context.read(habitCalendarPage_AnimatedListState_Provider).reset();
 
         await context
             .read(habitPerformingController)
@@ -75,13 +73,13 @@ class HabitCalendarPage extends HookWidget {
                     key: animatedListKey,
                     initialItemCount: vms.length,
                     itemBuilder: (context, index, animation) =>
-                        vms.length != index
+                        (vms.length != index
                             ? HabitCalendarPage_HabitProgressControl(
                                 index: index,
                                 vm: vms[index],
                                 animation: animation,
                               )
-                            : null,
+                            : null)!,
                   )
                 : Center(
                     child: Column(
@@ -102,7 +100,7 @@ class HabitCalendarPage extends HookWidget {
         child: Icon(Icons.add, size: 50),
         onPressed: () async {
           var habit =
-              (await Navigator.of(context).pushNamed(Routes.form)) as Habit;
+              (await Navigator.of(context).pushNamed(Routes.form)) as Habit?;
           if (habit != null &&
               habit.matchDate(context.read(selectedDateProvider).state)) {
             vmsAsyncValue.maybeWhen(

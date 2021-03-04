@@ -19,9 +19,9 @@ class HabitDetailsPageVM {
 
   /// ВМка для HabitDetailsPage
   HabitDetailsPageVM({
-    @required this.habit,
-    @required this.progress,
-    @required this.history,
+    required this.habit,
+    required this.progress,
+    required this.history,
   });
 }
 
@@ -73,16 +73,16 @@ class HabitHistory {
 
 /// Запись о выполнении привычки
 @freezed
-abstract class HabitHistoryEntry with _$HabitHistoryEntry {
+class HabitHistoryEntry with _$HabitHistoryEntry {
   const HabitHistoryEntry._();
 
   /// Запись о выполнении привычки
   factory HabitHistoryEntry({
     /// Время
-    DateTime time,
+    required DateTime time,
 
     /// Изменеие значения привычки
-    double value,
+    required double value,
   }) = _HabitHistoryEntry;
 
   /// Форматирует значение записи

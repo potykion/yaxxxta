@@ -8,36 +8,32 @@ part of 'models.dart';
 
 _$_Habit _$_$_HabitFromJson(Map json) {
   return _$_Habit(
-    id: json['id'] as String,
-    created: json['created'] == null
-        ? null
-        : DateTime.parse(json['created'] as String),
-    title: json['title'] as String ?? '',
+    id: json['id'] as String?,
+    created: DateTime.parse(json['created'] as String),
+    title: json['title'] as String? ?? '',
     type: _$enumDecodeNullable(_$HabitTypeEnumMap, json['type']) ??
         HabitType.repeats,
-    goalValue: (json['goalValue'] as num)?.toDouble() ?? 1,
+    goalValue: (json['goalValue'] as num?)?.toDouble() ?? 1,
     performTime: json['performTime'] == null
         ? null
         : DateTime.parse(json['performTime'] as String),
     periodType:
         _$enumDecodeNullable(_$HabitPeriodTypeEnumMap, json['periodType']) ??
             HabitPeriodType.day,
-    periodValue: json['periodValue'] as int ?? 1,
-    performWeekdays: (json['performWeekdays'] as List)
-            ?.map((e) => _$enumDecodeNullable(_$WeekdayEnumMap, e))
-            ?.toList() ??
+    periodValue: json['periodValue'] as int? ?? 1,
+    performWeekdays: (json['performWeekdays'] as List<dynamic>?)
+            ?.map((e) => _$enumDecode(_$WeekdayEnumMap, e))
+            .toList() ??
         [],
-    performMonthDay: json['performMonthDay'] as int ?? 1,
-    isCustomPeriod: json['isCustomPeriod'] as bool ?? false,
-    isNotificationsEnabled: json['isNotificationsEnabled'] as bool ?? false,
-    deviceId: json['deviceId'] as String,
-    userId: json['userId'] as String,
+    performMonthDay: json['performMonthDay'] as int? ?? 1,
+    isCustomPeriod: json['isCustomPeriod'] as bool? ?? false,
+    isNotificationsEnabled: json['isNotificationsEnabled'] as bool? ?? false,
   );
 }
 
 Map<String, dynamic> _$_$_HabitToJson(_$_Habit instance) => <String, dynamic>{
       'id': instance.id,
-      'created': instance.created?.toIso8601String(),
+      'created': instance.created.toIso8601String(),
       'title': instance.title,
       'type': _$HabitTypeEnumMap[instance.type],
       'goalValue': instance.goalValue,
@@ -45,44 +41,47 @@ Map<String, dynamic> _$_$_HabitToJson(_$_Habit instance) => <String, dynamic>{
       'periodType': _$HabitPeriodTypeEnumMap[instance.periodType],
       'periodValue': instance.periodValue,
       'performWeekdays':
-          instance.performWeekdays?.map((e) => _$WeekdayEnumMap[e])?.toList(),
+          instance.performWeekdays.map((e) => _$WeekdayEnumMap[e]).toList(),
       'performMonthDay': instance.performMonthDay,
       'isCustomPeriod': instance.isCustomPeriod,
       'isNotificationsEnabled': instance.isNotificationsEnabled,
-      'deviceId': instance.deviceId,
-      'userId': instance.userId,
     };
 
-T _$enumDecode<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
+K _$enumDecode<K, V>(
+  Map<K, V> enumValues,
+  Object? source, {
+  K? unknownValue,
 }) {
   if (source == null) {
-    throw ArgumentError('A value must be provided. Supported values: '
-        '${enumValues.values.join(', ')}');
+    throw ArgumentError(
+      'A value must be provided. Supported values: '
+      '${enumValues.values.join(', ')}',
+    );
   }
 
-  final value = enumValues.entries
-      .singleWhere((e) => e.value == source, orElse: () => null)
-      ?.key;
-
-  if (value == null && unknownValue == null) {
-    throw ArgumentError('`$source` is not one of the supported values: '
-        '${enumValues.values.join(', ')}');
-  }
-  return value ?? unknownValue;
+  return enumValues.entries.singleWhere(
+    (e) => e.value == source,
+    orElse: () {
+      if (unknownValue == null) {
+        throw ArgumentError(
+          '`$source` is not one of the supported values: '
+          '${enumValues.values.join(', ')}',
+        );
+      }
+      return MapEntry(unknownValue, enumValues.values.first);
+    },
+  ).key;
 }
 
-T _$enumDecodeNullable<T>(
-  Map<T, dynamic> enumValues,
+K? _$enumDecodeNullable<K, V>(
+  Map<K, V> enumValues,
   dynamic source, {
-  T unknownValue,
+  K? unknownValue,
 }) {
   if (source == null) {
     return null;
   }
-  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
 }
 
 const _$HabitTypeEnumMap = {
@@ -108,12 +107,10 @@ const _$WeekdayEnumMap = {
 
 _$_HabitPerforming _$_$_HabitPerformingFromJson(Map json) {
   return _$_HabitPerforming(
-    id: json['id'] as String,
+    id: json['id'] as String?,
     habitId: json['habitId'] as String,
-    performValue: (json['performValue'] as num)?.toDouble(),
-    performDateTime: json['performDateTime'] == null
-        ? null
-        : DateTime.parse(json['performDateTime'] as String),
+    performValue: (json['performValue'] as num).toDouble(),
+    performDateTime: DateTime.parse(json['performDateTime'] as String),
   );
 }
 
@@ -122,5 +119,5 @@ Map<String, dynamic> _$_$_HabitPerformingToJson(_$_HabitPerforming instance) =>
       'id': instance.id,
       'habitId': instance.habitId,
       'performValue': instance.performValue,
-      'performDateTime': instance.performDateTime?.toIso8601String(),
+      'performDateTime': instance.performDateTime.toIso8601String(),
     };

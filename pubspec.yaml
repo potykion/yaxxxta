@@ -18,67 +18,69 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+18
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
   # лист-вью с отрицательным скролом
-  infinite_listview: ^1.0.1+1
+#  нет null-safety
+#  infinite_listview: ^1.0.1+1
 
   # шрифты
-  google_fonts: ^1.1.1
+  google_fonts: ^2.0.0
 
   # форматирование дат
-  intl: ^0.16.1
+  intl: ^0.17.0
 
   # стринговые утилиты
-  validators: ^2.0.1
+#  несовместима с google_fonts ^2.0.0
+#  validators: ^2.0.1
 
   # json (де)сериализация
-  json_serializable: ^3.5.1
+  json_serializable: ^4.0.2
 
   # пуши
-  flutter_local_notifications: ^3.0.3
+  flutter_local_notifications: ^5.0.0-nullsafety.0
 
   # стейт-менеджмент, диай, сахарок
-  flutter_hooks: ^0.15.0
-  hooks_riverpod: ^0.12.1
+  flutter_hooks: ^0.16.0
+  hooks_riverpod: ^0.13.0-nullsafety.3
 
   # дата-классы
-  freezed_annotation:
+  freezed_annotation: 0.13.0-nullsafety.0
 
   # тьюплы
-  tuple: ^1.0.3
+  tuple: ^2.0.0-nullsafety.0
 
   # uuid
-  uuid: ^2.2.2
+  uuid: ^3.0.1
 
   # Инфа о приложухе
-  package_info: ^0.4.3+2
+  package_info: ^2.0.0
 
   #  фаербейз база
-  firebase_core: ^0.7.0
+  firebase_core: ^1.0.0
 
   # фаербейз ауф + гугл ауф
-  firebase_auth: ^0.20.1
-  google_sign_in: ^4.5.9
+  firebase_auth: ^1.0.0
+  google_sign_in: ^5.0.0
 
   # фаербейз стор
-  cloud_firestore: ^0.16.0
+  cloud_firestore: ^1.0.0
 
   # Инфа о девайсе
-  device_info: ^1.0.0
+  device_info: ^2.0.0
 
   # Лайтовый персистенс
-  shared_preferences: ^0.5.12+4
+  shared_preferences: ^2.0.3
 
   # транзишны между страницами
-  page_transition: ^1.1.7+6
+  page_transition: ^2.0.1-nullsafety.0
 
   # слайдабл экшены
-  flutter_slidable:
+  flutter_slidable: 0.6.0-nullsafety.0
 
 dev_dependencies:
   flutter_test:
@@ -91,14 +93,16 @@ dev_dependencies:
   effective_dart: ^1.3.0
 
   # кодогенерация датаклассов
-  freezed:
+  freezed: ^0.14.0-nullsafety.0
 
   # моки: обычные, фаерстор специфик
-  mockito: ^4.1.4
-  cloud_firestore_mocks: ^0.6.0
+#  несовместима с freezed >=0.13.0-nullsafety.0
+#  mockito: ^5.0.0
+#  несовместима с cloud_firestore: ^1.0.0
+#  cloud_firestore_mocks: ^0.6.0
 
   # Иконочка
-  flutter_launcher_icons: "^0.8.0"
+  flutter_launcher_icons: ^0.9.0
 
 flutter_icons:
   android: "launcher_icon"

@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:yaxxxta/settings/domain/models.dart';
+import '../../settings/domain/models.dart';
 
 part 'models.freezed.dart';
 
@@ -10,18 +10,18 @@ abstract class UserData implements _$UserData {
   const UserData._();
 
   factory UserData({
-    String userId,
-    List<String> deviceIds,
-    List<String> habitIds,
-    Settings settings,
+    String? userId,
+    required List<String> deviceIds,
+    required List<String> habitIds,
+    required Settings settings,
   }) = _UserData;
 
   factory UserData.fromJson(Map json) =>
       _$UserDataFromJson(Map<String, dynamic>.from(json));
 
   factory UserData.blank({
-    @required String deviceId,
-    String userId,
+    required String deviceId,
+    String? userId,
   }) {
     return UserData(
       userId: userId,

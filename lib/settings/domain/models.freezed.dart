@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
 
 part of 'models.dart';
 
@@ -8,6 +8,10 @@ part of 'models.dart';
 // **************************************************************************
 
 T _$identity<T>(T value) => value;
+
+final _privateConstructorUsedError = UnsupportedError(
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+
 Settings _$SettingsFromJson(Map<String, dynamic> json) {
   return _Settings.fromJson(json);
 }
@@ -16,12 +20,11 @@ Settings _$SettingsFromJson(Map<String, dynamic> json) {
 class _$SettingsTearOff {
   const _$SettingsTearOff();
 
-// ignore: unused_element
   _Settings call(
       {bool showCompleted = true,
       bool showPartiallyCompleted = true,
-      DateTime dayStartTime,
-      DateTime dayEndTime}) {
+      required DateTime dayStartTime,
+      required DateTime dayEndTime}) {
     return _Settings(
       showCompleted: showCompleted,
       showPartiallyCompleted: showPartiallyCompleted,
@@ -30,33 +33,32 @@ class _$SettingsTearOff {
     );
   }
 
-// ignore: unused_element
   Settings fromJson(Map<String, Object> json) {
     return Settings.fromJson(json);
   }
 }
 
 /// @nodoc
-// ignore: unused_element
 const $Settings = _$SettingsTearOff();
 
 /// @nodoc
 mixin _$Settings {
   /// Показывать выполненные привычки
-  bool get showCompleted;
+  bool get showCompleted => throw _privateConstructorUsedError;
 
   /// Показывать частично выполненные привычки
-  bool get showPartiallyCompleted;
+  bool get showPartiallyCompleted => throw _privateConstructorUsedError;
 
   /// Начало дня
-  DateTime get dayStartTime;
+  DateTime get dayStartTime => throw _privateConstructorUsedError;
 
   /// Конец дня
-  DateTime get dayEndTime;
+  DateTime get dayEndTime => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson();
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $SettingsCopyWith<Settings> get copyWith;
+  $SettingsCopyWith<Settings> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -80,10 +82,10 @@ class _$SettingsCopyWithImpl<$Res> implements $SettingsCopyWith<$Res> {
 
   @override
   $Res call({
-    Object showCompleted = freezed,
-    Object showPartiallyCompleted = freezed,
-    Object dayStartTime = freezed,
-    Object dayEndTime = freezed,
+    Object? showCompleted = freezed,
+    Object? showPartiallyCompleted = freezed,
+    Object? dayStartTime = freezed,
+    Object? dayEndTime = freezed,
   }) {
     return _then(_value.copyWith(
       showCompleted: showCompleted == freezed
@@ -124,10 +126,10 @@ class __$SettingsCopyWithImpl<$Res> extends _$SettingsCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object showCompleted = freezed,
-    Object showPartiallyCompleted = freezed,
-    Object dayStartTime = freezed,
-    Object dayEndTime = freezed,
+    Object? showCompleted = freezed,
+    Object? showPartiallyCompleted = freezed,
+    Object? dayStartTime = freezed,
+    Object? dayEndTime = freezed,
   }) {
     return _then(_Settings(
       showCompleted: showCompleted == freezed
@@ -152,10 +154,8 @@ class _$_Settings implements _Settings {
   const _$_Settings(
       {this.showCompleted = true,
       this.showPartiallyCompleted = true,
-      this.dayStartTime,
-      this.dayEndTime})
-      : assert(showCompleted != null),
-        assert(showPartiallyCompleted != null);
+      required this.dayStartTime,
+      required this.dayEndTime});
 
   factory _$_Settings.fromJson(Map<String, dynamic> json) =>
       _$_$_SettingsFromJson(json);
@@ -225,28 +225,29 @@ abstract class _Settings implements Settings {
   const factory _Settings(
       {bool showCompleted,
       bool showPartiallyCompleted,
-      DateTime dayStartTime,
-      DateTime dayEndTime}) = _$_Settings;
+      required DateTime dayStartTime,
+      required DateTime dayEndTime}) = _$_Settings;
 
   factory _Settings.fromJson(Map<String, dynamic> json) = _$_Settings.fromJson;
 
   @override
 
   /// Показывать выполненные привычки
-  bool get showCompleted;
+  bool get showCompleted => throw _privateConstructorUsedError;
   @override
 
   /// Показывать частично выполненные привычки
-  bool get showPartiallyCompleted;
+  bool get showPartiallyCompleted => throw _privateConstructorUsedError;
   @override
 
   /// Начало дня
-  DateTime get dayStartTime;
+  DateTime get dayStartTime => throw _privateConstructorUsedError;
   @override
 
   /// Конец дня
-  DateTime get dayEndTime;
+  DateTime get dayEndTime => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$SettingsCopyWith<_Settings> get copyWith;
+  _$SettingsCopyWith<_Settings> get copyWith =>
+      throw _privateConstructorUsedError;
 }

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:yaxxxta/user/domain/db.dart';
-import 'package:yaxxxta/user/domain/models.dart';
+import '../domain/db.dart';
+import '../domain/models.dart';
 
 class FirestoreUserDataRepo implements UserDataRepo {
   final CollectionReference _collectionReference;
@@ -12,13 +12,13 @@ class FirestoreUserDataRepo implements UserDataRepo {
       await _collectionReference.add(userData.toJson());
 
   @override
-  Future<UserData> getByDeviceId(String deviceId) async {
+  Future<UserData?> getByDeviceId(String deviceId) async {
     try {
       return (await _collectionReference
               .where("deviceIds", arrayContains: deviceId)
               .get())
           .docs
-          .map((doc) => UserData.fromJson(doc.data()))
+          .map((doc) => UserData.fromJson(doc.data()!))
           .where((ud) => ud.userId == null)
           .first;
       // ignore: avoid_catching_errors
@@ -28,13 +28,13 @@ class FirestoreUserDataRepo implements UserDataRepo {
   }
 
   @override
-  Future<UserData> getByUserId(String userId) async {
+  Future<UserData?> getByUserId(String userId) async {
     try {
       return (await _collectionReference
               .where("userId", isEqualTo: userId)
               .get())
           .docs
-          .map((doc) => UserData.fromJson(doc.data()))
+          .map((doc) => UserData.fromJson(doc.data()!))
           .first;
       // ignore: avoid_catching_errors
     } on StateError {

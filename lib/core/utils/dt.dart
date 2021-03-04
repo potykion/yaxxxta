@@ -54,7 +54,7 @@ extension DateTimeUtils on DateTime {
   DateTime date() => DateTime(year, month, day);
 
   /// Создает дейт тайм с фиксированной датой, то есть просто тайм
-  DateTime time({bool withSeconds = false, DateTime date}) => buildDateTime(
+  DateTime time({bool withSeconds = false, DateTime? date}) => buildDateTime(
         date ?? DateTime(2020, 1, 1),
         DateTime(
           2020,
@@ -73,7 +73,7 @@ extension DateTimeUtils on DateTime {
   String format() => DateFormat.yMd().format(this);
 
   /// Создает новый дейт-тайм с измененной компонентой
-  DateTime copyWith({int year, int month, int day, int hour, int minute}) =>
+  DateTime copyWith({int? year, int? month, int? day, int? hour, int? minute}) =>
       DateTime(
         year ?? this.year,
         month ?? this.month,

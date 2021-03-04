@@ -6,7 +6,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_riverpod/all.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info/package_info.dart';
 import 'package:timezone/data/latest.dart' as tz;
@@ -21,7 +20,7 @@ class LoadingPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     useEffect(() {
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
+      WidgetsBinding.instance!.addPostFrameCallback((_) async {
         /// пуши
         await flutterLocalNotificationsPlugin.initialize(InitializationSettings(
           android: AndroidInitializationSettings('app_icon'),

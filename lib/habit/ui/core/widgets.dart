@@ -25,20 +25,20 @@ class HabitProgressControl extends StatelessWidget {
   final void Function(
     double incrementValue,
     HabitProgressStatus progressStatus, [
-    DateTime dateTime,
-  ]) onRepeatIncrement;
+    DateTime? dateTime,
+  ])? onRepeatIncrement;
 
   /// Название на карточке с повтором
-  final String repeatTitle;
+  final String? repeatTitle;
 
   /// Начальная дата
-  final DateTime initialDate;
+  final DateTime? initialDate;
 
   /// Контрол повторов выполнений привычки
   const HabitProgressControl({
-    @required Key key,
-    @required this.vm,
-    @required this.onRepeatIncrement,
+    required Key key,
+    required this.vm,
+    required this.onRepeatIncrement,
     this.repeatTitle,
     this.initialDate,
   }) : super(key: key);
@@ -47,13 +47,13 @@ class HabitProgressControl extends StatelessWidget {
   Widget build(BuildContext context) => ContainerCard(children: [
         ListTile(title: BiggerText(text: repeatTitle ?? vm.title), dense: true),
         SmallPadding(
-          child: vm.type == HabitType.repeats
+          child: (vm.type == HabitType.repeats
               ? RepeatProgressControl(
                   initialValue: vm.currentValue,
                   goalValue: vm.goalValue,
                   onValueIncrement: (value, progressStatus, [dt]) =>
                       onRepeatIncrement != null
-                          ? onRepeatIncrement(value, progressStatus, dt)
+                          ? onRepeatIncrement!(value, progressStatus, dt)
                           : null,
                 )
               : vm.type == HabitType.time
@@ -62,12 +62,12 @@ class HabitProgressControl extends StatelessWidget {
                       goalValue: vm.goalValue,
                       onValueIncrement: (value, progressStatus, [dt]) =>
                           onRepeatIncrement != null
-                              ? onRepeatIncrement(value, progressStatus, dt)
+                              ? onRepeatIncrement!(value, progressStatus, dt)
                               : null,
                       initialDate: initialDate,
                       notificationText: 'Привычка "${vm.title}" выполнена',
                     )
-                  : null,
+                  : null)!,
         ),
       ]);
 }
@@ -83,8 +83,8 @@ class HabitPerformingFormModal extends HookWidget {
 
   /// Модалька выполнения привычки
   HabitPerformingFormModal({
-    @required this.initialHabitPerforming,
-    @required this.habitType,
+    required this.initialHabitPerforming,
+    required this.habitType,
   });
 
   @override
@@ -174,7 +174,7 @@ class HabitChips extends StatelessWidget {
   final Habit habit;
 
   /// Чипы, описывающие свойства привычки: тип, периодичность, время выполнения
-  const HabitChips({Key key, this.habit}) : super(key: key);
+  const HabitChips({Key? key, required this.habit}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -192,7 +192,7 @@ class HabitChips extends StatelessWidget {
         if (habit.performTime != null)
           Chip(
             avatar: Icon(Icons.access_time),
-            label: Text(formatTime(habit.performTime)),
+            label: Text(formatTime(habit.performTime!)),
             backgroundColor: CustomColors.purple,
           ),
       ],

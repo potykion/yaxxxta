@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hooks_riverpod/all.dart';
 
 import '../../../core/ui/widgets/time.dart';
 import '../../../core/utils/dt.dart';
@@ -28,10 +27,10 @@ class HabitCalendarPage_HabitProgressControl extends HookWidget {
 
   /// Контрол прогресса привычки для страницы календаря
   const HabitCalendarPage_HabitProgressControl({
-    Key key,
-    this.index,
-    this.vm,
-    this.animation,
+    Key? key,
+    required this.index,
+    required this.vm,
+    required this.animation,
     this.removed = false,
   }) : super(key: key);
 
@@ -44,7 +43,7 @@ class HabitCalendarPage_HabitProgressControl extends HookWidget {
               : () async {
                   context.read(selectedHabitIdProvider).state = vm.id;
                   var deleted = await Navigator.of(context)
-                          .pushNamed(Routes.details) as bool ??
+                          .pushNamed(Routes.details) as bool? ??
                       false;
                   if (deleted) {
                     _removeSelf(context);
@@ -69,7 +68,7 @@ class HabitCalendarPage_HabitProgressControl extends HookWidget {
                         );
 
                     var settings = context.read(settingsProvider).state;
-                    var hideHabit = !settings.showCompleted &&
+                    var hideHabit = !settings!.showCompleted &&
                             (progressStatus == HabitProgressStatus.complete ||
                                 progressStatus == HabitProgressStatus.exceed) ||
                         !settings.showCompleted &&
@@ -98,7 +97,7 @@ class HabitCalendarPage_HabitProgressControl extends HookWidget {
 
   Future<DateTime> _computePerformDateTime(
     BuildContext context,
-    DateTime initialDate,
+    DateTime? initialDate,
   ) async {
     var performDate = initialDate ?? context.read(selectedDateProvider).state;
 

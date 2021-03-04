@@ -55,10 +55,10 @@ Provider<NotificationSender> notificationSenderProvider = Provider(
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 /// Инфа о приложении
-PackageInfo packageInfo;
+late PackageInfo packageInfo;
 
 /// Инфа о девайсе
-AndroidDeviceInfo androidInfo;
+late AndroidDeviceInfo androidInfo;
 
 /// Провайдер версии
 Provider<String> versionProvider =
@@ -70,7 +70,7 @@ Provider<BaseSettingsRepo> settingsRepoProvider = Provider(
 );
 
 /// Регает настройки
-StateProvider<Settings> settingsProvider = StateProvider((ref) => null);
+StateProvider<Settings?> settingsProvider = StateProvider((ref) => null);
 
 /// Провайдер котроллера настроек
 Provider<SettingsController> settingsControllerProvider = Provider(
@@ -152,7 +152,7 @@ StateNotifierProvider<HabitPerformingController> habitPerformingController =
     StateNotifierProvider(
   (ref) => HabitPerformingController(
     repo: ref.watch(habitPerformingRepoProvider),
-    settings: ref.watch(settingsProvider).state,
+    settings: ref.watch(settingsProvider).state!,
   ),
 );
 
@@ -176,17 +176,17 @@ Provider<AsyncValue<List<HabitProgressVM>>> listHabitVMs = Provider(
         .where((h) => h.matchDate(selectedDate))
         .map((h) =>
             HabitProgressVM.build(h, groupedHabitPerformings[h.id] ?? []))
-        .where((h) => settings.showCompleted || !h.isComplete && !h.isExceeded)
+        .where((h) => settings!.showCompleted || !h.isComplete && !h.isExceeded)
         .toList()
           ..sort((h1, h2) => h1.performTime == null
               ? (h2.performTime == null ? 0 : 1)
               : (h2.performTime == null
                   ? -1
-                  : h1.performTime.compareTo(h2.performTime)));
+                  : h1.performTime!.compareTo(h2.performTime!)));
   }),
 );
 
-StateProvider<String> selectedHabitIdProvider = StateProvider((ref) => null);
+StateProvider<String?> selectedHabitIdProvider = StateProvider((ref) => null);
 
 /// Дейтренж текущего дня
 Provider<DateRange> todayDateRange = Provider((ref) {
@@ -194,7 +194,7 @@ Provider<DateRange> todayDateRange = Provider((ref) {
 
   return DateRange.fromDateAndTimes(
     DateTime.now(),
-    settings.dayStartTime,
+    settings!.dayStartTime,
     settings.dayEndTime,
   );
 });
@@ -207,7 +207,6 @@ Provider<AsyncValue<HabitDetailsPageVM>> habitDetailsPageVMProvider = Provider(
     var selectedHabitId = ref.watch(selectedHabitIdProvider).state;
     var selectedHabit = habits.firstWhere(
       (h) => h.id == selectedHabitId,
-      orElse: () => null,
     );
     var selectedHabitPerformings = performings.map(
       (key, value) => MapEntry(
@@ -220,7 +219,7 @@ Provider<AsyncValue<HabitDetailsPageVM>> habitDetailsPageVMProvider = Provider(
         selectedHabitPerformings[ref.watch(todayDateRange).date];
     var progress = HabitProgressVM.build(
       selectedHabit,
-      todaySelectedHabitPerformings,
+      todaySelectedHabitPerformings!,
     );
 
     var history = HabitHistory.fromMap(selectedHabitPerformings);

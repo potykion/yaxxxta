@@ -6,7 +6,7 @@ part 'models.g.dart';
 
 /// Настроечки
 @freezed
-abstract class Settings with _$Settings {
+class Settings with _$Settings {
   /// @nodoc
   const factory Settings({
     /// Показывать выполненные привычки
@@ -16,10 +16,10 @@ abstract class Settings with _$Settings {
     @Default(true) bool showPartiallyCompleted,
 
     /// Начало дня
-    DateTime dayStartTime,
+    required DateTime dayStartTime,
 
     /// Конец дня
-    DateTime dayEndTime,
+    required DateTime dayEndTime,
   }) = _Settings;
 
   /// @nodoc

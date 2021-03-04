@@ -7,36 +7,36 @@ part 'view_models.freezed.dart';
 
 /// Вью-моделька прогресса привычки
 @freezed
-abstract class HabitProgressVM with _$HabitProgressVM {
+class HabitProgressVM with _$HabitProgressVM {
   const HabitProgressVM._();
 
   /// Вью-моделька прогресса привычки
   factory HabitProgressVM({
-    String id,
+    required String id,
 
     /// Название
-    String title,
+    required String title,
 
     /// Текущее значение (4 раза из 10)
     @Default(0) double currentValue,
 
     /// Целевое значение (10 раз)
-    double goalValue,
+    required double goalValue,
 
     /// Время выполнения
-    DateTime performTime,
+    DateTime? performTime,
 
     /// Тип
-    HabitType type,
+    required HabitType type,
   }) = _HabitProgressVM;
 
   /// Создает вм из привычки
   factory HabitProgressVM.build(
     Habit habit, [
-    List<HabitPerforming> habitPerformings,
+    List<HabitPerforming>? habitPerformings,
   ]) =>
       HabitProgressVM(
-        id: habit.id,
+        id: habit.id!,
         title: habit.title,
         type: habit.type,
         goalValue: habit.goalValue,
@@ -57,7 +57,7 @@ abstract class HabitProgressVM with _$HabitProgressVM {
   bool get isSingle => type == HabitType.repeats && goalValue.toInt() == 1;
 
   /// Время выпалнения привычки в виде строки
-  String get performTimeStr => formatTime(performTime);
+  String get performTimeStr => formatTime(performTime!);
 }
 
 /// Статут выполнения привычки

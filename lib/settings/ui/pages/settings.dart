@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth, User;
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/all.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../core/ui/widgets/app_bars.dart';
 import '../../../core/ui/widgets/bottom_nav.dart';
@@ -32,7 +32,7 @@ class SettingsPage extends HookWidget {
         context: context,
         children: [BiggestText(text: "Настроечки", withPadding: true)],
       ),
-      body: StreamBuilder<User>(
+      body: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) => ListView(
           children: [
@@ -43,9 +43,10 @@ class SettingsPage extends HookWidget {
                     children: [
                       ListTile(
                         leading: CircleAvatar(
-                          backgroundImage: NetworkImage(snapshot.data.photoURL),
+                          backgroundImage:
+                              NetworkImage(snapshot.data!.photoURL!),
                         ),
-                        title: BiggerText(text: snapshot.data.displayName),
+                        title: BiggerText(text: snapshot.data!.displayName!),
                         subtitle: SmallerText(text: "Синхронизация отключена"),
                         trailing: IconButton(
                           icon: Icon(Icons.logout),
@@ -82,7 +83,7 @@ class SettingsPage extends HookWidget {
                     children: [
                       Flexible(
                         child: TimePickerInput(
-                          initial: settings.dayStartTime,
+                          initial: settings!.dayStartTime,
                           change: (time) => setSettings(
                             settings.copyWith(dayStartTime: time),
                           ),
@@ -113,7 +114,7 @@ class SettingsPage extends HookWidget {
                   title: BiggerText(text: "Показывать выполненные привычки"),
                   value: settings.showCompleted,
                   onChanged: (showCompleted) => setSettings(
-                    settings.copyWith(showCompleted: showCompleted),
+                    settings.copyWith(showCompleted: showCompleted!),
                   ),
                   checkColor: CustomColors.almostBlack,
                 ),
@@ -124,7 +125,7 @@ class SettingsPage extends HookWidget {
                   value: settings.showPartiallyCompleted,
                   onChanged: (showPartiallyCompleted) => setSettings(
                     settings.copyWith(
-                      showPartiallyCompleted: showPartiallyCompleted,
+                      showPartiallyCompleted: showPartiallyCompleted!,
                     ),
                   ),
                   checkColor: CustomColors.almostBlack,

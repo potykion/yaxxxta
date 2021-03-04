@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:yaxxxta/core/ui/widgets/padding.dart';
-import '../../domain/models.dart';
 
+import '../../domain/models.dart';
 import 'input.dart';
+import 'padding.dart';
 
 /// Инпут длительности
 class DurationInput extends StatelessWidget {
@@ -14,9 +14,9 @@ class DurationInput extends StatelessWidget {
 
   /// Инпут длительности
   const DurationInput({
-    Key key,
-    this.initial,
-    this.change,
+    Key? key,
+    required this.initial,
+    required this.change,
   }) : super(key: key);
 
   @override

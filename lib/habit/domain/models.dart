@@ -18,10 +18,10 @@ abstract class Habit implements _$Habit {
   /// Создает привычку
   const factory Habit({
     /// Айдишник
-    String id,
+    String? id,
 
     /// Дата создания
-    @required DateTime created,
+    required DateTime created,
 
     /// Название
     @Default("") String title,
@@ -33,7 +33,7 @@ abstract class Habit implements _$Habit {
     @Default(1) double goalValue,
 
     /// Время выполнения привычки
-    DateTime performTime,
+    DateTime? performTime,
 
     /// Тип периодичности
     @Default(HabitPeriodType.day) HabitPeriodType periodType,
@@ -53,12 +53,6 @@ abstract class Habit implements _$Habit {
 
     /// Включены ли уведомления
     @Default(false) bool isNotificationsEnabled,
-
-    /// Айди девайса
-    String deviceId,
-
-    /// Айди юзера
-    String userId,
   }) = _Habit;
 
   /// Созадет пустую привычку
@@ -133,12 +127,12 @@ abstract class Habit implements _$Habit {
   /// Напр. если привычка ежедневная и время выполнения 14:00,
   /// а сегодня 2020-01-01 15:00,
   /// то след время выполнения будет 2020-01-02 14:00
-  Iterable<DateTime> nextPerformDateTime([DateTime now]) sync* {
+  Iterable<DateTime> nextPerformDateTime([DateTime? now]) sync* {
     assert(performTime != null);
 
     now = now ?? DateTime.now();
 
-    var current = buildDateTime(created, performTime);
+    var current = buildDateTime(created, performTime!);
 
     if (periodType == HabitPeriodType.day) {
       while (true) {
@@ -321,27 +315,27 @@ abstract class HabitPerforming implements _$HabitPerforming {
   /// Создает выполнение привычки
   factory HabitPerforming({
     /// Айди выполнения привычки
-    String id,
+    String? id,
 
     /// Айди привычки
-    @required String habitId,
+    required String habitId,
 
     /// Значение выполнения (напр. 10 сек)
-    @required double performValue,
+    required double performValue,
 
     /// Время выполнения
-    @required DateTime performDateTime,
+    required DateTime performDateTime,
   }) = _HabitPerforming;
 
   /// Создает пустышку
   factory HabitPerforming.blank({
-    @required String habitId,
-    double performValue = 1,
-    DateTime performDateTime,
+    required String habitId,
+    double? performValue,
+    DateTime? performDateTime,
   }) {
     return HabitPerforming(
       habitId: habitId,
-      performValue: performValue,
+      performValue: performValue ?? 1,
       performDateTime: performDateTime ?? DateTime.now(),
     );
   }

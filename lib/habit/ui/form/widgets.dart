@@ -17,9 +17,9 @@ class HabitTypeRadioGroup extends StatefulWidget {
 
   /// Создает инпут
   const HabitTypeRadioGroup({
-    Key key,
-    @required this.initial,
-    @required this.change,
+    Key? key,
+    required this.initial,
+    required this.change,
     this.setBefore = false,
   }) : super(key: key);
 
@@ -28,7 +28,7 @@ class HabitTypeRadioGroup extends StatefulWidget {
 }
 
 class _HabitTypeRadioGroupState extends State<HabitTypeRadioGroup> {
-  HabitType selectedHabitType;
+  late HabitType selectedHabitType;
 
   @override
   void initState() {
@@ -50,8 +50,8 @@ class _HabitTypeRadioGroupState extends State<HabitTypeRadioGroup> {
       );
 
   Selectable buildHabitTypeRadio(HabitType habitType) {
-    String biggerText;
-    String smallerText;
+    late String biggerText;
+    late String smallerText;
     if (habitType == HabitType.time) {
       biggerText = "На время";
       smallerText = "Например, 10 мин. в день";

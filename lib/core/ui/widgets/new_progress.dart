@@ -14,7 +14,7 @@ import 'text.dart';
 /// Событие изменения значения
 typedef OnValueIncrement = void Function(
     double incrementValue, HabitProgressStatus progressStatus,
-    [DateTime datetime]);
+    [DateTime? datetime]);
 
 /// Контролл прогресса на повторы
 class RepeatProgressControl extends HookWidget {
@@ -29,9 +29,9 @@ class RepeatProgressControl extends HookWidget {
 
   /// Контролл прогресса на повторы
   RepeatProgressControl({
-    @required this.initialValue,
-    @required this.goalValue,
-    @required this.onValueIncrement,
+    required this.initialValue,
+    required this.goalValue,
+    required this.onValueIncrement,
   });
 
   @override
@@ -84,23 +84,23 @@ class TimeProgressControl extends HookWidget {
   final OnValueIncrement onValueIncrement;
 
   /// Начальная дата
-  final DateTime initialDate;
+  final DateTime? initialDate;
 
   /// Текст уведомления о выполнении привычки
   final String notificationText;
 
   /// Контролл прогресса на время
   TimeProgressControl({
-    @required this.initialValue,
-    @required this.goalValue,
-    @required this.onValueIncrement,
-    @required this.initialDate,
+    required this.initialValue,
+    required this.goalValue,
+    required this.onValueIncrement,
+    this.initialDate,
     this.notificationText = "Привычка выполнена",
   });
 
   @override
   Widget build(BuildContext context) {
-    var timerState = useState<Timer>(null);
+    var timerState = useState<Timer?>(null);
 
     var currentValueState = useState(initialValue);
     useValueChanged<double, void>(
@@ -110,11 +110,11 @@ class TimeProgressControl extends HookWidget {
       },
     );
 
-    var notificationId = useValueNotifier<int>(null, []);
+    var notificationId = useValueNotifier<int?>(null, []);
 
     /// Вырубает таймер
     void _cancelTimer({
-      DateTime oldDate,
+      DateTime? oldDate,
       bool withResetTimer = true,
       bool withCancelNotification = false,
     }) {
@@ -122,11 +122,11 @@ class TimeProgressControl extends HookWidget {
       if (timerState.value == null) return;
 
       /// Отключение таймера
-      timerState.value.cancel();
+      timerState.value!.cancel();
 
       /// Отменяем уведомление, если withCancelNotification = true
       if (withCancelNotification && notificationId.value != null) {
-        context.read(notificationSenderProvider).cancel(notificationId.value);
+        context.read(notificationSenderProvider).cancel(notificationId.value!);
       }
 
       /// Обновляем прогресс = разницы между текущим значение таймера
@@ -147,7 +147,7 @@ class TimeProgressControl extends HookWidget {
 
     /// При смене initialDate нужно сбросить таймер
     /// Актуально для списка привычек, где можно менять дату
-    useValueChanged<DateTime, void>(
+    useValueChanged<DateTime?, void>(
       initialDate,
       (oldDate, _) => _cancelTimer(
         oldDate: oldDate,
@@ -253,10 +253,10 @@ class _BaseProgressControl extends StatelessWidget {
   final Widget incrementButton;
 
   const _BaseProgressControl({
-    Key key,
-    @required this.progressPercentage,
-    @required this.progressStr,
-    @required this.incrementButton,
+    Key? key,
+    required this.progressPercentage,
+    required this.progressStr,
+    required this.incrementButton,
   }) : super(key: key);
 
   @override

@@ -24,13 +24,13 @@ class NotificationSender {
 
   /// Планирует отправку уведомления через {sendAfterSeconds} секунд
   Future<int> schedule({
-    String title,
-    String body,
-    int sendAfterSeconds,
-    AndroidNotificationDetails androidChannel,
+    required String title,
+    String? body,
+    required int sendAfterSeconds,
+    AndroidNotificationDetails? androidChannel,
     bool repeatDaily = false,
     bool repeatWeekly = false,
-    String payload,
+    String? payload,
   }) async {
     androidChannel = androidChannel ?? timeProgressNotification;
 

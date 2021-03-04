@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/all.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../core/ui/widgets/app_bars.dart';
 import '../../../core/ui/widgets/card.dart';
@@ -21,9 +21,9 @@ class HabitDetailsPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     useEffect(() {
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
+      WidgetsBinding.instance!.addPostFrameCallback((_) async {
         context.read(habitPerformingController).loadSelectedHabitPerformings(
-            context.read(selectedHabitIdProvider).state);
+            context.read(selectedHabitIdProvider).state!);
       });
       return;
     }, []);
@@ -88,10 +88,10 @@ class HabitDetailsPage extends HookWidget {
         key: Key("HabitDetailsPage_HabitRepeatControl"),
         vm: progress,
         onRepeatIncrement: (incrementValue, _, [__]) async {
-          await navigatorKey.currentContext
+          await navigatorKey.currentContext!
               .read(habitPerformingController)
               .insert(HabitPerforming.blank(
-                habitId: habit.id,
+                habitId: habit.id!,
                 performValue: incrementValue,
               ));
 

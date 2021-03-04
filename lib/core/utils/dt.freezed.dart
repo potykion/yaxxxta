@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
 
 part of 'dt.dart';
 
@@ -9,11 +9,13 @@ part of 'dt.dart';
 
 T _$identity<T>(T value) => value;
 
+final _privateConstructorUsedError = UnsupportedError(
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+
 /// @nodoc
 class _$DateRangeTearOff {
   const _$DateRangeTearOff();
 
-// ignore: unused_element
   _DateRange call(DateTime from, DateTime to) {
     return _DateRange(
       from,
@@ -23,19 +25,19 @@ class _$DateRangeTearOff {
 }
 
 /// @nodoc
-// ignore: unused_element
 const $DateRange = _$DateRangeTearOff();
 
 /// @nodoc
 mixin _$DateRange {
   /// Дейт-тайм с
-  DateTime get from;
+  DateTime get from => throw _privateConstructorUsedError;
 
   /// Дейт-тайм по
-  DateTime get to;
+  DateTime get to => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $DateRangeCopyWith<DateRange> get copyWith;
+  $DateRangeCopyWith<DateRange> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -55,8 +57,8 @@ class _$DateRangeCopyWithImpl<$Res> implements $DateRangeCopyWith<$Res> {
 
   @override
   $Res call({
-    Object from = freezed,
-    Object to = freezed,
+    Object? from = freezed,
+    Object? to = freezed,
   }) {
     return _then(_value.copyWith(
       from: from == freezed ? _value.from : from as DateTime,
@@ -85,8 +87,8 @@ class __$DateRangeCopyWithImpl<$Res> extends _$DateRangeCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object from = freezed,
-    Object to = freezed,
+    Object? from = freezed,
+    Object? to = freezed,
   }) {
     return _then(_DateRange(
       from == freezed ? _value.from : from as DateTime,
@@ -97,10 +99,7 @@ class __$DateRangeCopyWithImpl<$Res> extends _$DateRangeCopyWithImpl<$Res>
 
 /// @nodoc
 class _$_DateRange extends _DateRange {
-  _$_DateRange(this.from, this.to)
-      : assert(from != null),
-        assert(to != null),
-        super._();
+  _$_DateRange(this.from, this.to) : super._();
 
   @override
 
@@ -145,12 +144,13 @@ abstract class _DateRange extends DateRange {
   @override
 
   /// Дейт-тайм с
-  DateTime get from;
+  DateTime get from => throw _privateConstructorUsedError;
   @override
 
   /// Дейт-тайм по
-  DateTime get to;
+  DateTime get to => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$DateRangeCopyWith<_DateRange> get copyWith;
+  _$DateRangeCopyWith<_DateRange> get copyWith =>
+      throw _privateConstructorUsedError;
 }

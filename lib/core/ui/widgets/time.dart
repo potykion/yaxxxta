@@ -7,18 +7,18 @@ import '../../utils/dt.dart';
 /// Выбор времени
 class TimePickerInput extends HookWidget {
   /// Начальное значение времени
-  final DateTime initial;
+  final DateTime? initial;
 
   /// Событие изменения времени
   final Function(DateTime time) change;
 
   /// Выбор времени
-  TimePickerInput({this.initial, this.change});
+  TimePickerInput({this.initial, required this.change});
 
   @override
   Widget build(BuildContext context) {
     var tec = useTextEditingController(
-      text: initial != null ? formatTime(initial) : "",
+      text: initial != null ? formatTime(initial!) : "",
     );
 
     return TextFormField(
@@ -32,7 +32,7 @@ class TimePickerInput extends HookWidget {
           confirmText: "ОК",
           helpText: "Выбери время",
 
-        ))
+        ))!
             .toDateTime();
         tec.text = formatTime(selectedTimeDateTime);
         change(selectedTimeDateTime);
