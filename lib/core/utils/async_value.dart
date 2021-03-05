@@ -4,14 +4,16 @@ import 'package:tuple/tuple.dart';
 /// Расширения для AsyncValue
 extension AsyncValueExtensions<T1> on AsyncValue<T1> {
   /// Соединяет 2 AsyncValue в один
-  AsyncValue<Tuple2<T1?, T2?>> merge2<T2>(AsyncValue<T2> asyncValue2) {
-    var res = whenData((value) => Tuple2<T1?, T2?>(value, null));
-    if (res.data == null) {
+  AsyncValue<Tuple2<T1, T2>> merge2<T2>(AsyncValue<T2> asyncValue2) {
+    /// Если data == null => res - AsyncValue.error / AsyncValue.loading
+    /// => Используем костыль null!
+    var res = whenData((value) => Tuple2<T1, T2>(value, null!));
+    if (data == null) {
       return res;
     }
 
     asyncValue2.when(data: (value2) {
-      res = AsyncValue.data(res.data!.value.withItem2(value2));
+      res = AsyncValue.data(Tuple2(data!.value, value2));
     }, error: (error, trace) {
       res = AsyncValue.error(error, trace);
     }, loading: () {
