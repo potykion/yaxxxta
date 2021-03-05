@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-// import 'package:infinite_listview/infinite_listview.dart';
+import 'package:indexed_list_view/indexed_list_view.dart';
 
 import '../../../theme.dart';
 import '../../utils/dt.dart';
@@ -30,13 +30,12 @@ class DateCarousel extends HookWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 75,
-      // child: InfiniteListView.builder(
-      child: ListView.builder(
-        /// Сдвигаем лист-вью на половину экрана + 3 паддинга по 10,
-        /// чтобы текущий день был посерединке
-        // controller: InfiniteScrollController(
-        //   initialScrollOffset: -MediaQuery.of(context).size.width / 2 + 3 * 10,
-        // ),
+      child: IndexedListView.builder(
+        // /// Сдвигаем лист-вью на половину экрана + 3 паддинга по 10,
+        // /// чтобы текущий день был посерединке
+        controller: IndexedScrollController(
+          initialScrollOffset: -MediaQuery.of(context).size.width / 2 + 3 * 10,
+        ),
         scrollDirection: Axis.horizontal,
         itemBuilder: (_, index) {
           var shiftDate = DateTime.now().date().add(Duration(days: index));
