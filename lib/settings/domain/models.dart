@@ -7,7 +7,7 @@ part 'models.g.dart';
 /// Настроечки
 @freezed
 class Settings with _$Settings {
-  /// @nodoc
+  /// Настроечки
   const factory Settings({
     /// Показывать выполненные привычки
     @Default(true) bool showCompleted,

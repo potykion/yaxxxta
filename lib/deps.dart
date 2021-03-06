@@ -18,10 +18,6 @@ import 'habit/ui/calendar/controllers.dart';
 import 'habit/ui/core/controllers.dart';
 import 'habit/ui/core/view_models.dart';
 import 'habit/ui/details/view_models.dart';
-import 'settings/domain/db.dart';
-import 'settings/domain/models.dart';
-import 'settings/infra/db.dart';
-import 'settings/ui/core/controllers.dart';
 import 'user/domain/db.dart';
 import 'user/domain/services.dart';
 import 'user/infra/db.dart';
@@ -64,22 +60,6 @@ late AndroidDeviceInfo androidInfo;
 /// Провайдер версии
 Provider<String> versionProvider =
     Provider((ref) => "${packageInfo.version}+${packageInfo.buildNumber}");
-
-/// Регает репо настроек
-Provider<BaseSettingsRepo> settingsRepoProvider = Provider(
-  (ref) => SharedPreferencesSettingsRepo(),
-);
-
-/// Регает настройки
-StateProvider<Settings?> settingsProvider = StateProvider((ref) => null);
-
-/// Провайдер котроллера настроек
-Provider<SettingsController> settingsControllerProvider = Provider(
-  (ref) => SettingsController(
-    settingsState: ref.watch(settingsProvider),
-    settingsRepo: ref.watch(settingsRepoProvider),
-  ),
-);
 
 // endregion
 
@@ -158,7 +138,7 @@ StateNotifierProvider<HabitPerformingController> habitPerformingController =
     StateNotifierProvider(
   (ref) => HabitPerformingController(
     repo: ref.watch(habitPerformingRepoProvider),
-    settings: ref.watch(settingsProvider).state!,
+    settings: ref.watch(userDataControllerProvider.state)!.settings,
   ),
 );
 
@@ -174,7 +154,7 @@ Provider<AsyncValue<List<HabitProgressVM>>> listHabitVMs = Provider(
     var habits = ref.watch(habitControllerProvider.state);
 
     var selectedDate = ref.watch(selectedDateProvider).state;
-    var settings = ref.watch(settingsProvider).state;
+    var settings = ref.watch(userDataControllerProvider.state)!.settings;
 
     var groupedHabitPerformings = groupBy<HabitPerforming, String>(
         dateHabitPerformings[selectedDate] ?? [], (hp) => hp.habitId);
@@ -183,7 +163,7 @@ Provider<AsyncValue<List<HabitProgressVM>>> listHabitVMs = Provider(
         .where((h) => h.matchDate(selectedDate))
         .map((h) =>
             HabitProgressVM.build(h, groupedHabitPerformings[h.id] ?? []))
-        .where((h) => settings!.showCompleted || !h.isComplete && !h.isExceeded)
+        .where((h) => settings.showCompleted || !h.isComplete && !h.isExceeded)
         .toList()
           ..sort((h1, h2) => h1.performTime == null
               ? (h2.performTime == null ? 0 : 1)
@@ -198,11 +178,11 @@ StateProvider<String?> selectedHabitIdProvider = StateProvider((ref) => null);
 
 /// Дейтренж текущего дня
 Provider<DateRange> todayDateRange = Provider((ref) {
-  var settings = ref.watch(settingsProvider).state;
+  var settings = ref.watch(userDataControllerProvider.state)!.settings;
 
   return DateRange.fromDateAndTimes(
     DateTime.now(),
-    settings!.dayStartTime,
+    settings.dayStartTime,
     settings.dayEndTime,
   );
 });

@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
 import '../../habit/domain/models.dart';
+import '../../settings/domain/models.dart';
 import '../domain/db.dart';
 import '../domain/models.dart';
 
@@ -34,6 +36,14 @@ class UserDataController extends StateNotifier<UserData?> {
     }
 
     state = userData;
+  }
+
+  /// Обновляет настройки
+  Future<void> updateSettings(Settings settings) async {
+    assert(state != null);
+    var newUserData = state!.copyWith(settings: settings);
+    await repo.update(newUserData);
+    state = newUserData;
   }
 
   /// Привязывает привычку к данным юзера

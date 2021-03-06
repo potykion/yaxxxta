@@ -67,8 +67,10 @@ class HabitCalendarPage_HabitProgressControl extends HookWidget {
                           ),
                         );
 
-                    var settings = context.read(settingsProvider).state;
-                    var hideHabit = !settings!.showCompleted &&
+                    var settings = context
+                        .read(userDataControllerProvider.state)!
+                        .settings;
+                    var hideHabit = !settings.showCompleted &&
                             (progressStatus == HabitProgressStatus.complete ||
                                 progressStatus == HabitProgressStatus.exceed) ||
                         !settings.showCompleted &&

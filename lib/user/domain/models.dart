@@ -12,10 +12,19 @@ abstract class UserData implements _$UserData {
 
   /// Данные о юзере
   factory UserData({
+    /// Айди
     String? id,
+
+    /// Айди юзера
     String? userId,
+
+    /// Айди девайсов
     required List<String> deviceIds,
+
+    /// Айди привычек
     required List<String> habitIds,
+
+    /// Настройки
     required Settings settings,
   }) = _UserData;
 

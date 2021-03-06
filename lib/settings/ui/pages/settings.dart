@@ -17,14 +17,12 @@ import '../../domain/models.dart';
 class SettingsPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    var settingsState = useProvider(settingsProvider);
-    var settings = settingsState.state;
+    var settings = useProvider(userDataControllerProvider.state)!.settings;
 
     var version = useProvider(versionProvider);
 
     setSettings(Settings newSettings) {
-      context.read(settingsProvider).state = newSettings;
-      context.read(settingsRepoProvider).update(newSettings);
+      context.read(userDataControllerProvider).updateSettings(newSettings);
     }
 
     return Scaffold(
@@ -83,7 +81,7 @@ class SettingsPage extends HookWidget {
                     children: [
                       Flexible(
                         child: TimePickerInput(
-                          initial: settings!.dayStartTime,
+                          initial: settings.dayStartTime,
                           change: (time) => setSettings(
                             settings.copyWith(dayStartTime: time),
                           ),

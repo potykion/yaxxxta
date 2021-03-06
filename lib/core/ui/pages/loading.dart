@@ -46,8 +46,6 @@ class LoadingPage extends HookWidget {
               fs.Settings(host: host, sslEnabled: false);
         }
 
-        await context.read(settingsControllerProvider).loadSettings();
-
         var auth = context.read(authProvider);
         var user = auth.tryGetUser() ?? (await auth.signInAnon());
         await context.read(userDataControllerProvider).load(
