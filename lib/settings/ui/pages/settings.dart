@@ -38,7 +38,7 @@ class SettingsPage extends HookWidget {
           children: [
             ContainerCard(
               children: [
-                if (snapshot.hasData)
+                if (snapshot.hasData && !snapshot.data!.isAnonymous)
                   Column(
                     children: [
                       ListTile(
