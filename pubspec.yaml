@@ -33,11 +33,6 @@ dependencies:
   # форматирование дат
   intl: ^0.17.0
 
-  # стринговые утилиты
-  #  несовместима с google_fonts ^2.0.0
-  #  https://github.com/dart-league/validators/issues/23
-  #  validators: ^2.0.1
-
   # json (де)сериализация
   json_serializable: ^4.0.2
 
@@ -97,7 +92,7 @@ dev_dependencies:
 
   # моки: обычные, фаерстор специфик
   mockito: ^5.0.0
-  #  несовместима с cloud_firestore: ^1.0.0
+  #  TODO несовместима с cloud_firestore: ^1.0.0
   #  cloud_firestore_mocks: ^0.6.0
 
   # Иконочка

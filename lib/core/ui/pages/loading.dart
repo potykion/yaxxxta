@@ -50,14 +50,14 @@ class LoadingPage extends HookWidget {
 
         var auth = context.read(authProvider);
         var user = auth.tryGetUser() ?? (await auth.signInAnon());
-        var userData = await context.read(loadUserDataProvider)(
+        await context.read(userDataControllerProvider).load(
           user: user,
           deviceId: androidInfo.id,
         );
 
         await context
             .read(habitControllerProvider)
-            .loadByIds(userData.habitIds);
+            .load();
 
         await context
             .read(scheduleNotificationsForHabitsWithoutNotificationsProvider)(

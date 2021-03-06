@@ -38,5 +38,5 @@ class MockBaseHabitPerformingRepo extends _i1.Mock
   _i3.Future<void> delete(DateTime? from, DateTime? to) =>
       (super.noSuchMethod(Invocation.method(#delete, [from, to]),
           returnValue: Future.value(null),
-          returnValueForMissingStub: Future<void>.value()) as _i3.Future<void>);
+          returnValueForMissingStub: Future.value()) as _i3.Future<void>);
 }

@@ -21,11 +21,13 @@ class _$UserDataTearOff {
   const _$UserDataTearOff();
 
   _UserData call(
-      {String? userId,
+      {String? id,
+      String? userId,
       required List<String> deviceIds,
       required List<String> habitIds,
       required Settings settings}) {
     return _UserData(
+      id: id,
       userId: userId,
       deviceIds: deviceIds,
       habitIds: habitIds,
@@ -43,6 +45,7 @@ const $UserData = _$UserDataTearOff();
 
 /// @nodoc
 mixin _$UserData {
+  String? get id => throw _privateConstructorUsedError;
   String? get userId => throw _privateConstructorUsedError;
   List<String> get deviceIds => throw _privateConstructorUsedError;
   List<String> get habitIds => throw _privateConstructorUsedError;
@@ -59,7 +62,8 @@ abstract class $UserDataCopyWith<$Res> {
   factory $UserDataCopyWith(UserData value, $Res Function(UserData) then) =
       _$UserDataCopyWithImpl<$Res>;
   $Res call(
-      {String? userId,
+      {String? id,
+      String? userId,
       List<String> deviceIds,
       List<String> habitIds,
       Settings settings});
@@ -77,12 +81,14 @@ class _$UserDataCopyWithImpl<$Res> implements $UserDataCopyWith<$Res> {
 
   @override
   $Res call({
+    Object? id = freezed,
     Object? userId = freezed,
     Object? deviceIds = freezed,
     Object? habitIds = freezed,
     Object? settings = freezed,
   }) {
     return _then(_value.copyWith(
+      id: id == freezed ? _value.id : id as String?,
       userId: userId == freezed ? _value.userId : userId as String?,
       deviceIds:
           deviceIds == freezed ? _value.deviceIds : deviceIds as List<String>,
@@ -106,7 +112,8 @@ abstract class _$UserDataCopyWith<$Res> implements $UserDataCopyWith<$Res> {
       __$UserDataCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String? userId,
+      {String? id,
+      String? userId,
       List<String> deviceIds,
       List<String> habitIds,
       Settings settings});
@@ -126,12 +133,14 @@ class __$UserDataCopyWithImpl<$Res> extends _$UserDataCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? id = freezed,
     Object? userId = freezed,
     Object? deviceIds = freezed,
     Object? habitIds = freezed,
     Object? settings = freezed,
   }) {
     return _then(_UserData(
+      id: id == freezed ? _value.id : id as String?,
       userId: userId == freezed ? _value.userId : userId as String?,
       deviceIds:
           deviceIds == freezed ? _value.deviceIds : deviceIds as List<String>,
@@ -147,7 +156,8 @@ class __$UserDataCopyWithImpl<$Res> extends _$UserDataCopyWithImpl<$Res>
 /// @nodoc
 class _$_UserData extends _UserData {
   _$_UserData(
-      {this.userId,
+      {this.id,
+      this.userId,
       required this.deviceIds,
       required this.habitIds,
       required this.settings})
@@ -156,6 +166,8 @@ class _$_UserData extends _UserData {
   factory _$_UserData.fromJson(Map<String, dynamic> json) =>
       _$_$_UserDataFromJson(json);
 
+  @override
+  final String? id;
   @override
   final String? userId;
   @override
@@ -167,13 +179,15 @@ class _$_UserData extends _UserData {
 
   @override
   String toString() {
-    return 'UserData(userId: $userId, deviceIds: $deviceIds, habitIds: $habitIds, settings: $settings)';
+    return 'UserData(id: $id, userId: $userId, deviceIds: $deviceIds, habitIds: $habitIds, settings: $settings)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _UserData &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.userId, userId) ||
                 const DeepCollectionEquality().equals(other.userId, userId)) &&
             (identical(other.deviceIds, deviceIds) ||
@@ -190,6 +204,7 @@ class _$_UserData extends _UserData {
   @override
   int get hashCode =>
       runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(userId) ^
       const DeepCollectionEquality().hash(deviceIds) ^
       const DeepCollectionEquality().hash(habitIds) ^
@@ -209,13 +224,16 @@ class _$_UserData extends _UserData {
 abstract class _UserData extends UserData {
   _UserData._() : super._();
   factory _UserData(
-      {String? userId,
+      {String? id,
+      String? userId,
       required List<String> deviceIds,
       required List<String> habitIds,
       required Settings settings}) = _$_UserData;
 
   factory _UserData.fromJson(Map<String, dynamic> json) = _$_UserData.fromJson;
 
+  @override
+  String? get id => throw _privateConstructorUsedError;
   @override
   String? get userId => throw _privateConstructorUsedError;
   @override

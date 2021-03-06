@@ -10,6 +10,7 @@ abstract class UserData implements _$UserData {
   const UserData._();
 
   factory UserData({
+    String? id,
     String? userId,
     required List<String> deviceIds,
     required List<String> habitIds,

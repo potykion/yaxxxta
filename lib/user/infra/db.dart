@@ -14,13 +14,16 @@ class FirestoreUserDataRepo implements UserDataRepo {
   @override
   Future<UserData?> getByDeviceId(String deviceId) async {
     try {
-      return (await _collectionReference
+      var doc = (await _collectionReference
               .where("deviceIds", arrayContains: deviceId)
+              .where("userId", isNull: true)
               .get())
           .docs
-          .map((doc) => UserData.fromJson(doc.data()!))
-          .where((ud) => ud.userId == null)
           .first;
+
+      var userData = UserData.fromJson(doc.data()!).copyWith(id: doc.id);
+
+      return userData;
       // ignore: avoid_catching_errors
     } on StateError {
       return null;
@@ -30,15 +33,21 @@ class FirestoreUserDataRepo implements UserDataRepo {
   @override
   Future<UserData?> getByUserId(String userId) async {
     try {
-      return (await _collectionReference
-              .where("userId", isEqualTo: userId)
-              .get())
-          .docs
-          .map((doc) => UserData.fromJson(doc.data()!))
-          .first;
+      var doc =
+          (await _collectionReference.where("userId", isEqualTo: userId).get())
+              .docs
+              .first;
+
+      var userData = UserData.fromJson(doc.data()!).copyWith(id: doc.id);
+
+      return userData;
       // ignore: avoid_catching_errors
     } on StateError {
       return null;
     }
   }
+
+  @override
+  Future<void> update(UserData userData) =>
+      _collectionReference.doc(userData.id).update(userData.toJson());
 }

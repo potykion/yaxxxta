@@ -7,6 +7,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:package_info/package_info.dart';
 import 'package:collection/collection.dart';
+import 'package:yaxxxta/user/domain/models.dart';
+import 'package:yaxxxta/user/ui/controllers.dart';
 
 import 'core/infra/push.dart';
 import 'core/utils/dt.dart';
@@ -99,6 +101,16 @@ Provider<UserDataRepo> userDataRepoProvider = Provider<UserDataRepo>(
 Provider<LoadUserData> loadUserDataProvider =
     Provider((ref) => LoadUserData(ref.watch(userDataRepoProvider)));
 
+Provider<AddHabitToUserData> addHabitToUserDataProvider =
+    Provider((ref) => AddHabitToUserData(ref.read(userDataRepoProvider)));
+
+StateProvider<UserData> userDataProvider = StateProvider((ref) => null!);
+
+StateNotifierProvider<UserDataController> userDataControllerProvider =
+    StateNotifierProvider(
+  (ref) => UserDataController(repo: ref.watch(userDataRepoProvider)),
+);
+
 // endregion
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -144,6 +156,7 @@ StateNotifierProvider<HabitController> habitControllerProvider =
     scheduleSingleHabitNotification:
         ref.watch(schedulePerformHabitNotificationsProvider),
     fbAuth: FirebaseAuth.instance,
+    userDataController: ref.watch(userDataControllerProvider),
   ),
 );
 

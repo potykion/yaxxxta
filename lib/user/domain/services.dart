@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart'
     show FirebaseAuth, GoogleAuthProvider, User;
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:yaxxxta/habit/domain/models.dart';
 import 'db.dart';
 import 'models.dart';
 
@@ -46,19 +47,19 @@ class LoadUserData {
     required User user,
     required String deviceId,
   }) async {
-    /// Если анон юзер => берем по девайсу
-    /// Иначе по юзер айди
-    var userData = user.isAnonymous
-        ? await repo.getByDeviceId(deviceId)
-        : await repo.getByUserId(user.uid);
 
-    /// Если нет UserData => анон юзер в первый раз =>
-    /// создаем для девайса UserData
-    if (userData == null) {
-      userData = UserData.blank(deviceId: deviceId);
-      await repo.create(userData);
-    }
+  }
+}
 
-    return userData;
+class AddHabitToUserData {
+  final UserDataRepo repo;
+
+  AddHabitToUserData(this.repo);
+
+  Future<void> call(UserData data, Habit habit) async {
+    data = data.copyWith(
+      habitIds: {...data.habitIds, habit.id!}.toList(),
+    );
+    await repo.update(data);
   }
 }
