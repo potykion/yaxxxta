@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -258,7 +257,11 @@ class SimpleButton extends StatelessWidget {
   final void Function() onTap;
 
   /// Создает кнопку
-  const SimpleButton({Key? key, required this.text, required this.onTap}) : super(key: key);
+  const SimpleButton({
+    Key? key,
+    required this.text,
+    required this.onTap,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Container(

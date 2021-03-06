@@ -2,9 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../domain/db.dart';
 import '../domain/models.dart';
 
+/// Фаерстор репо для данных о юзере
 class FirestoreUserDataRepo implements UserDataRepo {
   final CollectionReference _collectionReference;
 
+  /// Фаерстор репо для данных о юзере
   FirestoreUserDataRepo(this._collectionReference);
 
   @override

@@ -1,17 +1,21 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:yaxxxta/habit/domain/models.dart';
-import 'package:yaxxxta/user/domain/db.dart';
-import 'package:yaxxxta/user/domain/models.dart';
+import '../../habit/domain/models.dart';
+import '../domain/db.dart';
+import '../domain/models.dart';
 
+/// Контроллер данных о юзере
 class UserDataController extends StateNotifier<UserData?> {
+  /// Репо данных о юзере
   final UserDataRepo repo;
 
+  /// Контроллер данных о юзере
   UserDataController({
     required this.repo,
     UserData? state,
   }) : super(state);
 
+  /// Грузит данные о юзеере
   Future<void> load({
     required User user,
     required String deviceId,
@@ -32,6 +36,7 @@ class UserDataController extends StateNotifier<UserData?> {
     state = userData;
   }
 
+  /// Привязывает привычку к данным юзера
   Future<void> addHabit(Habit habit) async {
     assert(state != null);
     var userData =
@@ -39,4 +44,7 @@ class UserDataController extends StateNotifier<UserData?> {
     await repo.update(userData);
     state = userData;
   }
+
+  /// Айди привычек, привязанных к юзеру
+  List<String> get habitIds => state!.habitIds;
 }

@@ -2,14 +2,11 @@ import 'package:device_info/device_info.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:yaxxxta/user/domain/db.dart';
-import 'package:yaxxxta/user/domain/models.dart';
-import 'package:yaxxxta/user/domain/services.dart';
-import 'package:yaxxxta/user/ui/controllers.dart';
 
 import '../../../core/utils/dt.dart';
 import '../../../core/utils/list.dart';
 import '../../../settings/domain/models.dart';
+import '../../../user/ui/controllers.dart';
 import '../../domain/db.dart';
 import '../../domain/models.dart';
 import '../../domain/services.dart';
@@ -28,6 +25,7 @@ class HabitController extends StateNotifier<List<Habit>> {
   /// Планирование оправки уведомл.
   final ScheduleSingleHabitNotification scheduleSingleHabitNotification;
 
+  /// Контроллер данных о юзере
   final UserDataController userDataController;
 
   /// Контроллер привычек
@@ -41,7 +39,8 @@ class HabitController extends StateNotifier<List<Habit>> {
   }) : super(state);
 
   /// Грузит список привычек и сеттит в стейт
-  Future<void> load(List<String> habitIds) async {
+  Future<void> load() async {
+    var habitIds = userDataController.habitIds;
     state = await habitRepo.listByIds(habitIds);
   }
 
@@ -63,9 +62,7 @@ class HabitController extends StateNotifier<List<Habit>> {
       ];
     } else {
       habit = habit.copyWith(id: await habitRepo.insert(habit));
-      await userDataRepo.update(
-        userData.copyWith(habitIds: {...userData.habitIds, habit.id!}.toList()),
-      );
+      await userDataController.addHabit(habit);
       state = [...state, habit];
     }
 

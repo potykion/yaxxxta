@@ -7,6 +7,7 @@ extension AsyncValueExtensions<T1> on AsyncValue<T1> {
   AsyncValue<Tuple2<T1, T2>> merge2<T2>(AsyncValue<T2> asyncValue2) {
     /// Если data == null => res - AsyncValue.error / AsyncValue.loading
     /// => Используем костыль null!
+    // ignore: null_check_always_fails
     var res = whenData((value) => Tuple2<T1, T2>(value, null!));
     if (data == null) {
       return res;

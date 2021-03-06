@@ -73,7 +73,13 @@ extension DateTimeUtils on DateTime {
   String format() => DateFormat.yMd().format(this);
 
   /// Создает новый дейт-тайм с измененной компонентой
-  DateTime copyWith({int? year, int? month, int? day, int? hour, int? minute}) =>
+  DateTime copyWith({
+    int? year,
+    int? month,
+    int? day,
+    int? hour,
+    int? minute,
+  }) =>
       DateTime(
         year ?? this.year,
         month ?? this.month,

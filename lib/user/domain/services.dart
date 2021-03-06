@@ -1,9 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart'
     show FirebaseAuth, GoogleAuthProvider, User;
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:yaxxxta/habit/domain/models.dart';
-import 'db.dart';
-import 'models.dart';
 
 /// Класс для работы с аутентификацией
 class Auth {
@@ -35,31 +32,5 @@ class Auth {
   /// https://firebase.flutter.dev/docs/auth/usage#signing-out
   Future<void> signOut() async {
     await FirebaseAuth.instance.signOut();
-  }
-}
-
-class LoadUserData {
-  final UserDataRepo repo;
-
-  LoadUserData(this.repo);
-
-  Future<UserData> call({
-    required User user,
-    required String deviceId,
-  }) async {
-
-  }
-}
-
-class AddHabitToUserData {
-  final UserDataRepo repo;
-
-  AddHabitToUserData(this.repo);
-
-  Future<void> call(UserData data, Habit habit) async {
-    data = data.copyWith(
-      habitIds: {...data.habitIds, habit.id!}.toList(),
-    );
-    await repo.update(data);
   }
 }

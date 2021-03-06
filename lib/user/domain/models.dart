@@ -5,10 +5,12 @@ part 'models.freezed.dart';
 
 part 'models.g.dart';
 
+/// Данные о юзере
 @freezed
 abstract class UserData implements _$UserData {
   const UserData._();
 
+  /// Данные о юзере
   factory UserData({
     String? id,
     String? userId,
@@ -17,9 +19,11 @@ abstract class UserData implements _$UserData {
     required Settings settings,
   }) = _UserData;
 
+  /// Создает из юзера
   factory UserData.fromJson(Map json) =>
       _$UserDataFromJson(Map<String, dynamic>.from(json));
 
+  /// Создает пустышку
   factory UserData.blank({
     required String deviceId,
     String? userId,

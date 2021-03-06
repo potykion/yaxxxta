@@ -1,14 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart'
     show CollectionReference, FirebaseFirestore;
+import 'package:collection/collection.dart';
 import 'package:device_info/device_info.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:package_info/package_info.dart';
-import 'package:collection/collection.dart';
-import 'package:yaxxxta/user/domain/models.dart';
-import 'package:yaxxxta/user/ui/controllers.dart';
 
 import 'core/infra/push.dart';
 import 'core/utils/dt.dart';
@@ -27,6 +25,7 @@ import 'settings/ui/core/controllers.dart';
 import 'user/domain/db.dart';
 import 'user/domain/services.dart';
 import 'user/infra/db.dart';
+import 'user/ui/controllers.dart';
 
 ////////////////////////////////////////////////////////////////////////////////
 /// ОБЩЕЕ
@@ -93,19 +92,13 @@ Provider<SettingsController> settingsControllerProvider = Provider(
 /// Провайдер аутентификации
 Provider<Auth> authProvider = Provider((_) => Auth());
 
+/// Провайдер репо данных о юзере
 Provider<UserDataRepo> userDataRepoProvider = Provider<UserDataRepo>(
   (_) =>
       FirestoreUserDataRepo(FirebaseFirestore.instance.collection("user_data")),
 );
 
-Provider<LoadUserData> loadUserDataProvider =
-    Provider((ref) => LoadUserData(ref.watch(userDataRepoProvider)));
-
-Provider<AddHabitToUserData> addHabitToUserDataProvider =
-    Provider((ref) => AddHabitToUserData(ref.read(userDataRepoProvider)));
-
-StateProvider<UserData> userDataProvider = StateProvider((ref) => null!);
-
+/// Провайдер контроллера данных о юзере
 StateNotifierProvider<UserDataController> userDataControllerProvider =
     StateNotifierProvider(
   (ref) => UserDataController(repo: ref.watch(userDataRepoProvider)),
@@ -169,6 +162,7 @@ StateNotifierProvider<HabitPerformingController> habitPerformingController =
   ),
 );
 
+/// Провайдер выбранной даты
 StateProvider<DateTime> selectedDateProvider =
     StateProvider((ref) => DateTime.now().date());
 
@@ -199,6 +193,7 @@ Provider<AsyncValue<List<HabitProgressVM>>> listHabitVMs = Provider(
   }),
 );
 
+/// Провайдер айди выбранной привычки
 StateProvider<String?> selectedHabitIdProvider = StateProvider((ref) => null);
 
 /// Дейтренж текущего дня
