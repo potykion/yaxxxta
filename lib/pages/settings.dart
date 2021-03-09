@@ -10,8 +10,8 @@ import '../core/ui/widgets/padding.dart';
 import '../core/ui/widgets/text.dart';
 import '../core/ui/widgets/time.dart';
 import '../deps.dart';
-import '../theme.dart';
 import '../settings/domain/models.dart';
+import '../theme.dart';
 
 /// Страница с настройками
 class SettingsPage extends HookWidget {

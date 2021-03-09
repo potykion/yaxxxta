@@ -8,8 +8,8 @@ import '../core/ui/widgets/card.dart';
 import '../core/ui/widgets/padding.dart';
 import '../core/ui/widgets/text.dart';
 import '../deps.dart';
-import '../routes.dart';
 import '../habit/ui/core/widgets.dart';
+import '../routes.dart';
 
 /// Страница со списком привычек
 class HabitListPage extends HookWidget {

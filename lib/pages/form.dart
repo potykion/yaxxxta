@@ -11,9 +11,9 @@ import '../core/ui/widgets/padding.dart';
 import '../core/ui/widgets/text.dart';
 import '../core/ui/widgets/time.dart';
 import '../deps.dart';
-import '../theme.dart';
 import '../habit/domain/models.dart';
 import '../habit/ui/form/widgets.dart';
+import '../theme.dart';
 
 var _error = Provider.family<String, Habit>((ref, habit) {
   if (habit.goalValue <= 0) {
