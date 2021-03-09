@@ -10,8 +10,8 @@ class FirestoreUserDataRepo implements UserDataRepo {
   FirestoreUserDataRepo(this._collectionReference);
 
   @override
-  Future<void> create(UserData userData) async =>
-      await _collectionReference.add(userData.toJson());
+  Future<String> create(UserData userData) async =>
+      (await _collectionReference.add(userData.toJson())).id;
 
   @override
   Future<UserData?> getByDeviceId(String deviceId) async {

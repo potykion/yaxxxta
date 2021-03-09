@@ -32,7 +32,7 @@ class UserDataController extends StateNotifier<UserData?> {
     /// создаем для девайса UserData
     if (userData == null) {
       userData = UserData.blank(deviceId: deviceId);
-      await repo.create(userData);
+      userData = userData.copyWith(id: await repo.create(userData));
     }
 
     state = userData;
