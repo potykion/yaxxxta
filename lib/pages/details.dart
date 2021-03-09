@@ -62,6 +62,7 @@ class HabitDetailsPage extends HookWidget {
                     ),
                   ),
                   DateCarousel(
+                    initial: historyDateState.value,
                     change: (d) => historyDateState.value = d,
                     highlights: history.highlights,
                   ),

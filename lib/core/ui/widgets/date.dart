@@ -20,11 +20,10 @@ class DateCarousel extends HookWidget {
 
   /// Выбор даты
   DateCarousel({
-    Map<DateTime, double>? highlights,
-    DateTime? initial,
+    required this.initial,
     required this.change,
-  })   : initial = (initial ?? DateTime.now()).date(),
-        highlights = highlights ?? {};
+    Map<DateTime, double>? highlights,
+  }) : highlights = highlights ?? {};
 
   @override
   Widget build(BuildContext context) {
