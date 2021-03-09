@@ -35,7 +35,7 @@ class AppBottomNavigationBar extends StatelessWidget {
                       selected: bottomNavRoutes[index] == currentRoute,
                       onTap: () {
                         /// Не меняем страницу, если индекс не изменился
-                         if (currentIndex == index) {
+                        if (currentIndex == index) {
                           return;
                         }
 
@@ -44,7 +44,9 @@ class AppBottomNavigationBar extends StatelessWidget {
                         /// Error: Multiple widgets used the same GlobalKey.
                         context
                             .read(habitCalendarPage_AnimatedListState_Provider)
-                            .reset(delete: true);
+                            .reset(
+                              delete: bottomNavRoutes[index] != Routes.calendar,
+                            );
 
                         Navigator.pushReplacement<dynamic, dynamic>(
                           context,
