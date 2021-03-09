@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:package_info/package_info.dart';
+import 'package:yaxxxta/settings/domain/models.dart';
 
 import 'core/infra/push.dart';
 import 'core/utils/dt.dart';
@@ -133,12 +134,16 @@ StateNotifierProvider<HabitController> habitControllerProvider =
   ),
 );
 
+/// Провайдер настроек
+Provider<Settings> settingsProvider =
+    Provider((ref) => ref.watch(userDataControllerProvider.state)!.settings);
+
 /// Провайдер контроллера выполнений привычек
 StateNotifierProvider<HabitPerformingController> habitPerformingController =
     StateNotifierProvider(
   (ref) => HabitPerformingController(
     repo: ref.watch(habitPerformingRepoProvider),
-    settings: ref.watch(userDataControllerProvider.state)!.settings,
+    settings: ref.watch(settingsProvider),
   ),
 );
 
@@ -154,7 +159,7 @@ Provider<AsyncValue<List<HabitProgressVM>>> listHabitVMs = Provider(
     var habits = ref.watch(habitControllerProvider.state);
 
     var selectedDate = ref.watch(selectedDateProvider).state;
-    var settings = ref.watch(userDataControllerProvider.state)!.settings;
+    var settings = ref.watch(settingsProvider);
 
     var groupedHabitPerformings = groupBy<HabitPerforming, String>(
         dateHabitPerformings[selectedDate] ?? [], (hp) => hp.habitId);
@@ -178,7 +183,7 @@ StateProvider<String?> selectedHabitIdProvider = StateProvider((ref) => null);
 
 /// Дейтренж текущего дня
 Provider<DateRange> todayDateRange = Provider((ref) {
-  var settings = ref.watch(userDataControllerProvider.state)!.settings;
+  var settings = ref.watch(settingsProvider);
 
   return DateRange.fromDateAndTimes(
     DateTime.now(),
