@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../core/ui/widgets/app_bars.dart';
-import '../../../core/ui/widgets/bottom_nav.dart';
-import '../../../core/ui/widgets/card.dart';
-import '../../../core/ui/widgets/padding.dart';
-import '../../../core/ui/widgets/text.dart';
-import '../../../deps.dart';
-import '../../../routes.dart';
-import '../core/widgets.dart';
+import '../core/ui/widgets/app_bars.dart';
+import '../core/ui/widgets/bottom_nav.dart';
+import '../core/ui/widgets/card.dart';
+import '../core/ui/widgets/padding.dart';
+import '../core/ui/widgets/text.dart';
+import '../deps.dart';
+import '../routes.dart';
+import '../habit/ui/core/widgets.dart';
 
 /// Страница со списком привычек
 class HabitListPage extends HookWidget {

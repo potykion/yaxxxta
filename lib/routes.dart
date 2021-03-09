@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'core/ui/pages/loading.dart';
-import 'habit/ui/calendar/pages.dart';
-import 'habit/ui/details/pages.dart';
-import 'habit/ui/form/pages.dart';
-import 'habit/ui/list/pages.dart';
-import 'settings/ui/pages/settings.dart';
+import 'pages/calendar.dart';
+import 'pages/details.dart';
+import 'pages/form.dart';
+import 'pages/list.dart';
+import 'pages/loading.dart';
+import 'pages/settings.dart';
 
 // ignore: avoid_classes_with_only_static_members
 /// Роуты
