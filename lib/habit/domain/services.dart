@@ -75,7 +75,7 @@ class ScheduleNotificationsForHabitsWithoutNotifications {
         .map((n) => jsonDecode(n.payload!)["habitId"] as String)
         .toSet();
     var habitsWithoutNotifications =
-        habits.where((h) => !notificationHabitIds.contains(h.id));
+        habits.where((h) => !notificationHabitIds.contains(h.id)).toList();
 
     //  Для каждой привычки скедулим некст уведомление
     await Future.wait(

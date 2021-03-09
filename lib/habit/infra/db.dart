@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../domain/db.dart';
 
+import '../../core/utils/list.dart';
+import '../domain/db.dart';
 import '../domain/models.dart';
 
 /// Фаерстор репо для привычек
@@ -25,10 +26,16 @@ class FirestoreHabitRepo implements BaseHabitRepo {
   Future<List<Habit>> listByIds(List<String> habitIds) async {
     if (habitIds.isEmpty) return [];
 
-    return (await _collectionReference
-            .where(FieldPath.documentId, whereIn: habitIds)
-            .get())
-        .docs
+    return (await Future.wait(
+      /// whereIn робит ток для списков длиной 10 =>
+      /// режем список на списки по 10 + запрашиваем данные асинхронно
+      habitIds.chunked(size: 10).map(
+            (habitIdsChunk) => _collectionReference
+                .where(FieldPath.documentId, whereIn: habitIdsChunk)
+                .get(),
+          ),
+    ))
+        .expand((qs) => qs.docs)
         .map(_habitFromFireStore)
         .toList();
   }

@@ -204,10 +204,10 @@ Provider<AsyncValue<HabitDetailsPageVM>> habitDetailsPageVMProvider = Provider(
     );
 
     var todaySelectedHabitPerformings =
-        selectedHabitPerformings[ref.watch(todayDateRange).date];
+        selectedHabitPerformings[ref.watch(todayDateRange).date] ?? [];
     var progress = HabitProgressVM.build(
       selectedHabit,
-      todaySelectedHabitPerformings!,
+      todaySelectedHabitPerformings,
     );
 
     var history = HabitHistory.fromMap(selectedHabitPerformings);

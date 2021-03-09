@@ -77,7 +77,7 @@ class HabitCalendarPage extends HookWidget {
                                 vm: vms[index],
                                 animation: animation,
                               )
-                            : null)!,
+                            : Container()),
                   )
                 : Center(
                     child: Column(
