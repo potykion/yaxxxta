@@ -111,9 +111,7 @@ class TryDeletePendingNotification {
     var allPendingNotifications = await notificationSender.getAllPending();
     try {
       var habitPendingNotification = allPendingNotifications
-          .where(
-            (n) => jsonDecode(n.payload!)["habitId"] == habitId,
-          )
+          .where((n) => jsonDecode(n.payload!)["habitId"] == habitId)
           .first;
       notificationSender.cancel(habitPendingNotification.id);
       // ignore: avoid_catches_without_on_clauses
