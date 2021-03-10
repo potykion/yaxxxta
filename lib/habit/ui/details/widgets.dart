@@ -171,7 +171,7 @@ class CreateHabitPerformingButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.add),
+      icon: Icon(Icons.add, color: CustomColors.almostBlack),
       onPressed: () async {
         var habitPerforming = await showModalBottomSheet<HabitPerforming>(
           context: context,
