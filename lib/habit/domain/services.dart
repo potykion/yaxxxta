@@ -60,7 +60,9 @@ class ScheduleNotificationsForHabitsWithoutNotifications {
 
   /// Планирует уведомления о выполнении привычки для всех привычек,
   /// у которых нет запланированных уведомлений
-  Future<void> call(List<Habit> habits) async {
+  Future<void> call(List<Habit> habits, {DateTime? now}) async {
+    now = now ?? DateTime.now();
+
     //  Берем все привычки со временем выполнения и флагом отправки уведомления
     habits = habits
         .where((h) => h.isNotificationsEnabled && h.performTime != null)
@@ -84,9 +86,9 @@ class ScheduleNotificationsForHabitsWithoutNotifications {
           title: habit.title,
           body: "Пора выполнить привычку",
           sendAfterSeconds: habit
-              .nextPerformDateTime()
+              .nextPerformDateTime(now!)
               .first
-              .difference(DateTime.now())
+              .difference(now)
               .inSeconds,
           payload: jsonEncode({"habitId": habit.id}),
         ),

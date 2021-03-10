@@ -56,8 +56,15 @@ abstract class Habit implements _$Habit {
   }) = _Habit;
 
   /// Созадет пустую привычку
-  factory Habit.blank() => Habit(
-        created: DateTime.now(),
+  factory Habit.blank({
+    DateTime? created,
+    DateTime? performTime,
+    bool? isNotificationsEnabled,
+  }) =>
+      Habit(
+        created: created ?? DateTime.now(),
+        performTime: performTime,
+        isNotificationsEnabled: isNotificationsEnabled ?? false,
       );
 
   /// Если true, то привычка создана и редактируется;

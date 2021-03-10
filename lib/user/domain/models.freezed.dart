@@ -45,10 +45,19 @@ const $UserData = _$UserDataTearOff();
 
 /// @nodoc
 mixin _$UserData {
+  /// Айди
   String? get id => throw _privateConstructorUsedError;
+
+  /// Айди юзера
   String? get userId => throw _privateConstructorUsedError;
+
+  /// Айди девайсов
   List<String> get deviceIds => throw _privateConstructorUsedError;
+
+  /// Айди привычек
   List<String> get habitIds => throw _privateConstructorUsedError;
+
+  /// Настройки
   Settings get settings => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -167,14 +176,24 @@ class _$_UserData extends _UserData {
       _$_$_UserDataFromJson(json);
 
   @override
+
+  /// Айди
   final String? id;
   @override
+
+  /// Айди юзера
   final String? userId;
   @override
+
+  /// Айди девайсов
   final List<String> deviceIds;
   @override
+
+  /// Айди привычек
   final List<String> habitIds;
   @override
+
+  /// Настройки
   final Settings settings;
 
   @override
@@ -233,14 +252,24 @@ abstract class _UserData extends UserData {
   factory _UserData.fromJson(Map<String, dynamic> json) = _$_UserData.fromJson;
 
   @override
+
+  /// Айди
   String? get id => throw _privateConstructorUsedError;
   @override
+
+  /// Айди юзера
   String? get userId => throw _privateConstructorUsedError;
   @override
+
+  /// Айди девайсов
   List<String> get deviceIds => throw _privateConstructorUsedError;
   @override
+
+  /// Айди привычек
   List<String> get habitIds => throw _privateConstructorUsedError;
   @override
+
+  /// Настройки
   Settings get settings => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
