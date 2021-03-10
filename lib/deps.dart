@@ -2,12 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart'
     show CollectionReference, FirebaseFirestore;
 import 'package:collection/collection.dart';
 import 'package:device_info/device_info.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:package_info/package_info.dart';
-import 'package:yaxxxta/settings/domain/models.dart';
 
 import 'core/infra/push.dart';
 import 'core/utils/dt.dart';
@@ -19,6 +17,7 @@ import 'habit/ui/calendar/controllers.dart';
 import 'habit/ui/core/controllers.dart';
 import 'habit/ui/core/view_models.dart';
 import 'habit/ui/details/view_models.dart';
+import 'settings/domain/models.dart';
 import 'user/domain/db.dart';
 import 'user/domain/services.dart';
 import 'user/infra/db.dart';
@@ -93,6 +92,10 @@ StateNotifierProvider<UserDataController> userDataControllerProvider =
 
 // region
 
+Provider<TryDeletePendingNotification> tryDeletePendingNotification = Provider(
+  (ref) => TryDeletePendingNotification(ref.watch(notificationSenderProvider)),
+);
+
 /// Провайдер ссылки на фаер-стор коллекцию с привычками
 Provider<CollectionReference> habitCollectionRefProvider = Provider(
   (_) => FirebaseFirestore.instance.collection("habits"),
@@ -121,16 +124,47 @@ Provider<ScheduleSingleHabitNotification>
   ),
 );
 
+/// Провайдер CreateOrUpdateHabit
+Provider<CreateOrUpdateHabit> createOrUpdateHabitProvider = Provider(
+  (ref) => CreateOrUpdateHabit(
+    habitRepo: ref.watch(habitRepoProvider),
+    scheduleSingleHabitNotification:
+        ref.watch(schedulePerformHabitNotificationsProvider),
+    userDataController: ref.watch(userDataControllerProvider),
+  ),
+);
+
+/// Провайдер TryDeletePendingNotification
+Provider<TryDeletePendingNotification> tryDeletePendingNotificationProvider =
+    Provider((ref) =>
+        TryDeletePendingNotification(ref.watch(notificationSenderProvider)));
+
+/// Провайдер DeleteHabit
+Provider<DeleteHabit> deleteHabitProvider = Provider((ref) => DeleteHabit(
+      habitRepo: ref.watch(habitRepoProvider),
+      tryDeletePendingNotification:
+          ref.watch(tryDeletePendingNotificationProvider),
+    ));
+
+/// Провайдер айди привычек юзера
+Provider<List<String>> userHabitIdsProvider =
+    Provider((ref) => ref.watch(userDataControllerProvider.state)!.habitIds);
+
+/// Провайдер LoadUserHabits
+Provider<LoadUserHabits> loadUserHabitsProvider = Provider(
+  (ref) => LoadUserHabits(
+    userHabitIds: ref.watch(userHabitIdsProvider),
+    habitRepo: ref.watch(habitRepoProvider),
+  ),
+);
+
 /// Провайдер контроллера привычек
 StateNotifierProvider<HabitController> habitControllerProvider =
     StateNotifierProvider(
   (ref) => HabitController(
-    habitRepo: ref.watch(habitRepoProvider),
-    deviceInfo: androidInfo,
-    scheduleSingleHabitNotification:
-        ref.watch(schedulePerformHabitNotificationsProvider),
-    fbAuth: FirebaseAuth.instance,
-    userDataController: ref.watch(userDataControllerProvider),
+    createOrUpdateHabit: ref.watch(createOrUpdateHabitProvider),
+    deleteHabit: ref.watch(deleteHabitProvider),
+    loadUserHabits: ref.watch(loadUserHabitsProvider),
   ),
 );
 

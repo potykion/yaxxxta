@@ -345,7 +345,7 @@ class HabitFormPage extends HookWidget {
                 ? () async {
                     var createdHabit = await context
                         .read(habitControllerProvider)
-                        .createOrUpdateHabit(habit);
+                        .createOrUpdate(habit);
                     Navigator.of(context).pop(createdHabit);
                   }
                 : null,

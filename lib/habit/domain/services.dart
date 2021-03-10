@@ -1,6 +1,10 @@
 import 'dart:convert';
 
+import 'package:tuple/tuple.dart';
+
 import '../../core/infra/push.dart';
+import '../../user/ui/controllers.dart';
+import 'db.dart';
 import 'models.dart';
 
 /// Планирует уведомление о выполнении привычки
@@ -85,14 +89,114 @@ class ScheduleNotificationsForHabitsWithoutNotifications {
         (habit) => notificationSender.schedule(
           title: habit.title,
           body: "Пора выполнить привычку",
-          sendAfterSeconds: habit
-              .nextPerformDateTime(now!)
-              .first
-              .difference(now)
-              .inSeconds,
+          sendAfterSeconds:
+              habit.nextPerformDateTime(now!).first.difference(now).inSeconds,
           payload: jsonEncode({"habitId": habit.id}),
         ),
       ),
     );
   }
+}
+
+/// Попытка удалить запланированное уведомление о привычке
+class TryDeletePendingNotification {
+  /// Отправщик уведомлений
+  final NotificationSender notificationSender;
+
+  /// Попытка удалить запланированное уведомление о привычке
+  TryDeletePendingNotification(this.notificationSender);
+
+  /// Попытка удалить запланированное уведомление о привычке
+  Future<void> call(String habitId) async {
+    var allPendingNotifications = await notificationSender.getAllPending();
+    try {
+      var habitPendingNotification = allPendingNotifications
+          .where(
+            (n) => jsonDecode(n.payload!)["habitId"] == habitId,
+          )
+          .first;
+      notificationSender.cancel(habitPendingNotification.id);
+      // ignore: avoid_catches_without_on_clauses
+    } catch (_) {}
+  }
+}
+
+/// Удаляет привычку
+class DeleteHabit {
+  /// Репо привычек
+  final BaseHabitRepo habitRepo;
+
+  /// Попытка удалить запланированное уведомление о привычке
+  final TryDeletePendingNotification tryDeletePendingNotification;
+
+  /// Удаляет привычку
+  DeleteHabit({
+    required this.habitRepo,
+    required this.tryDeletePendingNotification,
+  });
+
+  /// Удаляет привычку + удаляет уведомление
+  Future<void> call(String habitId) async {
+    tryDeletePendingNotification(habitId);
+    await habitRepo.delete(habitId);
+  }
+}
+
+/// Создает или обновляет привычку
+class CreateOrUpdateHabit {
+  /// Репо привычек
+  final BaseHabitRepo habitRepo;
+
+  /// Планирование оправки уведомл.
+  final ScheduleSingleHabitNotification scheduleSingleHabitNotification;
+
+  /// Контроллер данных о юзере
+  final UserDataController userDataController;
+
+  /// Создает или обновляет привычку
+  CreateOrUpdateHabit({
+    required this.habitRepo,
+    required this.scheduleSingleHabitNotification,
+    required this.userDataController,
+  });
+
+  /// Создает или обновляет привычку
+  Future<Tuple2<Habit, bool>> call(Habit habit) async {
+    late bool created;
+    if (habit.isUpdate) {
+      await habitRepo.update(habit);
+      created = false;
+    } else {
+      habit = habit.copyWith(id: await habitRepo.insert(habit));
+      await userDataController.addHabit(habit);
+      created = true;
+    }
+
+    if (habit.isNotificationsEnabled) {
+      await scheduleSingleHabitNotification(
+        habit: habit,
+        resetPending: habit.isUpdate,
+      );
+    }
+
+    return Tuple2(habit, created);
+  }
+}
+
+/// Грузит привычки юзера
+class LoadUserHabits {
+  /// Репо привычек
+  final BaseHabitRepo habitRepo;
+
+  /// Айди привычек юзера
+  final List<String> userHabitIds;
+
+  /// Грузит привычки юзера
+  LoadUserHabits({
+    required this.habitRepo,
+    required this.userHabitIds,
+  });
+
+  /// Грузит привычки юзера
+  Future<List<Habit>> call() async => await habitRepo.listByIds(userHabitIds);
 }

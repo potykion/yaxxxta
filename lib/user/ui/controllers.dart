@@ -54,7 +54,4 @@ class UserDataController extends StateNotifier<UserData?> {
     await repo.update(userData);
     state = userData;
   }
-
-  /// Айди привычек, привязанных к юзеру
-  List<String> get habitIds => state!.habitIds;
 }

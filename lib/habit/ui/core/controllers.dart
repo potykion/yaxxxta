@@ -1,76 +1,56 @@
-import 'package:device_info/device_info.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../core/utils/dt.dart';
 import '../../../core/utils/list.dart';
 import '../../../settings/domain/models.dart';
-import '../../../user/ui/controllers.dart';
 import '../../domain/db.dart';
 import '../../domain/models.dart';
 import '../../domain/services.dart';
 
 /// Контроллер привычек
 class HabitController extends StateNotifier<List<Habit>> {
-  /// Репо привычек
-  final BaseHabitRepo habitRepo;
+  /// Грузит привычки юзера
+  final LoadUserHabits loadUserHabits;
 
-  /// Инфа о ведре
-  final AndroidDeviceInfo deviceInfo;
+  /// Удаляет привычку
+  final DeleteHabit deleteHabit;
 
-  /// Инфа об аутентификации через фб
-  final FirebaseAuth fbAuth;
-
-  /// Планирование оправки уведомл.
-  final ScheduleSingleHabitNotification scheduleSingleHabitNotification;
-
-  /// Контроллер данных о юзере
-  final UserDataController userDataController;
+  /// Создает или обновляет привычку
+  final CreateOrUpdateHabit createOrUpdateHabit;
 
   /// Контроллер привычек
   HabitController({
-    required this.habitRepo,
-    required this.deviceInfo,
-    required this.scheduleSingleHabitNotification,
-    required this.fbAuth,
-    required this.userDataController,
+    required this.loadUserHabits,
+    required this.deleteHabit,
+    required this.createOrUpdateHabit,
     List<Habit> state = const [],
   }) : super(state);
 
   /// Грузит список привычек и сеттит в стейт
   Future<void> load() async {
-    var habitIds = userDataController.habitIds;
-    state = await habitRepo.listByIds(habitIds);
+    state = await loadUserHabits();
   }
 
   /// Удаляет привычку
   Future<void> delete(String habitId) async {
-    await habitRepo.delete(habitId);
-    state = [
-      ...state.where((h) => h.id != habitId),
-    ];
+    await deleteHabit(habitId);
+    state = [...state.where((h) => h.id != habitId)];
   }
 
   /// Создает или обновляет привычку в зависимости от наличия айди
-  Future<Habit> createOrUpdateHabit(Habit habit) async {
-    if (habit.isUpdate) {
-      await habitRepo.update(habit);
+  Future<Habit> createOrUpdate(Habit habit) async {
+    var res = await createOrUpdateHabit(habit);
+    habit = res.item1;
+    var created = res.item2;
+
+    if (created) {
+      state = [...state, habit];
+    } else {
       state = [
         for (var h in state)
           if (h.id == habit.id) habit else h
       ];
-    } else {
-      habit = habit.copyWith(id: await habitRepo.insert(habit));
-      await userDataController.addHabit(habit);
-      state = [...state, habit];
-    }
-
-    if (habit.isNotificationsEnabled) {
-      await scheduleSingleHabitNotification(
-        habit: habit,
-        resetPending: habit.isUpdate,
-      );
     }
 
     return habit;
