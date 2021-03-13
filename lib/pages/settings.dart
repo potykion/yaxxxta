@@ -28,7 +28,9 @@ class SettingsPage extends HookWidget {
     return Scaffold(
       appBar: buildAppBar(
         context: context,
-        children: [BiggestText(text: "Настроечки", withPadding: true)],
+        children: [
+          SmallPadding.noBottom(child: BiggestText(text: "Настроечки"))
+        ],
       ),
       body: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),

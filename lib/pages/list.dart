@@ -20,7 +20,9 @@ class HabitListPage extends HookWidget {
     return Scaffold(
       appBar: buildAppBar(
         context: context,
-        children: [BiggestText(text: "Привычки", withPadding: true)],
+        children: [
+          SmallPadding.noBottom(child: BiggestText(text: "Привычки"))
+        ],
       ),
       body: habits.isNotEmpty
           ? ListView(

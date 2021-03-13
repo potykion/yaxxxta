@@ -93,19 +93,15 @@ class BiggestText extends StatelessWidget {
   /// Текст
   final String text;
 
-  /// Добавить ли горизонтальный отступ
-  final bool withPadding;
-
   /// Создает текст
   const BiggestText({
     Key? key,
     required this.text,
-    @Deprecated("Используй SmallPadding / ListTile") this.withPadding = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Widget res = Text(
+    return Text(
       text,
       style: TextStyle(
         fontSize: 20,
@@ -113,14 +109,5 @@ class BiggestText extends StatelessWidget {
         color: CustomColors.almostBlack,
       ),
     );
-
-    if (withPadding) {
-      res = Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: res,
-      );
-    }
-
-    return res;
   }
 }

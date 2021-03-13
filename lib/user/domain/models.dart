@@ -19,16 +19,19 @@ abstract class UserData implements _$UserData {
     String? userId,
 
     /// Айди девайсов
-    required List<String> deviceIds,
+    @Default(<String>[]) List<String> deviceIds,
 
     /// Айди привычек
-    required List<String> habitIds,
+    @Default(<String>[]) List<String> habitIds,
 
     /// Настройки
     required Settings settings,
 
     /// Баллы, которые можно потратить на вознаграждение
     @Default(0) int performingPoints,
+
+    /// Айди наград
+    @Default(<String>[]) int rewardIds,
   }) = _UserData;
 
   /// Создает из юзера

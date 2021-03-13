@@ -23,10 +23,11 @@ class _$UserDataTearOff {
   _UserData call(
       {String? id,
       String? userId,
-      required List<String> deviceIds,
-      required List<String> habitIds,
+      List<String> deviceIds = const <String>[],
+      List<String> habitIds = const <String>[],
       required Settings settings,
-      int performingPoints = 0}) {
+      int performingPoints = 0,
+      int rewardIds = const <String>[]}) {
     return _UserData(
       id: id,
       userId: userId,
@@ -34,6 +35,7 @@ class _$UserDataTearOff {
       habitIds: habitIds,
       settings: settings,
       performingPoints: performingPoints,
+      rewardIds: rewardIds,
     );
   }
 
@@ -65,6 +67,9 @@ mixin _$UserData {
   /// Баллы, которые можно потратить на вознаграждение
   int get performingPoints => throw _privateConstructorUsedError;
 
+  /// Айди наград
+  int get rewardIds => throw _privateConstructorUsedError;
+
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $UserDataCopyWith<UserData> get copyWith =>
@@ -81,7 +86,8 @@ abstract class $UserDataCopyWith<$Res> {
       List<String> deviceIds,
       List<String> habitIds,
       Settings settings,
-      int performingPoints});
+      int performingPoints,
+      int rewardIds});
 
   $SettingsCopyWith<$Res> get settings;
 }
@@ -102,6 +108,7 @@ class _$UserDataCopyWithImpl<$Res> implements $UserDataCopyWith<$Res> {
     Object? habitIds = freezed,
     Object? settings = freezed,
     Object? performingPoints = freezed,
+    Object? rewardIds = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed ? _value.id : id as String?,
@@ -114,6 +121,7 @@ class _$UserDataCopyWithImpl<$Res> implements $UserDataCopyWith<$Res> {
       performingPoints: performingPoints == freezed
           ? _value.performingPoints
           : performingPoints as int,
+      rewardIds: rewardIds == freezed ? _value.rewardIds : rewardIds as int,
     ));
   }
 
@@ -136,7 +144,8 @@ abstract class _$UserDataCopyWith<$Res> implements $UserDataCopyWith<$Res> {
       List<String> deviceIds,
       List<String> habitIds,
       Settings settings,
-      int performingPoints});
+      int performingPoints,
+      int rewardIds});
 
   @override
   $SettingsCopyWith<$Res> get settings;
@@ -159,6 +168,7 @@ class __$UserDataCopyWithImpl<$Res> extends _$UserDataCopyWithImpl<$Res>
     Object? habitIds = freezed,
     Object? settings = freezed,
     Object? performingPoints = freezed,
+    Object? rewardIds = freezed,
   }) {
     return _then(_UserData(
       id: id == freezed ? _value.id : id as String?,
@@ -171,6 +181,7 @@ class __$UserDataCopyWithImpl<$Res> extends _$UserDataCopyWithImpl<$Res>
       performingPoints: performingPoints == freezed
           ? _value.performingPoints
           : performingPoints as int,
+      rewardIds: rewardIds == freezed ? _value.rewardIds : rewardIds as int,
     ));
   }
 }
@@ -182,10 +193,11 @@ class _$_UserData extends _UserData {
   _$_UserData(
       {this.id,
       this.userId,
-      required this.deviceIds,
-      required this.habitIds,
+      this.deviceIds = const <String>[],
+      this.habitIds = const <String>[],
       required this.settings,
-      this.performingPoints = 0})
+      this.performingPoints = 0,
+      this.rewardIds = const <String>[]})
       : super._();
 
   factory _$_UserData.fromJson(Map<String, dynamic> json) =>
@@ -199,10 +211,12 @@ class _$_UserData extends _UserData {
 
   /// Айди юзера
   final String? userId;
+  @JsonKey(defaultValue: const <String>[])
   @override
 
   /// Айди девайсов
   final List<String> deviceIds;
+  @JsonKey(defaultValue: const <String>[])
   @override
 
   /// Айди привычек
@@ -216,10 +230,15 @@ class _$_UserData extends _UserData {
 
   /// Баллы, которые можно потратить на вознаграждение
   final int performingPoints;
+  @JsonKey(defaultValue: const <String>[])
+  @override
+
+  /// Айди наград
+  final int rewardIds;
 
   @override
   String toString() {
-    return 'UserData(id: $id, userId: $userId, deviceIds: $deviceIds, habitIds: $habitIds, settings: $settings, performingPoints: $performingPoints)';
+    return 'UserData(id: $id, userId: $userId, deviceIds: $deviceIds, habitIds: $habitIds, settings: $settings, performingPoints: $performingPoints, rewardIds: $rewardIds)';
   }
 
   @override
@@ -241,7 +260,10 @@ class _$_UserData extends _UserData {
                     .equals(other.settings, settings)) &&
             (identical(other.performingPoints, performingPoints) ||
                 const DeepCollectionEquality()
-                    .equals(other.performingPoints, performingPoints)));
+                    .equals(other.performingPoints, performingPoints)) &&
+            (identical(other.rewardIds, rewardIds) ||
+                const DeepCollectionEquality()
+                    .equals(other.rewardIds, rewardIds)));
   }
 
   @override
@@ -252,7 +274,8 @@ class _$_UserData extends _UserData {
       const DeepCollectionEquality().hash(deviceIds) ^
       const DeepCollectionEquality().hash(habitIds) ^
       const DeepCollectionEquality().hash(settings) ^
-      const DeepCollectionEquality().hash(performingPoints);
+      const DeepCollectionEquality().hash(performingPoints) ^
+      const DeepCollectionEquality().hash(rewardIds);
 
   @JsonKey(ignore: true)
   @override
@@ -270,10 +293,11 @@ abstract class _UserData extends UserData {
   factory _UserData(
       {String? id,
       String? userId,
-      required List<String> deviceIds,
-      required List<String> habitIds,
+      List<String> deviceIds,
+      List<String> habitIds,
       required Settings settings,
-      int performingPoints}) = _$_UserData;
+      int performingPoints,
+      int rewardIds}) = _$_UserData;
 
   factory _UserData.fromJson(Map<String, dynamic> json) = _$_UserData.fromJson;
 
@@ -301,6 +325,10 @@ abstract class _UserData extends UserData {
 
   /// Баллы, которые можно потратить на вознаграждение
   int get performingPoints => throw _privateConstructorUsedError;
+  @override
+
+  /// Айди наград
+  int get rewardIds => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$UserDataCopyWith<_UserData> get copyWith =>

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:yaxxxta/pages/rewards.dart';
 
 import 'pages/calendar.dart';
 import 'pages/details.dart';
 import 'pages/form.dart';
 import 'pages/list.dart';
 import 'pages/loading.dart';
+import 'pages/rewards.dart';
 import 'pages/settings.dart';
 
 // ignore: avoid_classes_with_only_static_members
