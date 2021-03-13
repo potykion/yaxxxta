@@ -15,6 +15,7 @@ _$_UserData _$_$_UserDataFromJson(Map json) {
     habitIds:
         (json['habitIds'] as List<dynamic>).map((e) => e as String).toList(),
     settings: Settings.fromJson(json['settings'] as Map),
+    performingPoints: json['performingPoints'] as int? ?? 0,
   );
 }
 
@@ -25,4 +26,5 @@ Map<String, dynamic> _$_$_UserDataToJson(_$_UserData instance) =>
       'deviceIds': instance.deviceIds,
       'habitIds': instance.habitIds,
       'settings': instance.settings.toJson(),
+      'performingPoints': instance.performingPoints,
     };

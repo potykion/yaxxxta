@@ -26,6 +26,9 @@ abstract class UserData implements _$UserData {
 
     /// Настройки
     required Settings settings,
+
+    /// Баллы, которые можно потратить на вознаграждение
+    @Default(0) int performingPoints,
   }) = _UserData;
 
   /// Создает из юзера

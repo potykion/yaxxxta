@@ -25,13 +25,15 @@ class _$UserDataTearOff {
       String? userId,
       required List<String> deviceIds,
       required List<String> habitIds,
-      required Settings settings}) {
+      required Settings settings,
+      int performingPoints = 0}) {
     return _UserData(
       id: id,
       userId: userId,
       deviceIds: deviceIds,
       habitIds: habitIds,
       settings: settings,
+      performingPoints: performingPoints,
     );
   }
 
@@ -60,6 +62,9 @@ mixin _$UserData {
   /// Настройки
   Settings get settings => throw _privateConstructorUsedError;
 
+  /// Баллы, которые можно потратить на вознаграждение
+  int get performingPoints => throw _privateConstructorUsedError;
+
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $UserDataCopyWith<UserData> get copyWith =>
@@ -75,7 +80,8 @@ abstract class $UserDataCopyWith<$Res> {
       String? userId,
       List<String> deviceIds,
       List<String> habitIds,
-      Settings settings});
+      Settings settings,
+      int performingPoints});
 
   $SettingsCopyWith<$Res> get settings;
 }
@@ -95,6 +101,7 @@ class _$UserDataCopyWithImpl<$Res> implements $UserDataCopyWith<$Res> {
     Object? deviceIds = freezed,
     Object? habitIds = freezed,
     Object? settings = freezed,
+    Object? performingPoints = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed ? _value.id : id as String?,
@@ -104,6 +111,9 @@ class _$UserDataCopyWithImpl<$Res> implements $UserDataCopyWith<$Res> {
       habitIds:
           habitIds == freezed ? _value.habitIds : habitIds as List<String>,
       settings: settings == freezed ? _value.settings : settings as Settings,
+      performingPoints: performingPoints == freezed
+          ? _value.performingPoints
+          : performingPoints as int,
     ));
   }
 
@@ -125,7 +135,8 @@ abstract class _$UserDataCopyWith<$Res> implements $UserDataCopyWith<$Res> {
       String? userId,
       List<String> deviceIds,
       List<String> habitIds,
-      Settings settings});
+      Settings settings,
+      int performingPoints});
 
   @override
   $SettingsCopyWith<$Res> get settings;
@@ -147,6 +158,7 @@ class __$UserDataCopyWithImpl<$Res> extends _$UserDataCopyWithImpl<$Res>
     Object? deviceIds = freezed,
     Object? habitIds = freezed,
     Object? settings = freezed,
+    Object? performingPoints = freezed,
   }) {
     return _then(_UserData(
       id: id == freezed ? _value.id : id as String?,
@@ -156,6 +168,9 @@ class __$UserDataCopyWithImpl<$Res> extends _$UserDataCopyWithImpl<$Res>
       habitIds:
           habitIds == freezed ? _value.habitIds : habitIds as List<String>,
       settings: settings == freezed ? _value.settings : settings as Settings,
+      performingPoints: performingPoints == freezed
+          ? _value.performingPoints
+          : performingPoints as int,
     ));
   }
 }
@@ -169,7 +184,8 @@ class _$_UserData extends _UserData {
       this.userId,
       required this.deviceIds,
       required this.habitIds,
-      required this.settings})
+      required this.settings,
+      this.performingPoints = 0})
       : super._();
 
   factory _$_UserData.fromJson(Map<String, dynamic> json) =>
@@ -195,10 +211,15 @@ class _$_UserData extends _UserData {
 
   /// Настройки
   final Settings settings;
+  @JsonKey(defaultValue: 0)
+  @override
+
+  /// Баллы, которые можно потратить на вознаграждение
+  final int performingPoints;
 
   @override
   String toString() {
-    return 'UserData(id: $id, userId: $userId, deviceIds: $deviceIds, habitIds: $habitIds, settings: $settings)';
+    return 'UserData(id: $id, userId: $userId, deviceIds: $deviceIds, habitIds: $habitIds, settings: $settings, performingPoints: $performingPoints)';
   }
 
   @override
@@ -217,7 +238,10 @@ class _$_UserData extends _UserData {
                     .equals(other.habitIds, habitIds)) &&
             (identical(other.settings, settings) ||
                 const DeepCollectionEquality()
-                    .equals(other.settings, settings)));
+                    .equals(other.settings, settings)) &&
+            (identical(other.performingPoints, performingPoints) ||
+                const DeepCollectionEquality()
+                    .equals(other.performingPoints, performingPoints)));
   }
 
   @override
@@ -227,7 +251,8 @@ class _$_UserData extends _UserData {
       const DeepCollectionEquality().hash(userId) ^
       const DeepCollectionEquality().hash(deviceIds) ^
       const DeepCollectionEquality().hash(habitIds) ^
-      const DeepCollectionEquality().hash(settings);
+      const DeepCollectionEquality().hash(settings) ^
+      const DeepCollectionEquality().hash(performingPoints);
 
   @JsonKey(ignore: true)
   @override
@@ -247,7 +272,8 @@ abstract class _UserData extends UserData {
       String? userId,
       required List<String> deviceIds,
       required List<String> habitIds,
-      required Settings settings}) = _$_UserData;
+      required Settings settings,
+      int performingPoints}) = _$_UserData;
 
   factory _UserData.fromJson(Map<String, dynamic> json) = _$_UserData.fromJson;
 
@@ -271,6 +297,10 @@ abstract class _UserData extends UserData {
 
   /// Настройки
   Settings get settings => throw _privateConstructorUsedError;
+  @override
+
+  /// Баллы, которые можно потратить на вознаграждение
+  int get performingPoints => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$UserDataCopyWith<_UserData> get copyWith =>
