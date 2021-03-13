@@ -26,6 +26,7 @@ class AppBottomNavigationBar extends StatelessWidget {
             children: [
               Tuple2<String, IconData>("Календарь", Icons.today),
               Tuple2<String, IconData>("Привычки", Icons.list),
+              Tuple2<String, IconData>("Награды", Icons.cake),
               Tuple2<String, IconData>("Настройки", Icons.settings),
             ]
                 .mapWithIndex(

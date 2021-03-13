@@ -33,6 +33,12 @@ class SmallPadding extends StatelessWidget {
         child: child,
       );
 
+  /// Маленький отступ без отступа внизу
+  factory SmallPadding.noBottom({Widget? child}) => SmallPadding(
+        child: child ?? Container(),
+        bottomPadding: 0,
+      );
+
   /// Маленький отступ только внизу
   factory SmallPadding.onlyBottom({Widget? child}) => SmallPadding(
         child: child ?? Container(),

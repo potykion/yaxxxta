@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yaxxxta/pages/rewards.dart';
 
 import 'pages/calendar.dart';
 import 'pages/details.dart';
@@ -27,6 +28,9 @@ abstract class Routes {
 
   /// Страница с настройками
   static final String settings = "/settings";
+
+  /// Страница с наградами
+  static final String rewards = "/rewards";
 }
 
 /// Маппинг роутов в страницы
@@ -37,11 +41,13 @@ final Map<String, Widget Function(BuildContext context)> routes = {
   Routes.details: (_) => HabitDetailsPage(),
   Routes.form: (_) => HabitFormPage(),
   Routes.settings: (_) => SettingsPage(),
+  Routes.rewards: (_) => RewardsPage(),
 };
 
 /// Маппинг индексов bottomNavBar'а в роуты
 Map<int, String> bottomNavRoutes = {
   0: Routes.calendar,
   1: Routes.list,
-  2: Routes.settings,
+  2: Routes.rewards,
+  3: Routes.settings,
 };

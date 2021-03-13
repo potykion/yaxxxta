@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../theme.dart';
 
-
 /// Текст поменьше
 class SmallerText extends StatelessWidget {
   /// Текст
@@ -98,8 +97,11 @@ class BiggestText extends StatelessWidget {
   final bool withPadding;
 
   /// Создает текст
-  const BiggestText({Key? key, required this.text, this.withPadding = false})
-      : super(key: key);
+  const BiggestText({
+    Key? key,
+    required this.text,
+    @Deprecated("Используй SmallPadding / ListTile") this.withPadding = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
