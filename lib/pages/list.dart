@@ -6,7 +6,6 @@ import '../deps.dart';
 import '../habit/ui/core/widgets.dart';
 import '../routes.dart';
 import '../widgets/core/app_bars.dart';
-import '../widgets/core/bottom_nav.dart';
 import '../widgets/core/card.dart';
 import '../widgets/core/padding.dart';
 import '../widgets/core/text.dart';
@@ -21,7 +20,8 @@ class HabitListPage extends HookWidget {
       appBar: buildAppBar(
         context: context,
         children: [
-          SmallPadding.noBottom(child: BiggestText(text: "Привычки"))
+          BackButton(),
+          BiggestText(text: "Привычки"),
         ],
       ),
       body: habits.isNotEmpty
@@ -54,8 +54,7 @@ class HabitListPage extends HookWidget {
                 ],
               ),
             ),
-      bottomNavigationBar: AppBottomNavigationBar(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
         heroTag: "HabitListPage",
         child: Icon(Icons.add, size: 50),

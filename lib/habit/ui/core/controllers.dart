@@ -28,8 +28,8 @@ class HabitController extends StateNotifier<List<Habit>> {
   }) : super(state);
 
   /// Грузит список привычек и сеттит в стейт
-  Future<void> load() async {
-    state = await loadUserHabits();
+  Future<void> load(List<String> userHabitIds) async {
+    state = await loadUserHabits(userHabitIds);
   }
 
   /// Удаляет привычку

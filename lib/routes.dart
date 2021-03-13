@@ -45,9 +45,8 @@ final Map<String, Widget Function(BuildContext context)> routes = {
 };
 
 /// Маппинг индексов bottomNavBar'а в роуты
-Map<int, String> bottomNavRoutes = {
-  0: Routes.calendar,
-  1: Routes.list,
-  2: Routes.rewards,
-  3: Routes.settings,
-};
+Map<int, String> bottomNavRoutes = [
+  Routes.calendar,
+  Routes.rewards,
+  Routes.settings,
+].asMap();

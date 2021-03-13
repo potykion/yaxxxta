@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:tuple/tuple.dart';
 
 import '../../core/infra/push.dart';
-import '../../user/ui/controllers.dart';
 import 'db.dart';
 import 'models.dart';
 
@@ -148,14 +147,14 @@ class CreateOrUpdateHabit {
   /// Планирование оправки уведомл.
   final ScheduleSingleHabitNotification scheduleSingleHabitNotification;
 
-  /// Контроллер данных о юзере
-  final UserDataController userDataController;
+  /// Привязывает привычку к юзеру
+  final Future<void> Function(Habit habit) addHabitToUser;
 
   /// Создает или обновляет привычку
   CreateOrUpdateHabit({
     required this.habitRepo,
     required this.scheduleSingleHabitNotification,
-    required this.userDataController,
+    required this.addHabitToUser,
   });
 
   /// Создает или обновляет привычку
@@ -166,7 +165,7 @@ class CreateOrUpdateHabit {
       created = false;
     } else {
       habit = habit.copyWith(id: await habitRepo.insert(habit));
-      await userDataController.addHabit(habit);
+      await addHabitToUser(habit);
       created = true;
     }
 
@@ -186,15 +185,12 @@ class LoadUserHabits {
   /// Репо привычек
   final BaseHabitRepo habitRepo;
 
-  /// Айди привычек юзера
-  final List<String> userHabitIds;
-
   /// Грузит привычки юзера
   LoadUserHabits({
     required this.habitRepo,
-    required this.userHabitIds,
   });
 
   /// Грузит привычки юзера
-  Future<List<Habit>> call() async => await habitRepo.listByIds(userHabitIds);
+  Future<List<Habit>> call(List<String> userHabitIds) async =>
+      await habitRepo.listByIds(userHabitIds);
 }

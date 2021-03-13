@@ -6,8 +6,6 @@ import '../../theme.dart';
 PreferredSize buildAppBar({
   required BuildContext context,
   required List<Widget> children,
-  bool transparent = false,
-  bool big = false,
 }) {
   var appBarHeight = 130.0;
   var statusBarHeight = MediaQuery.of(context).padding.top;
@@ -15,14 +13,14 @@ PreferredSize buildAppBar({
   return PreferredSize(
     preferredSize: Size.fromHeight(appBarHeight),
     child: Container(
-      color: transparent ? Colors.transparent : CustomColors.yellow,
+      color: CustomColors.yellow ,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
           SizedBox(height: statusBarHeight),
           SizedBox(
-            height: big ? null : 60,
+            height: 60,
             child: Row(children: children),
           ),
         ],

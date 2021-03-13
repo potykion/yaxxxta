@@ -64,7 +64,9 @@ class LoadingPage extends HookWidget {
         loadingTextState.value = "Грузим привычки...";
 
         // region
-        await context.read(habitControllerProvider).load();
+        await context
+            .read(habitControllerProvider)
+            .load(context.read(userDataControllerProvider.state)!.habitIds);
 
         await context
             .read(scheduleNotificationsForHabitsWithoutNotificationsProvider)(
@@ -77,7 +79,6 @@ class LoadingPage extends HookWidget {
         // endregion
 
         // loadingTextState.value = "Грузим награды...";
-
 
         Navigator.pushReplacementNamed(context, Routes.calendar);
       });

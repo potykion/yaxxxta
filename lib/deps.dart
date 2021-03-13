@@ -124,13 +124,18 @@ Provider<ScheduleSingleHabitNotification>
   ),
 );
 
+
+/// Провайдер привязки привычки к данным юзера
+Provider<Future<void> Function(Habit habit)> addHabitToUserProvider =
+    Provider((ref) => ref.watch(userDataControllerProvider).addHabit);
+
 /// Провайдер CreateOrUpdateHabit
 Provider<CreateOrUpdateHabit> createOrUpdateHabitProvider = Provider(
   (ref) => CreateOrUpdateHabit(
     habitRepo: ref.watch(habitRepoProvider),
     scheduleSingleHabitNotification:
         ref.watch(schedulePerformHabitNotificationsProvider),
-    userDataController: ref.watch(userDataControllerProvider),
+    addHabitToUser: ref.watch(addHabitToUserProvider),
   ),
 );
 
@@ -153,7 +158,6 @@ Provider<List<String>> userHabitIdsProvider =
 /// Провайдер LoadUserHabits
 Provider<LoadUserHabits> loadUserHabitsProvider = Provider(
   (ref) => LoadUserHabits(
-    userHabitIds: ref.watch(userHabitIdsProvider),
     habitRepo: ref.watch(habitRepoProvider),
   ),
 );
