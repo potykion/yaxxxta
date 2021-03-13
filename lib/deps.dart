@@ -193,7 +193,7 @@ StateProvider<DateTime> selectedDateProvider =
     StateProvider((ref) => DateTime.now().date());
 
 /// Провайдер ВМок для страницы со списком привычек
-Provider<AsyncValue<List<HabitProgressVM>>> listHabitVMs = Provider(
+Provider<AsyncValue<List<HabitProgressVM>>> listHabitVMsProvider = Provider(
   (ref) => ref
       .watch(habitPerformingController.state)
       .whenData((dateHabitPerformings) {
@@ -217,8 +217,6 @@ Provider<AsyncValue<List<HabitProgressVM>>> listHabitVMs = Provider(
           : (h2.performTime == null
           ? -1
           : h1.performTime!.compareTo(h2.performTime!)));
-
-    print(vms.length);
 
     return vms;
   }),
