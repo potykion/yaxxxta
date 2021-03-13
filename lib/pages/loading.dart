@@ -70,7 +70,14 @@ class LoadingPage extends HookWidget {
             .read(scheduleNotificationsForHabitsWithoutNotificationsProvider)(
           context.read(habitControllerProvider.state),
         );
+
+        await context
+            .read(habitPerformingController)
+            .loadDateHabitPerformings(DateTime.now());
         // endregion
+
+        // loadingTextState.value = "Грузим награды...";
+
 
         Navigator.pushReplacementNamed(context, Routes.calendar);
       });

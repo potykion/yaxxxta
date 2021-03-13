@@ -17,14 +17,6 @@ import '../widgets/core/text.dart';
 class HabitCalendarPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    useEffect(() {
-      WidgetsBinding.instance!.addPostFrameCallback((_) async {
-        await context
-            .read(habitPerformingController)
-            .loadDateHabitPerformings(DateTime.now());
-      });
-      return;
-    }, []);
     var vmsAsyncValue = useProvider(listHabitVMs);
 
     var animatedListKey =
