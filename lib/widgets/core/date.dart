@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:indexed_list_view/indexed_list_view.dart';
-
-import '../../../theme.dart';
-import '../../utils/dt.dart';
+import '../../core/utils/dt.dart';
+import '../../theme.dart';
 import 'text.dart';
 
 /// Барабан с датами

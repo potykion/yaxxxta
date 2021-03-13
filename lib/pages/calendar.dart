@@ -3,15 +3,15 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../core/ui/widgets/app_bars.dart';
-import '../core/ui/widgets/bottom_nav.dart';
-import '../core/ui/widgets/circular_progress.dart';
-import '../core/ui/widgets/date.dart';
-import '../core/ui/widgets/text.dart';
 import '../deps.dart';
 import '../habit/domain/models.dart';
 import '../habit/ui/calendar/widgets.dart';
 import '../routes.dart';
+import '../widgets/core/app_bars.dart';
+import '../widgets/core/bottom_nav.dart';
+import '../widgets/core/circular_progress.dart';
+import '../widgets/core/date.dart';
+import '../widgets/core/text.dart';
 
 /// Страница с календарем привычек
 class HabitCalendarPage extends HookWidget {

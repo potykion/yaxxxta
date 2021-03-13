@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../theme.dart';
+import '../../theme.dart';
+
 
 /// Круглый прогресс в центре
 class CenteredCircularProgress extends StatelessWidget {

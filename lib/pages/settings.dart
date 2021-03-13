@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../core/ui/widgets/app_bars.dart';
-import '../core/ui/widgets/bottom_nav.dart';
-import '../core/ui/widgets/card.dart';
-import '../core/ui/widgets/padding.dart';
-import '../core/ui/widgets/text.dart';
-import '../core/ui/widgets/time.dart';
 import '../deps.dart';
 import '../settings/domain/models.dart';
 import '../theme.dart';
+import '../widgets/core/app_bars.dart';
+import '../widgets/core/bottom_nav.dart';
+import '../widgets/core/card.dart';
+import '../widgets/core/padding.dart';
+import '../widgets/core/text.dart';
+import '../widgets/core/time.dart';
 
 /// Страница с настройками
 class SettingsPage extends HookWidget {

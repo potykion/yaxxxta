@@ -3,17 +3,17 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../core/domain/models.dart';
-import '../core/ui/widgets/app_bars.dart';
-import '../core/ui/widgets/card.dart';
-import '../core/ui/widgets/duration.dart';
-import '../core/ui/widgets/input.dart';
-import '../core/ui/widgets/padding.dart';
-import '../core/ui/widgets/text.dart';
-import '../core/ui/widgets/time.dart';
 import '../deps.dart';
 import '../habit/domain/models.dart';
 import '../habit/ui/form/widgets.dart';
 import '../theme.dart';
+import '../widgets/core/app_bars.dart';
+import '../widgets/core/card.dart';
+import '../widgets/core/duration.dart';
+import '../widgets/core/input.dart';
+import '../widgets/core/padding.dart';
+import '../widgets/core/text.dart';
+import '../widgets/core/time.dart';
 
 var _error = Provider.family<String, Habit>((ref, habit) {
   if (habit.goalValue <= 0) {

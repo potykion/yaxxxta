@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:tuple/tuple.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../deps.dart';
-import '../../../routes.dart';
-import '../../../theme.dart';
-import '../../utils/list.dart';
+import '../../core/utils/list.dart';
+import '../../deps.dart';
+import '../../routes.dart';
+import '../../theme.dart';
 
 /// Боттом нав барчик
 class AppBottomNavigationBar extends StatelessWidget {

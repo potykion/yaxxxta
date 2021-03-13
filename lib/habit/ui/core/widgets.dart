@@ -1,18 +1,17 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../../core/domain/models.dart';
-import '../../../core/ui/widgets/card.dart';
-import '../../../core/ui/widgets/date.dart';
-import '../../../core/ui/widgets/duration.dart';
-import '../../../core/ui/widgets/input.dart';
-import '../../../core/ui/widgets/new_progress.dart';
-import '../../../core/ui/widgets/padding.dart';
-import '../../../core/ui/widgets/text.dart';
-import '../../../core/ui/widgets/time.dart';
 import '../../../core/utils/dt.dart';
 import '../../../theme.dart';
+import '../../../widgets/core/card.dart';
+import '../../../widgets/core/date.dart';
+import '../../../widgets/core/duration.dart';
+import '../../../widgets/core/input.dart';
+import '../../../widgets/core/new_progress.dart';
+import '../../../widgets/core/padding.dart';
+import '../../../widgets/core/text.dart';
+import '../../../widgets/core/time.dart';
 import '../../domain/models.dart';
 import 'view_models.dart';
 

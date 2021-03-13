@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../core/domain/models.dart';
 
-import '../../domain/models.dart';
 import 'input.dart';
 import 'padding.dart';
 

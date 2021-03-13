@@ -11,9 +11,9 @@ import 'package:package_info/package_info.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
-import '../core/ui/widgets/text.dart';
 import '../deps.dart';
 import '../routes.dart';
+import '../widgets/core/text.dart';
 
 /// Страничка, на которой подгружается все необходимое
 class LoadingPage extends HookWidget {

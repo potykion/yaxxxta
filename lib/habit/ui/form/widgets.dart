@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/ui/widgets/input.dart';
 import '../../../theme.dart';
+import '../../../widgets/core/input.dart';
 import '../../domain/models.dart';
 
 /// Радио-групп типа привычки

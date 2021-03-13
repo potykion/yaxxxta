@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../core/ui/widgets/app_bars.dart';
-import '../core/ui/widgets/card.dart';
-import '../core/ui/widgets/circular_progress.dart';
-import '../core/ui/widgets/date.dart';
-import '../core/ui/widgets/text.dart';
 import '../core/utils/dt.dart';
 import '../deps.dart';
 import '../habit/domain/models.dart';
 import '../habit/ui/core/view_models.dart';
 import '../habit/ui/core/widgets.dart';
 import '../habit/ui/details/widgets.dart';
+import '../widgets/core/app_bars.dart';
+import '../widgets/core/card.dart';
+import '../widgets/core/circular_progress.dart';
+import '../widgets/core/date.dart';
+import '../widgets/core/text.dart';
 
 GlobalKey _scaffold = GlobalKey();
 
