@@ -42,11 +42,11 @@ class AppBottomNavigationBar extends StatelessWidget {
                         /// Сбрасываем анимейтед лист, чтоб не было ошибок:
                         /// Error: Duplicate GlobalKey detected in widget tree.
                         /// Error: Multiple widgets used the same GlobalKey.
-                        context
-                            .read(habitCalendarPage_AnimatedListState_Provider)
-                            .reset(
-                              delete: bottomNavRoutes[index] != Routes.calendar,
-                            );
+                        // context
+                        //     .read(habitCalendarPage_AnimatedListState_Provider)
+                        //     .reset(
+                        //       delete: bottomNavRoutes[index] != Routes.calendar,
+                        //     );
 
                         Navigator.pushReplacement<dynamic, dynamic>(
                           context,

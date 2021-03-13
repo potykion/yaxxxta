@@ -86,7 +86,7 @@ class HabitCalendarPage_HabitProgressControl extends HookWidget {
       );
 
   void _removeSelf(BuildContext context) {
-    context.read(habitCalendarPage_AnimatedListState_Provider).removeItem(
+    AnimatedList.of(context).removeItem(
           index,
           (_, animation) => HabitCalendarPage_HabitProgressControl(
             index: index,

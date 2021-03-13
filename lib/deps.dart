@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:package_info/package_info.dart';
+import 'package:tuple/tuple.dart';
 
 import 'core/infra/push.dart';
 import 'core/utils/dt.dart';
@@ -13,7 +14,6 @@ import 'habit/domain/db.dart';
 import 'habit/domain/models.dart';
 import 'habit/domain/services.dart';
 import 'habit/infra/db.dart';
-import 'habit/ui/calendar/controllers.dart';
 import 'habit/ui/core/controllers.dart';
 import 'habit/ui/core/view_models.dart';
 import 'habit/ui/details/view_models.dart';
@@ -124,7 +124,6 @@ Provider<ScheduleSingleHabitNotification>
   ),
 );
 
-
 /// Провайдер привязки привычки к данным юзера
 Provider<Future<void> Function(Habit habit)> addHabitToUserProvider =
     Provider((ref) => ref.watch(userDataControllerProvider).addHabit);
@@ -176,13 +175,17 @@ StateNotifierProvider<HabitController> habitControllerProvider =
 Provider<Settings> settingsProvider =
     Provider((ref) => ref.watch(userDataControllerProvider.state)!.settings);
 
+var settingsDayTimesProvider = Provider((ref) {
+  var settings = ref.watch(settingsProvider);
+  return Tuple2(settings.dayStartTime, settings.dayEndTime);
+});
+
 /// Провайдер контроллера выполнений привычек
 StateNotifierProvider<HabitPerformingController> habitPerformingController =
     StateNotifierProvider(
   (ref) => HabitPerformingController(
-    repo: ref.watch(habitPerformingRepoProvider),
-    settings: ref.watch(settingsProvider),
-  ),
+      repo: ref.watch(habitPerformingRepoProvider),
+      settingsDayTimes: ref.watch(settingsDayTimesProvider)),
 );
 
 /// Провайдер выбранной даты
@@ -194,6 +197,7 @@ Provider<AsyncValue<List<HabitProgressVM>>> listHabitVMs = Provider(
   (ref) => ref
       .watch(habitPerformingController.state)
       .whenData((dateHabitPerformings) {
+
     var habits = ref.watch(habitControllerProvider.state);
 
     var selectedDate = ref.watch(selectedDateProvider).state;
@@ -202,17 +206,21 @@ Provider<AsyncValue<List<HabitProgressVM>>> listHabitVMs = Provider(
     var groupedHabitPerformings = groupBy<HabitPerforming, String>(
         dateHabitPerformings[selectedDate] ?? [], (hp) => hp.habitId);
 
-    return habits
+    var vms = habits
         .where((h) => h.matchDate(selectedDate))
         .map((h) =>
-            HabitProgressVM.build(h, groupedHabitPerformings[h.id] ?? []))
+        HabitProgressVM.build(h, groupedHabitPerformings[h.id] ?? []))
         .where((h) => settings.showCompleted || !h.isComplete && !h.isExceeded)
         .toList()
-          ..sort((h1, h2) => h1.performTime == null
-              ? (h2.performTime == null ? 0 : 1)
-              : (h2.performTime == null
-                  ? -1
-                  : h1.performTime!.compareTo(h2.performTime!)));
+      ..sort((h1, h2) => h1.performTime == null
+          ? (h2.performTime == null ? 0 : 1)
+          : (h2.performTime == null
+          ? -1
+          : h1.performTime!.compareTo(h2.performTime!)));
+
+    print(vms.length);
+
+    return vms;
   }),
 );
 
@@ -270,13 +278,6 @@ Provider<ScheduleNotificationsForHabitsWithoutNotifications>
   (ref) => ScheduleNotificationsForHabitsWithoutNotifications(
     notificationSender: ref.watch(notificationSenderProvider),
   ),
-);
-
-/// Провайдер стейта анимированного списка на странице календаря
-StateNotifierProvider<HabitCalendarPage_AnimatedListState>
-// ignore: non_constant_identifier_names
-    habitCalendarPage_AnimatedListState_Provider = StateNotifierProvider(
-  (ref) => HabitCalendarPage_AnimatedListState(GlobalKey<AnimatedListState>()),
 );
 
 // endregion

@@ -1,9 +1,9 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tuple/tuple.dart';
 
 import '../../../core/utils/dt.dart';
 import '../../../core/utils/list.dart';
-import '../../../settings/domain/models.dart';
 import '../../domain/db.dart';
 import '../../domain/models.dart';
 import '../../domain/services.dart';
@@ -60,16 +60,15 @@ class HabitController extends StateNotifier<List<Habit>> {
 /// Контроллер выполнений привычек
 class HabitPerformingController
     extends StateNotifier<AsyncValue<Map<DateTime, List<HabitPerforming>>>> {
-  /// Настроечки
-  final Settings settings;
-
   /// Репо выполнений привычек
   final BaseHabitPerformingRepo repo;
+
+  final Tuple2<DateTime, DateTime> settingsDayTimes;
 
   /// Контроллер выполнений привычек
   HabitPerformingController({
     required this.repo,
-    required this.settings,
+    required this.settingsDayTimes,
     Map<DateTime, List<HabitPerforming>> state = const {},
   }) : super(AsyncValue.data(state));
 
@@ -83,8 +82,8 @@ class HabitPerformingController
 
     var dateRange = DateRange.fromDateAndTimes(
       date,
-      settings.dayStartTime,
-      settings.dayEndTime,
+      settingsDayTimes.item1,
+      settingsDayTimes.item2,
     );
 
     newState[date] = <HabitPerforming>[
@@ -107,8 +106,8 @@ class HabitPerformingController
       performings,
       (hp) => DateRange.fromDateTimeAndTimes(
         hp.performDateTime,
-        settings.dayStartTime,
-        settings.dayEndTime,
+        settingsDayTimes.item1,
+        settingsDayTimes.item2,
       ).date,
     );
 
@@ -128,8 +127,8 @@ class HabitPerformingController
   DateTime _dateFromDateTime(DateTime dateTime) =>
       DateRange.fromDateTimeAndTimes(
         dateTime,
-        settings.dayStartTime,
-        settings.dayEndTime,
+        settingsDayTimes.item1,
+        settingsDayTimes.item2,
       ).date;
 
   /// Вставка выполнения

@@ -20,9 +20,6 @@ class HabitCalendarPage extends HookWidget {
   Widget build(BuildContext context) {
     var vmsAsyncValue = useProvider(listHabitVMs);
 
-    var animatedListKey =
-        useProvider(habitCalendarPage_AnimatedListState_Provider.state);
-
     var pageViewController = useState(PageController(initialPage: 1));
 
     return Scaffold(
@@ -32,9 +29,10 @@ class HabitCalendarPage extends HookWidget {
           SmallPadding.noBottom(child: BiggestText(text: "Календарь")),
           Spacer(),
           IconButton(
-            icon: Icon(Icons.list),
-            onPressed: () => Navigator.pushNamed(context, Routes.list),
-          ),
+              icon: Icon(Icons.list),
+              onPressed: () async {
+                await Navigator.pushNamed(context, Routes.list);
+              }),
         ],
       ),
       body: vmsAsyncValue.maybeWhen(
@@ -66,10 +64,9 @@ class HabitCalendarPage extends HookWidget {
               itemBuilder: (context, index) {
                 return vms.isNotEmpty
                     ? AnimatedList(
-                        key: animatedListKey,
                         initialItemCount: vms.length,
                         itemBuilder: (context, index, animation) =>
-                            (vms.length != index
+                            (vms.length > index
                                 ? HabitCalendarPage_HabitProgressControl(
                                     index: index,
                                     vm: vms[index],
@@ -102,9 +99,10 @@ class HabitCalendarPage extends HookWidget {
           if (habit != null &&
               habit.matchDate(context.read(selectedDateProvider).state)) {
             vmsAsyncValue.maybeWhen(
-              data: (vms) => context
-                  .read(habitCalendarPage_AnimatedListState_Provider)
-                  .insertItem(vms.length),
+              data: (vms) => AnimatedList.of(context).insertItem(
+                vms.length,
+                duration: Duration(milliseconds: 500),
+              ),
               orElse: () => null,
             );
           }
