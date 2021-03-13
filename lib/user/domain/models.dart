@@ -31,7 +31,7 @@ abstract class UserData implements _$UserData {
     @Default(0) int performingPoints,
 
     /// Айди наград
-    @Default(<String>[]) int rewardIds,
+    @Default(<String>[]) List<String> rewardIds,
   }) = _UserData;
 
   /// Создает из юзера

@@ -27,7 +27,7 @@ class _$UserDataTearOff {
       List<String> habitIds = const <String>[],
       required Settings settings,
       int performingPoints = 0,
-      int rewardIds = const <String>[]}) {
+      List<String> rewardIds = const <String>[]}) {
     return _UserData(
       id: id,
       userId: userId,
@@ -68,7 +68,7 @@ mixin _$UserData {
   int get performingPoints => throw _privateConstructorUsedError;
 
   /// Айди наград
-  int get rewardIds => throw _privateConstructorUsedError;
+  List<String> get rewardIds => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -87,7 +87,7 @@ abstract class $UserDataCopyWith<$Res> {
       List<String> habitIds,
       Settings settings,
       int performingPoints,
-      int rewardIds});
+      List<String> rewardIds});
 
   $SettingsCopyWith<$Res> get settings;
 }
@@ -121,7 +121,8 @@ class _$UserDataCopyWithImpl<$Res> implements $UserDataCopyWith<$Res> {
       performingPoints: performingPoints == freezed
           ? _value.performingPoints
           : performingPoints as int,
-      rewardIds: rewardIds == freezed ? _value.rewardIds : rewardIds as int,
+      rewardIds:
+          rewardIds == freezed ? _value.rewardIds : rewardIds as List<String>,
     ));
   }
 
@@ -145,7 +146,7 @@ abstract class _$UserDataCopyWith<$Res> implements $UserDataCopyWith<$Res> {
       List<String> habitIds,
       Settings settings,
       int performingPoints,
-      int rewardIds});
+      List<String> rewardIds});
 
   @override
   $SettingsCopyWith<$Res> get settings;
@@ -181,7 +182,8 @@ class __$UserDataCopyWithImpl<$Res> extends _$UserDataCopyWithImpl<$Res>
       performingPoints: performingPoints == freezed
           ? _value.performingPoints
           : performingPoints as int,
-      rewardIds: rewardIds == freezed ? _value.rewardIds : rewardIds as int,
+      rewardIds:
+          rewardIds == freezed ? _value.rewardIds : rewardIds as List<String>,
     ));
   }
 }
@@ -234,7 +236,7 @@ class _$_UserData extends _UserData {
   @override
 
   /// Айди наград
-  final int rewardIds;
+  final List<String> rewardIds;
 
   @override
   String toString() {
@@ -297,7 +299,7 @@ abstract class _UserData extends UserData {
       List<String> habitIds,
       required Settings settings,
       int performingPoints,
-      int rewardIds}) = _$_UserData;
+      List<String> rewardIds}) = _$_UserData;
 
   factory _UserData.fromJson(Map<String, dynamic> json) = _$_UserData.fromJson;
 
@@ -328,7 +330,7 @@ abstract class _UserData extends UserData {
   @override
 
   /// Айди наград
-  int get rewardIds => throw _privateConstructorUsedError;
+  List<String> get rewardIds => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$UserDataCopyWith<_UserData> get copyWith =>

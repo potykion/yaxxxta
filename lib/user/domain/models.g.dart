@@ -20,7 +20,10 @@ _$_UserData _$_$_UserDataFromJson(Map json) {
         [],
     settings: Settings.fromJson(json['settings'] as Map),
     performingPoints: json['performingPoints'] as int? ?? 0,
-    rewardIds: json['rewardIds'] as int? ?? [],
+    rewardIds: (json['rewardIds'] as List<dynamic>?)
+            ?.map((e) => e as String)
+            .toList() ??
+        [],
   );
 }
 
