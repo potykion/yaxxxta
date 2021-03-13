@@ -13,14 +13,21 @@ import 'package:timezone/timezone.dart' as tz;
 
 import '../deps.dart';
 import '../routes.dart';
+import '../widgets/core/circular_progress.dart';
+import '../widgets/core/padding.dart';
 import '../widgets/core/text.dart';
 
 /// Страничка, на которой подгружается все необходимое
 class LoadingPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
+    var loadingTextState = useState("Ша все буит...");
+
     useEffect(() {
       WidgetsBinding.instance!.addPostFrameCallback((_) async {
+        loadingTextState.value = "Грузим настройки...";
+
+        // region
         /// пуши
         await flutterLocalNotificationsPlugin.initialize(InitializationSettings(
           android: AndroidInitializationSettings('app_icon'),
@@ -52,13 +59,18 @@ class LoadingPage extends HookWidget {
               user: user,
               deviceId: androidInfo.id,
             );
+        // endregion
 
+        loadingTextState.value = "Грузим привычки...";
+
+        // region
         await context.read(habitControllerProvider).load();
 
         await context
             .read(scheduleNotificationsForHabitsWithoutNotificationsProvider)(
           context.read(habitControllerProvider.state),
         );
+        // endregion
 
         Navigator.pushReplacementNamed(context, Routes.calendar);
       });
@@ -66,7 +78,15 @@ class LoadingPage extends HookWidget {
     }, []);
 
     return Scaffold(
-      body: Center(child: BiggerText(text: "Ща все буит...")),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          CenteredCircularProgress(),
+          SmallPadding.onlyBottom(),
+          BiggerText(text: loadingTextState.value),
+        ],
+      ),
     );
   }
 }
