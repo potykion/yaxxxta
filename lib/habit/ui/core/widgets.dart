@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:yaxxxta/widgets/core/buttons.dart';
 
 import '../../../core/domain/models.dart';
 import '../../../core/utils/dt.dart';
@@ -152,13 +153,9 @@ class HabitPerformingFormModal extends HookWidget {
             bottom: MediaQuery.of(context).viewInsets.bottom,
           ),
           child: SmallPadding(
-            child: SizedBox(
-              height: 45,
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () => Navigator.of(context).pop(vm),
-                child: BiggerText(text: "Сохранить"),
-              ),
+            child: FullWidthButton(
+              onPressed: () => Navigator.of(context).pop(vm),
+              child: BiggerText(text: "Сохранить"),
             ),
           ),
         ),

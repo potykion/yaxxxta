@@ -50,7 +50,7 @@ class HabitListPage extends HookWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SmallerText(text: "Что-то не видать привычек"),
-                  BiggerText(text: "Самое время завести одну!"),
+                  BiggerText(text: "Самое время завести одну"),
                 ],
               ),
             ),
