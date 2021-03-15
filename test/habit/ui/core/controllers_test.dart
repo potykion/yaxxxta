@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:tuple/tuple.dart';
 import 'package:yaxxxta/core/utils/dt.dart';
 import 'package:yaxxxta/habit/domain/db.dart';
 import 'package:yaxxxta/habit/domain/models.dart';
@@ -15,11 +16,13 @@ void main() {
     late Settings settings;
     late DateTime date;
     late DateRange dateRange;
+    late Tuple2<DateTime, DateTime> settingsDayTimes;
 
     setUp(() {
       repo = MockBaseHabitPerformingRepo();
       settings = Settings.createDefault();
       date = DateTime(2020, 1, 1);
+      settingsDayTimes = Tuple2(settings.dayStartTime, settings.dayEndTime);
       dateRange = DateRange.fromDateAndTimes(
         date,
         settings.dayStartTime,
@@ -38,7 +41,7 @@ void main() {
           .thenAnswer((_) async => [hp]);
       var controller = HabitPerformingController(
         repo: repo,
-        settings: settings,
+        settingsDayTimes: settingsDayTimes,
       );
 
       await controller.loadDateHabitPerformings(date);
@@ -68,7 +71,7 @@ void main() {
           .thenAnswer((_) async => [hp1]);
       var controller = HabitPerformingController(
         repo: repo,
-        settings: Settings.createDefault(),
+        settingsDayTimes: settingsDayTimes,
         state: {
           DateTime(2020, 1, 1): [hp2]
         },
@@ -101,7 +104,7 @@ void main() {
           .thenAnswer((_) async => [hp1]);
       var controller = HabitPerformingController(
         repo: repo,
-        settings: Settings.createDefault(),
+        settingsDayTimes: settingsDayTimes,
         state: {
           DateTime(2020, 1, 1): [hp2]
         },
@@ -133,7 +136,7 @@ void main() {
       when(repo.listByHabit(hp1.habitId)).thenAnswer((_) async => [hp1, hp2]);
       var controller = HabitPerformingController(
         repo: repo,
-        settings: Settings.createDefault(),
+        settingsDayTimes: settingsDayTimes,
       );
 
       await controller.loadSelectedHabitPerformings(hp1.habitId);
@@ -156,7 +159,7 @@ void main() {
       when(repo.insert(hp1)).thenAnswer((_) async => "hp1");
       var controller = HabitPerformingController(
         repo: repo,
-        settings: Settings.createDefault(),
+        settingsDayTimes: settingsDayTimes,
       );
 
       await controller.insert(hp1);
@@ -178,7 +181,7 @@ void main() {
       );
       var controller = HabitPerformingController(
           repo: repo,
-          settings: Settings.createDefault(),
+          settingsDayTimes: settingsDayTimes,
           state: {
             DateTime(2020, 1, 1): [hp1],
           });
@@ -202,7 +205,7 @@ void main() {
       when(repo.insert(hp1)).thenAnswer((_) async => "hp1");
       var controller = HabitPerformingController(
         repo: repo,
-        settings: Settings.createDefault(),
+        settingsDayTimes: settingsDayTimes,
         state: {
           DateTime(2020, 1, 1): [hp1]
         },

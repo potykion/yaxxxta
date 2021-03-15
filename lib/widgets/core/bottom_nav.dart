@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../core/utils/list.dart';
-import '../../deps.dart';
 import '../../routes.dart';
 import '../../theme.dart';
 
@@ -38,15 +36,6 @@ class AppBottomNavigationBar extends StatelessWidget {
                         if (currentIndex == index) {
                           return;
                         }
-
-                        /// Сбрасываем анимейтед лист, чтоб не было ошибок:
-                        /// Error: Duplicate GlobalKey detected in widget tree.
-                        /// Error: Multiple widgets used the same GlobalKey.
-                        // context
-                        //     .read(habitCalendarPage_AnimatedListState_Provider)
-                        //     .reset(
-                        //       delete: bottomNavRoutes[index] != Routes.calendar,
-                        //     );
 
                         Navigator.pushReplacement<dynamic, dynamic>(
                           context,

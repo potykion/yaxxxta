@@ -4,9 +4,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../deps.dart';
 
+/// Свайпер даты
 class DateSwiper extends HookWidget {
+  /// Ребенок
   final Widget Function(BuildContext context) builder;
 
+  /// Свайпер даты
   DateSwiper(this.builder);
 
   @override

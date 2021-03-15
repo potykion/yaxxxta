@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:yaxxxta/widgets/habit/date_swiper.dart';
 
 import '../deps.dart';
 import '../habit/ui/calendar/widgets.dart';
@@ -13,7 +12,9 @@ import '../widgets/core/circular_progress.dart';
 import '../widgets/core/date.dart';
 import '../widgets/core/padding.dart';
 import '../widgets/core/text.dart';
+import '../widgets/habit/date_swiper.dart';
 
+/// Страница с календарем привычек
 class HabitCalendarPage extends HookWidget {
   @override
   Widget build(BuildContext context) {

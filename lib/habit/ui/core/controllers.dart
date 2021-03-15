@@ -63,6 +63,7 @@ class HabitPerformingController
   /// Репо выполнений привычек
   final BaseHabitPerformingRepo repo;
 
+  /// Настройки начала и конца дня
   final Tuple2<DateTime, DateTime> settingsDayTimes;
 
   /// Контроллер выполнений привычек

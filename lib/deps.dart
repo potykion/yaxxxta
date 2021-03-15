@@ -175,7 +175,8 @@ StateNotifierProvider<HabitController> habitControllerProvider =
 Provider<Settings> settingsProvider =
     Provider((ref) => ref.watch(userDataControllerProvider.state)!.settings);
 
-var settingsDayTimesProvider = Provider((ref) {
+/// Провайдер настроек начачла и конца дня
+Provider<Tuple2<DateTime, DateTime>> settingsDayTimesProvider = Provider((ref) {
   var settings = ref.watch(settingsProvider);
   return Tuple2(settings.dayStartTime, settings.dayEndTime);
 });
