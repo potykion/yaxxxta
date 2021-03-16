@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/habit/domain/models.dart';
+import 'package:yaxxxta/logic/reward/models.dart';
 
 import '../../settings/domain/models.dart';
 import '../domain/db.dart';
@@ -51,6 +52,15 @@ class UserDataController extends StateNotifier<UserData?> {
     assert(state != null);
     var userData =
         state!.copyWith(habitIds: {...state!.habitIds, habit.id!}.toList());
+    await repo.update(userData);
+    state = userData;
+  }
+
+  /// Привязывает награду к данным юзера
+  Future<void> addReward(Reward reward) async {
+    assert(state != null);
+    var userData =
+        state!.copyWith(rewardIds: {...state!.rewardIds, reward.id!}.toList());
     await repo.update(userData);
     state = userData;
   }

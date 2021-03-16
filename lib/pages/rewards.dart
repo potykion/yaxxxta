@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:yaxxxta/theme.dart';
+import '../deps.dart';
 import '../logic/reward/models.dart';
 
 import '../widgets/core/app_bars.dart';
@@ -8,22 +12,55 @@ import '../widgets/core/text.dart';
 import '../widgets/reward/create_modal.dart';
 
 /// Страничка с наградами
-class RewardsPage extends StatelessWidget {
+class RewardsPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
+    var userData = useProvider(userDataControllerProvider.state)!;
+    var rewards = useProvider(rewardControllerProvider.state);
+
     return Scaffold(
       appBar: buildAppBar(
         context: context,
-        children: [SmallPadding.noBottom(child: BiggestText(text: "Награды"))],
+        children: [
+          Expanded(
+            child: ListTile(
+              title: BiggestText(text: "Награды"),
+              trailing: BiggerText(text: "${userData.performingPoints} 🅿"),
+            ),
+          )
+        ],
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SmallerText(text: "Что-то не видать наград"),
-            BiggerText(text: "Самое время создать одну"),
-          ],
-        ),
+        child: rewards.isEmpty
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SmallerText(text: "Что-то не видать наград"),
+                  BiggerText(text: "Самое время создать одну"),
+                ],
+              )
+            : ListView.builder(
+                itemCount: rewards.length,
+                itemBuilder: (context, index) {
+                  var reward = rewards[index];
+
+                  return ListTile(
+                    title: BiggerText(text: reward.title),
+                    subtitle: SmallerText(text: "${reward.cost} 🅿"),
+                    trailing: !reward.achieved
+                        ? IconButton(
+                            icon: Icon(
+                              Icons.done,
+                              color: CustomColors.almostBlack,
+                            ),
+                            onPressed: () {
+                              //  todo achieve reward
+                            },
+                          )
+                        : null,
+                  );
+                },
+              ),
       ),
       bottomNavigationBar: AppBottomNavigationBar(),
       floatingActionButton: FloatingActionButton(
@@ -34,8 +71,9 @@ class RewardsPage extends StatelessWidget {
             isScrollControlled: true,
             builder: (context) => CreateRewardModal(),
           );
-
-          //  todo insert reward
+          if (reward != null) {
+            await context.read(rewardControllerProvider).create(reward);
+          }
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,

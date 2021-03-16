@@ -7,6 +7,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:package_info/package_info.dart';
 import 'package:tuple/tuple.dart';
+import 'package:yaxxxta/logic/reward/services.dart';
 
 import 'core/infra/push.dart';
 import 'core/utils/dt.dart';
@@ -17,6 +18,8 @@ import 'logic/habit/infra/db.dart';
 import 'logic/habit/ui/core/controllers.dart';
 import 'logic/habit/ui/core/view_models.dart';
 import 'logic/habit/ui/details/view_models.dart';
+import 'logic/reward/controllers.dart';
+import 'logic/reward/db.dart';
 import 'settings/domain/models.dart';
 import 'user/domain/db.dart';
 import 'user/domain/services.dart';
@@ -198,7 +201,6 @@ Provider<AsyncValue<List<HabitProgressVM>>> listHabitVMsProvider = Provider(
   (ref) => ref
       .watch(habitPerformingController.state)
       .whenData((dateHabitPerformings) {
-
     var habits = ref.watch(habitControllerProvider.state);
 
     var selectedDate = ref.watch(selectedDateProvider).state;
@@ -210,14 +212,14 @@ Provider<AsyncValue<List<HabitProgressVM>>> listHabitVMsProvider = Provider(
     var vms = habits
         .where((h) => h.matchDate(selectedDate))
         .map((h) =>
-        HabitProgressVM.build(h, groupedHabitPerformings[h.id] ?? []))
+            HabitProgressVM.build(h, groupedHabitPerformings[h.id] ?? []))
         .where((h) => settings.showCompleted || !h.isComplete && !h.isExceeded)
         .toList()
-      ..sort((h1, h2) => h1.performTime == null
-          ? (h2.performTime == null ? 0 : 1)
-          : (h2.performTime == null
-          ? -1
-          : h1.performTime!.compareTo(h2.performTime!)));
+          ..sort((h1, h2) => h1.performTime == null
+              ? (h2.performTime == null ? 0 : 1)
+              : (h2.performTime == null
+                  ? -1
+                  : h1.performTime!.compareTo(h2.performTime!)));
 
     return vms;
   }),
@@ -280,3 +282,28 @@ Provider<ScheduleNotificationsForHabitsWithoutNotifications>
 );
 
 // endregion
+
+////////////////////////////////////////////////////////////////////////////////
+/// НАГРАДЫ
+////////////////////////////////////////////////////////////////////////////////
+
+var _rewardRepoProvider = Provider<RewardRepo>(
+  (ref) => FirebaseRewardRepo(
+    FirebaseFirestore.instance.collection("rewards"),
+  ),
+);
+var _addRewardToUserProvider = Provider(
+  (ref) => ref.watch(userDataControllerProvider).addReward,
+);
+
+/// Провайдер RewardController
+StateNotifierProvider<RewardController> rewardControllerProvider =
+    StateNotifierProvider(
+  (ref) => RewardController(
+    repo: ref.watch(_rewardRepoProvider),
+    createReward: CreateReward(
+      rewardRepo: ref.watch(_rewardRepoProvider),
+      addRewardToUser: ref.watch(_addRewardToUserProvider),
+    ),
+  ),
+);
