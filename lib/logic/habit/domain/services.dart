@@ -135,7 +135,7 @@ class DeleteHabit {
   /// Удаляет привычку + удаляет уведомление
   Future<void> call(String habitId) async {
     tryDeletePendingNotification(habitId);
-    await habitRepo.delete(habitId);
+    await habitRepo.deleteById(habitId);
   }
 }
 

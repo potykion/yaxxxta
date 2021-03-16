@@ -1,73 +1,37 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:yaxxxta/core/infra/firebase.dart';
 import '../domain/db.dart';
 import '../domain/models.dart';
-import '../../../core/utils/list.dart';
 
 /// Фаерстор репо для привычек
-class FirestoreHabitRepo implements BaseHabitRepo {
-  final CollectionReference _collectionReference;
-
+class FirestoreHabitRepo extends FirebaseRepo<Habit> implements BaseHabitRepo {
   /// Фаерстор репо для привычек
-  FirestoreHabitRepo(this._collectionReference);
+  FirestoreHabitRepo(CollectionReference collectionReference)
+      : super(collectionReference);
 
   @override
-  Future<void> delete(String id) => _collectionReference.doc(id).delete();
-
-  @override
-  Future<Habit> get(String id) async =>
-      _habitFromFireStore((await _collectionReference.doc(id).get()));
-
-  @override
-  Future<String> insert(Habit habit) async =>
-      (await _collectionReference.add(_habitToFireStore(habit))).id;
-
-  @override
-  Future<List<Habit>> listByIds(List<String> habitIds) async {
-    if (habitIds.isEmpty) return [];
-
-    return (await Future.wait(
-      /// whereIn робит ток для списков длиной 10 =>
-      /// режем список на списки по 10 + запрашиваем данные асинхронно
-      habitIds.chunked(size: 10).map(
-            (habitIdsChunk) => _collectionReference
-                .where(FieldPath.documentId, whereIn: habitIdsChunk)
-                .get(),
-          ),
-    ))
-        .expand((qs) => qs.docs)
-        .map(_habitFromFireStore)
-        .toList();
-  }
-
-  @override
-  Future<void> update(Habit habit) =>
-      _collectionReference.doc(habit.id).update(_habitToFireStore(habit));
-
-  Map<String, dynamic> _habitToFireStore(Habit habit) =>
-      habit.toJson()..["created"] = Timestamp.fromDate(habit.created);
-
-  Habit _habitFromFireStore(DocumentSnapshot doc) {
+  Habit entityFromFirebase(DocumentSnapshot doc) {
     var data = doc.data()!;
     data["created"] = (data["created"] as Timestamp).toDate().toIso8601String();
     data["id"] = doc.id;
     return Habit.fromJson(data);
   }
+
+  @override
+  Map<String, dynamic> entityToFirebase(Habit entity) =>
+      entity.toJson()..["created"] = Timestamp.fromDate(entity.created);
 }
 
 /// Фаер-стор репо для выполнений привычек
-class FireStoreHabitPerformingRepo implements BaseHabitPerformingRepo {
-  final CollectionReference _collectionReference;
-
+class FireStoreHabitPerformingRepo extends FirebaseRepo<HabitPerforming>
+    implements BaseHabitPerformingRepo {
   /// Фаер-стор репо для выполнений привычек
-  FireStoreHabitPerformingRepo(this._collectionReference);
-
-  @override
-  Future<String> insert(HabitPerforming performing) async =>
-      (await _collectionReference.add(_toFireBase(performing))).id;
+  FireStoreHabitPerformingRepo(CollectionReference collectionReference)
+      : super(collectionReference);
 
   @override
   Future<List<HabitPerforming>> list(DateTime from, DateTime to) async =>
-      (await _collectionReference
+      (await collectionReference
               .where(
                 "performDateTime",
                 isGreaterThanOrEqualTo: from,
@@ -75,21 +39,21 @@ class FireStoreHabitPerformingRepo implements BaseHabitPerformingRepo {
               )
               .get())
           .docs
-          .map(_fromFireBase)
+          .map(entityFromFirebase)
           .toList();
 
   @override
   Future<List<HabitPerforming>> listByHabit(String habitId) async =>
-      (await _collectionReference.where("habitId", isEqualTo: habitId).get())
+      (await collectionReference.where("habitId", isEqualTo: habitId).get())
           .docs
-          .map(_fromFireBase)
+          .map(entityFromFirebase)
           .toList();
 
   @override
   Future<void> delete(DateTime from, DateTime to) async {
     var batch = FirebaseFirestore.instance.batch();
 
-    var performingsToDelete = (await _collectionReference
+    var performingsToDelete = (await collectionReference
             .where(
               "performDateTime",
               isGreaterThanOrEqualTo: from,
@@ -104,11 +68,8 @@ class FireStoreHabitPerformingRepo implements BaseHabitPerformingRepo {
     await batch.commit();
   }
 
-  Map<String, dynamic> _toFireBase(HabitPerforming performing) =>
-      performing.toJson()
-        ..["performDateTime"] = Timestamp.fromDate(performing.performDateTime);
-
-  HabitPerforming _fromFireBase(DocumentSnapshot doc) {
+  @override
+  HabitPerforming entityFromFirebase(DocumentSnapshot doc) {
     var data = doc.data()!;
 
     return HabitPerforming.fromJson(
@@ -118,4 +79,9 @@ class FireStoreHabitPerformingRepo implements BaseHabitPerformingRepo {
         ..["id"] = doc.id,
     );
   }
+
+  @override
+  Map<String, dynamic> entityToFirebase(HabitPerforming performing) =>
+      performing.toJson()
+        ..["performDateTime"] = Timestamp.fromDate(performing.performDateTime);
 }

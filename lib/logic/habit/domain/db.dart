@@ -16,7 +16,7 @@ abstract class BaseHabitRepo {
   Future<void> update(Habit habit);
 
   /// Удаляет привычку
-  Future<void> delete(String id);
+  Future<void> deleteById(String id);
 }
 
 /// Репо для работы с выполнениями привычек

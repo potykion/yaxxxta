@@ -30,3 +30,9 @@ abstract class DoubleDuration implements _$DoubleDuration {
   /// Конвертит длительность в секунды
   double get asSeconds => seconds + minutes * 60 + hours * 3600;
 }
+
+/// Сущность с айди
+mixin WithId {
+  /// Айди
+  String? get id;
+}

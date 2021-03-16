@@ -5,14 +5,13 @@ import 'package:json_annotation/json_annotation.dart';
 import '../../../core/domain/models.dart';
 import '../../../core/utils/dt.dart';
 
-
 part 'models.g.dart';
 
 part 'models.freezed.dart';
 
 /// Привычка
 @freezed
-abstract class Habit implements _$Habit {
+abstract class Habit implements _$Habit, WithId {
   const Habit._();
 
   /// Создает привычку
@@ -316,8 +315,8 @@ extension HabitTypeToStr on HabitType {
 
 /// Выполнение прички
 @freezed
-abstract class HabitPerforming implements _$HabitPerforming {
-  const HabitPerforming._();
+abstract class HabitPerforming with WithId implements _$HabitPerforming {
+  HabitPerforming._();
 
   /// Создает выполнение привычки
   factory HabitPerforming({

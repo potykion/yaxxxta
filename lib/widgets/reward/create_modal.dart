@@ -10,8 +10,10 @@ import '../core/text.dart';
 
 /// Модалька создания награды
 class CreateRewardModal extends HookWidget {
+  /// Начальная награда
   final Reward? initial;
 
+  /// Модалька создания награды
   CreateRewardModal({this.initial});
 
   @override
