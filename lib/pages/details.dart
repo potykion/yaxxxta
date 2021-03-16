@@ -4,10 +4,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../core/utils/dt.dart';
 import '../deps.dart';
-import '../habit/domain/models.dart';
-import '../habit/ui/core/view_models.dart';
-import '../habit/ui/core/widgets.dart';
-import '../habit/ui/details/widgets.dart';
+import '../logic/habit/domain/models.dart';
+import '../logic/habit/ui/core/view_models.dart';
+import '../logic/habit/ui/core/widgets.dart';
+import '../logic/habit/ui/details/widgets.dart';
 import '../widgets/core/app_bars.dart';
 import '../widgets/core/card.dart';
 import '../widgets/core/circular_progress.dart';

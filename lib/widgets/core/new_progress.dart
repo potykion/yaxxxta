@@ -4,10 +4,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../logic/habit/ui/core/view_models.dart';
 
 import '../../core/utils/dt.dart';
 import '../../deps.dart';
-import '../../habit/ui/core/view_models.dart';
 import '../../theme.dart';
 import 'text.dart';
 

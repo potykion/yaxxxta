@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-import '../../core/utils/list.dart';
 import '../domain/db.dart';
 import '../domain/models.dart';
+import '../../../core/utils/list.dart';
 
 /// Фаерстор репо для привычек
 class FirestoreHabitRepo implements BaseHabitRepo {

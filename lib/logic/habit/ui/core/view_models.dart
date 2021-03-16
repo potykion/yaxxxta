@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:yaxxxta/core/utils/dt.dart';
 
-import '../../../core/utils/dt.dart';
 import '../../domain/models.dart';
 
 part 'view_models.freezed.dart';

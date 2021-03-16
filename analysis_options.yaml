@@ -15,3 +15,7 @@ analyzer:
 include: package:effective_dart/analysis_options.yaml
 
 
+linter:
+  rules:
+    directives_ordering: false
+    prefer_relative_imports: false

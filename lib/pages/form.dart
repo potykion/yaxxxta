@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:yaxxxta/logic/habit/domain/models.dart';
+import 'package:yaxxxta/logic/habit/ui/form/widgets.dart';
 
 import '../core/domain/models.dart';
 import '../deps.dart';
-import '../habit/domain/models.dart';
-import '../habit/ui/form/widgets.dart';
 import '../theme.dart';
 import '../widgets/core/app_bars.dart';
 import '../widgets/core/card.dart';

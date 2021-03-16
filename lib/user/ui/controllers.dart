@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:yaxxxta/logic/habit/domain/models.dart';
 
-import '../../habit/domain/models.dart';
 import '../../settings/domain/models.dart';
 import '../domain/db.dart';
 import '../domain/models.dart';

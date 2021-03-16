@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import '../../logic/reward/models.dart';
 
-import '../../reward/models.dart';
 import '../core/buttons.dart';
 import '../core/card.dart';
 import '../core/input.dart';

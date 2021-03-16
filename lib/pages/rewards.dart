@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yaxxxta/reward/models.dart';
+import '../logic/reward/models.dart';
 
 import '../widgets/core/app_bars.dart';
 import '../widgets/core/bottom_nav.dart';

@@ -5,8 +5,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:yaxxxta/core/infra/push.dart';
-import 'package:yaxxxta/habit/domain/models.dart';
-import 'package:yaxxxta/habit/domain/services.dart';
+import 'package:yaxxxta/logic/habit/domain/models.dart';
+import 'package:yaxxxta/logic/habit/domain/services.dart';
 import 'services_test.mocks.dart';
 
 @GenerateMocks(

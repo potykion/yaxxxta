@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:tuple/tuple.dart';
+import '../../../core/infra/push.dart';
 
-import '../../core/infra/push.dart';
 import 'db.dart';
 import 'models.dart';
 
