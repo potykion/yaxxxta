@@ -22,3 +22,26 @@ class CreateReward {
     return reward;
   }
 }
+
+/// Получение награды
+class CollectReward {
+  /// Репо наград
+  final RewardRepo rewardRepo;
+
+  /// Отнимает баллы у юзера
+  final Future<void> Function(int points) decreasePerformingPoints;
+
+  /// Получение награды
+  CollectReward({
+    required this.rewardRepo,
+    required this.decreasePerformingPoints,
+  });
+
+  /// Получение награды
+  Future<Reward> call(Reward reward) async {
+    reward = reward.copyWith(collected: true);
+    await rewardRepo.update(reward);
+    await decreasePerformingPoints(reward.cost);
+    return reward;
+  }
+}

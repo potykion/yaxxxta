@@ -10,6 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info/package_info.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+import 'package:yaxxxta/logic/reward/controllers.dart';
 
 import '../deps.dart';
 import '../routes.dart';
@@ -59,14 +60,13 @@ class LoadingPage extends HookWidget {
               user: user,
               deviceId: androidInfo.id,
             );
+        var userData = context.read(userDataControllerProvider.state)!;
         // endregion
 
         loadingTextState.value = "Грузим привычки...";
 
         // region
-        await context
-            .read(habitControllerProvider)
-            .load(context.read(userDataControllerProvider.state)!.habitIds);
+        await context.read(habitControllerProvider).load(userData.habitIds);
 
         await context
             .read(scheduleNotificationsForHabitsWithoutNotificationsProvider)(
@@ -78,7 +78,8 @@ class LoadingPage extends HookWidget {
             .loadDateHabitPerformings(DateTime.now());
         // endregion
 
-        // loadingTextState.value = "Грузим награды...";
+        loadingTextState.value = "Грузим награды...";
+        await context.read(rewardControllerProvider).load(userData.rewardIds);
 
         Navigator.pushReplacementNamed(context, Routes.calendar);
       });

@@ -8,6 +8,9 @@ abstract class RewardRepo {
   /// Вставляет в бд
   Future<String> insert(Reward entity);
 
+  /// Обновляет в бд
+  Future<void> update(Reward entity);
+
   /// Получает по айди
   Future<List<Reward>> listByIds(List<String> ids);
 }

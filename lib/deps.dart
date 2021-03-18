@@ -7,7 +7,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:package_info/package_info.dart';
 import 'package:tuple/tuple.dart';
-import 'package:yaxxxta/logic/reward/services.dart';
 
 import 'core/infra/push.dart';
 import 'core/utils/dt.dart';
@@ -18,8 +17,6 @@ import 'logic/habit/infra/db.dart';
 import 'logic/habit/ui/core/controllers.dart';
 import 'logic/habit/ui/core/view_models.dart';
 import 'logic/habit/ui/details/view_models.dart';
-import 'logic/reward/controllers.dart';
-import 'logic/reward/db.dart';
 import 'settings/domain/models.dart';
 import 'user/domain/db.dart';
 import 'user/domain/services.dart';
@@ -282,28 +279,3 @@ Provider<ScheduleNotificationsForHabitsWithoutNotifications>
 );
 
 // endregion
-
-////////////////////////////////////////////////////////////////////////////////
-/// НАГРАДЫ
-////////////////////////////////////////////////////////////////////////////////
-
-var _rewardRepoProvider = Provider<RewardRepo>(
-  (ref) => FirebaseRewardRepo(
-    FirebaseFirestore.instance.collection("rewards"),
-  ),
-);
-var _addRewardToUserProvider = Provider(
-  (ref) => ref.watch(userDataControllerProvider).addReward,
-);
-
-/// Провайдер RewardController
-StateNotifierProvider<RewardController> rewardControllerProvider =
-    StateNotifierProvider(
-  (ref) => RewardController(
-    repo: ref.watch(_rewardRepoProvider),
-    createReward: CreateReward(
-      rewardRepo: ref.watch(_rewardRepoProvider),
-      addRewardToUser: ref.watch(_addRewardToUserProvider),
-    ),
-  ),
-);

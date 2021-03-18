@@ -24,12 +24,12 @@ class _$RewardTearOff {
       {String? id,
       required String title,
       required int cost,
-      bool achieved = false}) {
+      bool collected = false}) {
     return _Reward(
       id: id,
       title: title,
       cost: cost,
-      achieved: achieved,
+      collected: collected,
     );
   }
 
@@ -55,7 +55,7 @@ mixin _$Reward {
   int get cost => throw _privateConstructorUsedError;
 
   /// Награда получена?
-  bool get achieved => throw _privateConstructorUsedError;
+  bool get collected => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -66,7 +66,7 @@ mixin _$Reward {
 abstract class $RewardCopyWith<$Res> {
   factory $RewardCopyWith(Reward value, $Res Function(Reward) then) =
       _$RewardCopyWithImpl<$Res>;
-  $Res call({String? id, String title, int cost, bool achieved});
+  $Res call({String? id, String title, int cost, bool collected});
 }
 
 /// @nodoc
@@ -82,13 +82,13 @@ class _$RewardCopyWithImpl<$Res> implements $RewardCopyWith<$Res> {
     Object? id = freezed,
     Object? title = freezed,
     Object? cost = freezed,
-    Object? achieved = freezed,
+    Object? collected = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed ? _value.id : id as String?,
       title: title == freezed ? _value.title : title as String,
       cost: cost == freezed ? _value.cost : cost as int,
-      achieved: achieved == freezed ? _value.achieved : achieved as bool,
+      collected: collected == freezed ? _value.collected : collected as bool,
     ));
   }
 }
@@ -98,7 +98,7 @@ abstract class _$RewardCopyWith<$Res> implements $RewardCopyWith<$Res> {
   factory _$RewardCopyWith(_Reward value, $Res Function(_Reward) then) =
       __$RewardCopyWithImpl<$Res>;
   @override
-  $Res call({String? id, String title, int cost, bool achieved});
+  $Res call({String? id, String title, int cost, bool collected});
 }
 
 /// @nodoc
@@ -115,13 +115,13 @@ class __$RewardCopyWithImpl<$Res> extends _$RewardCopyWithImpl<$Res>
     Object? id = freezed,
     Object? title = freezed,
     Object? cost = freezed,
-    Object? achieved = freezed,
+    Object? collected = freezed,
   }) {
     return _then(_Reward(
       id: id == freezed ? _value.id : id as String?,
       title: title == freezed ? _value.title : title as String,
       cost: cost == freezed ? _value.cost : cost as int,
-      achieved: achieved == freezed ? _value.achieved : achieved as bool,
+      collected: collected == freezed ? _value.collected : collected as bool,
     ));
   }
 }
@@ -134,7 +134,7 @@ class _$_Reward implements _Reward {
       {this.id,
       required this.title,
       required this.cost,
-      this.achieved = false});
+      this.collected = false});
 
   factory _$_Reward.fromJson(Map<String, dynamic> json) =>
       _$_$_RewardFromJson(json);
@@ -157,11 +157,11 @@ class _$_Reward implements _Reward {
   @override
 
   /// Награда получена?
-  final bool achieved;
+  final bool collected;
 
   @override
   String toString() {
-    return 'Reward(id: $id, title: $title, cost: $cost, achieved: $achieved)';
+    return 'Reward(id: $id, title: $title, cost: $cost, collected: $collected)';
   }
 
   @override
@@ -174,9 +174,9 @@ class _$_Reward implements _Reward {
                 const DeepCollectionEquality().equals(other.title, title)) &&
             (identical(other.cost, cost) ||
                 const DeepCollectionEquality().equals(other.cost, cost)) &&
-            (identical(other.achieved, achieved) ||
+            (identical(other.collected, collected) ||
                 const DeepCollectionEquality()
-                    .equals(other.achieved, achieved)));
+                    .equals(other.collected, collected)));
   }
 
   @override
@@ -185,7 +185,7 @@ class _$_Reward implements _Reward {
       const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(title) ^
       const DeepCollectionEquality().hash(cost) ^
-      const DeepCollectionEquality().hash(achieved);
+      const DeepCollectionEquality().hash(collected);
 
   @JsonKey(ignore: true)
   @override
@@ -203,7 +203,7 @@ abstract class _Reward implements Reward {
       {String? id,
       required String title,
       required int cost,
-      bool achieved}) = _$_Reward;
+      bool collected}) = _$_Reward;
 
   factory _Reward.fromJson(Map<String, dynamic> json) = _$_Reward.fromJson;
 
@@ -224,7 +224,7 @@ abstract class _Reward implements Reward {
   @override
 
   /// Награда получена?
-  bool get achieved => throw _privateConstructorUsedError;
+  bool get collected => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$RewardCopyWith<_Reward> get copyWith => throw _privateConstructorUsedError;

@@ -22,7 +22,7 @@ abstract class Reward with _$Reward, WithId {
     required int cost,
 
     /// Награда получена?
-    @Default(false) bool achieved,
+    @Default(false) bool collected,
   }) = _Reward;
 
   /// Создает из джсона

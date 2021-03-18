@@ -64,4 +64,14 @@ class UserDataController extends StateNotifier<UserData?> {
     await repo.update(userData);
     state = userData;
   }
+
+  /// Уменьшает кол-во баллов юзера
+  Future<void> decreasePerformingPoints(int points) async {
+    assert(state != null);
+    assert(state!.performingPoints >= points);
+    var userData =
+        state!.copyWith(performingPoints: state!.performingPoints - points);
+    await repo.update(userData);
+    state = userData;
+  }
 }

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:yaxxxta/logic/reward/controllers.dart';
 import 'package:yaxxxta/theme.dart';
 import '../deps.dart';
 import '../logic/reward/models.dart';
 
 import '../widgets/core/app_bars.dart';
 import '../widgets/core/bottom_nav.dart';
-import '../widgets/core/padding.dart';
 import '../widgets/core/text.dart';
 import '../widgets/reward/create_modal.dart';
 
@@ -47,14 +47,16 @@ class RewardsPage extends HookWidget {
                   return ListTile(
                     title: BiggerText(text: reward.title),
                     subtitle: SmallerText(text: "${reward.cost} 🅿"),
-                    trailing: !reward.achieved
+                    trailing: !reward.collected
                         ? IconButton(
                             icon: Icon(
                               Icons.done,
                               color: CustomColors.almostBlack,
                             ),
-                            onPressed: () {
-                              //  todo achieve reward
+                            onPressed: () async {
+                              await context
+                                  .read(rewardControllerProvider)
+                                  .collect(reward);
                             },
                           )
                         : null,
