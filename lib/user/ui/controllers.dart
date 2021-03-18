@@ -1,7 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart' show FirebaseFirestore;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tuple/tuple.dart';
+import 'package:yaxxxta/core/utils/dt.dart';
 import 'package:yaxxxta/logic/habit/domain/models.dart';
 import 'package:yaxxxta/logic/reward/models.dart';
+import 'package:yaxxxta/user/infra/db.dart';
 
 import '../../settings/domain/models.dart';
 import '../domain/db.dart';
@@ -75,3 +79,40 @@ class UserDataController extends StateNotifier<UserData?> {
     state = userData;
   }
 }
+
+/// Провайдер репо данных о юзере
+Provider<UserDataRepo> userDataRepoProvider = Provider<UserDataRepo>(
+  (_) =>
+      FirestoreUserDataRepo(FirebaseFirestore.instance.collection("user_data")),
+);
+
+/// Провайдер контроллера данных о юзере
+StateNotifierProvider<UserDataController> userDataControllerProvider =
+    StateNotifierProvider(
+  (ref) => UserDataController(repo: ref.watch(userDataRepoProvider)),
+);
+
+/// Провайдер привязки привычки к данным юзера
+Provider<Future<void> Function(Habit habit)> addHabitToUserProvider =
+    Provider((ref) => ref.watch(userDataControllerProvider).addHabit);
+
+/// Провайдер настроек
+Provider<Settings> settingsProvider =
+    Provider((ref) => ref.watch(userDataControllerProvider.state)!.settings);
+
+/// Дейтренж текущего дня
+Provider<DateRange> todayDateRange = Provider((ref) {
+  var settings = ref.watch(settingsProvider);
+
+  return DateRange.fromDateAndTimes(
+    DateTime.now(),
+    settings.dayStartTime,
+    settings.dayEndTime,
+  );
+});
+
+/// Провайдер настроек начачла и конца дня
+Provider<Tuple2<DateTime, DateTime>> settingsDayTimesProvider = Provider((ref) {
+  var settings = ref.watch(settingsProvider);
+  return Tuple2(settings.dayStartTime, settings.dayEndTime);
+});

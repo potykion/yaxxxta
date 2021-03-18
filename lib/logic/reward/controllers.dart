@@ -4,8 +4,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/reward/db.dart';
 import 'package:yaxxxta/logic/reward/models.dart';
 import 'package:yaxxxta/logic/reward/services.dart';
+import 'package:yaxxxta/user/ui/controllers.dart';
 
-import '../../deps.dart';
 
 /// Контроллер наград
 class RewardController extends StateNotifier<List<Reward>> {

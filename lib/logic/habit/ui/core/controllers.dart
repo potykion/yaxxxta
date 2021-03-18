@@ -1,9 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tuple/tuple.dart';
+import 'package:yaxxxta/logic/habit/infra/db.dart';
+import 'package:yaxxxta/user/ui/controllers.dart';
 import '../../../../core/utils/dt.dart';
 
 import '../../../../core/utils/list.dart';
+import '../../../../deps.dart';
 import '../../domain/db.dart';
 import '../../domain/models.dart';
 import '../../domain/services.dart';
@@ -167,3 +171,40 @@ class HabitPerformingController
     await insert(hp);
   }
 }
+
+/// Регает репо привычек
+Provider<BaseHabitRepo> habitRepoProvider = Provider(
+  (ref) => FirestoreHabitRepo(FirebaseFirestore.instance.collection("habits")),
+);
+
+/// Провайдер контроллера привычек
+StateNotifierProvider<HabitController> habitControllerProvider =
+    StateNotifierProvider(
+  (ref) => HabitController(
+    createOrUpdateHabit: CreateOrUpdateHabit(
+      habitRepo: ref.watch(habitRepoProvider),
+      scheduleSingleHabitNotification: ScheduleSingleHabitNotification(
+        notificationSender: ref.watch(notificationSenderProvider),
+      ),
+      addHabitToUser: ref.watch(addHabitToUserProvider),
+    ),
+    deleteHabit: DeleteHabit(
+      habitRepo: ref.watch(habitRepoProvider),
+      tryDeletePendingNotification:
+          TryDeletePendingNotification(ref.watch(notificationSenderProvider)),
+    ),
+    loadUserHabits: LoadUserHabits(
+      habitRepo: ref.watch(habitRepoProvider),
+    ),
+  ),
+);
+
+/// Провайдер контроллера выполнений привычек
+StateNotifierProvider<HabitPerformingController> habitPerformingController =
+    StateNotifierProvider(
+  (ref) => HabitPerformingController(
+      repo: FireStoreHabitPerformingRepo(
+        FirebaseFirestore.instance.collection("habit_performings"),
+      ),
+      settingsDayTimes: ref.watch(settingsDayTimesProvider)),
+);

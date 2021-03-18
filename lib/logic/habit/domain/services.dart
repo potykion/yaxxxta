@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tuple/tuple.dart';
 import '../../../core/infra/push.dart';
 
+import '../../../deps.dart';
 import 'db.dart';
 import 'models.dart';
 
@@ -194,3 +196,15 @@ class LoadUserHabits {
   Future<List<Habit>> call(List<String> userHabitIds) async =>
       await habitRepo.listByIds(userHabitIds);
 }
+
+
+/// Провайдер функции планирования уведомл. для привычек
+/// без запланированных уведомл.
+Provider<ScheduleNotificationsForHabitsWithoutNotifications>
+scheduleNotificationsForHabitsWithoutNotificationsProvider = Provider(
+      (ref) => ScheduleNotificationsForHabitsWithoutNotifications(
+    notificationSender: ref.watch(notificationSenderProvider),
+  ),
+);
+
+// endregion

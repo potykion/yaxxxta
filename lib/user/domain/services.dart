@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart'
     show FirebaseAuth, GoogleAuthProvider, User;
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 /// Класс для работы с аутентификацией
 class Auth {
@@ -34,3 +35,6 @@ class Auth {
     await FirebaseAuth.instance.signOut();
   }
 }
+
+/// Провайдер аутентификации
+Provider<Auth> authProvider = Provider((_) => Auth());

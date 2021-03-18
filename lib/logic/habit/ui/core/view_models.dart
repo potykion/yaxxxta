@@ -1,7 +1,10 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/core/utils/dt.dart';
+import 'package:yaxxxta/user/ui/controllers.dart';
 
 import '../../domain/models.dart';
+import 'controllers.dart';
 
 part 'view_models.freezed.dart';
 
@@ -94,3 +97,38 @@ HabitProgressStatus buildHabitProgressStatus(
   }
   throw "Хз как быть с currentValue=$currentValue, goalValue=$goalValue";
 }
+
+/// Провайдер выбранной даты
+StateProvider<DateTime> selectedDateProvider =
+StateProvider((ref) => DateTime.now().date());
+
+
+/// Провайдер ВМок для страницы со списком привычек
+Provider<AsyncValue<List<HabitProgressVM>>> listHabitVMsProvider = Provider(
+      (ref) => ref
+      .watch(habitPerformingController.state)
+      .whenData((dateHabitPerformings) {
+    var habits = ref.watch(habitControllerProvider.state);
+
+    var selectedDate = ref.watch(selectedDateProvider).state;
+    var settings = ref.watch(settingsProvider);
+
+    var groupedHabitPerformings = groupBy<HabitPerforming, String>(
+        dateHabitPerformings[selectedDate] ?? [], (hp) => hp.habitId);
+
+    var vms = habits
+        .where((h) => h.matchDate(selectedDate))
+        .map((h) =>
+        HabitProgressVM.build(h, groupedHabitPerformings[h.id] ?? []))
+        .where((h) => settings.showCompleted || !h.isComplete && !h.isExceeded)
+        .toList()
+      ..sort((h1, h2) => h1.performTime == null
+          ? (h2.performTime == null ? 0 : 1)
+          : (h2.performTime == null
+          ? -1
+          : h1.performTime!.compareTo(h2.performTime!)));
+
+    return vms;
+  }),
+);
+

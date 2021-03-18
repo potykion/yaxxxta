@@ -1,4 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:yaxxxta/logic/habit/ui/core/controllers.dart';
+import 'package:yaxxxta/user/ui/controllers.dart';
 
 import '../../../../core/utils/dt.dart';
 import '../../domain/models.dart';
@@ -90,3 +93,39 @@ class HabitHistoryEntry with _$HabitHistoryEntry {
       ? Duration(seconds: value.toInt()).format()
       : value.toInt().toString();
 }
+
+/// Провайдер айди выбранной привычки
+StateProvider<String?> selectedHabitIdProvider = StateProvider((ref) => null);
+
+/// Провайдер ВМ страницы деталей привычки
+Provider<AsyncValue<HabitDetailsPageVM>> habitDetailsPageVMProvider = Provider(
+  (ref) => ref.watch(habitPerformingController.state).whenData((performings) {
+    var habits = ref.watch(habitControllerProvider.state);
+
+    var selectedHabitId = ref.watch(selectedHabitIdProvider).state;
+    var selectedHabit = habits.firstWhere(
+      (h) => h.id == selectedHabitId,
+    );
+    var selectedHabitPerformings = performings.map(
+      (key, value) => MapEntry(
+        key,
+        value.where((hp) => hp.habitId == selectedHabitId).toList(),
+      ),
+    );
+
+    var todaySelectedHabitPerformings =
+        selectedHabitPerformings[ref.watch(todayDateRange).date] ?? [];
+    var progress = HabitProgressVM.build(
+      selectedHabit,
+      todaySelectedHabitPerformings,
+    );
+
+    var history = HabitHistory.fromMap(selectedHabitPerformings);
+
+    return HabitDetailsPageVM(
+      habit: selectedHabit,
+      progress: progress,
+      history: history,
+    );
+  }),
+);
