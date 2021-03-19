@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:yaxxxta/widgets/core/buttons.dart';
 
-import '../../../core/domain/models.dart';
+import '../../../core/models.dart';
 import '../../../core/utils/dt.dart';
 import '../../../../theme.dart';
 import '../../../../widgets/core/card.dart';

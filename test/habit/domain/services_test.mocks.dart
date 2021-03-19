@@ -9,7 +9,7 @@ import 'package:flutter_local_notifications/src/platform_specifics/android/notif
 import 'package:flutter_local_notifications_platform_interface/src/types.dart'
     as _i5;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:yaxxxta/logic/core/infra/push.dart' as _i3;
+import 'package:yaxxxta/logic/core/push.dart' as _i3;
 
 // ignore_for_file: comment_references
 // ignore_for_file: unnecessary_parenthesis

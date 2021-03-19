@@ -5,7 +5,7 @@ import 'package:yaxxxta/logic/habit/domain/models.dart';
 import 'package:yaxxxta/logic/habit/ui/core/controllers.dart';
 import 'package:yaxxxta/logic/habit/ui/form/widgets.dart';
 
-import '../logic/core/domain/models.dart';
+import '../logic/core/models.dart';
 import '../theme.dart';
 import '../widgets/core/app_bars.dart';
 import '../widgets/core/card.dart';

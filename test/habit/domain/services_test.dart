@@ -4,7 +4,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:yaxxxta/logic/core/infra/push.dart';
+import 'package:yaxxxta/logic/core/push.dart';
 import 'package:yaxxxta/logic/habit/domain/models.dart';
 import 'package:yaxxxta/logic/habit/domain/services.dart';
 import 'services_test.mocks.dart';

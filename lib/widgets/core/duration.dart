@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../logic/core/domain/models.dart';
+import '../../logic/core/models.dart';
 
 import 'input.dart';
 import 'padding.dart';
