@@ -2,9 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth, User;
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:yaxxxta/logic/settings/domain/models.dart';
-import 'package:yaxxxta/logic/user/domain/services.dart';
-import 'package:yaxxxta/logic/user/ui/controllers.dart';
+import 'package:yaxxxta/logic/user/controllers.dart';
+import 'package:yaxxxta/logic/user/services.dart';
+import 'package:yaxxxta/logic/user/models.dart';
 
 import '../deps.dart';
 import '../theme.dart';
@@ -23,7 +23,7 @@ class SettingsPage extends HookWidget {
 
     var version = useProvider(versionProvider);
 
-    setSettings(Settings newSettings) {
+    setSettings(AppSettings newSettings) {
       context.read(userDataControllerProvider).updateSettings(newSettings);
     }
 

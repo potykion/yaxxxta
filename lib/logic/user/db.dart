@@ -1,6 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../domain/db.dart';
-import '../domain/models.dart';
+
+import 'models.dart';
+
+/// Репо для работы с данными о юзере
+abstract class UserDataRepo {
+  /// Получает данные юзера по айди юзера
+  Future<UserData?> getByUserId(String userId);
+
+  /// Получает данные юзера по айди девайса
+  Future<UserData?> getByDeviceId(String deviceId);
+
+  /// Создает данные юзера
+  Future<String> create(UserData userData);
+
+  /// Обновляет данные юзера
+  Future<void> update(UserData userData);
+}
 
 /// Фаерстор репо для данных о юзере
 class FirestoreUserDataRepo implements UserDataRepo {
@@ -17,9 +32,9 @@ class FirestoreUserDataRepo implements UserDataRepo {
   Future<UserData?> getByDeviceId(String deviceId) async {
     try {
       var doc = (await _collectionReference
-              .where("deviceIds", arrayContains: deviceId)
-              .where("userId", isNull: true)
-              .get())
+          .where("deviceIds", arrayContains: deviceId)
+          .where("userId", isNull: true)
+          .get())
           .docs
           .first;
 

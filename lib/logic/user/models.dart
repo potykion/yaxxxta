@@ -1,9 +1,37 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:yaxxxta/logic/settings/domain/models.dart';
 
 part 'models.freezed.dart';
-
 part 'models.g.dart';
+
+/// Настроечки
+@freezed
+class AppSettings with _$AppSettings {
+  /// Настроечки
+  const factory AppSettings({
+    /// Показывать выполненные привычки
+    @Default(true) bool showCompleted,
+
+    /// Показывать частично выполненные привычки
+    @Default(true) bool showPartiallyCompleted,
+
+    /// Начало дня
+    required DateTime dayStartTime,
+
+    /// Конец дня
+    required DateTime dayEndTime,
+  }) = _AppSettings;
+
+  /// @nodoc
+  factory AppSettings.fromJson(Map json) =>
+      _$AppSettingsFromJson(Map<String, dynamic>.from(json));
+
+  /// Создает настройки по умолчанию
+  factory AppSettings.createDefault() => AppSettings(
+    dayStartTime: DateTime(2020, 1, 1, 0, 0),
+    dayEndTime: DateTime(2020, 1, 1, 23, 59),
+  );
+}
+
 
 /// Данные о юзере
 @freezed
@@ -25,7 +53,7 @@ abstract class UserData implements _$UserData {
     @Default(<String>[]) List<String> habitIds,
 
     /// Настройки
-    required Settings settings,
+    required AppSettings settings,
 
     /// Баллы, которые можно потратить на вознаграждение
     @Default(0) int performingPoints,
@@ -47,7 +75,7 @@ abstract class UserData implements _$UserData {
       userId: userId,
       deviceIds: [deviceId],
       habitIds: [],
-      settings: Settings.createDefault(),
+      settings: AppSettings.createDefault(),
     );
   }
 }

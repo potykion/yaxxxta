@@ -6,21 +6,21 @@ import 'package:yaxxxta/logic/core/utils/dt.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:yaxxxta/logic/habit/db.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
-import 'package:yaxxxta/logic/settings/domain/models.dart';
 import 'controllers_test.mocks.dart';
+import 'package:yaxxxta/logic/user/models.dart';
 
 @GenerateMocks([BaseHabitPerformingRepo])
 void main() {
   group("NewHabitPerformingController", () {
     late BaseHabitPerformingRepo repo;
-    late Settings settings;
+    late AppSettings settings;
     late DateTime date;
     late DateRange dateRange;
     late Tuple2<DateTime, DateTime> settingsDayTimes;
 
     setUp(() {
       repo = MockBaseHabitPerformingRepo();
-      settings = Settings.createDefault();
+      settings = AppSettings.createDefault();
       date = DateTime(2020, 1, 1);
       settingsDayTimes = Tuple2(settings.dayStartTime, settings.dayEndTime);
       dateRange = DateRange.fromDateAndTimes(

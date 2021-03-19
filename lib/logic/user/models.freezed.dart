@@ -12,6 +12,251 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+AppSettings _$AppSettingsFromJson(Map<String, dynamic> json) {
+  return _AppSettings.fromJson(json);
+}
+
+/// @nodoc
+class _$AppSettingsTearOff {
+  const _$AppSettingsTearOff();
+
+  _AppSettings call(
+      {bool showCompleted = true,
+      bool showPartiallyCompleted = true,
+      required DateTime dayStartTime,
+      required DateTime dayEndTime}) {
+    return _AppSettings(
+      showCompleted: showCompleted,
+      showPartiallyCompleted: showPartiallyCompleted,
+      dayStartTime: dayStartTime,
+      dayEndTime: dayEndTime,
+    );
+  }
+
+  AppSettings fromJson(Map<String, Object> json) {
+    return AppSettings.fromJson(json);
+  }
+}
+
+/// @nodoc
+const $AppSettings = _$AppSettingsTearOff();
+
+/// @nodoc
+mixin _$AppSettings {
+  /// Показывать выполненные привычки
+  bool get showCompleted => throw _privateConstructorUsedError;
+
+  /// Показывать частично выполненные привычки
+  bool get showPartiallyCompleted => throw _privateConstructorUsedError;
+
+  /// Начало дня
+  DateTime get dayStartTime => throw _privateConstructorUsedError;
+
+  /// Конец дня
+  DateTime get dayEndTime => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $AppSettingsCopyWith<AppSettings> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $AppSettingsCopyWith<$Res> {
+  factory $AppSettingsCopyWith(
+          AppSettings value, $Res Function(AppSettings) then) =
+      _$AppSettingsCopyWithImpl<$Res>;
+  $Res call(
+      {bool showCompleted,
+      bool showPartiallyCompleted,
+      DateTime dayStartTime,
+      DateTime dayEndTime});
+}
+
+/// @nodoc
+class _$AppSettingsCopyWithImpl<$Res> implements $AppSettingsCopyWith<$Res> {
+  _$AppSettingsCopyWithImpl(this._value, this._then);
+
+  final AppSettings _value;
+  // ignore: unused_field
+  final $Res Function(AppSettings) _then;
+
+  @override
+  $Res call({
+    Object? showCompleted = freezed,
+    Object? showPartiallyCompleted = freezed,
+    Object? dayStartTime = freezed,
+    Object? dayEndTime = freezed,
+  }) {
+    return _then(_value.copyWith(
+      showCompleted: showCompleted == freezed
+          ? _value.showCompleted
+          : showCompleted as bool,
+      showPartiallyCompleted: showPartiallyCompleted == freezed
+          ? _value.showPartiallyCompleted
+          : showPartiallyCompleted as bool,
+      dayStartTime: dayStartTime == freezed
+          ? _value.dayStartTime
+          : dayStartTime as DateTime,
+      dayEndTime:
+          dayEndTime == freezed ? _value.dayEndTime : dayEndTime as DateTime,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$AppSettingsCopyWith<$Res>
+    implements $AppSettingsCopyWith<$Res> {
+  factory _$AppSettingsCopyWith(
+          _AppSettings value, $Res Function(_AppSettings) then) =
+      __$AppSettingsCopyWithImpl<$Res>;
+  @override
+  $Res call(
+      {bool showCompleted,
+      bool showPartiallyCompleted,
+      DateTime dayStartTime,
+      DateTime dayEndTime});
+}
+
+/// @nodoc
+class __$AppSettingsCopyWithImpl<$Res> extends _$AppSettingsCopyWithImpl<$Res>
+    implements _$AppSettingsCopyWith<$Res> {
+  __$AppSettingsCopyWithImpl(
+      _AppSettings _value, $Res Function(_AppSettings) _then)
+      : super(_value, (v) => _then(v as _AppSettings));
+
+  @override
+  _AppSettings get _value => super._value as _AppSettings;
+
+  @override
+  $Res call({
+    Object? showCompleted = freezed,
+    Object? showPartiallyCompleted = freezed,
+    Object? dayStartTime = freezed,
+    Object? dayEndTime = freezed,
+  }) {
+    return _then(_AppSettings(
+      showCompleted: showCompleted == freezed
+          ? _value.showCompleted
+          : showCompleted as bool,
+      showPartiallyCompleted: showPartiallyCompleted == freezed
+          ? _value.showPartiallyCompleted
+          : showPartiallyCompleted as bool,
+      dayStartTime: dayStartTime == freezed
+          ? _value.dayStartTime
+          : dayStartTime as DateTime,
+      dayEndTime:
+          dayEndTime == freezed ? _value.dayEndTime : dayEndTime as DateTime,
+    ));
+  }
+}
+
+@JsonSerializable()
+
+/// @nodoc
+class _$_AppSettings implements _AppSettings {
+  const _$_AppSettings(
+      {this.showCompleted = true,
+      this.showPartiallyCompleted = true,
+      required this.dayStartTime,
+      required this.dayEndTime});
+
+  factory _$_AppSettings.fromJson(Map<String, dynamic> json) =>
+      _$_$_AppSettingsFromJson(json);
+
+  @JsonKey(defaultValue: true)
+  @override
+
+  /// Показывать выполненные привычки
+  final bool showCompleted;
+  @JsonKey(defaultValue: true)
+  @override
+
+  /// Показывать частично выполненные привычки
+  final bool showPartiallyCompleted;
+  @override
+
+  /// Начало дня
+  final DateTime dayStartTime;
+  @override
+
+  /// Конец дня
+  final DateTime dayEndTime;
+
+  @override
+  String toString() {
+    return 'AppSettings(showCompleted: $showCompleted, showPartiallyCompleted: $showPartiallyCompleted, dayStartTime: $dayStartTime, dayEndTime: $dayEndTime)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _AppSettings &&
+            (identical(other.showCompleted, showCompleted) ||
+                const DeepCollectionEquality()
+                    .equals(other.showCompleted, showCompleted)) &&
+            (identical(other.showPartiallyCompleted, showPartiallyCompleted) ||
+                const DeepCollectionEquality().equals(
+                    other.showPartiallyCompleted, showPartiallyCompleted)) &&
+            (identical(other.dayStartTime, dayStartTime) ||
+                const DeepCollectionEquality()
+                    .equals(other.dayStartTime, dayStartTime)) &&
+            (identical(other.dayEndTime, dayEndTime) ||
+                const DeepCollectionEquality()
+                    .equals(other.dayEndTime, dayEndTime)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(showCompleted) ^
+      const DeepCollectionEquality().hash(showPartiallyCompleted) ^
+      const DeepCollectionEquality().hash(dayStartTime) ^
+      const DeepCollectionEquality().hash(dayEndTime);
+
+  @JsonKey(ignore: true)
+  @override
+  _$AppSettingsCopyWith<_AppSettings> get copyWith =>
+      __$AppSettingsCopyWithImpl<_AppSettings>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$_AppSettingsToJson(this);
+  }
+}
+
+abstract class _AppSettings implements AppSettings {
+  const factory _AppSettings(
+      {bool showCompleted,
+      bool showPartiallyCompleted,
+      required DateTime dayStartTime,
+      required DateTime dayEndTime}) = _$_AppSettings;
+
+  factory _AppSettings.fromJson(Map<String, dynamic> json) =
+      _$_AppSettings.fromJson;
+
+  @override
+
+  /// Показывать выполненные привычки
+  bool get showCompleted => throw _privateConstructorUsedError;
+  @override
+
+  /// Показывать частично выполненные привычки
+  bool get showPartiallyCompleted => throw _privateConstructorUsedError;
+  @override
+
+  /// Начало дня
+  DateTime get dayStartTime => throw _privateConstructorUsedError;
+  @override
+
+  /// Конец дня
+  DateTime get dayEndTime => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  _$AppSettingsCopyWith<_AppSettings> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
 UserData _$UserDataFromJson(Map<String, dynamic> json) {
   return _UserData.fromJson(json);
 }
@@ -25,7 +270,7 @@ class _$UserDataTearOff {
       String? userId,
       List<String> deviceIds = const <String>[],
       List<String> habitIds = const <String>[],
-      required Settings settings,
+      required AppSettings settings,
       int performingPoints = 0,
       List<String> rewardIds = const <String>[]}) {
     return _UserData(
@@ -62,7 +307,7 @@ mixin _$UserData {
   List<String> get habitIds => throw _privateConstructorUsedError;
 
   /// Настройки
-  Settings get settings => throw _privateConstructorUsedError;
+  AppSettings get settings => throw _privateConstructorUsedError;
 
   /// Баллы, которые можно потратить на вознаграждение
   int get performingPoints => throw _privateConstructorUsedError;
@@ -85,11 +330,11 @@ abstract class $UserDataCopyWith<$Res> {
       String? userId,
       List<String> deviceIds,
       List<String> habitIds,
-      Settings settings,
+      AppSettings settings,
       int performingPoints,
       List<String> rewardIds});
 
-  $SettingsCopyWith<$Res> get settings;
+  $AppSettingsCopyWith<$Res> get settings;
 }
 
 /// @nodoc
@@ -117,7 +362,7 @@ class _$UserDataCopyWithImpl<$Res> implements $UserDataCopyWith<$Res> {
           deviceIds == freezed ? _value.deviceIds : deviceIds as List<String>,
       habitIds:
           habitIds == freezed ? _value.habitIds : habitIds as List<String>,
-      settings: settings == freezed ? _value.settings : settings as Settings,
+      settings: settings == freezed ? _value.settings : settings as AppSettings,
       performingPoints: performingPoints == freezed
           ? _value.performingPoints
           : performingPoints as int,
@@ -127,8 +372,8 @@ class _$UserDataCopyWithImpl<$Res> implements $UserDataCopyWith<$Res> {
   }
 
   @override
-  $SettingsCopyWith<$Res> get settings {
-    return $SettingsCopyWith<$Res>(_value.settings, (value) {
+  $AppSettingsCopyWith<$Res> get settings {
+    return $AppSettingsCopyWith<$Res>(_value.settings, (value) {
       return _then(_value.copyWith(settings: value));
     });
   }
@@ -144,12 +389,12 @@ abstract class _$UserDataCopyWith<$Res> implements $UserDataCopyWith<$Res> {
       String? userId,
       List<String> deviceIds,
       List<String> habitIds,
-      Settings settings,
+      AppSettings settings,
       int performingPoints,
       List<String> rewardIds});
 
   @override
-  $SettingsCopyWith<$Res> get settings;
+  $AppSettingsCopyWith<$Res> get settings;
 }
 
 /// @nodoc
@@ -178,7 +423,7 @@ class __$UserDataCopyWithImpl<$Res> extends _$UserDataCopyWithImpl<$Res>
           deviceIds == freezed ? _value.deviceIds : deviceIds as List<String>,
       habitIds:
           habitIds == freezed ? _value.habitIds : habitIds as List<String>,
-      settings: settings == freezed ? _value.settings : settings as Settings,
+      settings: settings == freezed ? _value.settings : settings as AppSettings,
       performingPoints: performingPoints == freezed
           ? _value.performingPoints
           : performingPoints as int,
@@ -226,7 +471,7 @@ class _$_UserData extends _UserData {
   @override
 
   /// Настройки
-  final Settings settings;
+  final AppSettings settings;
   @JsonKey(defaultValue: 0)
   @override
 
@@ -297,7 +542,7 @@ abstract class _UserData extends UserData {
       String? userId,
       List<String> deviceIds,
       List<String> habitIds,
-      required Settings settings,
+      required AppSettings settings,
       int performingPoints,
       List<String> rewardIds}) = _$_UserData;
 
@@ -322,7 +567,7 @@ abstract class _UserData extends UserData {
   @override
 
   /// Настройки
-  Settings get settings => throw _privateConstructorUsedError;
+  AppSettings get settings => throw _privateConstructorUsedError;
   @override
 
   /// Баллы, которые можно потратить на вознаграждение

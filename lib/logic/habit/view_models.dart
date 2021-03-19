@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/core/utils/dt.dart';
-import 'package:yaxxxta/logic/user/ui/controllers.dart';
+import 'package:yaxxxta/logic/user/controllers.dart';
 
 import 'models.dart';
 import 'controllers.dart';

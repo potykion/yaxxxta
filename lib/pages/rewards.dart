@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/reward/controllers.dart';
+import 'package:yaxxxta/logic/user/controllers.dart';
 import 'package:yaxxxta/theme.dart';
-import 'package:yaxxxta/logic/user/ui/controllers.dart';
 import '../logic/reward/models.dart';
 
 import '../widgets/core/app_bars.dart';

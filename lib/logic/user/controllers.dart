@@ -5,11 +5,9 @@ import 'package:tuple/tuple.dart';
 import 'package:yaxxxta/logic/core/utils/dt.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
 import 'package:yaxxxta/logic/reward/models.dart';
-import 'package:yaxxxta/logic/settings/domain/models.dart';
-import 'package:yaxxxta/logic/user/infra/db.dart';
 
-import '../domain/db.dart';
-import '../domain/models.dart';
+import 'db.dart';
+import 'models.dart';
 
 /// Контроллер данных о юзере
 class UserDataController extends StateNotifier<UserData?> {
@@ -44,7 +42,7 @@ class UserDataController extends StateNotifier<UserData?> {
   }
 
   /// Обновляет настройки
-  Future<void> updateSettings(Settings settings) async {
+  Future<void> updateSettings(AppSettings settings) async {
     assert(state != null);
     var newUserData = state!.copyWith(settings: settings);
     await repo.update(newUserData);
@@ -97,7 +95,7 @@ Provider<Future<void> Function(Habit habit)> addHabitToUserProvider =
     Provider((ref) => ref.watch(userDataControllerProvider).addHabit);
 
 /// Провайдер настроек
-Provider<Settings> settingsProvider =
+Provider<AppSettings> settingsProvider =
     Provider((ref) => ref.watch(userDataControllerProvider.state)!.settings);
 
 /// Дейтренж текущего дня
