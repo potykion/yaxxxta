@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:yaxxxta/logic/habit/ui/core/controllers.dart';
-import 'package:yaxxxta/logic/habit/ui/core/widgets.dart';
-import 'package:yaxxxta/logic/habit/ui/details/view_models.dart';
+import 'package:yaxxxta/logic/habit/controllers.dart';
+import 'package:yaxxxta/logic/habit/view_models.dart';
+import 'package:yaxxxta/widgets/habit/habit_chips.dart';
 
 import '../routes.dart';
 import '../widgets/core/app_bars.dart';

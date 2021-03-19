@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:yaxxxta/logic/habit/ui/calendar/widgets.dart';
-import 'package:yaxxxta/logic/habit/ui/core/controllers.dart';
-import 'package:yaxxxta/logic/habit/ui/core/view_models.dart';
+import 'package:yaxxxta/logic/habit/controllers.dart';
+import 'package:yaxxxta/logic/habit/view_models.dart';
+import 'package:yaxxxta/widgets/habit/habit_calendar_page_habit_progress_control.dart';
 
 import '../routes.dart';
 import '../widgets/core/app_bars.dart';

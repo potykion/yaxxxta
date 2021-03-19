@@ -3,9 +3,9 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:tuple/tuple.dart';
 import 'package:yaxxxta/logic/core/utils/dt.dart';
+import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:yaxxxta/logic/habit/db.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
-import 'package:yaxxxta/logic/habit/ui/core/controllers.dart';
 import 'package:yaxxxta/logic/settings/domain/models.dart';
 import 'controllers_test.mocks.dart';
 

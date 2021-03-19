@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:yaxxxta/logic/habit/ui/core/controllers.dart';
-import 'package:yaxxxta/logic/habit/ui/details/view_models.dart';
+import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:yaxxxta/logic/user/ui/controllers.dart';
 
-import '../../../core/utils/dt.dart';
-import '../../../../routes.dart';
-import '../../../../widgets/core/time.dart';
-import '../../models.dart';
-import '../core/view_models.dart';
-import '../core/widgets.dart';
+import '../../logic/core/utils/dt.dart';
+import '../../routes.dart';
+import '../core/time.dart';
+import '../../logic/habit/models.dart';
+import '../../logic/habit/view_models.dart';
+import 'habit_progress_control.dart';
 
 /// Контрол прогресса привычки для страницы календаря
 // ignore: camel_case_types

@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
-import '../../../../widgets/core/input.dart';
 
-import '../../../../theme.dart';
-import '../../models.dart';
+import 'package:flutter/material.dart';
+import 'package:yaxxxta/logic/habit/models.dart';
+import 'package:yaxxxta/widgets/core/input.dart';
+
+import '../../theme.dart';
 
 /// Радио-групп типа привычки
 class HabitTypeRadioGroup extends StatefulWidget {
@@ -38,16 +39,16 @@ class _HabitTypeRadioGroupState extends State<HabitTypeRadioGroup> {
 
   @override
   Widget build(BuildContext context) => Column(
-        children: [
-          if (!widget.setBefore ||
-              widget.setBefore && widget.initial == HabitType.repeats)
-            buildHabitTypeRadio(HabitType.repeats),
-          if (!widget.setBefore) SizedBox(height: 5),
-          if (!widget.setBefore ||
-              widget.setBefore && widget.initial == HabitType.time)
-            buildHabitTypeRadio(HabitType.time),
-        ],
-      );
+    children: [
+      if (!widget.setBefore ||
+          widget.setBefore && widget.initial == HabitType.repeats)
+        buildHabitTypeRadio(HabitType.repeats),
+      if (!widget.setBefore) SizedBox(height: 5),
+      if (!widget.setBefore ||
+          widget.setBefore && widget.initial == HabitType.time)
+        buildHabitTypeRadio(HabitType.time),
+    ],
+  );
 
   Selectable buildHabitTypeRadio(HabitType habitType) {
     late String biggerText;

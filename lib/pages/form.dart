@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
-import 'package:yaxxxta/logic/habit/ui/core/controllers.dart';
-import 'package:yaxxxta/logic/habit/ui/form/widgets.dart';
+import 'package:yaxxxta/widgets/habit/habit_type_radio_group.dart';
 
 import '../logic/core/models.dart';
 import '../theme.dart';

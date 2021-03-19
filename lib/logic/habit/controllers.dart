@@ -4,13 +4,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tuple/tuple.dart';
 import 'package:yaxxxta/logic/habit/db.dart';
 import 'package:yaxxxta/logic/user/ui/controllers.dart';
-import '../../../core/utils/dt.dart';
+import '../core/utils/dt.dart';
 import 'package:yaxxxta/logic/core/utils/list.dart';
 
-import '../../../../deps.dart';
-import '../../db.dart';
-import '../../models.dart';
-import '../../services.dart';
+import '../../deps.dart';
+import 'db.dart';
+import 'models.dart';
+import 'services.dart';
 
 /// Контроллер привычек
 class HabitController extends StateNotifier<List<Habit>> {

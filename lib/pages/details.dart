@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:yaxxxta/logic/habit/ui/core/controllers.dart';
-import 'package:yaxxxta/logic/habit/ui/details/view_models.dart';
+import 'package:yaxxxta/logic/habit/controllers.dart';
+import 'package:yaxxxta/widgets/habit/create_habit_performing_button.dart';
+import 'package:yaxxxta/widgets/habit/habit_actions_button.dart';
+import 'package:yaxxxta/widgets/habit/habit_history_entry_slidable.dart';
+import 'package:yaxxxta/widgets/habit/habit_progress_control.dart';
+import 'package:yaxxxta/widgets/habit/habit_chips.dart';
 
 import '../logic/core/utils/dt.dart';
 import '../deps.dart';
 import '../logic/habit/models.dart';
-import '../logic/habit/ui/core/view_models.dart';
-import '../logic/habit/ui/core/widgets.dart';
-import '../logic/habit/ui/details/widgets.dart';
+import '../logic/habit/view_models.dart';
 import '../widgets/core/app_bars.dart';
 import '../widgets/core/card.dart';
 import '../widgets/core/circular_progress.dart';
