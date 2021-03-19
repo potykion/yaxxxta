@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:yaxxxta/logic/core/utils/dt.dart';
 import 'package:tuple/tuple.dart';
 import 'package:yaxxxta/logic/core/push.dart';
 import '../../deps.dart';
@@ -196,12 +197,54 @@ class LoadUserHabits {
       await habitRepo.listByIds(userHabitIds);
 }
 
+/// Создает выполнение привычки
+class CreateHabitPerforming {
+  /// Репо выполнений привычек
+  final BaseHabitPerformingRepo hpRepo;
+
+  /// Настройки начала и конца дня
+  final Tuple2<DateTime, DateTime> settingsDayTimes;
+
+  /// Начисление баллов юзеру
+  final Future<void> Function() increaseUserPerformingPoints;
+
+  /// Создает выполнение привычки
+  CreateHabitPerforming({
+    required this.hpRepo,
+    required this.settingsDayTimes,
+    required this.increaseUserPerformingPoints,
+  });
+
+  /// Создает выполнение привычки +
+  /// начисляет баллы юзеру, если привычка выполняется впервые за день
+  Future<HabitPerforming> call(HabitPerforming hp) async {
+    var date = hp.performDateTime.date();
+    var dateRange = DateRange.fromDateAndTimes(
+      date,
+      settingsDayTimes.item1,
+      settingsDayTimes.item2,
+    );
+    var dateHPExists = await hpRepo.checkHabitPerformingExistInDateRange(
+      hp.habitId,
+      dateRange.from,
+      dateRange.to,
+    );
+
+    hp = hp.copyWith(id: await hpRepo.insert(hp));
+
+    if (!dateHPExists) {
+      await increaseUserPerformingPoints();
+    }
+
+    return hp;
+  }
+}
 
 /// Провайдер функции планирования уведомл. для привычек
 /// без запланированных уведомл.
 Provider<ScheduleNotificationsForHabitsWithoutNotifications>
-scheduleNotificationsForHabitsWithoutNotificationsProvider = Provider(
-      (ref) => ScheduleNotificationsForHabitsWithoutNotifications(
+    scheduleNotificationsForHabitsWithoutNotificationsProvider = Provider(
+  (ref) => ScheduleNotificationsForHabitsWithoutNotifications(
     notificationSender: ref.watch(notificationSenderProvider),
   ),
 );

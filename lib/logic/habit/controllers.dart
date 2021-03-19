@@ -70,10 +70,14 @@ class HabitPerformingController
   /// Настройки начала и конца дня
   final Tuple2<DateTime, DateTime> settingsDayTimes;
 
+  /// Создает выполнение привычки
+  final CreateHabitPerforming createHabitPerforming;
+
   /// Контроллер выполнений привычек
   HabitPerformingController({
     required this.repo,
     required this.settingsDayTimes,
+    required this.createHabitPerforming,
     Map<DateTime, List<HabitPerforming>> state = const {},
   }) : super(AsyncValue.data(state));
 
@@ -138,12 +142,11 @@ class HabitPerformingController
 
   /// Вставка выполнения
   Future<void> insert(HabitPerforming hp) async {
-    var newState = _createNewState();
+    hp = await createHabitPerforming(hp);
 
-    hp = hp.copyWith(id: await repo.insert(hp));
     var date = _dateFromDateTime(hp.performDateTime);
+    var newState = _createNewState();
     newState[date] = [...(newState[date] ?? []), hp];
-
     state = AsyncValue.data(newState);
   }
 
@@ -202,9 +205,21 @@ StateNotifierProvider<HabitController> habitControllerProvider =
 /// Провайдер контроллера выполнений привычек
 StateNotifierProvider<HabitPerformingController> habitPerformingController =
     StateNotifierProvider(
-  (ref) => HabitPerformingController(
-      repo: FireStoreHabitPerformingRepo(
-        FirebaseFirestore.instance.collection("habit_performings"),
+  (ref) {
+    var repo = FireStoreHabitPerformingRepo(
+      FirebaseFirestore.instance.collection("habit_performings"),
+    );
+    var settingsDayTimes = ref.watch(settingsDayTimesProvider);
+
+    return HabitPerformingController(
+      repo: repo,
+      settingsDayTimes: settingsDayTimes,
+      createHabitPerforming: CreateHabitPerforming(
+        hpRepo: repo,
+        settingsDayTimes: settingsDayTimes,
+        increaseUserPerformingPoints:
+            ref.watch(increaseUserPerformingPointsProvider),
       ),
-      settingsDayTimes: ref.watch(settingsDayTimesProvider)),
+    );
+  },
 );

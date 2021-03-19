@@ -76,6 +76,15 @@ class UserDataController extends StateNotifier<UserData?> {
     await repo.update(userData);
     state = userData;
   }
+
+  /// Увеличивает кол-во баллов юзера
+  Future<void> increaseUserPerformingPoints([int points = 1]) async {
+    assert(state != null);
+    var userData =
+        state!.copyWith(performingPoints: state!.performingPoints + points);
+    await repo.update(userData);
+    state = userData;
+  }
 }
 
 /// Провайдер репо данных о юзере
@@ -114,3 +123,10 @@ Provider<Tuple2<DateTime, DateTime>> settingsDayTimesProvider = Provider((ref) {
   var settings = ref.watch(settingsProvider);
   return Tuple2(settings.dayStartTime, settings.dayEndTime);
 });
+
+
+/// Провайдер, который увеличивает кол-во баллов юзера
+Provider<Future<void> Function([int points])>
+    increaseUserPerformingPointsProvider = Provider(
+  (ref) => ref.watch(userDataControllerProvider).increaseUserPerformingPoints,
+);

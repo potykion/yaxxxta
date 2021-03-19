@@ -6,6 +6,7 @@ import 'package:yaxxxta/logic/core/utils/dt.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:yaxxxta/logic/habit/db.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
+import 'package:yaxxxta/logic/habit/services.dart';
 import 'controllers_test.mocks.dart';
 import 'package:yaxxxta/logic/user/models.dart';
 
@@ -17,6 +18,7 @@ void main() {
     late DateTime date;
     late DateRange dateRange;
     late Tuple2<DateTime, DateTime> settingsDayTimes;
+    late CreateHabitPerforming createHabitPerforming;
 
     setUp(() {
       repo = MockBaseHabitPerformingRepo();
@@ -27,6 +29,12 @@ void main() {
         date,
         settings.dayStartTime,
         settings.dayEndTime,
+      );
+
+      createHabitPerforming = CreateHabitPerforming(
+        hpRepo: repo,
+        settingsDayTimes: settingsDayTimes,
+        increaseUserPerformingPoints: () async {},
       );
     });
 
@@ -42,6 +50,7 @@ void main() {
       var controller = HabitPerformingController(
         repo: repo,
         settingsDayTimes: settingsDayTimes,
+        createHabitPerforming: createHabitPerforming,
       );
 
       await controller.loadDateHabitPerformings(date);
@@ -72,6 +81,7 @@ void main() {
       var controller = HabitPerformingController(
         repo: repo,
         settingsDayTimes: settingsDayTimes,
+        createHabitPerforming: createHabitPerforming,
         state: {
           DateTime(2020, 1, 1): [hp2]
         },
@@ -105,6 +115,7 @@ void main() {
       var controller = HabitPerformingController(
         repo: repo,
         settingsDayTimes: settingsDayTimes,
+        createHabitPerforming: createHabitPerforming,
         state: {
           DateTime(2020, 1, 1): [hp2]
         },
@@ -137,6 +148,7 @@ void main() {
       var controller = HabitPerformingController(
         repo: repo,
         settingsDayTimes: settingsDayTimes,
+        createHabitPerforming: createHabitPerforming,
       );
 
       await controller.loadSelectedHabitPerformings(hp1.habitId);
@@ -160,6 +172,7 @@ void main() {
       var controller = HabitPerformingController(
         repo: repo,
         settingsDayTimes: settingsDayTimes,
+        createHabitPerforming: createHabitPerforming,
       );
 
       await controller.insert(hp1);
@@ -182,6 +195,7 @@ void main() {
       var controller = HabitPerformingController(
           repo: repo,
           settingsDayTimes: settingsDayTimes,
+          createHabitPerforming: createHabitPerforming,
           state: {
             DateTime(2020, 1, 1): [hp1],
           });
@@ -206,6 +220,7 @@ void main() {
       var controller = HabitPerformingController(
         repo: repo,
         settingsDayTimes: settingsDayTimes,
+        createHabitPerforming: createHabitPerforming,
         state: {
           DateTime(2020, 1, 1): [hp1]
         },
