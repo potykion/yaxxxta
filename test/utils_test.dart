@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:yaxxxta/core/utils/dt.dart';
-import 'package:yaxxxta/core/utils/num.dart';
+import 'package:yaxxxta/logic/core/utils/dt.dart';
+import 'package:yaxxxta/logic/core/utils/num.dart';
 
 void main() {
   test("Форматирование дюрейшена", () {

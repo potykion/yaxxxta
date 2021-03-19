@@ -5,7 +5,7 @@ import 'package:yaxxxta/logic/habit/ui/core/controllers.dart';
 import 'package:yaxxxta/logic/habit/ui/details/view_models.dart';
 import 'package:yaxxxta/user/ui/controllers.dart';
 
-import '../../../../core/utils/dt.dart';
+import '../../../core/utils/dt.dart';
 import '../../../../routes.dart';
 import '../../../../widgets/core/time.dart';
 import '../../domain/models.dart';

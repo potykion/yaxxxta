@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tuple/tuple.dart';
-import '../../../core/infra/push.dart';
+import '../../core/infra/push.dart';
 
 import '../../../deps.dart';
 import 'db.dart';

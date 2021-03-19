@@ -4,7 +4,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:package_info/package_info.dart';
 
-import 'core/infra/push.dart';
+import 'logic/core/infra/push.dart';
 
 /// Плагин для отправки локальных пушей
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =

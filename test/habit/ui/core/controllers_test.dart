@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:tuple/tuple.dart';
-import 'package:yaxxxta/core/utils/dt.dart';
+import 'package:yaxxxta/logic/core/utils/dt.dart';
 import 'package:yaxxxta/logic/habit/domain/db.dart';
 import 'package:yaxxxta/logic/habit/domain/models.dart';
 import 'package:yaxxxta/logic/habit/ui/core/controllers.dart';

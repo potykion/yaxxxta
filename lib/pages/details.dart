@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/habit/ui/core/controllers.dart';
 import 'package:yaxxxta/logic/habit/ui/details/view_models.dart';
 
-import '../core/utils/dt.dart';
+import '../logic/core/utils/dt.dart';
 import '../deps.dart';
 import '../logic/habit/domain/models.dart';
 import '../logic/habit/ui/core/view_models.dart';

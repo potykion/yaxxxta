@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:json_annotation/json_annotation.dart';
-import '../../../core/domain/models.dart';
-import '../../../core/utils/dt.dart';
+import '../../core/domain/models.dart';
+import '../../core/utils/dt.dart';
 
 part 'models.g.dart';
 

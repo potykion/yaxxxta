@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:yaxxxta/core/infra/firebase.dart';
+import 'package:yaxxxta/logic/core/infra/firebase.dart';
 
 import 'models.dart';
 

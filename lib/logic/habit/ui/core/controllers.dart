@@ -4,9 +4,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tuple/tuple.dart';
 import 'package:yaxxxta/logic/habit/infra/db.dart';
 import 'package:yaxxxta/user/ui/controllers.dart';
-import '../../../../core/utils/dt.dart';
+import '../../../core/utils/dt.dart';
+import 'package:yaxxxta/logic/core/utils/list.dart';
 
-import '../../../../core/utils/list.dart';
 import '../../../../deps.dart';
 import '../../domain/db.dart';
 import '../../domain/models.dart';

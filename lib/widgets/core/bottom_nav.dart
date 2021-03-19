@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:tuple/tuple.dart';
 
-import '../../core/utils/list.dart';
+import 'package:yaxxxta/logic/core/utils/list.dart';
 import '../../routes.dart';
 import '../../theme.dart';
 

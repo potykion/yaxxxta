@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:yaxxxta/core/domain/models.dart';
+import 'package:yaxxxta/logic/core/domain/models.dart';
 import '../utils/list.dart';
 
 /// Firebase / Firestore репо

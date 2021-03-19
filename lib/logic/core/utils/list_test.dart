@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:yaxxxta/core/utils/list.dart';
+import 'list.dart';
 
 void main() {
   test("chunked", () {
