@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/reward/db.dart';
 import 'package:yaxxxta/logic/reward/models.dart';
 import 'package:yaxxxta/logic/reward/services.dart';
-import 'package:yaxxxta/user/ui/controllers.dart';
+import 'package:yaxxxta/logic/user/ui/controllers.dart';
 
 
 /// Контроллер наград

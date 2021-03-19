@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import '../../settings/domain/models.dart';
+import 'package:yaxxxta/logic/settings/domain/models.dart';
 
 part 'models.freezed.dart';
 

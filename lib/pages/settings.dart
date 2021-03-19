@@ -2,11 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth, User;
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:yaxxxta/user/domain/services.dart';
-import 'package:yaxxxta/user/ui/controllers.dart';
+import 'package:yaxxxta/logic/settings/domain/models.dart';
+import 'package:yaxxxta/logic/user/domain/services.dart';
+import 'package:yaxxxta/logic/user/ui/controllers.dart';
 
 import '../deps.dart';
-import '../settings/domain/models.dart';
 import '../theme.dart';
 import '../widgets/core/app_bars.dart';
 import '../widgets/core/bottom_nav.dart';

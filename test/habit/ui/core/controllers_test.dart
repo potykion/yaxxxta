@@ -6,7 +6,7 @@ import 'package:yaxxxta/logic/core/utils/dt.dart';
 import 'package:yaxxxta/logic/habit/domain/db.dart';
 import 'package:yaxxxta/logic/habit/domain/models.dart';
 import 'package:yaxxxta/logic/habit/ui/core/controllers.dart';
-import 'package:yaxxxta/settings/domain/models.dart';
+import 'package:yaxxxta/logic/settings/domain/models.dart';
 import 'controllers_test.mocks.dart';
 
 @GenerateMocks([BaseHabitPerformingRepo])

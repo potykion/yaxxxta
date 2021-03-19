@@ -13,8 +13,8 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:yaxxxta/logic/habit/domain/services.dart';
 import 'package:yaxxxta/logic/habit/ui/core/controllers.dart';
 import 'package:yaxxxta/logic/reward/controllers.dart';
-import 'package:yaxxxta/user/domain/services.dart';
-import 'package:yaxxxta/user/ui/controllers.dart';
+import 'package:yaxxxta/logic/user/domain/services.dart';
+import 'package:yaxxxta/logic/user/ui/controllers.dart';
 
 import '../deps.dart';
 import '../routes.dart';

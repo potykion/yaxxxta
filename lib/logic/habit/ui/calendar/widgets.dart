@@ -3,7 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yaxxxta/logic/habit/ui/core/controllers.dart';
 import 'package:yaxxxta/logic/habit/ui/details/view_models.dart';
-import 'package:yaxxxta/user/ui/controllers.dart';
+import 'package:yaxxxta/logic/user/ui/controllers.dart';
 
 import '../../../core/utils/dt.dart';
 import '../../../../routes.dart';

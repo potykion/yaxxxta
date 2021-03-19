@@ -5,9 +5,9 @@ import 'package:tuple/tuple.dart';
 import 'package:yaxxxta/logic/core/utils/dt.dart';
 import 'package:yaxxxta/logic/habit/domain/models.dart';
 import 'package:yaxxxta/logic/reward/models.dart';
-import 'package:yaxxxta/user/infra/db.dart';
+import 'package:yaxxxta/logic/settings/domain/models.dart';
+import 'package:yaxxxta/logic/user/infra/db.dart';
 
-import '../../settings/domain/models.dart';
 import '../domain/db.dart';
 import '../domain/models.dart';
 
