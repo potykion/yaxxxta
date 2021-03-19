@@ -10,7 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info/package_info.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
-import 'package:yaxxxta/logic/habit/domain/services.dart';
+import 'package:yaxxxta/logic/habit/services.dart';
 import 'package:yaxxxta/logic/habit/ui/core/controllers.dart';
 import 'package:yaxxxta/logic/reward/controllers.dart';
 import 'package:yaxxxta/logic/user/domain/services.dart';

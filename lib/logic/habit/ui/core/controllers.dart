@@ -2,15 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tuple/tuple.dart';
-import 'package:yaxxxta/logic/habit/infra/db.dart';
+import 'package:yaxxxta/logic/habit/db.dart';
 import 'package:yaxxxta/logic/user/ui/controllers.dart';
 import '../../../core/utils/dt.dart';
 import 'package:yaxxxta/logic/core/utils/list.dart';
 
 import '../../../../deps.dart';
-import '../../domain/db.dart';
-import '../../domain/models.dart';
-import '../../domain/services.dart';
+import '../../db.dart';
+import '../../models.dart';
+import '../../services.dart';
 
 /// Контроллер привычек
 class HabitController extends StateNotifier<List<Habit>> {

@@ -2,9 +2,8 @@ import 'dart:convert';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tuple/tuple.dart';
-import '../../core/push.dart';
-
-import '../../../deps.dart';
+import 'package:yaxxxta/logic/core/push.dart';
+import '../../deps.dart';
 import 'db.dart';
 import 'models.dart';
 

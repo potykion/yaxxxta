@@ -13,7 +13,7 @@ import '../../../../widgets/core/new_progress.dart';
 import '../../../../widgets/core/padding.dart';
 import '../../../../widgets/core/text.dart';
 import '../../../../widgets/core/time.dart';
-import '../../domain/models.dart';
+import '../../models.dart';
 import 'view_models.dart';
 
 /// Контрол повторов выполнений привычки

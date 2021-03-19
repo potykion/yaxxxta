@@ -3,7 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/core/utils/dt.dart';
 import 'package:yaxxxta/logic/user/ui/controllers.dart';
 
-import '../../domain/models.dart';
+import '../../models.dart';
 import 'controllers.dart';
 
 part 'view_models.freezed.dart';

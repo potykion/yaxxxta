@@ -5,8 +5,8 @@
 import 'dart:async' as _i3;
 
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:yaxxxta/logic/habit/domain/db.dart' as _i2;
-import 'package:yaxxxta/logic/habit/domain/models.dart' as _i4;
+import 'package:yaxxxta/logic/habit/db.dart' as _i2;
+import 'package:yaxxxta/logic/habit/models.dart' as _i4;
 
 // ignore_for_file: comment_references
 // ignore_for_file: unnecessary_parenthesis

@@ -4,7 +4,7 @@ import 'package:yaxxxta/logic/habit/ui/core/controllers.dart';
 import 'package:yaxxxta/logic/user/ui/controllers.dart';
 
 import '../../../core/utils/dt.dart';
-import '../../domain/models.dart';
+import '../../models.dart';
 import '../core/view_models.dart';
 
 part 'view_models.freezed.dart';

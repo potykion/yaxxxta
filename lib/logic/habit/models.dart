@@ -1,9 +1,8 @@
 import 'dart:math';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:json_annotation/json_annotation.dart';
-import '../../core/models.dart';
-import '../../core/utils/dt.dart';
+import 'package:yaxxxta/logic/core/models.dart';
+import 'package:yaxxxta/logic/core/utils/dt.dart';
 
 part 'models.g.dart';
 

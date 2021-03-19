@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tuple/tuple.dart';
 import 'package:yaxxxta/logic/core/utils/dt.dart';
-import 'package:yaxxxta/logic/habit/domain/models.dart';
+import 'package:yaxxxta/logic/habit/models.dart';
 import 'package:yaxxxta/logic/reward/models.dart';
 import 'package:yaxxxta/logic/settings/domain/models.dart';
 import 'package:yaxxxta/logic/user/infra/db.dart';

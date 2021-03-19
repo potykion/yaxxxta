@@ -8,7 +8,7 @@ import 'package:yaxxxta/logic/user/ui/controllers.dart';
 import '../../../core/utils/dt.dart';
 import '../../../../routes.dart';
 import '../../../../widgets/core/time.dart';
-import '../../domain/models.dart';
+import '../../models.dart';
 import '../core/view_models.dart';
 import '../core/widgets.dart';
 

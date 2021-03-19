@@ -7,7 +7,7 @@ import '../../../core/utils/dt.dart';
 import '../../../../routes.dart';
 import '../../../../theme.dart';
 import '../../../../widgets/core/text.dart';
-import '../../domain/models.dart';
+import '../../models.dart';
 import '../core/widgets.dart';
 import 'view_models.dart';
 

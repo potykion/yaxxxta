@@ -6,7 +6,7 @@ import 'package:yaxxxta/logic/habit/ui/details/view_models.dart';
 
 import '../logic/core/utils/dt.dart';
 import '../deps.dart';
-import '../logic/habit/domain/models.dart';
+import '../logic/habit/models.dart';
 import '../logic/habit/ui/core/view_models.dart';
 import '../logic/habit/ui/core/widgets.dart';
 import '../logic/habit/ui/details/widgets.dart';

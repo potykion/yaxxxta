@@ -1,7 +1,43 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:yaxxxta/logic/core/db.dart';
-import '../domain/db.dart';
-import '../domain/models.dart';
+
+import 'models.dart';
+
+/// Репо для работы с привычками
+abstract class BaseHabitRepo {
+  /// Вставляет привычку в бд, возвращая айди
+  Future<String> insert(Habit habit);
+
+  /// Выводит список привычек
+  Future<List<Habit>> listByIds(List<String> habitIds);
+
+  /// Получает привычку по айди
+  @deprecated
+  Future<Habit> get(String id);
+
+  /// Обновляет привычку в бд
+  Future<void> update(Habit habit);
+
+  /// Удаляет привычку
+  Future<void> deleteById(String id);
+}
+
+/// Репо для работы с выполнениями привычек
+abstract class BaseHabitPerformingRepo {
+  /// Вставляет выполнение привычки в бд, возвращая айди
+  Future<String> insert(HabitPerforming performing);
+
+  /// Выводит список выполнений в промежутке
+  Future<List<HabitPerforming>> list(DateTime from, DateTime to);
+
+  /// Выводит список выполнений для привычки
+  Future<List<HabitPerforming>> listByHabit(String habitId);
+
+  /// Удаляет выполнения привычки в промежутке
+  Future<void> delete(DateTime from, DateTime to);
+}
+
 
 /// Фаерстор репо для привычек
 class FirestoreHabitRepo extends FirebaseRepo<Habit> implements BaseHabitRepo {
@@ -32,12 +68,12 @@ class FireStoreHabitPerformingRepo extends FirebaseRepo<HabitPerforming>
   @override
   Future<List<HabitPerforming>> list(DateTime from, DateTime to) async =>
       (await collectionReference
-              .where(
-                "performDateTime",
-                isGreaterThanOrEqualTo: from,
-                isLessThanOrEqualTo: to,
-              )
-              .get())
+          .where(
+        "performDateTime",
+        isGreaterThanOrEqualTo: from,
+        isLessThanOrEqualTo: to,
+      )
+          .get())
           .docs
           .map(entityFromFirebase)
           .toList();
@@ -54,12 +90,12 @@ class FireStoreHabitPerformingRepo extends FirebaseRepo<HabitPerforming>
     var batch = FirebaseFirestore.instance.batch();
 
     var performingsToDelete = (await collectionReference
-            .where(
-              "performDateTime",
-              isGreaterThanOrEqualTo: from,
-              isLessThanOrEqualTo: to,
-            )
-            .get())
+        .where(
+      "performDateTime",
+      isGreaterThanOrEqualTo: from,
+      isLessThanOrEqualTo: to,
+    )
+        .get())
         .docs;
     for (var hpDoc in performingsToDelete) {
       batch.delete(hpDoc.reference);
@@ -75,7 +111,7 @@ class FireStoreHabitPerformingRepo extends FirebaseRepo<HabitPerforming>
     return HabitPerforming.fromJson(
       data
         ..["performDateTime"] =
-            (data["performDateTime"] as Timestamp).toDate().toIso8601String()
+        (data["performDateTime"] as Timestamp).toDate().toIso8601String()
         ..["id"] = doc.id,
     );
   }
@@ -85,3 +121,4 @@ class FireStoreHabitPerformingRepo extends FirebaseRepo<HabitPerforming>
       performing.toJson()
         ..["performDateTime"] = Timestamp.fromDate(performing.performDateTime);
 }
+
