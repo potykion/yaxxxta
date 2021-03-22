@@ -9,12 +9,12 @@ import '../core/padding.dart';
 import '../core/text.dart';
 
 /// Модалька создания награды
-class CreateRewardModal extends HookWidget {
+class RewardModal extends HookWidget {
   /// Начальная награда
   final Reward? initial;
 
   /// Модалька создания награды
-  CreateRewardModal({this.initial});
+  RewardModal({this.initial});
 
   @override
   Widget build(BuildContext context) {

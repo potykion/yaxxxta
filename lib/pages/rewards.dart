@@ -9,7 +9,7 @@ import '../logic/reward/models.dart';
 import '../widgets/core/app_bars.dart';
 import '../widgets/core/bottom_nav.dart';
 import '../widgets/core/text.dart';
-import '../widgets/reward/create_modal.dart';
+import '../widgets/reward/reward_modal.dart';
 
 /// Страничка с наградами
 class RewardsPage extends HookWidget {
@@ -54,7 +54,7 @@ class RewardsPage extends HookWidget {
           var reward = await showModalBottomSheet<Reward?>(
             context: context,
             isScrollControlled: true,
-            builder: (context) => CreateRewardModal(),
+            builder: (context) => RewardModal(),
           );
           if (reward != null) {
             await context.read(rewardControllerProvider).create(reward);

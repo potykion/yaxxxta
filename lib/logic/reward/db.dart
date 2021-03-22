@@ -11,6 +11,9 @@ abstract class RewardRepo {
   /// Обновляет в бд
   Future<void> update(Reward entity);
 
+  /// Удаляет по айди
+  Future<void> deleteById(String rewardId);
+
   /// Получает по айди
   Future<List<Reward>> listByIds(List<String> ids);
 }

@@ -49,6 +49,24 @@ class RewardController extends StateNotifier<List<Reward>> {
             : reward
     ];
   }
+
+  /// Обновляет награду
+  Future<void> update(Reward rewardToUpdate) async {
+    await repo.update(rewardToUpdate);
+    state = [
+      for (var reward in state)
+        reward.id == rewardToUpdate.id ? rewardToUpdate : reward
+    ];
+  }
+
+  /// Удаляет награду
+  Future<void> delete(Reward rewardToDelete) async {
+    await repo.deleteById(rewardToDelete.id!);
+    state = [
+      for (var reward in state)
+        if (reward.id != rewardToDelete.id) reward
+    ];
+  }
 }
 
 var _rewardRepoProvider = Provider<RewardRepo>(
