@@ -7,7 +7,9 @@ part 'models.g.dart';
 
 /// Награда
 @freezed
-abstract class Reward with _$Reward, WithId {
+abstract class Reward implements _$Reward, WithId {
+  const Reward._();
+
   /// Награда
   const factory Reward({
     /// Айди
@@ -27,4 +29,9 @@ abstract class Reward with _$Reward, WithId {
 
   /// Создает из джсона
   factory Reward.fromJson(Map<String, dynamic> json) => _$RewardFromJson(json);
+
+  /// Может ли награда быть получена?
+  bool canBeCollected(int userPerformingPoints) {
+    return cost <= userPerformingPoints;
+  }
 }

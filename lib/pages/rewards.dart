@@ -3,7 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/reward/controllers.dart';
 import 'package:yaxxxta/logic/user/controllers.dart';
-import 'package:yaxxxta/theme.dart';
+import 'package:yaxxxta/widgets/reward/reward_card.dart';
 import '../logic/reward/models.dart';
 
 import '../widgets/core/app_bars.dart';
@@ -16,7 +16,7 @@ class RewardsPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var userData = useProvider(userDataControllerProvider.state)!;
-    var rewards = useProvider(rewardControllerProvider.state);
+    var rewards = useProvider(sortedRewardsProvider(userData.performingPoints));
 
     return Scaffold(
       appBar: buildAppBar(
@@ -41,27 +41,10 @@ class RewardsPage extends HookWidget {
               )
             : ListView.builder(
                 itemCount: rewards.length,
-                itemBuilder: (context, index) {
-                  var reward = rewards[index];
-
-                  return ListTile(
-                    title: BiggerText(text: reward.title),
-                    subtitle: SmallerText(text: "${reward.cost} 🅿"),
-                    trailing: !reward.collected
-                        ? IconButton(
-                            icon: Icon(
-                              Icons.done,
-                              color: CustomColors.almostBlack,
-                            ),
-                            onPressed: () async {
-                              await context
-                                  .read(rewardControllerProvider)
-                                  .collect(reward);
-                            },
-                          )
-                        : null,
-                  );
-                },
+                itemBuilder: (context, index) => RewardCard(
+                  reward: rewards[index],
+                  userPerformingPoints: userData.performingPoints,
+                ),
               ),
       ),
       bottomNavigationBar: AppBottomNavigationBar(),

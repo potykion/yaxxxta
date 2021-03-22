@@ -69,11 +69,19 @@ class BiggerText extends StatelessWidget {
   /// Выравнивание текста
   final TextAlign align;
 
+  /// Опциональный TextDecoration
+  final TextDecoration? decoration;
+
+  /// Опциональный цвет
+  final Color? color;
+
   /// Создает текст
   const BiggerText({
     Key? key,
     required this.text,
     this.align = TextAlign.start,
+    this.decoration,
+    this.color = CustomColors.almostBlack,
   }) : super(key: key);
 
   @override
@@ -82,7 +90,8 @@ class BiggerText extends StatelessWidget {
         style: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.bold,
-          color: CustomColors.almostBlack,
+          color: color,
+          decoration: decoration,
         ),
         textAlign: align,
       );

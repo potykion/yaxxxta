@@ -129,12 +129,13 @@ class __$RewardCopyWithImpl<$Res> extends _$RewardCopyWithImpl<$Res>
 @JsonSerializable()
 
 /// @nodoc
-class _$_Reward implements _Reward {
+class _$_Reward extends _Reward {
   const _$_Reward(
       {this.id,
       required this.title,
       required this.cost,
-      this.collected = false});
+      this.collected = false})
+      : super._();
 
   factory _$_Reward.fromJson(Map<String, dynamic> json) =>
       _$_$_RewardFromJson(json);
@@ -198,7 +199,8 @@ class _$_Reward implements _Reward {
   }
 }
 
-abstract class _Reward implements Reward {
+abstract class _Reward extends Reward {
+  const _Reward._() : super._();
   const factory _Reward(
       {String? id,
       required String title,

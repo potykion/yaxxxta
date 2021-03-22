@@ -1,11 +1,12 @@
+import 'package:yaxxxta/logic/core/utils/compare.dart';
 import 'package:meta/meta.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tuple/tuple.dart';
 import 'package:yaxxxta/logic/reward/db.dart';
 import 'package:yaxxxta/logic/reward/models.dart';
 import 'package:yaxxxta/logic/reward/services.dart';
 import 'package:yaxxxta/logic/user/controllers.dart';
-
 
 /// Контроллер наград
 class RewardController extends StateNotifier<List<Reward>> {
@@ -79,4 +80,17 @@ StateNotifierProvider<RewardController> rewardControllerProvider =
       ),
     );
   },
+);
+
+/// Награды, отсортированные по получению и возможности получения
+ProviderFamily<List<Reward>, int> sortedRewardsProvider =
+    Provider.family<List<Reward>, int>(
+  (ref, userPerformingPoints) => ref.watch(rewardControllerProvider.state)
+    ..sort(
+      (r1, r2) =>
+          Tuple2<bool, int>(r1.collected, -(userPerformingPoints - r1.cost))
+              .compareTo(
+        Tuple2<bool, int>(r2.collected, -(userPerformingPoints - r2.cost)),
+      ),
+    ),
 );
