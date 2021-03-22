@@ -1,4 +1,4 @@
-import 'package:device_info/device_info.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -29,7 +29,7 @@ GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 late PackageInfo packageInfo;
 
 /// Инфа о девайсе
-late AndroidDeviceInfo androidInfo;
+AndroidDeviceInfo? androidInfo;
 
 /// Провайдер версии
 Provider<String> versionProvider =

@@ -25,16 +25,19 @@ class FirestoreUserDataRepo implements UserDataRepo {
   FirestoreUserDataRepo(this._collectionReference);
 
   @override
-  Future<String> create(UserData userData) async =>
-      (await _collectionReference.add(userData.toJson())).id;
+  Future<String> create(UserData userData) async {
+    var userDataJson = userData.toJson();
+    var doc = await _collectionReference.add(userDataJson);
+    return doc.id;
+  }
 
   @override
   Future<UserData?> getByDeviceId(String deviceId) async {
     try {
       var doc = (await _collectionReference
-          .where("deviceIds", arrayContains: deviceId)
-          .where("userId", isNull: true)
-          .get())
+              .where("deviceIds", arrayContains: deviceId)
+              .where("userId", isNull: true)
+              .get())
           .docs
           .first;
 

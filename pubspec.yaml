@@ -66,7 +66,7 @@ dependencies:
   cloud_firestore: ^1.0.1
 
   # Инфа о девайсе
-  device_info: ^2.0.0
+  device_info_plus: ^1.0.0
 
   # Лайтовый персистенс
   shared_preferences: ^2.0.4
