@@ -1,5 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hive/hive.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/core/db.dart';
+import 'package:yaxxxta/logic/core/utils/dt.dart';
+import 'package:yaxxxta/logic/user/controllers.dart';
 
 import 'models.dart';
 
@@ -45,9 +49,9 @@ abstract class BaseHabitPerformingRepo {
 }
 
 /// Фаерстор репо для привычек
-class FirestoreHabitRepo extends FirebaseRepo<Habit> implements BaseHabitRepo {
+class FirebaseHabitRepo extends FirebaseRepo<Habit> implements BaseHabitRepo {
   /// Фаерстор репо для привычек
-  FirestoreHabitRepo(CollectionReference collectionReference)
+  FirebaseHabitRepo(CollectionReference collectionReference)
       : super(collectionReference);
 
   @override
@@ -64,10 +68,10 @@ class FirestoreHabitRepo extends FirebaseRepo<Habit> implements BaseHabitRepo {
 }
 
 /// Фаер-стор репо для выполнений привычек
-class FireStoreHabitPerformingRepo extends FirebaseRepo<HabitPerforming>
+class FirebaseHabitPerformingRepo extends FirebaseRepo<HabitPerforming>
     implements BaseHabitPerformingRepo {
   /// Фаер-стор репо для выполнений привычек
-  FireStoreHabitPerformingRepo(CollectionReference collectionReference)
+  FirebaseHabitPerformingRepo(CollectionReference collectionReference)
       : super(collectionReference);
 
   @override
@@ -143,3 +147,75 @@ class FireStoreHabitPerformingRepo extends FirebaseRepo<HabitPerforming>
           .size >
       0;
 }
+
+/// Хайв репо привычек
+class HiveHabitRepo extends HiveRepo<Habit> implements BaseHabitRepo {
+  /// Хайв репо привычек
+  HiveHabitRepo(Box<Map<String, dynamic>> box) : super(box);
+
+  @override
+  Map<String, dynamic> entityToHive(Habit entity) => entity.toJson();
+
+  @override
+  Future<Habit> get(String id) async => entityFromHive(id, box.get(id)!);
+
+  @override
+  Future<List<Habit>> listByIds(List<String> habitIds) async =>
+      habitIds.map((id) => entityFromHive(id, box.get(id)!)).toList();
+
+  @override
+  Habit entityFromHive(String id, Map<String, dynamic> hiveData) {
+    return Habit.fromJson(hiveData..["id"] = id);
+  }
+}
+
+/// Хайв репо выполнений привычек
+class HiveHabitPerformingRepo extends HiveRepo<HabitPerforming>
+    implements BaseHabitPerformingRepo {
+  /// Хайв репо выполнений привычек
+  HiveHabitPerformingRepo(Box<Map<String, dynamic>> box) : super(box);
+
+  @override
+  Future<bool> checkHabitPerformingExistInDateRange(
+          String habitId, DateTime from, DateTime to) async =>
+      (await list(from, to)).any((hp) => hp.habitId == habitId);
+
+  @override
+  Future<void> delete(DateTime from, DateTime to) async {
+    await box.deleteAll((await list(from, to)).map<String>((hp) => hp.id!));
+  }
+
+  @override
+  Map<String, dynamic> entityToHive(HabitPerforming entity) => entity.toJson();
+
+  @override
+  Future<List<HabitPerforming>> list(DateTime from, DateTime to) async =>
+      _getAll().where((hp) => hp.performDateTime.isBetween(from, to)).toList();
+
+  @override
+  Future<List<HabitPerforming>> listByHabit(String habitId) async =>
+      _getAll().where((hp) => hp.habitId == habitId).toList();
+
+  Iterable<HabitPerforming> _getAll() =>
+      box.keys.map((dynamic id) => entityFromHive(id as String, box.get(id)!));
+
+  @override
+  HabitPerforming entityFromHive(String id, Map<String, dynamic> hiveData) =>
+      HabitPerforming.fromJson(hiveData..["id"] = id);
+}
+
+/// Провайдер репо привычек
+Provider<BaseHabitRepo> habitRepoProvider = Provider(
+  (ref) => ref.watch(isFreeProvider)
+      ? HiveHabitRepo(Hive.box<Map<String, dynamic>>("habits"))
+      : FirebaseHabitRepo(FirebaseFirestore.instance.collection("habits")),
+);
+
+/// Провайдер репо выполнений привычек
+Provider<BaseHabitPerformingRepo> habitPerformingRepoProvider = Provider(
+  (ref) => ref.watch(isFreeProvider)
+      ? HiveHabitPerformingRepo(
+          Hive.box<Map<String, dynamic>>("habit_performings"))
+      : FirebaseHabitPerformingRepo(
+          FirebaseFirestore.instance.collection("habit_performings")),
+);

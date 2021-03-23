@@ -1,14 +1,11 @@
-import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart' as fs;
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:package_info/package_info.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:yaxxxta/logic/habit/controllers.dart';
@@ -33,13 +30,14 @@ class LoadingPage extends HookWidget {
       WidgetsBinding.instance!.addPostFrameCallback((_) async {
         loadingTextState.value = "Грузим настройки...";
 
-        var deviceInfo = DeviceInfoPlugin();
-
-        late String deviceId;
+        await Hive.initFlutter();
+        await Hive.openBox<Map<String, dynamic>>('user_data');
+        await Hive.openBox<Map<String, dynamic>>('habits');
+        await Hive.openBox<Map<String, dynamic>>('habit_performings');
+        await Hive.openBox<Map<String, dynamic>>('rewards');
 
         // пуши
         if (kIsWeb) {
-          deviceId = (await deviceInfo.webBrowserInfo).userAgent;
         } else {
           await flutterLocalNotificationsPlugin
               .initialize(InitializationSettings(
@@ -47,19 +45,6 @@ class LoadingPage extends HookWidget {
             iOS: IOSInitializationSettings(),
             macOS: MacOSInitializationSettings(),
           ));
-
-          androidInfo = await deviceInfo.androidInfo;
-
-          /// инфа о аппе
-          packageInfo = await PackageInfo.fromPlatform();
-
-          if (!androidInfo!.isPhysicalDevice!) {
-            var host = Platform.isAndroid ? '10.0.2.2:8080' : 'localhost:8080';
-            fs.FirebaseFirestore.instance.settings =
-                fs.Settings(host: host, sslEnabled: false);
-          }
-
-          deviceId = androidInfo!.id!;
         }
 
         /// тайм-зоны
@@ -69,13 +54,10 @@ class LoadingPage extends HookWidget {
         /// фаер-бейз
         await Firebase.initializeApp();
 
-
         var auth = context.read(authProvider);
         var user = auth.tryGetUser() ?? (await auth.signInAnon());
-        await context.read(userDataControllerProvider).load(
-          user: user,
-          deviceId: deviceId,
-        );
+        context.read(userProvider).state = user;
+        await context.read(userDataControllerProvider).load(user: user);
         var userData = context.read(userDataControllerProvider.state)!;
         // endregion
 

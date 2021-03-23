@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart' show FirebaseFirestore;
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:hive/hive.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tuple/tuple.dart';
 import 'package:yaxxxta/logic/core/utils/dt.dart';
@@ -23,19 +24,18 @@ class UserDataController extends StateNotifier<UserData?> {
   /// Грузит данные о юзеере
   Future<void> load({
     required User user,
-    required String deviceId,
   }) async {
-    /// Если анон юзер => берем по девайсу
+    /// Если анон юзер => не юзаем фаербейз => берем первого юзера из бд
     /// Иначе по юзер айди
     var userData = user.isAnonymous
-        ? await repo.getByDeviceId(deviceId)
+        ? await repo.first()
         : await repo.getByUserId(user.uid);
 
     /// Если нет UserData => анон юзер в первый раз =>
     /// создаем для девайса UserData
     if (userData == null) {
-      userData = UserData.blank(deviceId: deviceId);
-      userData = userData.copyWith(id: await repo.create(userData));
+      userData = UserData.blank();
+      userData = userData.copyWith(id: await repo.insert(userData));
     }
 
     state = userData;
@@ -87,10 +87,28 @@ class UserDataController extends StateNotifier<UserData?> {
   }
 }
 
+/// Провайдер юзера
+StateProvider<User?> userProvider = StateProvider<User?>((ref) => null);
+
+/// Провайдер инфы о том, используется ли бесплатная версия приложения
+/// true - юзер не авторизован или аноним
+Provider<bool> isFreeProvider =
+    Provider((ref) => ref.watch(userProvider).state?.isAnonymous ?? true);
+
+/// Провайдер FirebaseUserDataRepo
+Provider<FirebaseUserDataRepo> firebaseUserDataRepoProvider = Provider((ref) =>
+    FirebaseUserDataRepo(FirebaseFirestore.instance.collection("user_data")));
+
+/// Провайдер HiveUserDataRepo
+Provider<HiveUserDataRepo> hiveUserDataRepoProvider = Provider(
+  (ref) => HiveUserDataRepo(Hive.box<Map<String, dynamic>>("user_data")),
+);
+
 /// Провайдер репо данных о юзере
 Provider<UserDataRepo> userDataRepoProvider = Provider<UserDataRepo>(
-  (_) =>
-      FirestoreUserDataRepo(FirebaseFirestore.instance.collection("user_data")),
+  (ref) => ref.watch(isFreeProvider)
+      ? ref.watch(hiveUserDataRepoProvider)
+      : ref.watch(firebaseUserDataRepoProvider),
 );
 
 /// Провайдер контроллера данных о юзере
@@ -123,7 +141,6 @@ Provider<Tuple2<DateTime, DateTime>> settingsDayTimesProvider = Provider((ref) {
   var settings = ref.watch(settingsProvider);
   return Tuple2(settings.dayStartTime, settings.dayEndTime);
 });
-
 
 /// Провайдер, который увеличивает кол-во баллов юзера
 Provider<Future<void> Function([int points])>

@@ -1,6 +1,5 @@
 import 'package:yaxxxta/logic/core/utils/compare.dart';
 import 'package:meta/meta.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tuple/tuple.dart';
 import 'package:yaxxxta/logic/reward/db.dart';
@@ -69,11 +68,6 @@ class RewardController extends StateNotifier<List<Reward>> {
   }
 }
 
-var _rewardRepoProvider = Provider<RewardRepo>(
-  (ref) => FirebaseRewardRepo(
-    FirebaseFirestore.instance.collection("rewards"),
-  ),
-);
 var _addRewardToUserProvider = Provider(
   (ref) => ref.watch(userDataControllerProvider).addReward,
 );
@@ -85,7 +79,7 @@ var _decreasePerformingPointsProvider = Provider(
 StateNotifierProvider<RewardController> rewardControllerProvider =
     StateNotifierProvider(
   (ref) {
-    var repo = ref.watch(_rewardRepoProvider);
+    var repo = ref.watch(rewardRepoProvider);
     return RewardController(
       repo: repo,
       createReward: CreateReward(

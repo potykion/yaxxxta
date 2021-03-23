@@ -87,6 +87,12 @@ extension DateTimeUtils on DateTime {
         hour ?? this.hour,
         minute ?? this.minute,
       );
+
+  /// Находится ли дейттайм между двух дейттаймов
+  bool isBetween(DateTime from, DateTime to) =>
+      isAfter(from) ||
+      isAtSameMomentAs(from) && isBefore(to) ||
+      isAtSameMomentAs(to);
 }
 
 /// Дейт-ренж - класс с двумя дейт-таймами: дейт-тайм с, дейт-тайм по

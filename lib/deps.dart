@@ -1,8 +1,6 @@
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:package_info/package_info.dart';
 
 import 'logic/core/push.dart';
 
@@ -25,12 +23,3 @@ Provider<NotificationSender> notificationSenderProvider = Provider(
 /// Используется для получения контекста страницы, после вызова Navigator.pop
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-/// Инфа о приложении
-late PackageInfo packageInfo;
-
-/// Инфа о девайсе
-AndroidDeviceInfo? androidInfo;
-
-/// Провайдер версии
-Provider<String> versionProvider =
-    Provider((ref) => "${packageInfo.version}+${packageInfo.buildNumber}");

@@ -1,5 +1,7 @@
+import 'package:hive/hive.dart';
 import 'package:meta/meta.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:uuid/uuid.dart';
 import 'package:yaxxxta/logic/core/models.dart';
 import 'utils/list.dart';
 
@@ -56,4 +58,38 @@ abstract class FirebaseRepo<T extends WithId> {
     ))
         .expand((qs) => qs.docs);
   }
+}
+
+/// Базовый класс для хайв репозиториев
+abstract class HiveRepo<T extends WithId> {
+  /// Хайв коробка (типа табличка)
+  @protected
+  final Box<Map<String, dynamic>> box;
+  final Uuid _uuid = Uuid();
+
+  /// Базовый класс для хайв репозиториев
+  HiveRepo(this.box);
+
+  /// Вставляет в бд
+  Future<String> insert(T entity) async {
+    var id = _uuid.v1();
+    await box.put(id, entityToHive(entity));
+    return id;
+  }
+
+  /// Обновляет в бд
+  Future<void> update(T entity) async {
+    await box.put(entity.id, entityToHive(entity));
+  }
+
+  /// Удаляет по айди в бд
+  Future<void> deleteById(String id) => box.delete(id);
+
+  /// Конвертит сущность в хайв словарик
+  @protected
+  Map<String, dynamic> entityToHive(T entity);
+
+  /// Создает сущность из хайв словарика
+  @protected
+  T entityFromHive(String id, Map<String, dynamic> hiveData);
 }

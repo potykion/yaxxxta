@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:yaxxxta/logic/core/models.dart';
 
 part 'models.freezed.dart';
 part 'models.g.dart';
@@ -35,7 +36,7 @@ class AppSettings with _$AppSettings {
 
 /// Данные о юзере
 @freezed
-abstract class UserData implements _$UserData {
+abstract class UserData implements _$UserData, WithId {
   const UserData._();
 
   /// Данные о юзере
@@ -45,9 +46,6 @@ abstract class UserData implements _$UserData {
 
     /// Айди юзера
     String? userId,
-
-    /// Айди девайсов
-    @Default(<String>[]) List<String> deviceIds,
 
     /// Айди привычек
     @Default(<String>[]) List<String> habitIds,
@@ -68,12 +66,10 @@ abstract class UserData implements _$UserData {
 
   /// Создает пустышку
   factory UserData.blank({
-    required String deviceId,
     String? userId,
   }) {
     return UserData(
       userId: userId,
-      deviceIds: [deviceId],
       habitIds: [],
       settings: AppSettings.createDefault(),
     );

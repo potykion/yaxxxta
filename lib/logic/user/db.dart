@@ -1,60 +1,36 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hive/hive.dart';
+import 'package:yaxxxta/logic/core/db.dart';
 
 import 'models.dart';
 
 /// Репо для работы с данными о юзере
 abstract class UserDataRepo {
+  /// Получает первую запись с данными юзера
+  Future<UserData?> first();
+
   /// Получает данные юзера по айди юзера
   Future<UserData?> getByUserId(String userId);
 
-  /// Получает данные юзера по айди девайса
-  Future<UserData?> getByDeviceId(String deviceId);
-
   /// Создает данные юзера
-  Future<String> create(UserData userData);
+  Future<String> insert(UserData userData);
 
   /// Обновляет данные юзера
   Future<void> update(UserData userData);
 }
 
 /// Фаерстор репо для данных о юзере
-class FirestoreUserDataRepo implements UserDataRepo {
-  final CollectionReference _collectionReference;
-
+class FirebaseUserDataRepo extends FirebaseRepo<UserData>
+    implements UserDataRepo {
   /// Фаерстор репо для данных о юзере
-  FirestoreUserDataRepo(this._collectionReference);
-
-  @override
-  Future<String> create(UserData userData) async {
-    var userDataJson = userData.toJson();
-    var doc = await _collectionReference.add(userDataJson);
-    return doc.id;
-  }
-
-  @override
-  Future<UserData?> getByDeviceId(String deviceId) async {
-    try {
-      var doc = (await _collectionReference
-              .where("deviceIds", arrayContains: deviceId)
-              .where("userId", isNull: true)
-              .get())
-          .docs
-          .first;
-
-      var userData = UserData.fromJson(doc.data()!).copyWith(id: doc.id);
-
-      return userData;
-      // ignore: avoid_catching_errors
-    } on StateError {
-      return null;
-    }
-  }
+  FirebaseUserDataRepo(CollectionReference collectionReference)
+      : super(collectionReference);
 
   @override
   Future<UserData?> getByUserId(String userId) async {
     try {
       var doc =
-          (await _collectionReference.where("userId", isEqualTo: userId).get())
+          (await collectionReference.where("userId", isEqualTo: userId).get())
               .docs
               .first;
 
@@ -68,6 +44,36 @@ class FirestoreUserDataRepo implements UserDataRepo {
   }
 
   @override
-  Future<void> update(UserData userData) =>
-      _collectionReference.doc(userData.id).update(userData.toJson());
+  UserData entityFromFirebase(DocumentSnapshot doc) =>
+      UserData.fromJson(doc.data()!..["id"] = doc.id);
+
+  @override
+  Map<String, dynamic> entityToFirebase(UserData entity) => entity.toJson();
+
+  @override
+  Future<UserData?> first() {
+    throw "Нельзя использовать этот метод с FirestoreUserDataRepo, "
+        "используй HiveUserDataRepo или другие репо.";
+  }
+}
+
+/// Хайв репо для данных о юзере
+class HiveUserDataRepo extends HiveRepo<UserData> implements UserDataRepo {
+  /// Хайв репо для данных о юзере
+  HiveUserDataRepo(Box<Map<String, dynamic>> box) : super(box);
+
+  @override
+  Future<UserData?> first() async => box.isNotEmpty
+      ? entityFromHive(box.keyAt(0) as String, box.getAt(0)!)
+      : null;
+
+  @override
+  Future<UserData?> getByUserId(String userId) => first();
+
+  @override
+  Map<String, dynamic> entityToHive(UserData entity) => entity.toJson();
+
+  @override
+  UserData entityFromHive(String id, Map<String, dynamic> hiveData) =>
+      UserData.fromJson(hiveData..["id"] = id);
 }

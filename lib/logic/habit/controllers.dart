@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tuple/tuple.dart';
@@ -175,11 +174,6 @@ class HabitPerformingController
   }
 }
 
-/// Регает репо привычек
-Provider<BaseHabitRepo> habitRepoProvider = Provider(
-  (ref) => FirestoreHabitRepo(FirebaseFirestore.instance.collection("habits")),
-);
-
 /// Провайдер контроллера привычек
 StateNotifierProvider<HabitController> habitControllerProvider =
     StateNotifierProvider(
@@ -206,9 +200,7 @@ StateNotifierProvider<HabitController> habitControllerProvider =
 StateNotifierProvider<HabitPerformingController> habitPerformingController =
     StateNotifierProvider(
   (ref) {
-    var repo = FireStoreHabitPerformingRepo(
-      FirebaseFirestore.instance.collection("habit_performings"),
-    );
+    var repo = ref.watch(habitPerformingRepoProvider);
     var settingsDayTimes = ref.watch(settingsDayTimesProvider);
 
     return HabitPerformingController(
