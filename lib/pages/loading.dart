@@ -37,8 +37,7 @@ class LoadingPage extends HookWidget {
         await Hive.openBox<Map<String, dynamic>>('rewards');
 
         // пуши
-        if (kIsWeb) {
-        } else {
+        if (!kIsWeb) {
           await flutterLocalNotificationsPlugin
               .initialize(InitializationSettings(
             android: AndroidInitializationSettings('app_icon'),
@@ -66,10 +65,12 @@ class LoadingPage extends HookWidget {
         // region
         await context.read(habitControllerProvider).load(userData.habitIds);
 
-        await context
-            .read(scheduleNotificationsForHabitsWithoutNotificationsProvider)(
-          context.read(habitControllerProvider.state),
-        );
+        if (!kIsWeb) {
+          await context
+              .read(scheduleNotificationsForHabitsWithoutNotificationsProvider)(
+            context.read(habitControllerProvider.state),
+          );
+        }
 
         await context
             .read(habitPerformingController)

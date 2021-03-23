@@ -3,11 +3,31 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 /// Отправщик уведомлений
-class NotificationSender {
+abstract class NotificationSender {
+  /// Планирует отправку уведомления через {sendAfterSeconds} секунд
+  Future<int> schedule({
+    required String title,
+    String? body,
+    required int sendAfterSeconds,
+    AndroidNotificationDetails? androidChannel,
+    bool repeatDaily = false,
+    bool repeatWeekly = false,
+    String? payload,
+  });
+
+  /// Отменяет уведомление
+  Future<void> cancel(int id);
+
+  /// Получает все уведомления на очереди
+  Future<List<PendingNotificationRequest>> getAllPending();
+}
+
+/// Отправщик уведомлений, использующий FlutterLocalNotificationsPlugin
+class LocalNotificationSender implements NotificationSender {
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
 
   /// Отправщик уведомлений
-  NotificationSender(this._flutterLocalNotificationsPlugin);
+  LocalNotificationSender(this._flutterLocalNotificationsPlugin);
 
   /// Андроид канал для уведомлений о завершении работы таймера
   AndroidNotificationDetails get timeProgressNotification =>
@@ -66,4 +86,26 @@ class NotificationSender {
   /// Получает все уведомления на очереди
   Future<List<PendingNotificationRequest>> getAllPending() async =>
       await _flutterLocalNotificationsPlugin.pendingNotificationRequests();
+}
+
+/// Отправщик уведомлений, который ничо не делает
+/// Локальные уведомления не поддерживаются в вебе => можно использовать это
+class FakeNotificationSender implements NotificationSender {
+  @override
+  Future<void> cancel(int id) async {}
+
+  @override
+  Future<List<PendingNotificationRequest>> getAllPending() async => [];
+
+  @override
+  Future<int> schedule({
+    required String title,
+    String? body,
+    required int sendAfterSeconds,
+    AndroidNotificationDetails? androidChannel,
+    bool repeatDaily = false,
+    bool repeatWeekly = false,
+    String? payload,
+  }) async =>
+      0;
 }
