@@ -19,8 +19,6 @@ import '../widgets/habit/date_swiper.dart';
 class HabitCalendarPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    var alKey = useState(GlobalKey<AnimatedListState>());
-
     var listHabitVMs = useProvider(listHabitVMsProvider);
 
     return Scaffold(
@@ -33,7 +31,6 @@ class HabitCalendarPage extends HookWidget {
               icon: Icon(Icons.list),
               onPressed: () async {
                 await Navigator.of(context).pushNamed(Routes.list);
-                alKey.value = GlobalKey<AnimatedListState>();
               }),
         ],
       ),
@@ -52,17 +49,14 @@ class HabitCalendarPage extends HookWidget {
             child: DateSwiper(
               (context) => listHabitVMs.maybeWhen(
                 data: (vms) => vms.isNotEmpty
-                    ? AnimatedList(
-                        key: alKey.value,
-                        initialItemCount: vms.length,
-                        itemBuilder: (context, index, animation) =>
-                            vms.length > index
-                                ? HabitCalendarPage_HabitProgressControl(
-                                    index: index,
-                                    vm: vms[index],
-                                    animation: animation,
-                                  )
-                                : Container(),
+                    ? ListView.builder(
+                        itemCount: vms.length,
+                        itemBuilder: (context, index) => vms.length > index
+                            ? HabitCalendarPage_HabitProgressControl(
+                                index: index,
+                                vm: vms[index],
+                              )
+                            : Container(),
                       )
                     : Center(
                         child: Column(
@@ -85,7 +79,6 @@ class HabitCalendarPage extends HookWidget {
         child: Icon(Icons.add, size: 50),
         onPressed: () async {
           await Navigator.of(context).pushNamed(Routes.form);
-          alKey.value = GlobalKey<AnimatedListState>();
         },
       ),
       bottomNavigationBar: AppBottomNavigationBar(),

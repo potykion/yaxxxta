@@ -20,83 +20,38 @@ class HabitCalendarPage_HabitProgressControl extends HookWidget {
   /// Вм прогресса привычки
   final HabitProgressVM vm;
 
-  /// Анимация при создании/удалении контрола
-  final Animation<double> animation;
-
-  /// Улален ли контрол
-  final bool removed;
-
   /// Контрол прогресса привычки для страницы календаря
   const HabitCalendarPage_HabitProgressControl({
     Key? key,
     required this.index,
     required this.vm,
-    required this.animation,
-    this.removed = false,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => FadeTransition(
-        opacity: animation,
-        child: GestureDetector(
-          onTap: removed
-              ? null
-              : () async {
-                  context.read(selectedHabitIdProvider).state = vm.id;
-                  var deleted = await Navigator.of(context)
-                          .pushNamed(Routes.details) as bool? ??
-                      false;
-                  if (deleted) {
-                    _removeSelf(context);
-                  }
-                },
-          child: HabitProgressControl(
-            key: Key(vm.id),
-            repeatTitle: vm.performTime != null
-                ? "${vm.performTimeStr}: ${vm.title}"
-                : vm.title,
-            vm: vm,
-            onRepeatIncrement: removed
-                ? null
-                : (incrementValue, progressStatus, [date]) async {
-                    context.read(habitPerformingController).insert(
-                          HabitPerforming(
-                            habitId: vm.id,
-                            performValue: incrementValue,
-                            performDateTime:
-                                await _computePerformDateTime(context, date),
-                          ),
-                        );
-
-                    var settings = context
-                        .read(userDataControllerProvider.state)!
-                        .settings;
-                    var hideHabit = !settings.showCompleted &&
-                            (progressStatus == HabitProgressStatus.complete ||
-                                progressStatus == HabitProgressStatus.exceed) ||
-                        !settings.showCompleted &&
-                            (progressStatus == HabitProgressStatus.partial);
-
-                    if (hideHabit) {
-                      _removeSelf(context);
-                    }
-                  },
-            initialDate: context.read(selectedDateProvider).state,
-          ),
+  Widget build(BuildContext context) => GestureDetector(
+        onTap: () async {
+          context.read(selectedHabitIdProvider).state = vm.id;
+          await Navigator.of(context).pushNamed(Routes.details);
+        },
+        child: HabitProgressControl(
+          key: Key(vm.id),
+          repeatTitle: vm.performTime != null
+              ? "${vm.performTimeStr}: ${vm.title}"
+              : vm.title,
+          vm: vm,
+          onRepeatIncrement: (incrementValue, progressStatus, [date]) async {
+            context.read(habitPerformingController).insert(
+                  HabitPerforming(
+                    habitId: vm.id,
+                    performValue: incrementValue,
+                    performDateTime:
+                        await _computePerformDateTime(context, date),
+                  ),
+                );
+          },
+          initialDate: context.read(selectedDateProvider).state,
         ),
       );
-
-  void _removeSelf(BuildContext context) {
-    AnimatedList.of(context).removeItem(
-          index,
-          (_, animation) => HabitCalendarPage_HabitProgressControl(
-            index: index,
-            vm: vm,
-            animation: animation,
-            removed: true,
-          ),
-        );
-  }
 
   Future<DateTime> _computePerformDateTime(
     BuildContext context,
