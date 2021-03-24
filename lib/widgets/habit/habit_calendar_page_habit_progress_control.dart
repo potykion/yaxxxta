@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
-import 'package:yaxxxta/logic/user/controllers.dart';
+import 'package:yaxxxta/widgets/core/padding.dart';
+import 'package:yaxxxta/widgets/core/text.dart';
 
 import '../../logic/core/utils/dt.dart';
 import '../../routes.dart';
@@ -35,9 +36,15 @@ class HabitCalendarPage_HabitProgressControl extends HookWidget {
         },
         child: HabitProgressControl(
           key: Key(vm.id),
-          repeatTitle: vm.performTime != null
-              ? "${vm.performTimeStr}: ${vm.title}"
-              : vm.title,
+          title: Row(
+            children: [
+              BiggerText(text: vm.title),
+              SmallPadding.between(),
+              if (vm.performTime != null) ...[
+                SmallerText(text: "🔔 ${vm.performTimeStr}")
+              ],
+            ],
+          ),
           vm: vm,
           onRepeatIncrement: (incrementValue, progressStatus, [date]) async {
             context.read(habitPerformingController).insert(

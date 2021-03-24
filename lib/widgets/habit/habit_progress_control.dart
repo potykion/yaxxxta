@@ -4,7 +4,6 @@ import 'package:yaxxxta/logic/habit/view_models.dart';
 import 'package:yaxxxta/widgets/core/card.dart';
 import 'package:yaxxxta/widgets/core/new_progress.dart';
 import 'package:yaxxxta/widgets/core/padding.dart';
-import 'package:yaxxxta/widgets/core/text.dart';
 
 /// Контрол повторов выполнений привычки
 class HabitProgressControl extends StatelessWidget {
@@ -18,8 +17,8 @@ class HabitProgressControl extends StatelessWidget {
     DateTime? dateTime,
   ])? onRepeatIncrement;
 
-  /// Название на карточке с повтором
-  final String? repeatTitle;
+  /// Текст на карточке с повтором
+  final Widget title;
 
   /// Начальная дата
   final DateTime? initialDate;
@@ -29,13 +28,13 @@ class HabitProgressControl extends StatelessWidget {
     required Key key,
     required this.vm,
     required this.onRepeatIncrement,
-    this.repeatTitle,
+    required this.title,
     this.initialDate,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ContainerCard(children: [
-        ListTile(title: BiggerText(text: repeatTitle ?? vm.title), dense: true),
+        ListTile(title: title, dense: true),
         SmallPadding(
           child: (vm.type == HabitType.repeats
               ? RepeatProgressControl(

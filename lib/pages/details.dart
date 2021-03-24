@@ -99,8 +99,7 @@ class HabitDetailsPage extends HookWidget {
                 habitId: habit.id!,
                 performValue: incrementValue,
               ));
-
         },
-        repeatTitle: "Сегодня",
+        title: BiggerText(text: "Сегодня"),
       );
 }

@@ -32,7 +32,7 @@ class SmallerText extends StatelessWidget {
             : light
                 ? CustomColors.lightGrey
                 : CustomColors.grey,
-        fontSize: 14,
+        fontSize: 12,
       ),
     );
   }
