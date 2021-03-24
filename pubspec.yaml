@@ -78,6 +78,10 @@ dependencies:
   hive: ^2.0.0
   hive_flutter: ^1.0.0
 
+  # Открытие ссылочек
+  url_launcher: ^6.0.2
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

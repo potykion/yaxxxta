@@ -11,12 +11,12 @@ class ContainerCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(10),
-      child: Container(
-        decoration: BoxDecoration(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+      child: Card(
+        shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
-          color: Colors.white,
         ),
+        elevation: 0,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
