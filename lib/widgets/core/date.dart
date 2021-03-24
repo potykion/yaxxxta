@@ -32,8 +32,8 @@ class DateCarousel extends HookWidget {
       initialScrollOffset: -MediaQuery.of(context).size.width / 2 + 30,
     ));
 
-    /// При смене {initial} даты сдвигаем дополнительно
-    /// на 60 * разницу между текущим днем и {initial}
+    /// При смене [initial] даты сдвигаем дополнительно
+    /// на 60 * разницу между текущим днем и [initial]
     useValueChanged<DateTime, void>(
       initial,
       (_, __) {

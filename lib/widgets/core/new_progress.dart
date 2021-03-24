@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yaxxxta/widgets/core/padding.dart';
+import 'package:yaxxxta/logic/core/utils/list.dart';
 import '../../logic/habit/view_models.dart';
 
 import '../../logic/core/utils/dt.dart';
@@ -45,18 +46,18 @@ class RepeatProgressControl extends HookWidget {
 
     return _BaseProgressControl(
       child: Row(
-        children: [
-          InkWell(
-            child: Icon(Icons.plus_one),
-            onTap: () {
-              currentValueState.value += 1;
-              onValueIncrement(
-                1,
-                buildHabitProgressStatus(currentValueState.value, goalValue),
-              );
-            },
-          ),
-          SmallPadding.between(),
+        children: <Widget>[
+          if (!(currentValueState.value == 0 && goalValue == 1))
+            InkWell(
+              child: Icon(Icons.plus_one),
+              onTap: () {
+                currentValueState.value += 1;
+                onValueIncrement(
+                  1,
+                  buildHabitProgressStatus(currentValueState.value, goalValue),
+                );
+              },
+            ),
           if (currentValueState.value < goalValue)
             GestureDetector(
               child: Icon(Icons.done),
@@ -68,7 +69,7 @@ class RepeatProgressControl extends HookWidget {
                 );
               },
             )
-        ],
+        ].joinObject(SmallPadding.between()).toList(),
       ),
       progressPercentage: min(currentValueState.value / goalValue, 1),
       progressStr: "${currentValueState.value.toInt()} / ${goalValue.toInt()}",
@@ -179,7 +180,7 @@ class TimeProgressControl extends HookWidget {
       progressStr: progressStr,
       progressPercentage: min(currentValueState.value / goalValue, 1),
       child: Row(
-        children: [
+        children: <Widget>[
           InkWell(
             child: (timerState.value?.isActive ?? false)
                 ? Icon(Icons.pause)
@@ -232,7 +233,6 @@ class TimeProgressControl extends HookWidget {
               }
             },
           ),
-          SmallPadding.between(),
           if (currentValueState.value < goalValue)
             InkWell(
               child: Icon(
@@ -253,7 +253,7 @@ class TimeProgressControl extends HookWidget {
                       );
                     },
             )
-        ],
+        ].joinObject(SmallPadding.between()).toList(),
       ),
     );
   }

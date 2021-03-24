@@ -17,4 +17,13 @@ extension ListExtensions<E> on List<E> {
       yield sublist(i, i + size > length ? length : i + size);
     }
   }
+
+  /// Джойнит элементы, испальзуя кастомный объект
+  ///
+  /// ```dart
+  /// [1, 2, 3].joinObject(4).toList() == [1, 4, 2, 4, 3]
+  /// ```
+  Iterable<E> joinObject(E obj) =>
+      mapWithIndex((item, index) => [item, if (index != length - 1) obj])
+          .expand((element) => element);
 }

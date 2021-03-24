@@ -11,4 +11,11 @@ void main() {
       ],
     );
   });
+
+  test("joinObject", () {
+    expect(
+      [1, 2, 3].joinObject(4).toList(),
+      [1, 4, 2, 4, 3],
+    );
+  });
 }
