@@ -151,7 +151,7 @@ class FirebaseHabitPerformingRepo extends FirebaseRepo<HabitPerforming>
 /// Хайв репо привычек
 class HiveHabitRepo extends HiveRepo<Habit> implements BaseHabitRepo {
   /// Хайв репо привычек
-  HiveHabitRepo(Box<Map<String, dynamic>> box) : super(box);
+  HiveHabitRepo(Box<Map> box) : super(box);
 
   @override
   Map<String, dynamic> entityToHive(Habit entity) => entity.toJson();
@@ -164,7 +164,7 @@ class HiveHabitRepo extends HiveRepo<Habit> implements BaseHabitRepo {
       habitIds.map((id) => entityFromHive(id, box.get(id)!)).toList();
 
   @override
-  Habit entityFromHive(String id, Map<String, dynamic> hiveData) {
+  Habit entityFromHive(String id, Map hiveData) {
     return Habit.fromJson(hiveData..["id"] = id);
   }
 }
@@ -173,7 +173,7 @@ class HiveHabitRepo extends HiveRepo<Habit> implements BaseHabitRepo {
 class HiveHabitPerformingRepo extends HiveRepo<HabitPerforming>
     implements BaseHabitPerformingRepo {
   /// Хайв репо выполнений привычек
-  HiveHabitPerformingRepo(Box<Map<String, dynamic>> box) : super(box);
+  HiveHabitPerformingRepo(Box<Map> box) : super(box);
 
   @override
   Future<bool> checkHabitPerformingExistInDateRange(
@@ -200,14 +200,14 @@ class HiveHabitPerformingRepo extends HiveRepo<HabitPerforming>
       box.keys.map((dynamic id) => entityFromHive(id as String, box.get(id)!));
 
   @override
-  HabitPerforming entityFromHive(String id, Map<String, dynamic> hiveData) =>
+  HabitPerforming entityFromHive(String id, Map hiveData) =>
       HabitPerforming.fromJson(hiveData..["id"] = id);
 }
 
 /// Провайдер репо привычек
 Provider<BaseHabitRepo> habitRepoProvider = Provider(
   (ref) => ref.watch(isFreeProvider)
-      ? HiveHabitRepo(Hive.box<Map<String, dynamic>>("habits"))
+      ? HiveHabitRepo(Hive.box<Map>("habits"))
       : FirebaseHabitRepo(FirebaseFirestore.instance.collection("habits")),
 );
 
@@ -215,7 +215,7 @@ Provider<BaseHabitRepo> habitRepoProvider = Provider(
 Provider<BaseHabitPerformingRepo> habitPerformingRepoProvider = Provider(
   (ref) => ref.watch(isFreeProvider)
       ? HiveHabitPerformingRepo(
-          Hive.box<Map<String, dynamic>>("habit_performings"))
+          Hive.box<Map>("habit_performings"))
       : FirebaseHabitPerformingRepo(
           FirebaseFirestore.instance.collection("habit_performings")),
 );

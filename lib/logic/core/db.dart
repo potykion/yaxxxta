@@ -64,7 +64,7 @@ abstract class FirebaseRepo<T extends WithId> {
 abstract class HiveRepo<T extends WithId> {
   /// Хайв коробка (типа табличка)
   @protected
-  final Box<Map<String, dynamic>> box;
+  final Box<Map> box;
   final Uuid _uuid = Uuid();
 
   /// Базовый класс для хайв репозиториев
@@ -87,9 +87,9 @@ abstract class HiveRepo<T extends WithId> {
 
   /// Конвертит сущность в хайв словарик
   @protected
-  Map<String, dynamic> entityToHive(T entity);
+  Map entityToHive(T entity);
 
   /// Создает сущность из хайв словарика
   @protected
-  T entityFromHive(String id, Map<String, dynamic> hiveData);
+  T entityFromHive(String id, Map hiveData);
 }

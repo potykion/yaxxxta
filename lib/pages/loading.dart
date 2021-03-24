@@ -31,10 +31,10 @@ class LoadingPage extends HookWidget {
         loadingTextState.value = "Грузим настройки...";
 
         await Hive.initFlutter();
-        await Hive.openBox<Map<String, dynamic>>('user_data');
-        await Hive.openBox<Map<String, dynamic>>('habits');
-        await Hive.openBox<Map<String, dynamic>>('habit_performings');
-        await Hive.openBox<Map<String, dynamic>>('rewards');
+        await Hive.openBox<Map>('user_data');
+        await Hive.openBox<Map>('habits');
+        await Hive.openBox<Map>('habit_performings');
+        await Hive.openBox<Map>('rewards');
 
         // пуши
         if (!kIsWeb) {

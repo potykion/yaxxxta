@@ -28,7 +28,8 @@ abstract class Reward implements _$Reward, WithId {
   }) = _Reward;
 
   /// Создает из джсона
-  factory Reward.fromJson(Map<String, dynamic> json) => _$RewardFromJson(json);
+  factory Reward.fromJson(Map json) =>
+      _$RewardFromJson(Map<String, dynamic>.from(json));
 
   /// Может ли награда быть получена?
   bool canBeCollected(int userPerformingPoints) {

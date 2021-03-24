@@ -101,7 +101,7 @@ Provider<FirebaseUserDataRepo> firebaseUserDataRepoProvider = Provider((ref) =>
 
 /// Провайдер HiveUserDataRepo
 Provider<HiveUserDataRepo> hiveUserDataRepoProvider = Provider(
-  (ref) => HiveUserDataRepo(Hive.box<Map<String, dynamic>>("user_data")),
+  (ref) => HiveUserDataRepo(Hive.box<Map>("user_data")),
 );
 
 /// Провайдер репо данных о юзере

@@ -60,7 +60,7 @@ class FirebaseUserDataRepo extends FirebaseRepo<UserData>
 /// Хайв репо для данных о юзере
 class HiveUserDataRepo extends HiveRepo<UserData> implements UserDataRepo {
   /// Хайв репо для данных о юзере
-  HiveUserDataRepo(Box<Map<String, dynamic>> box) : super(box);
+  HiveUserDataRepo(Box<Map> box) : super(box);
 
   @override
   Future<UserData?> first() async => box.isNotEmpty
@@ -74,6 +74,6 @@ class HiveUserDataRepo extends HiveRepo<UserData> implements UserDataRepo {
   Map<String, dynamic> entityToHive(UserData entity) => entity.toJson();
 
   @override
-  UserData entityFromHive(String id, Map<String, dynamic> hiveData) =>
+  UserData entityFromHive(String id, Map hiveData) =>
       UserData.fromJson(hiveData..["id"] = id);
 }

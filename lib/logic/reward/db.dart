@@ -39,7 +39,7 @@ class FirebaseRewardRepo extends FirebaseRepo<Reward> implements RewardRepo {
 /// Хайв репо наград
 class HiveRewardRepo extends HiveRepo<Reward> implements RewardRepo {
   /// Хайв репо наград
-  HiveRewardRepo(Box<Map<String, dynamic>> box) : super(box);
+  HiveRewardRepo(Box<Map> box) : super(box);
 
   @override
   Future<List<Reward>> listByIds(List<String> ids) async =>
@@ -49,13 +49,13 @@ class HiveRewardRepo extends HiveRepo<Reward> implements RewardRepo {
   Map<String, dynamic> entityToHive(Reward entity) => entity.toJson();
 
   @override
-  Reward entityFromHive(String id, Map<String, dynamic> hiveData) =>
+  Reward entityFromHive(String id, Map hiveData) =>
       Reward.fromJson(hiveData..["id"] = id);
 }
 
 /// Провайдер RewardRepo
 Provider<RewardRepo> rewardRepoProvider = Provider<RewardRepo>(
   (ref) => ref.watch(isFreeProvider)
-      ? HiveRewardRepo(Hive.box<Map<String, dynamic>>("rewards"))
+      ? HiveRewardRepo(Hive.box<Map>("rewards"))
       : FirebaseRewardRepo(FirebaseFirestore.instance.collection("rewards")),
 );
