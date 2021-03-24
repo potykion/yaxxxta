@@ -26,14 +26,27 @@ class DateCarousel extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    /// Сдвигаем лист-вью на половину экрана + 30 - половина DateCarouselCell,
+    /// чтобы текущий день был посерединке
+    var isc = useState(IndexedScrollController(
+      initialScrollOffset: -MediaQuery.of(context).size.width / 2 + 30,
+    ));
+
+    /// При смене {initial} даты сдвигаем дополнительно
+    /// на 60 * разницу между текущим днем и {initial}
+    useValueChanged<DateTime, void>(
+      initial,
+      (_, __) {
+        isc.value.jumpTo(-MediaQuery.of(context).size.width / 2 +
+            30 -
+            60 * (DateTime.now().date().difference(initial)).inDays);
+      },
+    );
+
     return SizedBox(
       height: 75,
       child: IndexedListView.builder(
-        // /// Сдвигаем лист-вью на половину экрана + 3 паддинга по 10,
-        // /// чтобы текущий день был посерединке
-        controller: IndexedScrollController(
-          initialScrollOffset: -MediaQuery.of(context).size.width / 2 + 3 * 10,
-        ),
+        controller: isc.value,
         scrollDirection: Axis.horizontal,
         itemBuilder: (_, index) {
           var shiftDate = DateTime.now().date().add(Duration(days: index));
