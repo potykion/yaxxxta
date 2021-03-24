@@ -5,6 +5,7 @@ import 'package:yaxxxta/logic/user/controllers.dart';
 
 import 'models.dart';
 import 'controllers.dart';
+import 'package:yaxxxta/logic/core/utils/compare.dart';
 
 part 'view_models.freezed.dart';
 
@@ -119,13 +120,18 @@ Provider<AsyncValue<List<HabitProgressVM>>> listHabitVMsProvider = Provider(
         .where((h) => h.matchDate(selectedDate))
         .map((h) =>
             HabitProgressVM.build(h, groupedHabitPerformings[h.id] ?? []))
-        .where((h) => settings.showCompleted || !h.isComplete && !h.isExceeded)
         .toList()
-          ..sort((h1, h2) => h1.performTime == null
-              ? (h2.performTime == null ? 0 : 1)
-              : (h2.performTime == null
-                  ? -1
-                  : h1.performTime!.compareTo(h2.performTime!)));
+          ..sort(
+            (h1, h2) => <dynamic>[
+              (h1.isComplete || h1.isExceeded),
+              (h1.performTime == null),
+              h1.performTime,
+            ].compareTo(<dynamic>[
+              (h2.isComplete || h2.isExceeded),
+              (h2.performTime == null),
+              h2.performTime,
+            ]),
+          );
 
     return vms;
   }),
