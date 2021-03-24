@@ -111,7 +111,6 @@ Provider<AsyncValue<List<HabitProgressVM>>> listHabitVMsProvider = Provider(
     var habits = ref.watch(habitControllerProvider.state);
 
     var selectedDate = ref.watch(selectedDateProvider).state;
-    var settings = ref.watch(settingsProvider);
 
     var groupedHabitPerformings = groupBy<HabitPerforming, String>(
         dateHabitPerformings[selectedDate] ?? [], (hp) => hp.habitId);

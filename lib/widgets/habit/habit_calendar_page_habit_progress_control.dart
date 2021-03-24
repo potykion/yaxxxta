@@ -29,36 +29,58 @@ class HabitCalendarPage_HabitProgressControl extends HookWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => GestureDetector(
-        onTap: () async {
-          context.read(selectedHabitIdProvider).state = vm.id;
-          await Navigator.of(context).pushNamed(Routes.details);
-        },
-        child: HabitProgressControl(
-          key: Key(vm.id),
-          title: Row(
-            children: [
-              BiggerText(text: vm.title),
-              SmallPadding.between(),
-              if (vm.performTime != null) ...[
-                SmallerText(text: "🔔 ${vm.performTimeStr}")
-              ],
+  Widget build(BuildContext context) {
+    var showProgress = useState(!(vm.isComplete || vm.isExceeded));
+    useValueChanged<bool, void>(vm.isComplete || vm.isExceeded, (_, __) {
+      showProgress.value = !(vm.isComplete || vm.isExceeded);
+    });
+
+    return GestureDetector(
+      onTap: () async {
+        context.read(selectedHabitIdProvider).state = vm.id;
+        await Navigator.of(context).pushNamed(Routes.details);
+      },
+      child: HabitProgressControl(
+        key: Key(vm.id),
+        title: Row(
+          children: [
+            BiggerText(
+              text: vm.title,
+              disabled: vm.isComplete || vm.isExceeded,
+            ),
+            SmallPadding.between(),
+            if (vm.performTime != null) ...[
+              SmallerText(text: "🔔 ${vm.performTimeStr}")
             ],
-          ),
-          vm: vm,
-          onRepeatIncrement: (incrementValue, progressStatus, [date]) async {
-            context.read(habitPerformingController).insert(
-                  HabitPerforming(
-                    habitId: vm.id,
-                    performValue: incrementValue,
-                    performDateTime:
-                        await _computePerformDateTime(context, date),
-                  ),
-                );
-          },
-          initialDate: context.read(selectedDateProvider).state,
+            Spacer(),
+            if (vm.isComplete || vm.isExceeded)
+              IconButton(
+                icon: Icon(
+                  showProgress.value
+                      ? Icons.keyboard_arrow_up
+                      : Icons.keyboard_arrow_down,
+                ),
+                onPressed: () {
+                  showProgress.value = !showProgress.value;
+                },
+              ),
+          ],
         ),
-      );
+        vm: vm,
+        showProgress: showProgress.value,
+        onRepeatIncrement: (incrementValue, progressStatus, [date]) async {
+          context.read(habitPerformingController).insert(
+                HabitPerforming(
+                  habitId: vm.id,
+                  performValue: incrementValue,
+                  performDateTime: await _computePerformDateTime(context, date),
+                ),
+              );
+        },
+        initialDate: context.read(selectedDateProvider).state,
+      ),
+    );
+  }
 
   Future<DateTime> _computePerformDateTime(
     BuildContext context,

@@ -9,6 +9,7 @@ analyzer:
   exclude:
     - "**/*.g.dart"
     - "**/*.freezed.dart"
+    - "**/*.mocks.dart"
 
 # Врубаем линтер
 # https://dart.dev/guides/language/analysis-options#effective-dart-rules

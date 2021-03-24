@@ -3,10 +3,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:yaxxxta/logic/user/controllers.dart';
-import 'package:yaxxxta/logic/user/services.dart';
 import 'package:yaxxxta/logic/user/models.dart';
 
-import '../theme.dart';
 import '../widgets/core/app_bars.dart';
 import '../widgets/core/bottom_nav.dart';
 import '../widgets/core/card.dart';
@@ -19,7 +17,6 @@ class SettingsPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var settings = useProvider(userDataControllerProvider.state)!.settings;
-    var user = useProvider(userProvider).state;
 
     setSettings(AppSettings newSettings) {
       context.read(userDataControllerProvider).updateSettings(newSettings);
@@ -37,6 +34,8 @@ class SettingsPage extends HookWidget {
           // todo актуально когда будет синхронизация и iap
           //  https://github.com/potykion/yaxxxta/issues/32
           //  https://github.com/potykion/yaxxxta/issues/1
+          // var user = useProvider(userProvider).state;
+          // ...
           // ContainerCard(
           //   children: [
           //     if (!(user?.isAnonymous ?? true))

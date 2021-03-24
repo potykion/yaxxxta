@@ -69,19 +69,15 @@ class BiggerText extends StatelessWidget {
   /// Выравнивание текста
   final TextAlign align;
 
-  /// Опциональный TextDecoration
-  final TextDecoration? decoration;
-
-  /// Опциональный цвет
-  final Color? color;
+  /// Если true, то делает текст серым и зачеркнутым
+  final bool disabled;
 
   /// Создает текст
   const BiggerText({
     Key? key,
     required this.text,
     this.align = TextAlign.start,
-    this.decoration,
-    this.color = CustomColors.almostBlack,
+    this.disabled = false,
   }) : super(key: key);
 
   @override
@@ -90,8 +86,8 @@ class BiggerText extends StatelessWidget {
         style: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.bold,
-          color: color,
-          decoration: decoration,
+          color: disabled ? CustomColors.grey : CustomColors.almostBlack,
+          decoration: disabled ? TextDecoration.lineThrough : null,
         ),
         textAlign: align,
       );

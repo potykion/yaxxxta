@@ -23,6 +23,9 @@ class HabitProgressControl extends StatelessWidget {
   /// Начальная дата
   final DateTime? initialDate;
 
+  /// Показывать прогресс?
+  final bool showProgress;
+
   /// Контрол повторов выполнений привычки
   const HabitProgressControl({
     required Key key,
@@ -30,33 +33,35 @@ class HabitProgressControl extends StatelessWidget {
     required this.onRepeatIncrement,
     required this.title,
     this.initialDate,
+    this.showProgress = true,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ContainerCard(children: [
         ListTile(title: title, dense: true),
-        SmallPadding(
-          child: (vm.type == HabitType.repeats
-              ? RepeatProgressControl(
-                  initialValue: vm.currentValue,
-                  goalValue: vm.goalValue,
-                  onValueIncrement: (value, progressStatus, [dt]) =>
-                      onRepeatIncrement != null
-                          ? onRepeatIncrement!(value, progressStatus, dt)
-                          : null,
-                )
-              : vm.type == HabitType.time
-                  ? TimeProgressControl(
-                      initialValue: vm.currentValue,
-                      goalValue: vm.goalValue,
-                      onValueIncrement: (value, progressStatus, [dt]) =>
-                          onRepeatIncrement != null
-                              ? onRepeatIncrement!(value, progressStatus, dt)
-                              : null,
-                      initialDate: initialDate,
-                      notificationText: 'Привычка "${vm.title}" выполнена',
-                    )
-                  : null)!,
-        ),
+        if (showProgress)
+          SmallPadding(
+            child: (vm.type == HabitType.repeats
+                ? RepeatProgressControl(
+                    initialValue: vm.currentValue,
+                    goalValue: vm.goalValue,
+                    onValueIncrement: (value, progressStatus, [dt]) =>
+                        onRepeatIncrement != null
+                            ? onRepeatIncrement!(value, progressStatus, dt)
+                            : null,
+                  )
+                : vm.type == HabitType.time
+                    ? TimeProgressControl(
+                        initialValue: vm.currentValue,
+                        goalValue: vm.goalValue,
+                        onValueIncrement: (value, progressStatus, [dt]) =>
+                            onRepeatIncrement != null
+                                ? onRepeatIncrement!(value, progressStatus, dt)
+                                : null,
+                        initialDate: initialDate,
+                        notificationText: 'Привычка "${vm.title}" выполнена',
+                      )
+                    : null)!,
+          ),
       ]);
 }

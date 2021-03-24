@@ -208,7 +208,7 @@ class TimeProgressControl extends HookWidget {
                   (_) {
                     var currentTime = DateTime.now();
 
-                    /// Обновление прогресса = timerStart - currentTime, а не 1 с.
+                    /// Обновление прогресса = timerStart - currentTime
                     /// Потому что андроид может застопить апп, в тч таймер =>
                     /// Надо прогресс обновлять по разнице во времени
                     var millisecondDiff =

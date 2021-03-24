@@ -32,8 +32,7 @@ class RewardCard extends StatelessWidget {
           child: ListTile(
             title: BiggerText(
               text: reward.title,
-              decoration: reward.collected ? TextDecoration.lineThrough : null,
-              color: reward.collected ? CustomColors.grey : null,
+              disabled: reward.collected,
             ),
             subtitle: SmallerText(text: "${reward.cost} 🅿"),
             trailing: !reward.collected
