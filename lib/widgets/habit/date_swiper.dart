@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:yaxxxta/logic/habit/view_models.dart';
 
-
 /// Свайпер даты
 class DateSwiper extends HookWidget {
   /// Ребенок
@@ -18,7 +17,6 @@ class DateSwiper extends HookWidget {
     var pageViewController = useState(PageController(initialPage: 1));
 
     return PageView.builder(
-      itemCount: 3,
       controller: pageViewController.value,
       onPageChanged: (index) {
         var newDate = context

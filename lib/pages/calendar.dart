@@ -20,6 +20,7 @@ class HabitCalendarPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var listHabitVMs = useProvider(listHabitVMsProvider);
+    var selectedDate = useProvider(selectedDateProvider).state;
 
     return Scaffold(
       appBar: buildAppBar(
@@ -37,7 +38,7 @@ class HabitCalendarPage extends HookWidget {
       body: Column(
         children: [
           DateCarousel(
-            initial: context.read(selectedDateProvider).state,
+            initial: selectedDate,
             change: (date) {
               context.read(selectedDateProvider).state = date;
               context
