@@ -38,7 +38,7 @@ abstract class BaseHabitPerformingRepo {
   Future<List<HabitPerforming>> listByHabit(String habitId);
 
   /// Удаляет выполнения привычки в промежутке
-  Future<void> delete(DateTime from, DateTime to);
+  Future<void> delete(String habitId, DateTime from, DateTime to);
 
   /// Чекает есть ли выполнения привычки в промежутке
   Future<bool> checkHabitPerformingExistInDateRange(
@@ -95,7 +95,7 @@ class FirebaseHabitPerformingRepo extends FirebaseRepo<HabitPerforming>
           .toList();
 
   @override
-  Future<void> delete(DateTime from, DateTime to) async {
+  Future<void> delete(String habitId, DateTime from, DateTime to) async {
     var batch = FirebaseFirestore.instance.batch();
 
     var performingsToDelete = (await collectionReference
@@ -104,6 +104,7 @@ class FirebaseHabitPerformingRepo extends FirebaseRepo<HabitPerforming>
               isGreaterThanOrEqualTo: from,
               isLessThanOrEqualTo: to,
             )
+            .where("habitId", isEqualTo: habitId)
             .get())
         .docs;
     for (var hpDoc in performingsToDelete) {
@@ -181,8 +182,10 @@ class HiveHabitPerformingRepo extends HiveRepo<HabitPerforming>
       (await list(from, to)).any((hp) => hp.habitId == habitId);
 
   @override
-  Future<void> delete(DateTime from, DateTime to) async {
-    await box.deleteAll((await list(from, to)).map<String>((hp) => hp.id!));
+  Future<void> delete(String habitId, DateTime from, DateTime to) async {
+    await box.deleteAll((await list(from, to))
+        .where((hp) => hp.habitId == habitId)
+        .map<String>((hp) => hp.id!));
   }
 
   @override
@@ -214,8 +217,7 @@ Provider<BaseHabitRepo> habitRepoProvider = Provider(
 /// Провайдер репо выполнений привычек
 Provider<BaseHabitPerformingRepo> habitPerformingRepoProvider = Provider(
   (ref) => ref.watch(isFreeProvider)
-      ? HiveHabitPerformingRepo(
-          Hive.box<Map>("habit_performings"))
+      ? HiveHabitPerformingRepo(Hive.box<Map>("habit_performings"))
       : FirebaseHabitPerformingRepo(
           FirebaseFirestore.instance.collection("habit_performings")),
 );

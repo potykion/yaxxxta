@@ -200,7 +200,7 @@ void main() {
             DateTime(2020, 1, 1): [hp1],
           });
 
-      await controller.deleteForDateTime(hp1.performDateTime);
+      await controller.deleteForDateTime(hp1.habitId, hp1.performDateTime);
 
       expect(
         controller.debugState.data!.value,

@@ -67,7 +67,7 @@ class HabitHistoryEntrySlidable extends StatelessWidget {
           icon: Icons.delete,
           onTap: () => context
               .read(habitPerformingController)
-              .deleteForDateTime(historyEntry.time),
+              .deleteForDateTime(habit.id!, historyEntry.time),
         ),
       ],
       actionPane: SlidableDrawerActionPane(),

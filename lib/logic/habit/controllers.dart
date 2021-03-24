@@ -152,11 +152,11 @@ class HabitPerformingController
   /// Удаляет выполнения за дату и время в пределах минуты
   /// Напр. для 2020-01-01 10:00 удаляет привычки в промежутке:
   /// 2020-01-01 10:00:00, 2020-01-01 10:59
-  Future<void> deleteForDateTime(DateTime dateTime) async {
+  Future<void> deleteForDateTime(String habitId, DateTime dateTime) async {
     var newState = _createNewState();
 
     var dateRange = DateRange.withinMinute(dateTime);
-    await repo.delete(dateRange.from, dateRange.to);
+    await repo.delete(habitId, dateRange.from, dateRange.to);
     var date = _dateFromDateTime(dateTime);
 
     newState[date] = (newState[date] ?? <HabitPerforming>[])
@@ -169,7 +169,7 @@ class HabitPerformingController
   /// Обновление выполнения привычки: удаление привычек в пределах минуты +
   /// вставка выполнения привычки
   Future<void> update(HabitPerforming hp) async {
-    await deleteForDateTime(hp.performDateTime);
+    await deleteForDateTime(hp.habitId, hp.performDateTime);
     await insert(hp);
   }
 }
@@ -187,6 +187,7 @@ StateNotifierProvider<HabitController> habitControllerProvider =
     ),
     deleteHabit: DeleteHabit(
       habitRepo: ref.watch(habitRepoProvider),
+      removeHabitFromUser: ref.watch(removeHabitFromUserProvider),
       tryDeletePendingNotification:
           TryDeletePendingNotification(ref.watch(notificationSenderProvider)),
     ),

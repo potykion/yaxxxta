@@ -52,8 +52,23 @@ class UserDataController extends StateNotifier<UserData?> {
   /// Привязывает привычку к данным юзера
   Future<void> addHabit(Habit habit) async {
     assert(state != null);
+
     var userData =
         state!.copyWith(habitIds: {...state!.habitIds, habit.id!}.toList());
+
+    await repo.update(userData);
+    state = userData;
+  }
+
+  /// Отвязывает привычку от юзера
+  Future<void> removeHabit(String habitIdToDelete) async {
+    assert(state != null);
+
+    var userData = state!.copyWith(habitIds: [
+      for (var habitId in state!.habitIds)
+        if (habitId != habitIdToDelete) habitId
+    ]);
+
     await repo.update(userData);
     state = userData;
   }
@@ -120,6 +135,10 @@ StateNotifierProvider<UserDataController> userDataControllerProvider =
 /// Провайдер привязки привычки к данным юзера
 Provider<Future<void> Function(Habit habit)> addHabitToUserProvider =
     Provider((ref) => ref.watch(userDataControllerProvider).addHabit);
+
+/// Провайдер отвязки привычки к данным юзера
+Provider<Future<void> Function(String habitId)> removeHabitFromUserProvider =
+    Provider((ref) => ref.watch(userDataControllerProvider).removeHabit);
 
 /// Провайдер настроек
 Provider<AppSettings> settingsProvider =

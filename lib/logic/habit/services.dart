@@ -125,18 +125,23 @@ class DeleteHabit {
   /// Репо привычек
   final BaseHabitRepo habitRepo;
 
+  /// Отвязывает привычку от юзера
+  final Future<void> Function(String habitId) removeHabitFromUser;
+
   /// Попытка удалить запланированное уведомление о привычке
   final TryDeletePendingNotification tryDeletePendingNotification;
 
   /// Удаляет привычку
   DeleteHabit({
     required this.habitRepo,
+    required this.removeHabitFromUser,
     required this.tryDeletePendingNotification,
   });
 
   /// Удаляет привычку + удаляет уведомление
   Future<void> call(String habitId) async {
     tryDeletePendingNotification(habitId);
+    await removeHabitFromUser(habitId);
     await habitRepo.deleteById(habitId);
   }
 }
