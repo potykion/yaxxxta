@@ -49,8 +49,6 @@ abstract class Habit implements _$Habit, WithId {
     /// Вообще тупа в гуи юзается
     @Default(false) bool isCustomPeriod,
 
-    /// Включены ли уведомления
-    @Default(false) bool isNotificationsEnabled,
   }) = _Habit;
 
   /// Созадет пустую привычку
@@ -62,7 +60,6 @@ abstract class Habit implements _$Habit, WithId {
       Habit(
         created: created ?? DateTime.now(),
         performTime: performTime,
-        isNotificationsEnabled: isNotificationsEnabled ?? false,
       );
 
   /// Если true, то привычка создана и редактируется;
@@ -79,6 +76,9 @@ abstract class Habit implements _$Habit, WithId {
   /// Выводит секунды продолжительности привычки
   double get goalValueSeconds =>
       goalValue - goalValueHours * 3600 - goalValueMinutes * 60;
+
+  /// Включены ли уведомления
+  bool get isNotificationsEnabled => performTime != null;
 
   /// Выставляет целевое значение из длительности
   Habit applyDuration(DoubleDuration duration) => copyWith(

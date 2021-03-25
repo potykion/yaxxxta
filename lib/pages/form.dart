@@ -306,6 +306,13 @@ class HabitFormPage extends HookWidget {
               ListTile(
                 title: BiggerText(text: "Время выполнения"),
                 dense: true,
+                trailing: habit.performTime != null
+                    ? IconButton(
+                        onPressed: () =>
+                            setVM(habit.copyWith(performTime: null)),
+                        icon: Icon(Icons.close),
+                      )
+                    : null,
               ),
               SmallPadding(
                 child: TimePickerInput(
@@ -313,19 +320,6 @@ class HabitFormPage extends HookWidget {
                   change: (time) => setVM(habit.copyWith(performTime: time)),
                 ),
               ),
-              if (habit.performTime != null)
-                CheckboxListTile(
-                  controlAffinity: ListTileControlAffinity.leading,
-                  title: BiggerText(
-                    text: "Отправить уведомление перед выполнением?",
-                  ),
-                  value: habit.isNotificationsEnabled,
-                  onChanged: (isNotificationsEnabled) => setVM(
-                    habit.copyWith(
-                        isNotificationsEnabled: isNotificationsEnabled!),
-                  ),
-                  checkColor: CustomColors.almostBlack,
-                )
             ],
           ),
 

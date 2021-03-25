@@ -20,6 +20,9 @@ class TimePickerInput extends HookWidget {
     var tec = useTextEditingController(
       text: initial != null ? formatTime(initial!) : "",
     );
+    useValueChanged<DateTime?, void>(initial, (_, __) {
+      tec.text = initial != null ? formatTime(initial!) : "";
+    });
 
     return TextFormField(
       controller: tec,
