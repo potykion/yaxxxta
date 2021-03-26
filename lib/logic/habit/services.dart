@@ -123,7 +123,7 @@ class TryDeletePendingNotification {
 /// Удаляет привычку
 class DeleteHabit {
   /// Репо привычек
-  final BaseHabitRepo habitRepo;
+  final HabitRepo habitRepo;
 
   /// Отвязывает привычку от юзера
   final Future<void> Function(String habitId) removeHabitFromUser;
@@ -149,7 +149,7 @@ class DeleteHabit {
 /// Создает или обновляет привычку
 class CreateOrUpdateHabit {
   /// Репо привычек
-  final BaseHabitRepo habitRepo;
+  final HabitRepo habitRepo;
 
   /// Планирование оправки уведомл.
   final ScheduleSingleHabitNotification scheduleSingleHabitNotification;
@@ -190,7 +190,7 @@ class CreateOrUpdateHabit {
 /// Грузит привычки юзера
 class LoadUserHabits {
   /// Репо привычек
-  final BaseHabitRepo habitRepo;
+  final HabitRepo habitRepo;
 
   /// Грузит привычки юзера
   LoadUserHabits({
@@ -205,7 +205,7 @@ class LoadUserHabits {
 /// Создает выполнение привычки
 class CreateHabitPerforming {
   /// Репо выполнений привычек
-  final BaseHabitPerformingRepo hpRepo;
+  final HabitPerformingRepo hpRepo;
 
   /// Настройки начала и конца дня
   final Tuple2<DateTime, DateTime> settingsDayTimes;

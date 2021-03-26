@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hive/hive.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:yaxxxta/logic/core/db.dart';
 
 import 'models.dart';
@@ -75,3 +76,12 @@ class HiveUserDataRepo extends HiveRepo<UserData> implements UserDataRepo {
   UserData entityFromHive(String id, Map hiveData) =>
       UserData.fromJson(hiveData..["id"] = id);
 }
+
+/// Провайдер FirebaseUserDataRepo
+Provider<FirebaseUserDataRepo> fbUserDataRepoProvider = Provider((ref) =>
+    FirebaseUserDataRepo(FirebaseFirestore.instance.collection("user_data")));
+
+/// Провайдер HiveUserDataRepo
+Provider<HiveUserDataRepo> hiveUserDataRepoProvider = Provider(
+  (ref) => HiveUserDataRepo(Hive.box<Map>("user_data")),
+);

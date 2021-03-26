@@ -10,10 +10,10 @@ import 'package:yaxxxta/logic/habit/services.dart';
 import 'controllers_test.mocks.dart';
 import 'package:yaxxxta/logic/user/models.dart';
 
-@GenerateMocks([BaseHabitPerformingRepo])
+@GenerateMocks([HabitPerformingRepo])
 void main() {
   group("NewHabitPerformingController", () {
-    late BaseHabitPerformingRepo repo;
+    late HabitPerformingRepo repo;
     late AppSettings settings;
     late DateTime date;
     late DateRange dateRange;

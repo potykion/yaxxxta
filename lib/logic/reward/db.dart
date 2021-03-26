@@ -53,9 +53,14 @@ class HiveRewardRepo extends HiveRepo<Reward> implements RewardRepo {
       Reward.fromJson(hiveData..["id"] = id);
 }
 
+Provider<HiveRewardRepo> hiveRewardRepoProvider =
+    Provider((ref) => HiveRewardRepo(Hive.box<Map>("rewards")));
+Provider<FirebaseRewardRepo> fbRewardRepoProvider = Provider((ref) =>
+    FirebaseRewardRepo(FirebaseFirestore.instance.collection("rewards")));
+
 /// Провайдер RewardRepo
 Provider<RewardRepo> rewardRepoProvider = Provider<RewardRepo>(
   (ref) => ref.watch(isFreeProvider)
-      ? HiveRewardRepo(Hive.box<Map>("rewards"))
-      : FirebaseRewardRepo(FirebaseFirestore.instance.collection("rewards")),
+      ? ref.watch(hiveRewardRepoProvider)
+      : ref.watch(fbRewardRepoProvider),
 );

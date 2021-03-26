@@ -11,6 +11,7 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:yaxxxta/logic/habit/services.dart';
 import 'package:yaxxxta/logic/reward/controllers.dart';
+import 'package:yaxxxta/logic/sync/services.dart';
 import 'package:yaxxxta/logic/user/controllers.dart';
 import 'package:yaxxxta/logic/user/services.dart';
 
@@ -53,6 +54,10 @@ class LoadingPage extends HookWidget {
         /// фаер-бейз
         await Firebase.initializeApp();
 
+        // loadingTextState.value = "Синхроним fb2hive...";
+        // await context.read(firebaseToHiveSyncProvider)();
+
+        loadingTextState.value = "Синхроним данные о юзере...";
         var auth = context.read(authProvider);
         var user = auth.tryGetUser() ?? (await auth.signInAnon());
         context.read(userProvider).state = user;

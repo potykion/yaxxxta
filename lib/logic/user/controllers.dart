@@ -110,20 +110,11 @@ StateProvider<User?> userProvider = StateProvider<User?>((ref) => null);
 Provider<bool> isFreeProvider =
     Provider((ref) => ref.watch(userProvider).state?.isAnonymous ?? true);
 
-/// Провайдер FirebaseUserDataRepo
-Provider<FirebaseUserDataRepo> firebaseUserDataRepoProvider = Provider((ref) =>
-    FirebaseUserDataRepo(FirebaseFirestore.instance.collection("user_data")));
-
-/// Провайдер HiveUserDataRepo
-Provider<HiveUserDataRepo> hiveUserDataRepoProvider = Provider(
-  (ref) => HiveUserDataRepo(Hive.box<Map>("user_data")),
-);
-
 /// Провайдер репо данных о юзере
 Provider<UserDataRepo> userDataRepoProvider = Provider<UserDataRepo>(
   (ref) => ref.watch(isFreeProvider)
       ? ref.watch(hiveUserDataRepoProvider)
-      : ref.watch(firebaseUserDataRepoProvider),
+      : ref.watch(fbUserDataRepoProvider),
 );
 
 /// Провайдер контроллера данных о юзере

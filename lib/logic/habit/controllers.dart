@@ -64,7 +64,7 @@ class HabitController extends StateNotifier<List<Habit>> {
 class HabitPerformingController
     extends StateNotifier<AsyncValue<Map<DateTime, List<HabitPerforming>>>> {
   /// Репо выполнений привычек
-  final BaseHabitPerformingRepo repo;
+  final HabitPerformingRepo repo;
 
   /// Настройки начала и конца дня
   final Tuple2<DateTime, DateTime> settingsDayTimes;

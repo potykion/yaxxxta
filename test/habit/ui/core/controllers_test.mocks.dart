@@ -15,7 +15,7 @@ import 'package:yaxxxta/logic/habit/models.dart' as _i4;
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockBaseHabitPerformingRepo extends _i1.Mock
-    implements _i2.BaseHabitPerformingRepo {
+    implements _i2.HabitPerformingRepo {
   MockBaseHabitPerformingRepo() {
     _i1.throwOnMissingStub(this);
   }

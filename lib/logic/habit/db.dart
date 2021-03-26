@@ -8,7 +8,7 @@ import 'package:yaxxxta/logic/user/controllers.dart';
 import 'models.dart';
 
 /// Репо для работы с привычками
-abstract class BaseHabitRepo {
+abstract class HabitRepo {
   /// Вставляет привычку в бд, возвращая айди
   Future<String> insert(Habit habit);
 
@@ -27,7 +27,7 @@ abstract class BaseHabitRepo {
 }
 
 /// Репо для работы с выполнениями привычек
-abstract class BaseHabitPerformingRepo {
+abstract class HabitPerformingRepo {
   /// Вставляет выполнение привычки в бд, возвращая айди
   Future<String> insert(HabitPerforming performing);
 
@@ -49,7 +49,7 @@ abstract class BaseHabitPerformingRepo {
 }
 
 /// Фаерстор репо для привычек
-class FirebaseHabitRepo extends FirebaseRepo<Habit> implements BaseHabitRepo {
+class FirebaseHabitRepo extends FirebaseRepo<Habit> implements HabitRepo {
   /// Фаерстор репо для привычек
   FirebaseHabitRepo(CollectionReference collectionReference)
       : super(collectionReference);
@@ -69,7 +69,7 @@ class FirebaseHabitRepo extends FirebaseRepo<Habit> implements BaseHabitRepo {
 
 /// Фаер-стор репо для выполнений привычек
 class FirebaseHabitPerformingRepo extends FirebaseRepo<HabitPerforming>
-    implements BaseHabitPerformingRepo {
+    implements HabitPerformingRepo {
   /// Фаер-стор репо для выполнений привычек
   FirebaseHabitPerformingRepo(CollectionReference collectionReference)
       : super(collectionReference);
@@ -155,7 +155,7 @@ class FirebaseHabitPerformingRepo extends FirebaseRepo<HabitPerforming>
 }
 
 /// Хайв репо привычек
-class HiveHabitRepo extends HiveRepo<Habit> implements BaseHabitRepo {
+class HiveHabitRepo extends HiveRepo<Habit> implements HabitRepo {
   /// Хайв репо привычек
   HiveHabitRepo(Box<Map> box) : super(box);
 
@@ -177,7 +177,7 @@ class HiveHabitRepo extends HiveRepo<Habit> implements BaseHabitRepo {
 
 /// Хайв репо выполнений привычек
 class HiveHabitPerformingRepo extends HiveRepo<HabitPerforming>
-    implements BaseHabitPerformingRepo {
+    implements HabitPerformingRepo {
   /// Хайв репо выполнений привычек
   HiveHabitPerformingRepo(Box<Map> box) : super(box);
 
@@ -212,17 +212,30 @@ class HiveHabitPerformingRepo extends HiveRepo<HabitPerforming>
       HabitPerforming.fromJson(hiveData..["id"] = id);
 }
 
+/// Провайдер HiveHabitRepo
+Provider<HiveHabitRepo> hiveHabitRepoProvider =
+    Provider((ref) => HiveHabitRepo(Hive.box<Map>("habits")));
+
+/// Провайдер FirebaseHabitRepo
+Provider<FirebaseHabitRepo> fbHabitRepoProvider = Provider((ref) =>
+    FirebaseHabitRepo(FirebaseFirestore.instance.collection("habits")));
+
 /// Провайдер репо привычек
-Provider<BaseHabitRepo> habitRepoProvider = Provider(
+Provider<HabitRepo> habitRepoProvider = Provider(
   (ref) => ref.watch(isFreeProvider)
-      ? HiveHabitRepo(Hive.box<Map>("habits"))
-      : FirebaseHabitRepo(FirebaseFirestore.instance.collection("habits")),
+      ? ref.watch(hiveHabitRepoProvider)
+      : ref.watch(fbHabitRepoProvider),
 );
 
+Provider<HiveHabitPerformingRepo> hiveHabitPerformingRepoProvider = Provider(
+    (ref) => HiveHabitPerformingRepo(Hive.box<Map>("habit_performings")));
+Provider<FirebaseHabitPerformingRepo> fbHabitPerformingRepoProvider = Provider(
+    (ref) => FirebaseHabitPerformingRepo(
+        FirebaseFirestore.instance.collection("habit_performings")));
+
 /// Провайдер репо выполнений привычек
-Provider<BaseHabitPerformingRepo> habitPerformingRepoProvider = Provider(
+Provider<HabitPerformingRepo> habitPerformingRepoProvider = Provider(
   (ref) => ref.watch(isFreeProvider)
-      ? HiveHabitPerformingRepo(Hive.box<Map>("habit_performings"))
-      : FirebaseHabitPerformingRepo(
-          FirebaseFirestore.instance.collection("habit_performings")),
+      ? ref.watch(hiveHabitPerformingRepoProvider)
+      : ref.watch(fbHabitPerformingRepoProvider),
 );

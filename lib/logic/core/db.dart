@@ -94,4 +94,13 @@ abstract class HiveRepo<T extends WithId> {
   /// Создает сущность из хайв словарика
   @protected
   T entityFromHive(String id, Map hiveData);
+
+  Future<List<String>> insertMany(List<T> entities) async {
+    var ids = entities.map((e) => _uuid.v1()).toList();
+    await box.putAll(Map<String, Map>.fromIterables(
+      ids,
+      entities.map(entityToHive),
+    ));
+    return ids;
+  }
 }
