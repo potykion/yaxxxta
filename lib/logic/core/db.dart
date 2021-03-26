@@ -39,12 +39,14 @@ abstract class FirebaseRepo<T extends WithId> {
 
   /// Получает сущности из фаерстор по айди
   Future<List<T>> listByIds(List<String> ids) async =>
-      (await _listDocsByIds(ids)).map(entityFromFirebase).toList();
+      (await listDocsByIds(ids)).map(entityFromFirebase).toList();
 
   /// Получает документы по айди
-  Future<Iterable<QueryDocumentSnapshot>> _listDocsByIds(
-    List<String> ids,
-  ) async {
+  @protected
+  Future<Iterable<QueryDocumentSnapshot>> listDocsByIds(
+    List<String> ids, {
+    String? idField,
+  }) async {
     if (ids.isEmpty) return [];
 
     return (await Future.wait(
@@ -52,7 +54,7 @@ abstract class FirebaseRepo<T extends WithId> {
       /// режем список на списки по 10 + запрашиваем данные асинхронно
       ids.chunked(size: 10).map(
             (idsChunk) => collectionReference
-                .where(FieldPath.documentId, whereIn: idsChunk)
+                .where(idField ?? FieldPath.documentId, whereIn: idsChunk)
                 .get(),
           ),
     ))

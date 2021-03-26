@@ -34,7 +34,7 @@ class FirebaseUserDataRepo extends FirebaseRepo<UserData>
               .docs
               .first;
 
-      var userData = UserData.fromJson(doc.data()!).copyWith(id: doc.id);
+      var userData = entityFromFirebase(doc);
 
       return userData;
       // ignore: avoid_catching_errors
@@ -51,10 +51,8 @@ class FirebaseUserDataRepo extends FirebaseRepo<UserData>
   Map<String, dynamic> entityToFirebase(UserData entity) => entity.toJson();
 
   @override
-  Future<UserData?> first() {
-    throw "Нельзя использовать этот метод с FirestoreUserDataRepo, "
-        "используй HiveUserDataRepo или другие репо.";
-  }
+  Future<UserData?> first() async =>
+      entityFromFirebase((await collectionReference.get()).docs.first);
 }
 
 /// Хайв репо для данных о юзере

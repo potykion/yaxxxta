@@ -94,6 +94,11 @@ class FirebaseHabitPerformingRepo extends FirebaseRepo<HabitPerforming>
           .map(entityFromFirebase)
           .toList();
 
+  Future<List<HabitPerforming>> listByHabits(List<String> habitIds) async =>
+      (await listDocsByIds(habitIds, idField: "habitId"))
+          .map(entityFromFirebase)
+          .toList();
+
   @override
   Future<void> delete(String habitId, DateTime from, DateTime to) async {
     var batch = FirebaseFirestore.instance.batch();
