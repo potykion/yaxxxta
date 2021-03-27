@@ -11,7 +11,6 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:yaxxxta/logic/habit/services.dart';
 import 'package:yaxxxta/logic/reward/controllers.dart';
-import 'package:yaxxxta/logic/sync/services.dart';
 import 'package:yaxxxta/logic/user/controllers.dart';
 import 'package:yaxxxta/logic/user/services.dart';
 

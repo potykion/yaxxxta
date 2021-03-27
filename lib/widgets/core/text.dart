@@ -90,6 +90,7 @@ class BiggerText extends StatelessWidget {
           decoration: disabled ? TextDecoration.lineThrough : null,
         ),
         textAlign: align,
+        overflow: TextOverflow.fade,
       );
 }
 

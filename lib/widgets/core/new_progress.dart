@@ -4,8 +4,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:yaxxxta/widgets/core/fit_icon_button.dart';
 import 'package:yaxxxta/widgets/core/padding.dart';
-import 'package:yaxxxta/logic/core/utils/list.dart';
 import '../../logic/habit/view_models.dart';
 
 import '../../logic/core/utils/dt.dart';
@@ -48,8 +48,8 @@ class RepeatProgressControl extends HookWidget {
       child: Row(
         children: <Widget>[
           if (!(currentValueState.value == 0 && goalValue == 1))
-            InkWell(
-              child: Icon(Icons.plus_one),
+            FitIconButton(
+              icon: Icon(Icons.plus_one),
               onTap: () {
                 currentValueState.value += 1;
                 onValueIncrement(
@@ -59,8 +59,8 @@ class RepeatProgressControl extends HookWidget {
               },
             ),
           if (currentValueState.value < goalValue)
-            GestureDetector(
-              child: Icon(Icons.done),
+            FitIconButton(
+              icon: Icon(Icons.done),
               onTap: () {
                 /// Заполняем оставшийся прогресс иначе
                 onValueIncrement(
@@ -69,7 +69,7 @@ class RepeatProgressControl extends HookWidget {
                 );
               },
             )
-        ].joinObject(SmallPadding.between()).toList(),
+        ],
       ),
       progressPercentage: min(currentValueState.value / goalValue, 1),
       progressStr: "${currentValueState.value.toInt()} / ${goalValue.toInt()}",
@@ -150,6 +150,54 @@ class TimeProgressControl extends HookWidget {
       }
     }
 
+    Future _activateTimer() async {
+      if (timerState.value?.isActive ?? false) {
+        _cancelTimer(withCancelNotification: true);
+      } else {
+        var timerStart = DateTime.now();
+
+        /// Создаем уведомление о завершении таймера
+        /// через кол-во сек до цели
+        if (currentValueState.value < goalValue) {
+          notificationId.value = await context
+              .read(notificationSenderProvider)
+              .schedule(
+                title: notificationText,
+                sendAfterSeconds: (goalValue - currentValueState.value).toInt(),
+              );
+        }
+
+        timerState.value = Timer.periodic(
+          /// 250 мс для быстрой перерисовки
+          Duration(milliseconds: 250),
+          (_) {
+            var currentTime = DateTime.now();
+
+            /// Обновление прогресса = timerStart - currentTime
+            /// Потому что андроид может застопить апп, в тч таймер =>
+            /// Надо прогресс обновлять по разнице во времени
+            var millisecondDiff =
+                currentTime.difference(timerStart).inMilliseconds;
+
+            /// Если секунда не прошла => скипаем обновление
+            /// 900 мс потому что таймер тикает с погрешностью
+            if (millisecondDiff < 900) {
+              return;
+            }
+
+            var secondDiff = (millisecondDiff / 1000).round();
+            timerStart = currentTime;
+
+            currentValueState.value += secondDiff;
+
+            if (currentValueState.value.toInt() == goalValue.toInt()) {
+              _cancelTimer();
+            }
+          },
+        );
+      }
+    }
+
     /// При смене initialDate нужно сбросить таймер
     /// Актуально для списка привычек, где можно менять дату
     useValueChanged<DateTime?, void>(
@@ -181,61 +229,15 @@ class TimeProgressControl extends HookWidget {
       progressPercentage: min(currentValueState.value / goalValue, 1),
       child: Row(
         children: <Widget>[
-          InkWell(
-            child: (timerState.value?.isActive ?? false)
+          FitIconButton(
+            icon: (timerState.value?.isActive ?? false)
                 ? Icon(Icons.pause)
                 : Icon(Icons.play_arrow),
-            onTap: () async {
-              if (timerState.value?.isActive ?? false) {
-                _cancelTimer(withCancelNotification: true);
-              } else {
-                var timerStart = DateTime.now();
-
-                /// Создаем уведомление о завершении таймера
-                /// через кол-во сек до цели
-                if (currentValueState.value < goalValue) {
-                  notificationId.value =
-                      await context.read(notificationSenderProvider).schedule(
-                            title: notificationText,
-                            sendAfterSeconds:
-                                (goalValue - currentValueState.value).toInt(),
-                          );
-                }
-
-                timerState.value = Timer.periodic(
-                  /// 250 мс для быстрой перерисовки
-                  Duration(milliseconds: 250),
-                  (_) {
-                    var currentTime = DateTime.now();
-
-                    /// Обновление прогресса = timerStart - currentTime
-                    /// Потому что андроид может застопить апп, в тч таймер =>
-                    /// Надо прогресс обновлять по разнице во времени
-                    var millisecondDiff =
-                        currentTime.difference(timerStart).inMilliseconds;
-
-                    /// Если секунда не прошла => скипаем обновление
-                    /// 900 мс потому что таймер тикает с погрешностью
-                    if (millisecondDiff < 900) {
-                      return;
-                    }
-
-                    var secondDiff = (millisecondDiff / 1000).round();
-                    timerStart = currentTime;
-
-                    currentValueState.value += secondDiff;
-
-                    if (currentValueState.value.toInt() == goalValue.toInt()) {
-                      _cancelTimer();
-                    }
-                  },
-                );
-              }
-            },
+            onTap: _activateTimer,
           ),
           if (currentValueState.value < goalValue)
-            InkWell(
-              child: Icon(
+            FitIconButton(
+              icon: Icon(
                 Icons.done,
                 color: timerState.value?.isActive ?? false
                     ? CustomColors.grey
@@ -253,7 +255,7 @@ class TimeProgressControl extends HookWidget {
                       );
                     },
             )
-        ].joinObject(SmallPadding.between()).toList(),
+        ],
       ),
     );
   }
@@ -289,12 +291,23 @@ class _BaseProgressControl extends StatelessWidget {
           Positioned(
             child: Material(
               color: Colors.transparent,
-              child: SmallPadding.noBottom(child: child),
+              child: Padding(
+                child: child,
+                padding: EdgeInsets.only(left: 5),
+              ),
             ),
           ),
           Positioned(
             child: SmallPadding.noBottom(
-              child: SmallerText(text: progressStr, dark: true),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.baseline,
+                textBaseline: TextBaseline.alphabetic,
+                children: [
+                  SmallerText(text: "прогресс:"),
+                  Padding(padding: EdgeInsets.only(left: 5)),
+                  SmallerText(text: progressStr, dark: true)
+                ],
+              ),
             ),
             right: 0,
           )

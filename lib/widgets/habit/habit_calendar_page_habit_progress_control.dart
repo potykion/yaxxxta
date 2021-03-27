@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
+import 'package:yaxxxta/widgets/core/fit_icon_button.dart';
 import 'package:yaxxxta/widgets/core/padding.dart';
 import 'package:yaxxxta/widgets/core/text.dart';
 
@@ -44,9 +45,12 @@ class HabitCalendarPage_HabitProgressControl extends HookWidget {
         key: Key(vm.id),
         title: Row(
           children: [
-            BiggerText(
-              text: vm.title,
-              disabled: vm.isComplete || vm.isExceeded,
+            ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: 200),
+              child: BiggerText(
+                text: vm.title,
+                disabled: vm.isComplete || vm.isExceeded,
+              ),
             ),
             SmallPadding.between(),
             if (vm.performTime != null) ...[
@@ -54,13 +58,13 @@ class HabitCalendarPage_HabitProgressControl extends HookWidget {
             ],
             Spacer(),
             if (vm.isComplete || vm.isExceeded)
-              IconButton(
+              FitIconButton(
                 icon: Icon(
                   showProgress.value
                       ? Icons.keyboard_arrow_up
                       : Icons.keyboard_arrow_down,
                 ),
-                onPressed: () {
+                onTap: () {
                   showProgress.value = !showProgress.value;
                 },
               ),
