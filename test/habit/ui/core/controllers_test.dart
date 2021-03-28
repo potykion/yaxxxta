@@ -1,16 +1,15 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:tuple/tuple.dart';
 import 'package:yaxxxta/logic/core/utils/dt.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:yaxxxta/logic/habit/db.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
 import 'package:yaxxxta/logic/habit/services.dart';
-import 'controllers_test.mocks.dart';
 import 'package:yaxxxta/logic/user/models.dart';
 
-@GenerateMocks([HabitPerformingRepo])
+class MockHabitPerformingRepo extends Mock implements HabitPerformingRepo {}
+
 void main() {
   group("NewHabitPerformingController", () {
     late HabitPerformingRepo repo;
@@ -20,8 +19,12 @@ void main() {
     late Tuple2<DateTime, DateTime> settingsDayTimes;
     late CreateHabitPerforming createHabitPerforming;
 
+    setUpAll(() {
+      registerFallbackValue<DateTime>(DateTime.now());
+    });
+
     setUp(() {
-      repo = MockBaseHabitPerformingRepo();
+      repo = MockHabitPerformingRepo();
       settings = AppSettings.createDefault();
       date = DateTime(2020, 1, 1);
       settingsDayTimes = Tuple2(settings.dayStartTime, settings.dayEndTime);
@@ -45,7 +48,7 @@ void main() {
         performValue: 1,
         performDateTime: DateTime(2020, 1, 1, 11),
       );
-      when(repo.list(dateRange.from, dateRange.to))
+      when(() => repo.list(dateRange.from, dateRange.to))
           .thenAnswer((_) async => [hp]);
       var controller = HabitPerformingController(
         repo: repo,
@@ -76,7 +79,7 @@ void main() {
         performValue: 2,
         performDateTime: DateTime(2020, 1, 1, 12),
       );
-      when(repo.list(dateRange.from, dateRange.to))
+      when(() => repo.list(dateRange.from, dateRange.to))
           .thenAnswer((_) async => [hp1]);
       var controller = HabitPerformingController(
         repo: repo,
@@ -110,7 +113,7 @@ void main() {
         performValue: 2,
         performDateTime: DateTime(2020, 1, 1, 12),
       );
-      when(repo.list(dateRange.from, dateRange.to))
+      when(() => repo.list(dateRange.from, dateRange.to))
           .thenAnswer((_) async => [hp1]);
       var controller = HabitPerformingController(
         repo: repo,
@@ -144,7 +147,8 @@ void main() {
         performValue: 2,
         performDateTime: DateTime(2020, 1, 2, 12),
       );
-      when(repo.listByHabit(hp1.habitId)).thenAnswer((_) async => [hp1, hp2]);
+      when(() => repo.listByHabit(hp1.habitId))
+          .thenAnswer((_) async => [hp1, hp2]);
       var controller = HabitPerformingController(
         repo: repo,
         settingsDayTimes: settingsDayTimes,
@@ -168,7 +172,9 @@ void main() {
         performValue: 1,
         performDateTime: DateTime(2020, 1, 1, 11),
       );
-      when(repo.insert(hp1)).thenAnswer((_) async => "hp1");
+      when(() => repo.insert(hp1)).thenAnswer((_) async => "hp1");
+      when(() => repo.checkHabitPerformingExistInDateRange(any(), any(), any()))
+          .thenAnswer((_) async => true);
       var controller = HabitPerformingController(
         repo: repo,
         settingsDayTimes: settingsDayTimes,
@@ -192,6 +198,10 @@ void main() {
         performValue: 1,
         performDateTime: DateTime(2020, 1, 1, 11),
       );
+      when(() => repo.checkHabitPerformingExistInDateRange(any(), any(), any()))
+          .thenAnswer((_) async => true);
+      when(() => repo.delete(any(), any(), any()))
+          .thenAnswer((_) async {});
       var controller = HabitPerformingController(
           repo: repo,
           settingsDayTimes: settingsDayTimes,
@@ -216,7 +226,11 @@ void main() {
         performValue: 1,
         performDateTime: DateTime(2020, 1, 1, 11),
       );
-      when(repo.insert(hp1)).thenAnswer((_) async => "hp1");
+      when(() => repo.insert(hp1)).thenAnswer((_) async => "hp1");
+      when(() => repo.checkHabitPerformingExistInDateRange(any(), any(), any()))
+          .thenAnswer((_) async => true);
+      when(() => repo.delete(any(), any(), any()))
+          .thenAnswer((_) async {});
       var controller = HabitPerformingController(
         repo: repo,
         settingsDayTimes: settingsDayTimes,

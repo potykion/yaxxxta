@@ -96,9 +96,9 @@ dev_dependencies:
   freezed:
 
   # моки: обычные, фаерстор специфик
-  mockito: ^5.0.1
-  #  TODO несовместима с cloud_firestore: ^1.0.0
-  #  cloud_firestore_mocks: ^0.6.0
+  cloud_firestore_mocks: ^0.8.0
+  mocktail: ^0.1.1
+
 
   # Иконочка
   flutter_launcher_icons: ^0.9.0

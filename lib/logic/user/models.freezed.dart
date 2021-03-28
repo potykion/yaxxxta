@@ -268,7 +268,6 @@ class _$UserDataTearOff {
   _UserData call(
       {String? id,
       String? userId,
-      List<String> deviceIds = const <String>[],
       List<String> habitIds = const <String>[],
       required AppSettings settings,
       int performingPoints = 0,
@@ -276,7 +275,6 @@ class _$UserDataTearOff {
     return _UserData(
       id: id,
       userId: userId,
-      deviceIds: deviceIds,
       habitIds: habitIds,
       settings: settings,
       performingPoints: performingPoints,
@@ -299,9 +297,6 @@ mixin _$UserData {
 
   /// Айди юзера
   String? get userId => throw _privateConstructorUsedError;
-
-  /// Айди девайсов
-  List<String> get deviceIds => throw _privateConstructorUsedError;
 
   /// Айди привычек
   List<String> get habitIds => throw _privateConstructorUsedError;
@@ -328,7 +323,6 @@ abstract class $UserDataCopyWith<$Res> {
   $Res call(
       {String? id,
       String? userId,
-      List<String> deviceIds,
       List<String> habitIds,
       AppSettings settings,
       int performingPoints,
@@ -349,7 +343,6 @@ class _$UserDataCopyWithImpl<$Res> implements $UserDataCopyWith<$Res> {
   $Res call({
     Object? id = freezed,
     Object? userId = freezed,
-    Object? deviceIds = freezed,
     Object? habitIds = freezed,
     Object? settings = freezed,
     Object? performingPoints = freezed,
@@ -358,8 +351,6 @@ class _$UserDataCopyWithImpl<$Res> implements $UserDataCopyWith<$Res> {
     return _then(_value.copyWith(
       id: id == freezed ? _value.id : id as String?,
       userId: userId == freezed ? _value.userId : userId as String?,
-      deviceIds:
-          deviceIds == freezed ? _value.deviceIds : deviceIds as List<String>,
       habitIds:
           habitIds == freezed ? _value.habitIds : habitIds as List<String>,
       settings: settings == freezed ? _value.settings : settings as AppSettings,
@@ -387,7 +378,6 @@ abstract class _$UserDataCopyWith<$Res> implements $UserDataCopyWith<$Res> {
   $Res call(
       {String? id,
       String? userId,
-      List<String> deviceIds,
       List<String> habitIds,
       AppSettings settings,
       int performingPoints,
@@ -410,7 +400,6 @@ class __$UserDataCopyWithImpl<$Res> extends _$UserDataCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? userId = freezed,
-    Object? deviceIds = freezed,
     Object? habitIds = freezed,
     Object? settings = freezed,
     Object? performingPoints = freezed,
@@ -419,8 +408,6 @@ class __$UserDataCopyWithImpl<$Res> extends _$UserDataCopyWithImpl<$Res>
     return _then(_UserData(
       id: id == freezed ? _value.id : id as String?,
       userId: userId == freezed ? _value.userId : userId as String?,
-      deviceIds:
-          deviceIds == freezed ? _value.deviceIds : deviceIds as List<String>,
       habitIds:
           habitIds == freezed ? _value.habitIds : habitIds as List<String>,
       settings: settings == freezed ? _value.settings : settings as AppSettings,
@@ -440,7 +427,6 @@ class _$_UserData extends _UserData {
   _$_UserData(
       {this.id,
       this.userId,
-      this.deviceIds = const <String>[],
       this.habitIds = const <String>[],
       required this.settings,
       this.performingPoints = 0,
@@ -458,11 +444,6 @@ class _$_UserData extends _UserData {
 
   /// Айди юзера
   final String? userId;
-  @JsonKey(defaultValue: const <String>[])
-  @override
-
-  /// Айди девайсов
-  final List<String> deviceIds;
   @JsonKey(defaultValue: const <String>[])
   @override
 
@@ -485,7 +466,7 @@ class _$_UserData extends _UserData {
 
   @override
   String toString() {
-    return 'UserData(id: $id, userId: $userId, deviceIds: $deviceIds, habitIds: $habitIds, settings: $settings, performingPoints: $performingPoints, rewardIds: $rewardIds)';
+    return 'UserData(id: $id, userId: $userId, habitIds: $habitIds, settings: $settings, performingPoints: $performingPoints, rewardIds: $rewardIds)';
   }
 
   @override
@@ -496,9 +477,6 @@ class _$_UserData extends _UserData {
                 const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.userId, userId) ||
                 const DeepCollectionEquality().equals(other.userId, userId)) &&
-            (identical(other.deviceIds, deviceIds) ||
-                const DeepCollectionEquality()
-                    .equals(other.deviceIds, deviceIds)) &&
             (identical(other.habitIds, habitIds) ||
                 const DeepCollectionEquality()
                     .equals(other.habitIds, habitIds)) &&
@@ -518,7 +496,6 @@ class _$_UserData extends _UserData {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(userId) ^
-      const DeepCollectionEquality().hash(deviceIds) ^
       const DeepCollectionEquality().hash(habitIds) ^
       const DeepCollectionEquality().hash(settings) ^
       const DeepCollectionEquality().hash(performingPoints) ^
@@ -540,7 +517,6 @@ abstract class _UserData extends UserData {
   factory _UserData(
       {String? id,
       String? userId,
-      List<String> deviceIds,
       List<String> habitIds,
       required AppSettings settings,
       int performingPoints,
@@ -556,10 +532,6 @@ abstract class _UserData extends UserData {
 
   /// Айди юзера
   String? get userId => throw _privateConstructorUsedError;
-  @override
-
-  /// Айди девайсов
-  List<String> get deviceIds => throw _privateConstructorUsedError;
   @override
 
   /// Айди привычек

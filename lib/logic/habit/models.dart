@@ -55,7 +55,6 @@ abstract class Habit implements _$Habit, WithId {
   factory Habit.blank({
     DateTime? created,
     DateTime? performTime,
-    bool? isNotificationsEnabled,
   }) =>
       Habit(
         created: created ?? DateTime.now(),

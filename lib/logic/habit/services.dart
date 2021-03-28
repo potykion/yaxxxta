@@ -70,7 +70,7 @@ class ScheduleNotificationsForHabitsWithoutNotifications {
 
     //  Берем все привычки со временем выполнения и флагом отправки уведомления
     habits = habits
-        .where((h) => h.isNotificationsEnabled && h.performTime != null)
+        .where((h) => h.isNotificationsEnabled)
         .toList();
 
     //  Берем все пендинг уведомления

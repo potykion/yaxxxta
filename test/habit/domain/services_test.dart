@@ -2,16 +2,13 @@ import 'dart:convert';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:yaxxxta/logic/core/push.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
 import 'package:yaxxxta/logic/habit/services.dart';
-import 'services_test.mocks.dart';
 
-@GenerateMocks(
-  [NotificationSender],
-)
+class MockNotificationSender extends Mock implements NotificationSender {}
+
 void main() {
   group("ScheduleNotificationsForHabitsWithoutNotifications", () {
     test("обычный кейс", () async {
@@ -19,17 +16,16 @@ void main() {
       var habit = Habit.blank(
         created: now,
         performTime: DateTime(2020, 1, 1, 12),
-        isNotificationsEnabled: true,
       );
 
       var sender = MockNotificationSender();
-      when(sender.getAllPending()).thenAnswer((_) async => []);
-      when(sender.schedule(
-        title: anyNamed("title"),
-        body: anyNamed("body"),
-        sendAfterSeconds: anyNamed("sendAfterSeconds"),
-        payload: anyNamed("payload"),
-      )).thenAnswer((_) async => 0);
+      when(() => sender.getAllPending()).thenAnswer((_) async => []);
+      when(() => sender.schedule(
+            title: any(named: "title"),
+            body: any(named: "body"),
+            sendAfterSeconds: any(named: "sendAfterSeconds"),
+            payload: any(named: "payload"),
+          )).thenAnswer((_) async => 0);
 
       var schedule = ScheduleNotificationsForHabitsWithoutNotifications(
         notificationSender: sender,
@@ -37,13 +33,13 @@ void main() {
       await schedule([habit], now: now);
 
       verify(
-        sender.schedule(
+        () => sender.schedule(
           title: habit.title,
           body: "Пора выполнить привычку",
           sendAfterSeconds: habit.performTime!.difference(now).inSeconds,
           payload: jsonEncode({"habitId": habit.id}),
         ),
-      );
+      ).called(1);
     });
 
     test("кейс, когда есть заскедуленные привычки", () async {
@@ -51,13 +47,12 @@ void main() {
       var habit = Habit.blank(
         created: now,
         performTime: DateTime(2020, 1, 1, 12),
-        isNotificationsEnabled: true,
       ).copyWith(
         id: "1",
       );
 
       var sender = MockNotificationSender();
-      when(sender.getAllPending()).thenAnswer((_) async => [
+      when(() => sender.getAllPending()).thenAnswer((_) async => [
             PendingNotificationRequest(
               1,
               "sam",
@@ -65,12 +60,12 @@ void main() {
               jsonEncode({"habitId": "2"}),
             ),
           ]);
-      when(sender.schedule(
-        title: anyNamed("title"),
-        body: anyNamed("body"),
-        sendAfterSeconds: anyNamed("sendAfterSeconds"),
-        payload: anyNamed("payload"),
-      )).thenAnswer((_) async => 0);
+      when(() => sender.schedule(
+            title: any(named: "title"),
+            body: any(named: "body"),
+            sendAfterSeconds: any(named: "sendAfterSeconds"),
+            payload: any(named: "payload"),
+          )).thenAnswer((_) async => 0);
 
       var schedule = ScheduleNotificationsForHabitsWithoutNotifications(
         notificationSender: sender,
@@ -78,13 +73,13 @@ void main() {
       await schedule([habit], now: now);
 
       verify(
-        sender.schedule(
+        () => sender.schedule(
           title: habit.title,
           body: "Пора выполнить привычку",
           sendAfterSeconds: habit.performTime!.difference(now).inSeconds,
           payload: jsonEncode({"habitId": habit.id}),
         ),
-      );
+      ).called(1);
     });
   });
 }

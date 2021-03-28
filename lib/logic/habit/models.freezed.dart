@@ -31,8 +31,7 @@ class _$HabitTearOff {
       int periodValue = 1,
       List<Weekday> performWeekdays = const <Weekday>[],
       int performMonthDay = 1,
-      bool isCustomPeriod = false,
-      bool isNotificationsEnabled = false}) {
+      bool isCustomPeriod = false}) {
     return _Habit(
       id: id,
       created: created,
@@ -45,7 +44,6 @@ class _$HabitTearOff {
       performWeekdays: performWeekdays,
       performMonthDay: performMonthDay,
       isCustomPeriod: isCustomPeriod,
-      isNotificationsEnabled: isNotificationsEnabled,
     );
   }
 
@@ -93,9 +91,6 @@ mixin _$Habit {
   /// Вообще тупа в гуи юзается
   bool get isCustomPeriod => throw _privateConstructorUsedError;
 
-  /// Включены ли уведомления
-  bool get isNotificationsEnabled => throw _privateConstructorUsedError;
-
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $HabitCopyWith<Habit> get copyWith => throw _privateConstructorUsedError;
@@ -116,8 +111,7 @@ abstract class $HabitCopyWith<$Res> {
       int periodValue,
       List<Weekday> performWeekdays,
       int performMonthDay,
-      bool isCustomPeriod,
-      bool isNotificationsEnabled});
+      bool isCustomPeriod});
 }
 
 /// @nodoc
@@ -141,7 +135,6 @@ class _$HabitCopyWithImpl<$Res> implements $HabitCopyWith<$Res> {
     Object? performWeekdays = freezed,
     Object? performMonthDay = freezed,
     Object? isCustomPeriod = freezed,
-    Object? isNotificationsEnabled = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed ? _value.id : id as String?,
@@ -166,9 +159,6 @@ class _$HabitCopyWithImpl<$Res> implements $HabitCopyWith<$Res> {
       isCustomPeriod: isCustomPeriod == freezed
           ? _value.isCustomPeriod
           : isCustomPeriod as bool,
-      isNotificationsEnabled: isNotificationsEnabled == freezed
-          ? _value.isNotificationsEnabled
-          : isNotificationsEnabled as bool,
     ));
   }
 }
@@ -189,8 +179,7 @@ abstract class _$HabitCopyWith<$Res> implements $HabitCopyWith<$Res> {
       int periodValue,
       List<Weekday> performWeekdays,
       int performMonthDay,
-      bool isCustomPeriod,
-      bool isNotificationsEnabled});
+      bool isCustomPeriod});
 }
 
 /// @nodoc
@@ -215,7 +204,6 @@ class __$HabitCopyWithImpl<$Res> extends _$HabitCopyWithImpl<$Res>
     Object? performWeekdays = freezed,
     Object? performMonthDay = freezed,
     Object? isCustomPeriod = freezed,
-    Object? isNotificationsEnabled = freezed,
   }) {
     return _then(_Habit(
       id: id == freezed ? _value.id : id as String?,
@@ -240,9 +228,6 @@ class __$HabitCopyWithImpl<$Res> extends _$HabitCopyWithImpl<$Res>
       isCustomPeriod: isCustomPeriod == freezed
           ? _value.isCustomPeriod
           : isCustomPeriod as bool,
-      isNotificationsEnabled: isNotificationsEnabled == freezed
-          ? _value.isNotificationsEnabled
-          : isNotificationsEnabled as bool,
     ));
   }
 }
@@ -262,8 +247,7 @@ class _$_Habit extends _Habit {
       this.periodValue = 1,
       this.performWeekdays = const <Weekday>[],
       this.performMonthDay = 1,
-      this.isCustomPeriod = false,
-      this.isNotificationsEnabled = false})
+      this.isCustomPeriod = false})
       : super._();
 
   factory _$_Habit.fromJson(Map<String, dynamic> json) =>
@@ -322,15 +306,10 @@ class _$_Habit extends _Habit {
   /// Если false, то {periodValue} = 1; иначе можно задавать {periodValue} > 1
   /// Вообще тупа в гуи юзается
   final bool isCustomPeriod;
-  @JsonKey(defaultValue: false)
-  @override
-
-  /// Включены ли уведомления
-  final bool isNotificationsEnabled;
 
   @override
   String toString() {
-    return 'Habit(id: $id, created: $created, title: $title, type: $type, goalValue: $goalValue, performTime: $performTime, periodType: $periodType, periodValue: $periodValue, performWeekdays: $performWeekdays, performMonthDay: $performMonthDay, isCustomPeriod: $isCustomPeriod, isNotificationsEnabled: $isNotificationsEnabled)';
+    return 'Habit(id: $id, created: $created, title: $title, type: $type, goalValue: $goalValue, performTime: $performTime, periodType: $periodType, periodValue: $periodValue, performWeekdays: $performWeekdays, performMonthDay: $performMonthDay, isCustomPeriod: $isCustomPeriod)';
   }
 
   @override
@@ -366,10 +345,7 @@ class _$_Habit extends _Habit {
                     .equals(other.performMonthDay, performMonthDay)) &&
             (identical(other.isCustomPeriod, isCustomPeriod) ||
                 const DeepCollectionEquality()
-                    .equals(other.isCustomPeriod, isCustomPeriod)) &&
-            (identical(other.isNotificationsEnabled, isNotificationsEnabled) ||
-                const DeepCollectionEquality().equals(
-                    other.isNotificationsEnabled, isNotificationsEnabled)));
+                    .equals(other.isCustomPeriod, isCustomPeriod)));
   }
 
   @override
@@ -385,8 +361,7 @@ class _$_Habit extends _Habit {
       const DeepCollectionEquality().hash(periodValue) ^
       const DeepCollectionEquality().hash(performWeekdays) ^
       const DeepCollectionEquality().hash(performMonthDay) ^
-      const DeepCollectionEquality().hash(isCustomPeriod) ^
-      const DeepCollectionEquality().hash(isNotificationsEnabled);
+      const DeepCollectionEquality().hash(isCustomPeriod);
 
   @JsonKey(ignore: true)
   @override
@@ -412,8 +387,7 @@ abstract class _Habit extends Habit {
       int periodValue,
       List<Weekday> performWeekdays,
       int performMonthDay,
-      bool isCustomPeriod,
-      bool isNotificationsEnabled}) = _$_Habit;
+      bool isCustomPeriod}) = _$_Habit;
 
   factory _Habit.fromJson(Map<String, dynamic> json) = _$_Habit.fromJson;
 
@@ -462,10 +436,6 @@ abstract class _Habit extends Habit {
   /// Если false, то {periodValue} = 1; иначе можно задавать {periodValue} > 1
   /// Вообще тупа в гуи юзается
   bool get isCustomPeriod => throw _privateConstructorUsedError;
-  @override
-
-  /// Включены ли уведомления
-  bool get isNotificationsEnabled => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$HabitCopyWith<_Habit> get copyWith => throw _privateConstructorUsedError;
