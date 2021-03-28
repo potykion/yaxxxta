@@ -94,6 +94,7 @@ class FirebaseHabitPerformingRepo extends FirebaseRepo<HabitPerforming>
           .map(entityFromFirebase)
           .toList();
 
+  /// Получает выполнения привычек для всех привычек с [habitIds]
   Future<List<HabitPerforming>> listByHabits(List<String> habitIds) async =>
       (await listDocsByIds(habitIds, idField: "habitId"))
           .map(entityFromFirebase)
@@ -230,8 +231,11 @@ Provider<HabitRepo> habitRepoProvider = Provider(
       : ref.watch(fbHabitRepoProvider),
 );
 
+/// Провайдер HiveHabitPerformingRepo
 Provider<HiveHabitPerformingRepo> hiveHabitPerformingRepoProvider = Provider(
     (ref) => HiveHabitPerformingRepo(Hive.box<Map>("habit_performings")));
+
+/// Провайдер FirebaseHabitPerformingRepo
 Provider<FirebaseHabitPerformingRepo> fbHabitPerformingRepoProvider = Provider(
     (ref) => FirebaseHabitPerformingRepo(
         FirebaseFirestore.instance.collection("habit_performings")));

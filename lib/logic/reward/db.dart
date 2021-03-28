@@ -55,8 +55,11 @@ class HiveRewardRepo extends HiveRepo<Reward>
       Reward.fromJson(hiveData..["id"] = id);
 }
 
+/// Провайдер HiveRewardRepo
 Provider<HiveRewardRepo> hiveRewardRepoProvider =
     Provider((ref) => HiveRewardRepo(Hive.box<Map>("rewards")));
+
+/// Провайдер FirebaseRewardRepo
 Provider<FirebaseRewardRepo> fbRewardRepoProvider = Provider((ref) =>
     FirebaseRewardRepo(FirebaseFirestore.instance.collection("rewards")));
 

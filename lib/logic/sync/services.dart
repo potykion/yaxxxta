@@ -93,6 +93,7 @@ class FirebaseToHiveSync {
   }
 }
 
+/// Провайдер FirebaseToHiveSync
 Provider<FirebaseToHiveSync> firebaseToHiveSyncProvider =
     Provider((ref) => FirebaseToHiveSync(
           fbUserDataRepo: ref.watch(fbUserDataRepoProvider),
