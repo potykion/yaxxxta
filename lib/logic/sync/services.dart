@@ -48,16 +48,28 @@ class FirebaseToHiveSync {
     var fbUserData = (userId != null
         ? await fbUserDataRepo.getByUserId(userId)
         : await fbUserDataRepo.first())!;
-    var fbHabits = await fbHabitRepo.listByIds(fbUserData.habitIds);
-    var fbHabitPerformings = await fbHabitPerformingRepo
-        .listByHabits(fbHabits.map((h) => h.id!).toList());
-    var fbRewards = await fbRewardRepo.listByIds(fbUserData.rewardIds);
+    fbUserData = fbUserData.copyWith(externalId: fbUserData.id);
+
+    var fbHabits = (await fbHabitRepo.listByIds(fbUserData.habitIds))
+        .map((e) => e.copyWith(externalId: e.id))
+        .toList();
+
+    var fbHabitPerformings = (await fbHabitPerformingRepo
+            .listByHabits(fbHabits.map((h) => h.id!).toList()))
+        .map((e) => e.copyWith(externalId: e.id))
+        .toList();
+
+    var fbRewards = (await fbRewardRepo.listByIds(fbUserData.rewardIds))
+        .map((e) => e.copyWith(externalId: e.id))
+        .toList();
 
     // Вставляем награды в хайв
-    var hiveRewardIds = await hiveRewardRepo.insertMany(fbRewards);
+    var hiveRewardIds =
+        await hiveRewardRepo.insertOrUpdateManyByExternalId(fbRewards);
 
     // Вставляем привычки в хайв
-    var hiveHabitIds = await hiveHabitRepo.insertMany(fbHabits);
+    var hiveHabitIds =
+        await hiveHabitRepo.insertOrUpdateManyByExternalId(fbHabits);
 
     /// Проставляем выполнениям привычек хайв айди привычки +
     /// вставляем выполнения привычек в хайв
@@ -68,24 +80,27 @@ class FirebaseToHiveSync {
     var hiveHabitPerformingsToInsert = fbHabitPerformings
         .map((hp) => hp.copyWith(habitId: fbToHiveHabitIdMap[hp.habitId]!))
         .toList();
-    await hiveHabitPerformingRepo.insertMany(hiveHabitPerformingsToInsert);
+    await hiveHabitPerformingRepo
+        .insertOrUpdateManyByExternalId(hiveHabitPerformingsToInsert);
 
     // Ставим айди привычек и наград в данные юзера и вставляем данные о юзере
     var hiveUserDataToInsert = fbUserData.copyWith(
       rewardIds: hiveRewardIds,
       habitIds: hiveHabitIds,
     );
-    await hiveUserDataRepo.insert(hiveUserDataToInsert);
+    await hiveUserDataRepo
+        .insertOrUpdateManyByExternalId([hiveUserDataToInsert]);
   }
 }
 
-var firebaseToHiveSyncProvider = Provider((ref) => FirebaseToHiveSync(
-      fbUserDataRepo: ref.watch(fbUserDataRepoProvider),
-      fbHabitRepo: ref.watch(fbHabitRepoProvider),
-      fbHabitPerformingRepo: ref.watch(fbHabitPerformingRepoProvider),
-      fbRewardRepo: ref.watch(fbRewardRepoProvider),
-      hiveUserDataRepo: ref.watch(hiveUserDataRepoProvider),
-      hiveHabitRepo: ref.watch(hiveHabitRepoProvider),
-      hiveHabitPerformingRepo: ref.watch(hiveHabitPerformingRepoProvider),
-      hiveRewardRepo: ref.watch(hiveRewardRepoProvider),
-    ));
+Provider<FirebaseToHiveSync> firebaseToHiveSyncProvider =
+    Provider((ref) => FirebaseToHiveSync(
+          fbUserDataRepo: ref.watch(fbUserDataRepoProvider),
+          fbHabitRepo: ref.watch(fbHabitRepoProvider),
+          fbHabitPerformingRepo: ref.watch(fbHabitPerformingRepoProvider),
+          fbRewardRepo: ref.watch(fbRewardRepoProvider),
+          hiveUserDataRepo: ref.watch(hiveUserDataRepoProvider),
+          hiveHabitRepo: ref.watch(hiveHabitRepoProvider),
+          hiveHabitPerformingRepo: ref.watch(hiveHabitPerformingRepoProvider),
+          hiveRewardRepo: ref.watch(hiveRewardRepoProvider),
+        ));

@@ -57,7 +57,9 @@ class FirebaseUserDataRepo extends FirebaseRepo<UserData>
 }
 
 /// Хайв репо для данных о юзере
-class HiveUserDataRepo extends HiveRepo<UserData> implements UserDataRepo {
+class HiveUserDataRepo extends HiveRepo<UserData>
+    with WithInsertOrUpdateManyByExternalId<UserData>
+    implements UserDataRepo {
   /// Хайв репо для данных о юзере
   HiveUserDataRepo(Box<Map> box) : super(box);
 

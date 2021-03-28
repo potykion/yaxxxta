@@ -271,7 +271,8 @@ class _$UserDataTearOff {
       List<String> habitIds = const <String>[],
       required AppSettings settings,
       int performingPoints = 0,
-      List<String> rewardIds = const <String>[]}) {
+      List<String> rewardIds = const <String>[],
+      String? externalId}) {
     return _UserData(
       id: id,
       userId: userId,
@@ -279,6 +280,7 @@ class _$UserDataTearOff {
       settings: settings,
       performingPoints: performingPoints,
       rewardIds: rewardIds,
+      externalId: externalId,
     );
   }
 
@@ -310,6 +312,9 @@ mixin _$UserData {
   /// Айди наград
   List<String> get rewardIds => throw _privateConstructorUsedError;
 
+  /// Айди сторонней системы, напр. айди из Firebase
+  String? get externalId => throw _privateConstructorUsedError;
+
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $UserDataCopyWith<UserData> get copyWith =>
@@ -326,7 +331,8 @@ abstract class $UserDataCopyWith<$Res> {
       List<String> habitIds,
       AppSettings settings,
       int performingPoints,
-      List<String> rewardIds});
+      List<String> rewardIds,
+      String? externalId});
 
   $AppSettingsCopyWith<$Res> get settings;
 }
@@ -347,6 +353,7 @@ class _$UserDataCopyWithImpl<$Res> implements $UserDataCopyWith<$Res> {
     Object? settings = freezed,
     Object? performingPoints = freezed,
     Object? rewardIds = freezed,
+    Object? externalId = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed ? _value.id : id as String?,
@@ -359,6 +366,8 @@ class _$UserDataCopyWithImpl<$Res> implements $UserDataCopyWith<$Res> {
           : performingPoints as int,
       rewardIds:
           rewardIds == freezed ? _value.rewardIds : rewardIds as List<String>,
+      externalId:
+          externalId == freezed ? _value.externalId : externalId as String?,
     ));
   }
 
@@ -381,7 +390,8 @@ abstract class _$UserDataCopyWith<$Res> implements $UserDataCopyWith<$Res> {
       List<String> habitIds,
       AppSettings settings,
       int performingPoints,
-      List<String> rewardIds});
+      List<String> rewardIds,
+      String? externalId});
 
   @override
   $AppSettingsCopyWith<$Res> get settings;
@@ -404,6 +414,7 @@ class __$UserDataCopyWithImpl<$Res> extends _$UserDataCopyWithImpl<$Res>
     Object? settings = freezed,
     Object? performingPoints = freezed,
     Object? rewardIds = freezed,
+    Object? externalId = freezed,
   }) {
     return _then(_UserData(
       id: id == freezed ? _value.id : id as String?,
@@ -416,6 +427,8 @@ class __$UserDataCopyWithImpl<$Res> extends _$UserDataCopyWithImpl<$Res>
           : performingPoints as int,
       rewardIds:
           rewardIds == freezed ? _value.rewardIds : rewardIds as List<String>,
+      externalId:
+          externalId == freezed ? _value.externalId : externalId as String?,
     ));
   }
 }
@@ -430,7 +443,8 @@ class _$_UserData extends _UserData {
       this.habitIds = const <String>[],
       required this.settings,
       this.performingPoints = 0,
-      this.rewardIds = const <String>[]})
+      this.rewardIds = const <String>[],
+      this.externalId})
       : super._();
 
   factory _$_UserData.fromJson(Map<String, dynamic> json) =>
@@ -463,10 +477,14 @@ class _$_UserData extends _UserData {
 
   /// Айди наград
   final List<String> rewardIds;
+  @override
+
+  /// Айди сторонней системы, напр. айди из Firebase
+  final String? externalId;
 
   @override
   String toString() {
-    return 'UserData(id: $id, userId: $userId, habitIds: $habitIds, settings: $settings, performingPoints: $performingPoints, rewardIds: $rewardIds)';
+    return 'UserData(id: $id, userId: $userId, habitIds: $habitIds, settings: $settings, performingPoints: $performingPoints, rewardIds: $rewardIds, externalId: $externalId)';
   }
 
   @override
@@ -488,7 +506,10 @@ class _$_UserData extends _UserData {
                     .equals(other.performingPoints, performingPoints)) &&
             (identical(other.rewardIds, rewardIds) ||
                 const DeepCollectionEquality()
-                    .equals(other.rewardIds, rewardIds)));
+                    .equals(other.rewardIds, rewardIds)) &&
+            (identical(other.externalId, externalId) ||
+                const DeepCollectionEquality()
+                    .equals(other.externalId, externalId)));
   }
 
   @override
@@ -499,7 +520,8 @@ class _$_UserData extends _UserData {
       const DeepCollectionEquality().hash(habitIds) ^
       const DeepCollectionEquality().hash(settings) ^
       const DeepCollectionEquality().hash(performingPoints) ^
-      const DeepCollectionEquality().hash(rewardIds);
+      const DeepCollectionEquality().hash(rewardIds) ^
+      const DeepCollectionEquality().hash(externalId);
 
   @JsonKey(ignore: true)
   @override
@@ -520,7 +542,8 @@ abstract class _UserData extends UserData {
       List<String> habitIds,
       required AppSettings settings,
       int performingPoints,
-      List<String> rewardIds}) = _$_UserData;
+      List<String> rewardIds,
+      String? externalId}) = _$_UserData;
 
   factory _UserData.fromJson(Map<String, dynamic> json) = _$_UserData.fromJson;
 
@@ -548,6 +571,10 @@ abstract class _UserData extends UserData {
 
   /// Айди наград
   List<String> get rewardIds => throw _privateConstructorUsedError;
+  @override
+
+  /// Айди сторонней системы, напр. айди из Firebase
+  String? get externalId => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$UserDataCopyWith<_UserData> get copyWith =>

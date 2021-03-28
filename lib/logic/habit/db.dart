@@ -155,7 +155,9 @@ class FirebaseHabitPerformingRepo extends FirebaseRepo<HabitPerforming>
 }
 
 /// Хайв репо привычек
-class HiveHabitRepo extends HiveRepo<Habit> implements HabitRepo {
+class HiveHabitRepo extends HiveRepo<Habit>
+    with WithInsertOrUpdateManyByExternalId<Habit>
+    implements HabitRepo {
   /// Хайв репо привычек
   HiveHabitRepo(Box<Map> box) : super(box);
 
@@ -177,6 +179,7 @@ class HiveHabitRepo extends HiveRepo<Habit> implements HabitRepo {
 
 /// Хайв репо выполнений привычек
 class HiveHabitPerformingRepo extends HiveRepo<HabitPerforming>
+    with WithInsertOrUpdateManyByExternalId<HabitPerforming>
     implements HabitPerformingRepo {
   /// Хайв репо выполнений привычек
   HiveHabitPerformingRepo(Box<Map> box) : super(box);

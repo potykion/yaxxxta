@@ -7,7 +7,7 @@ part 'models.g.dart';
 
 /// Награда
 @freezed
-abstract class Reward implements _$Reward, WithId {
+abstract class Reward implements _$Reward, WithExternalId {
   const Reward._();
 
   /// Награда
@@ -25,6 +25,9 @@ abstract class Reward implements _$Reward, WithId {
 
     /// Награда получена?
     @Default(false) bool collected,
+
+    /// Айди сторонней системы, напр. айди из Firebase
+    String? externalId,
   }) = _Reward;
 
   /// Создает из джсона

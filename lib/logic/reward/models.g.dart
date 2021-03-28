@@ -12,6 +12,7 @@ _$_Reward _$_$_RewardFromJson(Map json) {
     title: json['title'] as String,
     cost: json['cost'] as int,
     collected: json['collected'] as bool? ?? false,
+    externalId: json['externalId'] as String?,
   );
 }
 
@@ -20,4 +21,5 @@ Map<String, dynamic> _$_$_RewardToJson(_$_Reward instance) => <String, dynamic>{
       'title': instance.title,
       'cost': instance.cost,
       'collected': instance.collected,
+      'externalId': instance.externalId,
     };

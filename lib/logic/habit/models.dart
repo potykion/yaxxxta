@@ -10,7 +10,7 @@ part 'models.freezed.dart';
 
 /// Привычка
 @freezed
-abstract class Habit implements _$Habit, WithId {
+abstract class Habit implements _$Habit, WithExternalId {
   const Habit._();
 
   /// Создает привычку
@@ -49,6 +49,8 @@ abstract class Habit implements _$Habit, WithId {
     /// Вообще тупа в гуи юзается
     @Default(false) bool isCustomPeriod,
 
+    /// Айди сторонней системы, напр. айди из Firebase
+    String? externalId,
   }) = _Habit;
 
   /// Созадет пустую привычку
@@ -313,7 +315,7 @@ extension HabitTypeToStr on HabitType {
 
 /// Выполнение прички
 @freezed
-abstract class HabitPerforming with WithId implements _$HabitPerforming {
+abstract class HabitPerforming implements _$HabitPerforming, WithExternalId {
   HabitPerforming._();
 
   /// Создает выполнение привычки
@@ -329,6 +331,9 @@ abstract class HabitPerforming with WithId implements _$HabitPerforming {
 
     /// Время выполнения
     required DateTime performDateTime,
+
+    /// Айди сторонней системы, напр. айди из Firebase
+    String? externalId,
   }) = _HabitPerforming;
 
   /// Создает пустышку

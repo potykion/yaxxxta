@@ -37,6 +37,7 @@ _$_UserData _$_$_UserDataFromJson(Map json) {
             ?.map((e) => e as String)
             .toList() ??
         [],
+    externalId: json['externalId'] as String?,
   );
 }
 
@@ -48,4 +49,5 @@ Map<String, dynamic> _$_$_UserDataToJson(_$_UserData instance) =>
       'settings': instance.settings.toJson(),
       'performingPoints': instance.performingPoints,
       'rewardIds': instance.rewardIds,
+      'externalId': instance.externalId,
     };

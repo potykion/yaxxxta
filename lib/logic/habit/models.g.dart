@@ -27,6 +27,7 @@ _$_Habit _$_$_HabitFromJson(Map json) {
         [],
     performMonthDay: json['performMonthDay'] as int? ?? 1,
     isCustomPeriod: json['isCustomPeriod'] as bool? ?? false,
+    externalId: json['externalId'] as String?,
   );
 }
 
@@ -43,6 +44,7 @@ Map<String, dynamic> _$_$_HabitToJson(_$_Habit instance) => <String, dynamic>{
           instance.performWeekdays.map((e) => _$WeekdayEnumMap[e]).toList(),
       'performMonthDay': instance.performMonthDay,
       'isCustomPeriod': instance.isCustomPeriod,
+      'externalId': instance.externalId,
     };
 
 K _$enumDecode<K, V>(
@@ -109,6 +111,7 @@ _$_HabitPerforming _$_$_HabitPerformingFromJson(Map json) {
     habitId: json['habitId'] as String,
     performValue: (json['performValue'] as num).toDouble(),
     performDateTime: DateTime.parse(json['performDateTime'] as String),
+    externalId: json['externalId'] as String?,
   );
 }
 
@@ -118,4 +121,5 @@ Map<String, dynamic> _$_$_HabitPerformingToJson(_$_HabitPerforming instance) =>
       'habitId': instance.habitId,
       'performValue': instance.performValue,
       'performDateTime': instance.performDateTime.toIso8601String(),
+      'externalId': instance.externalId,
     };

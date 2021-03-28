@@ -36,7 +36,7 @@ class AppSettings with _$AppSettings {
 
 /// Данные о юзере
 @freezed
-abstract class UserData implements _$UserData, WithId {
+abstract class UserData implements _$UserData, WithExternalId {
   const UserData._();
 
   /// Данные о юзере
@@ -58,6 +58,9 @@ abstract class UserData implements _$UserData, WithId {
 
     /// Айди наград
     @Default(<String>[]) List<String> rewardIds,
+
+    /// Айди сторонней системы, напр. айди из Firebase
+    String? externalId,
   }) = _UserData;
 
   /// Создает из юзера
@@ -67,10 +70,13 @@ abstract class UserData implements _$UserData, WithId {
   /// Создает пустышку
   factory UserData.blank({
     String? userId,
+    List<String>? habitIds,
+    List<String>? rewardIds,
   }) {
     return UserData(
       userId: userId,
-      habitIds: [],
+      habitIds: habitIds ?? [],
+      rewardIds: rewardIds ?? [],
       settings: AppSettings.createDefault(),
     );
   }

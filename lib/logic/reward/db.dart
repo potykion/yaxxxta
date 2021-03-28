@@ -37,7 +37,9 @@ class FirebaseRewardRepo extends FirebaseRepo<Reward> implements RewardRepo {
 }
 
 /// Хайв репо наград
-class HiveRewardRepo extends HiveRepo<Reward> implements RewardRepo {
+class HiveRewardRepo extends HiveRepo<Reward>
+    with WithInsertOrUpdateManyByExternalId<Reward>
+    implements RewardRepo {
   /// Хайв репо наград
   HiveRewardRepo(Box<Map> box) : super(box);
 

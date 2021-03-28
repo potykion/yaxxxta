@@ -24,12 +24,14 @@ class _$RewardTearOff {
       {String? id,
       required String title,
       required int cost,
-      bool collected = false}) {
+      bool collected = false,
+      String? externalId}) {
     return _Reward(
       id: id,
       title: title,
       cost: cost,
       collected: collected,
+      externalId: externalId,
     );
   }
 
@@ -57,6 +59,9 @@ mixin _$Reward {
   /// Награда получена?
   bool get collected => throw _privateConstructorUsedError;
 
+  /// Айди сторонней системы, напр. айди из Firebase
+  String? get externalId => throw _privateConstructorUsedError;
+
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $RewardCopyWith<Reward> get copyWith => throw _privateConstructorUsedError;
@@ -66,7 +71,8 @@ mixin _$Reward {
 abstract class $RewardCopyWith<$Res> {
   factory $RewardCopyWith(Reward value, $Res Function(Reward) then) =
       _$RewardCopyWithImpl<$Res>;
-  $Res call({String? id, String title, int cost, bool collected});
+  $Res call(
+      {String? id, String title, int cost, bool collected, String? externalId});
 }
 
 /// @nodoc
@@ -83,12 +89,15 @@ class _$RewardCopyWithImpl<$Res> implements $RewardCopyWith<$Res> {
     Object? title = freezed,
     Object? cost = freezed,
     Object? collected = freezed,
+    Object? externalId = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed ? _value.id : id as String?,
       title: title == freezed ? _value.title : title as String,
       cost: cost == freezed ? _value.cost : cost as int,
       collected: collected == freezed ? _value.collected : collected as bool,
+      externalId:
+          externalId == freezed ? _value.externalId : externalId as String?,
     ));
   }
 }
@@ -98,7 +107,8 @@ abstract class _$RewardCopyWith<$Res> implements $RewardCopyWith<$Res> {
   factory _$RewardCopyWith(_Reward value, $Res Function(_Reward) then) =
       __$RewardCopyWithImpl<$Res>;
   @override
-  $Res call({String? id, String title, int cost, bool collected});
+  $Res call(
+      {String? id, String title, int cost, bool collected, String? externalId});
 }
 
 /// @nodoc
@@ -116,12 +126,15 @@ class __$RewardCopyWithImpl<$Res> extends _$RewardCopyWithImpl<$Res>
     Object? title = freezed,
     Object? cost = freezed,
     Object? collected = freezed,
+    Object? externalId = freezed,
   }) {
     return _then(_Reward(
       id: id == freezed ? _value.id : id as String?,
       title: title == freezed ? _value.title : title as String,
       cost: cost == freezed ? _value.cost : cost as int,
       collected: collected == freezed ? _value.collected : collected as bool,
+      externalId:
+          externalId == freezed ? _value.externalId : externalId as String?,
     ));
   }
 }
@@ -134,7 +147,8 @@ class _$_Reward extends _Reward {
       {this.id,
       required this.title,
       required this.cost,
-      this.collected = false})
+      this.collected = false,
+      this.externalId})
       : super._();
 
   factory _$_Reward.fromJson(Map<String, dynamic> json) =>
@@ -159,10 +173,14 @@ class _$_Reward extends _Reward {
 
   /// Награда получена?
   final bool collected;
+  @override
+
+  /// Айди сторонней системы, напр. айди из Firebase
+  final String? externalId;
 
   @override
   String toString() {
-    return 'Reward(id: $id, title: $title, cost: $cost, collected: $collected)';
+    return 'Reward(id: $id, title: $title, cost: $cost, collected: $collected, externalId: $externalId)';
   }
 
   @override
@@ -177,7 +195,10 @@ class _$_Reward extends _Reward {
                 const DeepCollectionEquality().equals(other.cost, cost)) &&
             (identical(other.collected, collected) ||
                 const DeepCollectionEquality()
-                    .equals(other.collected, collected)));
+                    .equals(other.collected, collected)) &&
+            (identical(other.externalId, externalId) ||
+                const DeepCollectionEquality()
+                    .equals(other.externalId, externalId)));
   }
 
   @override
@@ -186,7 +207,8 @@ class _$_Reward extends _Reward {
       const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(title) ^
       const DeepCollectionEquality().hash(cost) ^
-      const DeepCollectionEquality().hash(collected);
+      const DeepCollectionEquality().hash(collected) ^
+      const DeepCollectionEquality().hash(externalId);
 
   @JsonKey(ignore: true)
   @override
@@ -205,7 +227,8 @@ abstract class _Reward extends Reward {
       {String? id,
       required String title,
       required int cost,
-      bool collected}) = _$_Reward;
+      bool collected,
+      String? externalId}) = _$_Reward;
 
   factory _Reward.fromJson(Map<String, dynamic> json) = _$_Reward.fromJson;
 
@@ -227,6 +250,10 @@ abstract class _Reward extends Reward {
 
   /// Награда получена?
   bool get collected => throw _privateConstructorUsedError;
+  @override
+
+  /// Айди сторонней системы, напр. айди из Firebase
+  String? get externalId => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$RewardCopyWith<_Reward> get copyWith => throw _privateConstructorUsedError;
