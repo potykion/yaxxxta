@@ -11,7 +11,10 @@ void main() {
 
     setUp(() {
       instance = MockFirestoreInstance();
-      repo = FirebaseUserDataRepo(instance.collection('user_data'));
+      repo = FirebaseUserDataRepo(
+        instance.collection('user_data'),
+        instance.batch,
+      );
     });
 
     test("FirestoreUserDataRepo.create", () async {

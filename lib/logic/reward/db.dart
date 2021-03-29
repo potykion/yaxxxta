@@ -25,8 +25,13 @@ abstract class RewardRepo {
 /// Репо для работы с наградами на фаербейз
 class FirebaseRewardRepo extends FirebaseRepo<Reward> implements RewardRepo {
   /// Репо для работы с наградами
-  FirebaseRewardRepo(CollectionReference collectionReference)
-      : super(collectionReference);
+  FirebaseRewardRepo(
+    CollectionReference collectionReference,
+    CreateBatch createBatch,
+  ) : super(
+          collectionReference: collectionReference,
+          createBatch: createBatch,
+        );
 
   @override
   Reward entityFromFirebase(DocumentSnapshot doc) =>
@@ -60,8 +65,12 @@ Provider<HiveRewardRepo> hiveRewardRepoProvider =
     Provider((ref) => HiveRewardRepo(Hive.box<Map>("rewards")));
 
 /// Провайдер FirebaseRewardRepo
-Provider<FirebaseRewardRepo> fbRewardRepoProvider = Provider((ref) =>
-    FirebaseRewardRepo(FirebaseFirestore.instance.collection("rewards")));
+Provider<FirebaseRewardRepo> fbRewardRepoProvider = Provider(
+  (ref) => FirebaseRewardRepo(
+    FirebaseFirestore.instance.collection("rewards"),
+    FirebaseFirestore.instance.batch,
+  ),
+);
 
 /// Провайдер RewardRepo
 Provider<RewardRepo> rewardRepoProvider = Provider<RewardRepo>(

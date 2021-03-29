@@ -7,14 +7,26 @@ import 'package:uuid/uuid.dart';
 import 'package:yaxxxta/logic/core/models.dart';
 import 'utils/list.dart';
 
+/// Создает Firebase батч - типа транзакция
+/// Обычно используется это: FirebaseFirestore.instance.batch
+typedef CreateBatch = WriteBatch Function();
+
 /// Firebase / Firestore репо
-abstract class FirebaseRepo<T extends WithId> {
+abstract class FirebaseRepo<T extends WithExternalId>
+    with WithInsertOrUpdateManyByExternalId<T> {
   /// Фаерстор коллекция
   @protected
   final CollectionReference collectionReference;
 
+  /// Создает Firebase батч - типа транзакция
+  @protected
+  final CreateBatch createBatch;
+
   /// Firebase Firestore репо
-  FirebaseRepo(this.collectionReference);
+  FirebaseRepo({
+    required this.collectionReference,
+    required this.createBatch,
+  });
 
   /// Конвертит сущность в фаерстор формат
   @protected
@@ -62,10 +74,47 @@ abstract class FirebaseRepo<T extends WithId> {
     ))
         .expand((qs) => qs.docs);
   }
+
+  @override
+  Future<List<T>> getAllByExternalIds(List<String> externalIds) async =>
+      (await listDocsByIds(externalIds, idField: "externalId"))
+          .map(entityFromFirebase)
+          .toList();
+
+  @override
+  Future<void> updateMany(List<T> entities) async {
+    var batch = createBatch();
+
+    for (var entity in entities) {
+      batch.update(
+        collectionReference.doc(entity.id),
+        entityToFirebase(entity),
+      );
+    }
+
+    await batch.commit();
+  }
+
+  @override
+  Future<List<String>> insertMany(List<T> entities) async {
+    var ids = <String>[];
+
+    var batch = createBatch();
+
+    for (var entity in entities) {
+      var doc = collectionReference.doc();
+      batch.set(doc, entityToFirebase(entity));
+      ids.add(doc.id);
+    }
+
+    await batch.commit();
+    return ids;
+  }
 }
 
 /// Базовый класс для хайв репозиториев
-abstract class HiveRepo<T extends WithId> {
+abstract class HiveRepo<T extends WithExternalId>
+    with WithInsertOrUpdateManyByExternalId<T> {
   /// Хайв коробка (типа табличка)
   @visibleForTesting
   @protected
@@ -98,7 +147,7 @@ abstract class HiveRepo<T extends WithId> {
   @protected
   T entityFromHive(String id, Map hiveData);
 
-  /// Вставляет несколько сущностей
+  @override
   Future<List<String>> insertMany(List<T> entities) async {
     var ids = entities.map((e) => _uuid.v1()).toList();
     await box.putAll(Map<String, Map>.fromIterables(
@@ -108,7 +157,7 @@ abstract class HiveRepo<T extends WithId> {
     return ids;
   }
 
-  /// Обновляет несколько сущностей
+  @override
   Future<void> updateMany(List<T> entities) async {
     var ids = entities.map((e) => e.id!).toList();
     await box.putAll(Map<String, Map>.fromIterables(
@@ -116,24 +165,40 @@ abstract class HiveRepo<T extends WithId> {
       entities.map(entityToHive),
     ));
   }
+
+  @override
+  Future<List<T>> getAllByExternalIds(List<String> externalIds) async => box
+      .toMap()
+      .entries
+      .map((e) => entityFromHive(e.key as String, e.value))
+      .where((e) => externalIds.contains(e.externalId))
+      .toList();
 }
 
 /// Вставляет или обновляет сущности по [externalId].
-mixin WithInsertOrUpdateManyByExternalId<T extends WithExternalId>
-    on HiveRepo<T> {
+mixin WithInsertOrUpdateManyByExternalId<T extends WithExternalId> {
+  /// Получает все сущности с [externalId] из [externalIds]
+  @protected
+  Future<List<T>> getAllByExternalIds(List<String> externalIds);
+
+  /// Вставляет несколько сущностей
+  @protected
+  Future<List<String>> insertMany(List<T> entities);
+
+  /// Обновляет несколько сущностей
+  @protected
+  Future<void> updateMany(List<T> entities);
+
   /// Вставляет или обновляет сущности по [externalId]
   /// Возвращает список айди, как новых, так и старых
   /// Порядок совпадает с [entities]
   Future<List<String>> insertOrUpdateManyByExternalId(List<T> entities) async {
     // Ищем в бд все сущности с [externalId]
-    var externalIds =
-        entities.map((e) => e.externalId).where((id) => id != null).toList();
+    var externalIds = List<String>.from(
+      entities.map((e) => e.externalId).where((id) => id != null),
+    );
     var existingEntitiesMap = Map<String, T>.fromEntries(
-      box
-          .toMap()
-          .entries
-          .map((e) => entityFromHive(e.key as String, e.value))
-          .where((e) => externalIds.contains(e.externalId))
+      (await getAllByExternalIds(externalIds))
           .map((e) => MapEntry<String, T>(e.externalId!, e)),
     );
 

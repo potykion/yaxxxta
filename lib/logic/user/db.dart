@@ -24,8 +24,13 @@ abstract class UserDataRepo {
 class FirebaseUserDataRepo extends FirebaseRepo<UserData>
     implements UserDataRepo {
   /// Фаерстор репо для данных о юзере
-  FirebaseUserDataRepo(CollectionReference collectionReference)
-      : super(collectionReference);
+  FirebaseUserDataRepo(
+    CollectionReference collectionReference,
+    CreateBatch createBatch,
+  ) : super(
+          collectionReference: collectionReference,
+          createBatch: createBatch,
+        );
 
   @override
   Future<UserData?> getByUserId(String userId) async {
@@ -80,8 +85,11 @@ class HiveUserDataRepo extends HiveRepo<UserData>
 }
 
 /// Провайдер FirebaseUserDataRepo
-Provider<FirebaseUserDataRepo> fbUserDataRepoProvider = Provider((ref) =>
-    FirebaseUserDataRepo(FirebaseFirestore.instance.collection("user_data")));
+Provider<FirebaseUserDataRepo> fbUserDataRepoProvider =
+    Provider((ref) => FirebaseUserDataRepo(
+          FirebaseFirestore.instance.collection("user_data"),
+          FirebaseFirestore.instance.batch,
+        ));
 
 /// Провайдер HiveUserDataRepo
 Provider<HiveUserDataRepo> hiveUserDataRepoProvider = Provider(

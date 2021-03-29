@@ -46,13 +46,21 @@ abstract class HabitPerformingRepo {
     DateTime from,
     DateTime to,
   );
+
+  /// Получает выполнения привычек для всех привычек с [habitIds]
+  Future<List<HabitPerforming>> listByHabits(List<String> habitIds);
 }
 
 /// Фаерстор репо для привычек
 class FirebaseHabitRepo extends FirebaseRepo<Habit> implements HabitRepo {
   /// Фаерстор репо для привычек
-  FirebaseHabitRepo(CollectionReference collectionReference)
-      : super(collectionReference);
+  FirebaseHabitRepo(
+    CollectionReference collectionReference,
+    CreateBatch createBatch,
+  ) : super(
+          collectionReference: collectionReference,
+          createBatch: createBatch,
+        );
 
   @override
   Habit entityFromFirebase(DocumentSnapshot doc) {
@@ -71,8 +79,13 @@ class FirebaseHabitRepo extends FirebaseRepo<Habit> implements HabitRepo {
 class FirebaseHabitPerformingRepo extends FirebaseRepo<HabitPerforming>
     implements HabitPerformingRepo {
   /// Фаер-стор репо для выполнений привычек
-  FirebaseHabitPerformingRepo(CollectionReference collectionReference)
-      : super(collectionReference);
+  FirebaseHabitPerformingRepo(
+    CollectionReference collectionReference,
+    CreateBatch createBatch,
+  ) : super(
+          collectionReference: collectionReference,
+          createBatch: createBatch,
+        );
 
   @override
   Future<List<HabitPerforming>> list(DateTime from, DateTime to) async =>
@@ -94,7 +107,7 @@ class FirebaseHabitPerformingRepo extends FirebaseRepo<HabitPerforming>
           .map(entityFromFirebase)
           .toList();
 
-  /// Получает выполнения привычек для всех привычек с [habitIds]
+  @override
   Future<List<HabitPerforming>> listByHabits(List<String> habitIds) async =>
       (await listDocsByIds(habitIds, idField: "habitId"))
           .map(entityFromFirebase)
@@ -214,6 +227,10 @@ class HiveHabitPerformingRepo extends HiveRepo<HabitPerforming>
   @override
   HabitPerforming entityFromHive(String id, Map hiveData) =>
       HabitPerforming.fromJson(hiveData..["id"] = id);
+
+  @override
+  Future<List<HabitPerforming>> listByHabits(List<String> habitIds) async =>
+      _getAll().where((hp) => habitIds.contains(hp.habitId)).toList();
 }
 
 /// Провайдер HiveHabitRepo
@@ -221,8 +238,11 @@ Provider<HiveHabitRepo> hiveHabitRepoProvider =
     Provider((ref) => HiveHabitRepo(Hive.box<Map>("habits")));
 
 /// Провайдер FirebaseHabitRepo
-Provider<FirebaseHabitRepo> fbHabitRepoProvider = Provider((ref) =>
-    FirebaseHabitRepo(FirebaseFirestore.instance.collection("habits")));
+Provider<FirebaseHabitRepo> fbHabitRepoProvider =
+    Provider((ref) => FirebaseHabitRepo(
+          FirebaseFirestore.instance.collection("habits"),
+          FirebaseFirestore.instance.batch,
+        ));
 
 /// Провайдер репо привычек
 Provider<HabitRepo> habitRepoProvider = Provider(
@@ -236,9 +256,11 @@ Provider<HiveHabitPerformingRepo> hiveHabitPerformingRepoProvider = Provider(
     (ref) => HiveHabitPerformingRepo(Hive.box<Map>("habit_performings")));
 
 /// Провайдер FirebaseHabitPerformingRepo
-Provider<FirebaseHabitPerformingRepo> fbHabitPerformingRepoProvider = Provider(
-    (ref) => FirebaseHabitPerformingRepo(
-        FirebaseFirestore.instance.collection("habit_performings")));
+Provider<FirebaseHabitPerformingRepo> fbHabitPerformingRepoProvider =
+    Provider((ref) => FirebaseHabitPerformingRepo(
+          FirebaseFirestore.instance.collection("habit_performings"),
+          FirebaseFirestore.instance.batch,
+        ));
 
 /// Провайдер репо выполнений привычек
 Provider<HabitPerformingRepo> habitPerformingRepoProvider = Provider(

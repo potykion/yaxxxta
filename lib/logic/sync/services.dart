@@ -1,7 +1,20 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:yaxxxta/logic/core/db.dart';
 import 'package:yaxxxta/logic/habit/db.dart';
+import 'package:yaxxxta/logic/habit/models.dart';
 import 'package:yaxxxta/logic/reward/db.dart';
+import 'package:yaxxxta/logic/reward/models.dart';
 import 'package:yaxxxta/logic/user/db.dart';
+import 'package:yaxxxta/logic/user/models.dart';
+
+/// Источник откуда и куда переносятся данные
+enum Source {
+  /// firebase
+  firebase,
+
+  /// hive
+  hive,
+}
 
 /// Вставляет фаербейз (фб) инфу в хайв
 class FirebaseToHiveSync {
@@ -42,54 +55,85 @@ class FirebaseToHiveSync {
   });
 
   /// Вставляет фаербейз инфу в хайв
-  // todo userId должно быть String, а не String?
-  Future<void> call([String? userId]) async {
+  Future<void> call({
+    String? userId,
+    Source from = Source.firebase,
+    Source to = Source.hive,
+  }) async {
+    assert(from != to);
+    // если [source] == [Source.firebase], то [userId] должен быть передан
+    assert(
+      from == Source.firebase && userId != null || from != Source.firebase,
+    );
+
+    var fromUserDataRepo = (from == Source.firebase
+        ? fbUserDataRepo
+        : hiveUserDataRepo) as UserDataRepo;
+    var fromHabitRepo =
+        (from == Source.firebase ? fbHabitRepo : hiveHabitRepo) as HabitRepo;
+    var fromHabitPerformingRepo = (from == Source.firebase
+        ? fbHabitPerformingRepo
+        : hiveHabitPerformingRepo) as HabitPerformingRepo;
+    var fromRewardRepo =
+        (from == Source.firebase ? fbRewardRepo : hiveRewardRepo) as RewardRepo;
+
+    var toUserDataRepo = (to == Source.firebase
+        ? fbUserDataRepo
+        : hiveUserDataRepo) as WithInsertOrUpdateManyByExternalId<UserData>;
+    var toHabitRepo = (to == Source.firebase ? fbHabitRepo : hiveHabitRepo)
+        as WithInsertOrUpdateManyByExternalId<Habit>;
+    var toHabitPerformingRepo = (to == Source.firebase
+            ? fbHabitPerformingRepo
+            : hiveHabitPerformingRepo)
+        as WithInsertOrUpdateManyByExternalId<HabitPerforming>;
+    var toRewardRepo = (to == Source.firebase ? fbRewardRepo : hiveRewardRepo)
+        as WithInsertOrUpdateManyByExternalId<Reward>;
+
     // Грузим фаербейз инфу
-    var fbUserData = (userId != null
-        ? await fbUserDataRepo.getByUserId(userId)
-        : await fbUserDataRepo.first())!;
-    fbUserData = fbUserData.copyWith(externalId: fbUserData.id);
+    var fromUserData = (from == Source.firebase
+        ? await fromUserDataRepo.getByUserId(userId!)
+        : await fromUserDataRepo.first())!;
+    fromUserData = fromUserData.copyWith(externalId: fromUserData.id);
 
-    var fbHabits = (await fbHabitRepo.listByIds(fbUserData.habitIds))
+    var fromHabits = (await fromHabitRepo.listByIds(fromUserData.habitIds))
         .map((e) => e.copyWith(externalId: e.id))
         .toList();
 
-    var fbHabitPerformings = (await fbHabitPerformingRepo
-            .listByHabits(fbHabits.map((h) => h.id!).toList()))
+    var fromHabitPerformings = (await fromHabitPerformingRepo
+            .listByHabits(fromHabits.map((h) => h.id!).toList()))
         .map((e) => e.copyWith(externalId: e.id))
         .toList();
 
-    var fbRewards = (await fbRewardRepo.listByIds(fbUserData.rewardIds))
+    var fromRewards = (await fromRewardRepo.listByIds(fromUserData.rewardIds))
         .map((e) => e.copyWith(externalId: e.id))
         .toList();
 
     // Вставляем награды в хайв
-    var hiveRewardIds =
-        await hiveRewardRepo.insertOrUpdateManyByExternalId(fbRewards);
+    var toRewardIds =
+        await toRewardRepo.insertOrUpdateManyByExternalId(fromRewards);
 
     // Вставляем привычки в хайв
-    var hiveHabitIds =
-        await hiveHabitRepo.insertOrUpdateManyByExternalId(fbHabits);
+    var toHabitIds =
+        await toHabitRepo.insertOrUpdateManyByExternalId(fromHabits);
 
     /// Проставляем выполнениям привычек хайв айди привычки +
     /// вставляем выполнения привычек в хайв
-    var fbToHiveHabitIdMap = Map<String, String>.fromIterables(
-      fbHabits.map((h) => h.id!),
-      hiveHabitIds,
+    var fromToHabitIdMap = Map<String, String>.fromIterables(
+      fromHabits.map((h) => h.id!),
+      toHabitIds,
     );
-    var hiveHabitPerformingsToInsert = fbHabitPerformings
-        .map((hp) => hp.copyWith(habitId: fbToHiveHabitIdMap[hp.habitId]!))
+    var toHabitPerformingsToInsert = fromHabitPerformings
+        .map((hp) => hp.copyWith(habitId: fromToHabitIdMap[hp.habitId]!))
         .toList();
-    await hiveHabitPerformingRepo
-        .insertOrUpdateManyByExternalId(hiveHabitPerformingsToInsert);
+    await toHabitPerformingRepo
+        .insertOrUpdateManyByExternalId(toHabitPerformingsToInsert);
 
     // Ставим айди привычек и наград в данные юзера и вставляем данные о юзере
-    var hiveUserDataToInsert = fbUserData.copyWith(
-      rewardIds: hiveRewardIds,
-      habitIds: hiveHabitIds,
+    var toUserDataToInsert = fromUserData.copyWith(
+      rewardIds: toRewardIds,
+      habitIds: toHabitIds,
     );
-    await hiveUserDataRepo
-        .insertOrUpdateManyByExternalId([hiveUserDataToInsert]);
+    await toUserDataRepo.insertOrUpdateManyByExternalId([toUserDataToInsert]);
   }
 }
 

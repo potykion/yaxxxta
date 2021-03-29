@@ -79,14 +79,14 @@ void main() {
         HabitPerforming.blank(habitId: "2").copyWith(id: "3");
     var fbReward = Reward(cost: 1, title: "ass", id: "4");
 
-    when(() => fbUserDataRepo.first()).thenAnswer((_) async => fbUserData);
+    when(() => fbUserDataRepo.getByUserId(any())).thenAnswer((_) async => fbUserData);
     when(() => fbHabitRepo.listByIds(any())).thenAnswer((_) async => [fbHabit]);
     when(() => fbHabitPerformingRepo.listByHabits(any()))
         .thenAnswer((_) async => [fbHabitPerforming]);
     when(() => fbRewardRepo.listByIds(any()))
         .thenAnswer((_) async => [fbReward]);
 
-    await firebaseToHiveSync();
+    await firebaseToHiveSync(userId: "1");
 
     expect(hiveUserDataRepo.box.length, 1);
     expect(hiveHabitRepo.box.length, 1);
@@ -102,15 +102,15 @@ void main() {
         HabitPerforming.blank(habitId: "2").copyWith(id: "3");
     var fbReward = Reward(cost: 1, title: "ass", id: "4");
 
-    when(() => fbUserDataRepo.first()).thenAnswer((_) async => fbUserData);
+    when(() => fbUserDataRepo.getByUserId(any())).thenAnswer((_) async => fbUserData);
     when(() => fbHabitRepo.listByIds(any())).thenAnswer((_) async => [fbHabit]);
     when(() => fbHabitPerformingRepo.listByHabits(any()))
         .thenAnswer((_) async => [fbHabitPerforming]);
     when(() => fbRewardRepo.listByIds(any()))
         .thenAnswer((_) async => [fbReward]);
 
-    await firebaseToHiveSync();
-    await firebaseToHiveSync();
+    await firebaseToHiveSync(userId: "1");
+    await firebaseToHiveSync(userId: "1");
 
     expect(hiveUserDataRepo.box.length, 1);
     expect(hiveHabitRepo.box.length, 1);
