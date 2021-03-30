@@ -16,6 +16,7 @@ abstract class FirebaseRepo<T extends WithExternalId>
     with WithInsertOrUpdateManyByExternalId<T> {
   /// Фаерстор коллекция
   @protected
+  @visibleForTesting
   final CollectionReference collectionReference;
 
   /// Создает Firebase батч - типа транзакция
