@@ -60,6 +60,8 @@ void main() {
         HiveHabitPerformingRepo(hiveHabitPerformingRepoBox);
     hiveRewardRepo = HiveRewardRepo(hiveRewardRepoBox);
 
+    hiveUserDataRepo.insert(UserData.blank());
+
     firebaseToHiveSync = FirebaseToHiveSync(
       fbUserDataRepo: fbUserDataRepo,
       fbHabitRepo: fbHabitRepo,
@@ -79,7 +81,8 @@ void main() {
         HabitPerforming.blank(habitId: "2").copyWith(id: "3");
     var fbReward = Reward(cost: 1, title: "ass", id: "4");
 
-    when(() => fbUserDataRepo.getByUserId(any())).thenAnswer((_) async => fbUserData);
+    when(() => fbUserDataRepo.getByUserId(any()))
+        .thenAnswer((_) async => fbUserData);
     when(() => fbHabitRepo.listByIds(any())).thenAnswer((_) async => [fbHabit]);
     when(() => fbHabitPerformingRepo.listByHabits(any()))
         .thenAnswer((_) async => [fbHabitPerforming]);
@@ -102,7 +105,8 @@ void main() {
         HabitPerforming.blank(habitId: "2").copyWith(id: "3");
     var fbReward = Reward(cost: 1, title: "ass", id: "4");
 
-    when(() => fbUserDataRepo.getByUserId(any())).thenAnswer((_) async => fbUserData);
+    when(() => fbUserDataRepo.getByUserId(any()))
+        .thenAnswer((_) async => fbUserData);
     when(() => fbHabitRepo.listByIds(any())).thenAnswer((_) async => [fbHabit]);
     when(() => fbHabitPerformingRepo.listByHabits(any()))
         .thenAnswer((_) async => [fbHabitPerforming]);

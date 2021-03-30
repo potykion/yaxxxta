@@ -6,6 +6,7 @@ import 'package:yaxxxta/logic/reward/db.dart';
 import 'package:yaxxxta/logic/reward/models.dart';
 import 'package:yaxxxta/logic/user/db.dart';
 import 'package:yaxxxta/logic/user/models.dart';
+import 'package:yaxxxta/logic/core/utils/list.dart';
 
 /// Источник откуда и куда переносятся данные
 enum Source {
@@ -66,6 +67,8 @@ class FirebaseToHiveSync {
       from == Source.firebase && userId != null || from != Source.firebase,
     );
 
+    // Выставляем репо
+    // region
     var fromUserDataRepo = (from == Source.firebase
         ? fbUserDataRepo
         : hiveUserDataRepo) as UserDataRepo;
@@ -79,7 +82,7 @@ class FirebaseToHiveSync {
 
     var toUserDataRepo = (to == Source.firebase
         ? fbUserDataRepo
-        : hiveUserDataRepo) as WithInsertOrUpdateManyByExternalId<UserData>;
+        : hiveUserDataRepo) as UserDataRepo;
     var toHabitRepo = (to == Source.firebase ? fbHabitRepo : hiveHabitRepo)
         as WithInsertOrUpdateManyByExternalId<Habit>;
     var toHabitPerformingRepo = (to == Source.firebase
@@ -88,11 +91,16 @@ class FirebaseToHiveSync {
         as WithInsertOrUpdateManyByExternalId<HabitPerforming>;
     var toRewardRepo = (to == Source.firebase ? fbRewardRepo : hiveRewardRepo)
         as WithInsertOrUpdateManyByExternalId<Reward>;
+    // endregion
 
-    // Грузим фаербейз инфу
-    var fromUserData = (from == Source.firebase
-        ? await fromUserDataRepo.getByUserId(userId!)
-        : await fromUserDataRepo.first())!;
+    // Грузим инфу из [from] источника
+    // region
+    late UserData fromUserData;
+    if (from == Source.firebase) {
+      fromUserData = (await fromUserDataRepo.getByUserId(userId!))!;
+    } else {
+      fromUserData = (await fromUserDataRepo.first())!;
+    }
     fromUserData = fromUserData.copyWith(externalId: fromUserData.id);
 
     var fromHabits = (await fromHabitRepo.listByIds(fromUserData.habitIds))
@@ -107,17 +115,16 @@ class FirebaseToHiveSync {
     var fromRewards = (await fromRewardRepo.listByIds(fromUserData.rewardIds))
         .map((e) => e.copyWith(externalId: e.id))
         .toList();
+    // endregion
 
-    // Вставляем награды в хайв
+    // Вставляем награды, привычки и выполнения в [to] источник
+    // region
     var toRewardIds =
         await toRewardRepo.insertOrUpdateManyByExternalId(fromRewards);
-
-    // Вставляем привычки в хайв
     var toHabitIds =
         await toHabitRepo.insertOrUpdateManyByExternalId(fromHabits);
 
-    /// Проставляем выполнениям привычек хайв айди привычки +
-    /// вставляем выполнения привычек в хайв
+    // Для выполнений привычек проставляем айди привычек
     var fromToHabitIdMap = Map<String, String>.fromIterables(
       fromHabits.map((h) => h.id!),
       toHabitIds,
@@ -127,13 +134,32 @@ class FirebaseToHiveSync {
         .toList();
     await toHabitPerformingRepo
         .insertOrUpdateManyByExternalId(toHabitPerformingsToInsert);
+    // endregion
 
-    // Ставим айди привычек и наград в данные юзера и вставляем данные о юзере
-    var toUserDataToInsert = fromUserData.copyWith(
-      rewardIds: toRewardIds,
-      habitIds: toHabitIds,
-    );
-    await toUserDataRepo.insertOrUpdateManyByExternalId([toUserDataToInsert]);
+    late UserData toUserDataToUpdate;
+    // Если [to] == [Source.hive], то берем первую запись данных о юзере
+    // и проставляем туда привычки, награды, баллы, настройки
+    if (to == Source.hive) {
+      toUserDataToUpdate = (await toUserDataRepo.first())!;
+      toUserDataToUpdate = toUserDataToUpdate.copyWith(
+        rewardIds: toRewardIds,
+        habitIds: toHabitIds,
+        settings: fromUserData.settings,
+        performingPoints: fromUserData.performingPoints,
+      );
+    }
+    // Если [to] == [Source.firebase], то берем данные о юзере по [userId]
+    // и объединяем привычки, награды; баллы складываем; настройки оставляем
+    else {
+      toUserDataToUpdate = (await toUserDataRepo.getByUserId(userId!))!;
+      toUserDataToUpdate = toUserDataToUpdate.copyWith(
+        rewardIds: {...toUserDataToUpdate.rewardIds, ...toRewardIds}.toList(),
+        habitIds: {...toUserDataToUpdate.habitIds, ...toHabitIds}.toList(),
+        performingPoints:
+            toUserDataToUpdate.performingPoints + fromUserData.performingPoints,
+      );
+    }
+    await toUserDataRepo.update(toUserDataToUpdate);
   }
 }
 

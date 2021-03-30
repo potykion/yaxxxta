@@ -2,6 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:yaxxxta/logic/core/models.dart';
 
 part 'models.freezed.dart';
+
 part 'models.g.dart';
 
 /// Настроечки
@@ -28,11 +29,10 @@ class AppSettings with _$AppSettings {
 
   /// Создает настройки по умолчанию
   factory AppSettings.createDefault() => AppSettings(
-    dayStartTime: DateTime(2020, 1, 1, 0, 0),
-    dayEndTime: DateTime(2020, 1, 1, 23, 59),
-  );
+        dayStartTime: DateTime(2020, 1, 1, 0, 0),
+        dayEndTime: DateTime(2020, 1, 1, 23, 59),
+      );
 }
-
 
 /// Данные о юзере
 @freezed
@@ -60,7 +60,7 @@ abstract class UserData implements _$UserData, WithExternalId {
     @Default(<String>[]) List<String> rewardIds,
 
     /// Айди сторонней системы, напр. айди из Firebase
-    String? externalId,
+    @deprecated String? externalId,
   }) = _UserData;
 
   /// Создает из юзера
