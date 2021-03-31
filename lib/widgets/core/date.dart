@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:indexed_list_view/indexed_list_view.dart';
+import 'package:intl/intl.dart';
 import '../../logic/core/utils/dt.dart';
 import '../../theme.dart';
 import 'text.dart';
@@ -83,8 +84,6 @@ class DateCarouselCell extends StatelessWidget {
       {Key? key, required this.date, this.color = Colors.white})
       : super(key: key);
 
-  String get _dateStr => "${date.day}.\n${date.month}";
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -100,12 +99,16 @@ class DateCarouselCell extends StatelessWidget {
             width: 50,
             height: 50,
             child: Center(
-                child: Text(
-              _dateStr,
-              style: TextStyle(fontWeight: FontWeight.bold),
-            )),
+              child: Text(
+                DateFormat("dd.\nMM").format(date),
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
           ),
-          SmallestText(date.isToday() ? "сегодня" : "")
+          SmallestText(
+            "${DateFormat("E").format(date)}"
+            "${date.isToday() ? " (седня)" : ""}",
+          )
         ],
       ),
     );

@@ -6,6 +6,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:yaxxxta/logic/habit/controllers.dart';
@@ -29,6 +31,9 @@ class LoadingPage extends HookWidget {
     useEffect(() {
       WidgetsBinding.instance!.addPostFrameCallback((_) async {
         loadingTextState.value = "Грузим настройки...";
+
+        Intl.defaultLocale = 'ru_RU';
+        initializeDateFormatting('ru_RU');
 
         await Hive.initFlutter();
         await Hive.openBox<Map>('user_data');
