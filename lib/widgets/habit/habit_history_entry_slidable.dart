@@ -31,9 +31,19 @@ class HabitHistoryEntrySlidable extends StatelessWidget {
       child: ListTile(
         dense: true,
         title: SmallerText(text: formatTime(historyEntry.time), dark: true),
-        trailing: SmallerText(
-          text: "+ ${historyEntry.format(habit.type)}",
-          dark: true,
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SmallerText(
+              text: habit.type == HabitType.repeats
+                  ? "число повторений: "
+                  : "продолжительность: ",
+            ),
+            SmallerText(
+              text: "${historyEntry.format(habit.type)}",
+              dark: true,
+            )
+          ],
         ),
       ),
       secondaryActions: [

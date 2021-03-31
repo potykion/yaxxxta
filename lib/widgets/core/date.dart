@@ -1,10 +1,14 @@
+import 'package:yaxxxta/logic/core/utils/num.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:indexed_list_view/indexed_list_view.dart';
 import 'package:intl/intl.dart';
+import 'package:yaxxxta/widgets/core/fit_icon_button.dart';
+import 'package:yaxxxta/widgets/core/padding.dart';
 import '../../logic/core/utils/dt.dart';
 import '../../theme.dart';
 import 'text.dart';
+import 'swiper.dart';
 
 /// Барабан с датами
 class DateCarousel extends HookWidget {
@@ -54,7 +58,7 @@ class DateCarousel extends HookWidget {
 
           return GestureDetector(
             onTap: () => change(shiftDate),
-            child: DateCarouselCell(
+            child: DateCell(
               date: shiftDate,
               color: shiftDate == initial
                   ? CustomColors.yellow
@@ -72,17 +76,31 @@ class DateCarousel extends HookWidget {
 }
 
 /// Ячейка барабана с датами
-class DateCarouselCell extends StatelessWidget {
+class DateCell extends StatelessWidget {
   /// Дата
   final DateTime date;
 
   /// Цвет
-  final Color color;
+  final Color? color;
+
+  /// Показывать день недели
+  final bool withWeekday;
+
+  /// Показывать месяц
+  final bool withMonth;
+
+  /// Если true, то делает текст серым
+  final bool disabled;
 
   /// Создает ячейку
-  const DateCarouselCell(
-      {Key? key, required this.date, this.color = Colors.white})
-      : super(key: key);
+  const DateCell({
+    Key? key,
+    required this.date,
+    this.color,
+    this.withWeekday = true,
+    this.withMonth = true,
+    this.disabled = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -94,21 +112,26 @@ class DateCarouselCell extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: color,
+              color: color ?? Colors.white,
             ),
-            width: 50,
-            height: 50,
+            width: 42,
+            height: 42,
             child: Center(
               child: Text(
-                DateFormat("dd.\nMM").format(date),
-                style: TextStyle(fontWeight: FontWeight.bold),
+                (withMonth ? DateFormat("dd.\nMM") : DateFormat("dd"))
+                    .format(date),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: disabled ? CustomColors.grey : null,
+                ),
               ),
             ),
           ),
-          SmallestText(
-            "${DateFormat("E").format(date)}"
-            "${date.isToday() ? " (седня)" : ""}",
-          )
+          if (withWeekday)
+            SmallestText(
+              "${DateFormat("E").format(date)}"
+              "${date.isToday() ? " (седня)" : ""}",
+            )
         ],
       ),
     );
@@ -151,6 +174,117 @@ class DatePickerInput extends HookWidget {
           Icons.calendar_today,
           color: CustomColors.almostBlack,
         ),
+      ),
+    );
+  }
+}
+
+/// Календарик
+class Calendar extends HookWidget {
+  /// Начальная дата
+  final DateTime initial;
+
+  /// Событие изменения даты
+  final Function(DateTime date) change;
+
+  /// Подсветска выбора даты - мапа, где ключ - дата, значение - интенсивность
+  /// (напр. ячейка даты зеленая - в этот день привычка была выполнена)
+  final Map<DateTime, double> highlights;
+
+  /// Календарик
+  const Calendar({
+    Key? key,
+    required this.initial,
+    required this.change,
+    required this.highlights,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var selectedMonth = useState(initial);
+
+    addMonth([int months = 1]) {
+      selectedMonth.value = DateTime(
+        selectedMonth.value.year,
+        selectedMonth.value.month + months,
+        1,
+      );
+    }
+
+    var startDay = DateRange.withinWeek(
+      DateTime(selectedMonth.value.year, selectedMonth.value.month, 1),
+    ).from;
+
+    return SizedBox(
+      height: 290,
+      child: Column(
+        children: [
+          SmallPadding.noBottom(
+            child: Row(
+              children: [
+                FitIconButton(
+                  icon: Icon(Icons.chevron_left),
+                  onTap: () => addMonth(-1),
+                ),
+                Spacer(),
+                Text(
+                  DateFormat("MM.yyyy").format(selectedMonth.value),
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Spacer(),
+                FitIconButton(
+                  icon: Icon(Icons.chevron_right),
+                  onTap: addMonth,
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Swiper(
+              builder: (context) => Column(
+                children: [
+                  for (var week in 6.range())
+                    Row(
+                      children: [
+                        for (var weekday in 7.range())
+                          _buildDateCell(
+                            selectedMonth.value,
+                            startDay,
+                            week,
+                            weekday,
+                          )
+                      ],
+                    )
+                ],
+              ),
+              onSwipe: (isSwipeLeft) => addMonth(isSwipeLeft ? 1 : -1),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDateCell(
+    DateTime selectedMonth,
+    DateTime startDay,
+    int week,
+    int weekday,
+  ) {
+    var date = startDay.add(Duration(days: weekday + week * 7));
+
+    return GestureDetector(
+      onTap: () => change(date),
+      child: DateCell(
+        date: date,
+        color: date == initial
+            ? CustomColors.yellow
+            : (highlights[date] ?? 0) > 0
+                ? CustomColors.green
+                : null,
+        withWeekday: false,
+        withMonth: false,
+        disabled: date != initial && selectedMonth.month != date.month,
       ),
     );
   }

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -41,6 +43,8 @@ class HabitDetailsPage extends HookWidget {
         var progress = vm.progress;
         var history = vm.history;
 
+        var selectedDateHistory = history.getForDate(historyDateState.value);
+
         return Scaffold(
           key: _scaffold,
           appBar: buildAppBar(
@@ -65,13 +69,25 @@ class HabitDetailsPage extends HookWidget {
                       initialDate: historyDateState.value,
                     ),
                   ),
-                  DateCarousel(
+                  Calendar(
                     initial: historyDateState.value,
                     change: (d) => historyDateState.value = d,
                     highlights: history.highlights,
                   ),
-                  for (var e in history.getForDate(historyDateState.value))
-                    HabitHistoryEntrySlidable(historyEntry: e, habit: habit)
+                  if (selectedDateHistory.isNotEmpty) ...[
+                    Divider(height: 0),
+                    SizedBox(
+                      height: min(selectedDateHistory.length, 3) * 48,
+                      child: ListView.separated(
+                        itemBuilder: (_, index) => HabitHistoryEntrySlidable(
+                          historyEntry: selectedDateHistory[index],
+                          habit: habit,
+                        ),
+                        separatorBuilder: (_, __) => Divider(height: 0),
+                        itemCount: selectedDateHistory.length,
+                      ),
+                    )
+                  ]
                 ],
               )
             ],

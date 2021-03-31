@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:yaxxxta/logic/habit/view_models.dart';
 import 'package:yaxxxta/widgets/habit/habit_calendar_page_habit_progress_control.dart';
+import 'package:yaxxxta/widgets/core/swiper.dart';
 
 import '../routes.dart';
 import '../widgets/core/app_bars.dart';
@@ -13,7 +14,6 @@ import '../widgets/core/circular_progress.dart';
 import '../widgets/core/date.dart';
 import '../widgets/core/padding.dart';
 import '../widgets/core/text.dart';
-import '../widgets/habit/date_swiper.dart';
 
 /// Страница с календарем привычек
 class HabitCalendarPage extends HookWidget {
@@ -37,18 +37,30 @@ class HabitCalendarPage extends HookWidget {
       ),
       body: Column(
         children: [
-          DateCarousel(
-            initial: selectedDate,
-            change: (date) {
-              context.read(selectedDateProvider).state = date;
-              context
-                  .read(habitPerformingController)
-                  .loadDateHabitPerformings(date);
-            },
+          SmallPadding.onlyBottom(
+            child: DateCarousel(
+              initial: selectedDate,
+              change: (date) {
+                context.read(selectedDateProvider).state = date;
+                context
+                    .read(habitPerformingController)
+                    .loadDateHabitPerformings(date);
+              },
+            ),
           ),
           Expanded(
-            child: DateSwiper(
-              (context) => listHabitVMs.maybeWhen(
+            child: Swiper(
+              onSwipe: (isSwipeLeft) {
+                var newDate = context
+                    .read(selectedDateProvider)
+                    .state
+                    .add(Duration(days: isSwipeLeft ? 1 : -1));
+                context.read(selectedDateProvider).state = newDate;
+                context
+                    .read(habitPerformingController)
+                    .loadDateHabitPerformings(newDate);
+              },
+              builder: (context) => listHabitVMs.maybeWhen(
                 data: (vms) => vms.isNotEmpty
                     ? ListView.builder(
                         itemCount: vms.length,

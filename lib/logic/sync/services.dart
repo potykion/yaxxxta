@@ -6,7 +6,6 @@ import 'package:yaxxxta/logic/reward/db.dart';
 import 'package:yaxxxta/logic/reward/models.dart';
 import 'package:yaxxxta/logic/user/db.dart';
 import 'package:yaxxxta/logic/user/models.dart';
-import 'package:yaxxxta/logic/core/utils/list.dart';
 
 /// Источник откуда и куда переносятся данные
 enum Source {

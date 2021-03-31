@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:yaxxxta/logic/habit/controllers.dart';
-import 'package:yaxxxta/logic/habit/view_models.dart';
 
-/// Свайпер даты
-class DateSwiper extends HookWidget {
+/// Событие свайпа
+typedef OnSwipe = void Function(bool isSwipeLeft);
+
+/// Свайпер
+class Swiper extends HookWidget {
   /// Ребенок
   final Widget Function(BuildContext context) builder;
 
-  /// Свайпер даты
-  DateSwiper(this.builder);
+  /// Событие свайпа
+  final OnSwipe onSwipe;
+
+  /// Свайпер
+  Swiper({
+    required this.builder,
+    required this.onSwipe,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,15 +31,7 @@ class DateSwiper extends HookWidget {
         var isSwipeLeft = index > initialIndex.value;
         initialIndex.value = index;
 
-        var newDate = context
-            .read(selectedDateProvider)
-            .state
-            .add(Duration(days: isSwipeLeft ? 1 : -1));
-
-        context.read(selectedDateProvider).state = newDate;
-        context
-            .read(habitPerformingController)
-            .loadDateHabitPerformings(newDate);
+        onSwipe(isSwipeLeft);
       },
       itemBuilder: (context, _) => builder(context),
     );
