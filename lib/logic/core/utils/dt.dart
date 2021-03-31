@@ -90,9 +90,8 @@ extension DateTimeUtils on DateTime {
 
   /// Находится ли дейттайм между двух дейттаймов
   bool isBetween(DateTime from, DateTime to) =>
-      isAfter(from) ||
-      isAtSameMomentAs(from) && isBefore(to) ||
-      isAtSameMomentAs(to);
+      (isAfter(from) || isAtSameMomentAs(from)) &&
+      (isBefore(to) || isAtSameMomentAs(to));
 }
 
 /// Дейт-ренж - класс с двумя дейт-таймами: дейт-тайм с, дейт-тайм по
@@ -177,5 +176,50 @@ abstract class DateRange with _$DateRange {
         59,
       ),
     );
+  }
+
+  /// Создает дейтренж за месяц
+  /// DateRange.withinWeek(DateTime(2021, 3, 1)) ==
+  /// DateRange(DateTime(2021, 3, 1), DateTime(2021, 3, 31))
+  factory DateRange.withinMonth(DateTime initial) => DateRange(
+        DateTime(initial.year, initial.month, 1),
+        DateTime(initial.year, initial.month, endOfMonth(initial)),
+      );
+
+  /// Пересекаюьтся ли дейтренжи
+  bool intersects(DateRange dr) {
+    var fromIntersects = dr.from.isBetween(from, to);
+    var toIntersects = dr.to.isBetween(from, to);
+    return fromIntersects || toIntersects;
+  }
+
+  /// Создает дейтренж за неделю
+  /// DateRange.withinWeek(DateTime(2021, 3, 31)) ==
+  /// DateRange(DateTime(2021, 3, 29), DateTime(2021, 4, 4))
+  factory DateRange.withinWeek(DateTime initial) {
+    var weekStart = initial.add(Duration(days: -initial.weekday + 1));
+    return DateRange(weekStart, weekStart.add(Duration(days: 6)));
+  }
+
+  /// Считает скок недель в дейтренже
+  /// Напр. в [2021-03-01, 2021-03-31] - 5 недель
+  int get weeksFrom {
+    var weeks = 0;
+    var fromWeek = DateRange.withinWeek(from);
+
+    while (true) {
+      if (intersects(fromWeek)) {
+        weeks += 1;
+      } else {
+        break;
+      }
+
+      fromWeek = DateRange(
+        fromWeek.from.add(Duration(days: 7)),
+        fromWeek.to.add(Duration(days: 7)),
+      );
+    }
+
+    return weeks;
   }
 }
