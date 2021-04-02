@@ -105,7 +105,7 @@ class DateCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -114,8 +114,8 @@ class DateCell extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               color: color ?? Colors.white,
             ),
-            width: 42,
-            height: 42,
+            width: 40,
+            height: 40,
             child: Center(
               child: Text(
                 (withMonth ? DateFormat("dd.\nMM") : DateFormat("dd"))
@@ -216,7 +216,7 @@ class Calendar extends HookWidget {
     ).from;
 
     return SizedBox(
-      height: 290,
+      height: 300,
       child: Column(
         children: [
           SmallPadding.noBottom(
