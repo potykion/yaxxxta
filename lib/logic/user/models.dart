@@ -28,7 +28,7 @@ class AppSettings with _$AppSettings {
       _$AppSettingsFromJson(Map<String, dynamic>.from(json));
 
   /// Создает настройки по умолчанию
-  factory AppSettings.createDefault() => AppSettings(
+  factory AppSettings.blank() => AppSettings(
         dayStartTime: DateTime(2020, 1, 1, 0, 0),
         dayEndTime: DateTime(2020, 1, 1, 23, 59),
       );
@@ -77,7 +77,7 @@ abstract class UserData implements _$UserData, WithExternalId {
       userId: userId,
       habitIds: habitIds ?? [],
       rewardIds: rewardIds ?? [],
-      settings: AppSettings.createDefault(),
+      settings: AppSettings.blank(),
     );
   }
 }

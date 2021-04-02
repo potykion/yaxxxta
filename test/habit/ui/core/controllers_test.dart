@@ -25,7 +25,7 @@ void main() {
 
     setUp(() {
       repo = MockHabitPerformingRepo();
-      settings = AppSettings.createDefault();
+      settings = AppSettings.blank();
       date = DateTime(2020, 1, 1);
       settingsDayTimes = Tuple2(settings.dayStartTime, settings.dayEndTime);
       dateRange = DateRange.fromDateAndTimes(

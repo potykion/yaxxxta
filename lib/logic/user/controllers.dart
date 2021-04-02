@@ -32,7 +32,7 @@ class UserDataController extends StateNotifier<UserData?> {
     /// Если нет UserData => анон юзер в первый раз =>
     /// создаем для девайса UserData
     if (userData == null) {
-      userData = UserData.blank();
+      userData = UserData.blank(userId: !user.isAnonymous ? user.uid : null);
       userData = userData.copyWith(id: await repo.insert(userData));
     }
 
@@ -130,8 +130,11 @@ Provider<Future<void> Function(String habitId)> removeHabitFromUserProvider =
     Provider((ref) => ref.watch(userDataControllerProvider).removeHabit);
 
 /// Провайдер настроек
-Provider<AppSettings> settingsProvider =
-    Provider((ref) => ref.watch(userDataControllerProvider.state)!.settings);
+Provider<AppSettings> settingsProvider = Provider(
+  (ref) =>
+      ref.watch(userDataControllerProvider.state)?.settings ??
+      AppSettings.blank(),
+);
 
 /// Дейтренж текущего дня
 Provider<DateRange> todayDateRange = Provider((ref) {

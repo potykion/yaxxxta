@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:yaxxxta/logic/sync/services.dart';
 import 'package:yaxxxta/logic/user/controllers.dart';
 import 'package:yaxxxta/logic/user/models.dart';
+import 'package:yaxxxta/logic/user/services.dart';
+import 'package:yaxxxta/widgets/core/loading_button.dart';
 
+import '../routes.dart';
 import '../widgets/core/app_bars.dart';
 import '../widgets/core/bottom_nav.dart';
 import '../widgets/core/card.dart';
@@ -16,7 +20,8 @@ import '../widgets/core/time.dart';
 class SettingsPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    var settings = useProvider(userDataControllerProvider.state)!.settings;
+    var user = useProvider(userProvider).state;
+    var settings = useProvider(settingsProvider);
 
     setSettings(AppSettings newSettings) {
       context.read(userDataControllerProvider).updateSettings(newSettings);
@@ -31,52 +36,53 @@ class SettingsPage extends HookWidget {
       ),
       body: ListView(
         children: [
-          // todo актуально когда будет синхронизация и iap
-          //  https://github.com/potykion/yaxxxta/issues/32
-          //  https://github.com/potykion/yaxxxta/issues/1
-          // var user = useProvider(userProvider).state;
-          // ...
-          // ContainerCard(
-          //   children: [
-          //     if (!(user?.isAnonymous ?? true))
-          //       Column(
-          //         children: [
-          //           ListTile(
-          //             leading: CircleAvatar(
-          //               backgroundImage: NetworkImage(user!.photoURL!),
-          //             ),
-          //             title: BiggerText(text: user.displayName!),
-          //             subtitle: SmallerText(text: "Синхронизация отключена"),
-          //             trailing: IconButton(
-          //               icon: Icon(Icons.logout),
-          //               onPressed: () async {
-          //                 await context.read(authProvider).signOut();
-          //                 context.read(userProvider).state = null;
-          //               },
-          //             ),
-          //           ),
-          //           SmallPadding(
-          //             child: SizedBox(
-          //               width: double.infinity,
-          //               child: ElevatedButton(
-          //                 child: BiggerText(text: "Включить синхронизацию"),
-          //                 onPressed: () {},
-          //               ),
-          //             ),
-          //           )
-          //         ],
-          //       )
-          //     else
-          //       ListTile(
-          //         title: BiggerText(text: "Войти"),
-          //         onTap: () async {
-          //           context.read(userProvider).state =
-          //               await context.read(authProvider).signInByGoogle();
-          //         },
-          //         trailing: Icon(Icons.login),
-          //       )
-          //   ],
-          // ),
+          ContainerCard(
+            children: [
+              if (!(user?.isAnonymous ?? true))
+                Column(
+                  children: [
+                    ListTile(
+                      leading: CircleAvatar(
+                        backgroundImage: NetworkImage(user!.photoURL!),
+                      ),
+                      title: BiggerText(text: user.displayName!),
+                      // subtitle: SmallerText(text: "Синхронизация отключена"),
+                      trailing: IconButton(
+                        icon: Icon(Icons.logout),
+                        onPressed: () async {
+                          await context.read(authProvider).signOut();
+                          Navigator.pushReplacementNamed(
+                              context, Routes.loading);
+                        },
+                      ),
+                    ),
+                    SmallPadding(
+                      child: LoadingButton(
+                        child: BiggerText(text: "Засинхронить"),
+                        onTapFuture: () async {
+                          await context.read(firebaseToHiveSyncProvider)(
+                            userId: user.uid,
+                            from: Source.hive,
+                            to: Source.firebase,
+                          );
+                          Navigator.pushReplacementNamed(
+                              context, Routes.loading);
+                        },
+                      ),
+                    )
+                  ],
+                )
+              else
+                ListTile(
+                  title: BiggerText(text: "Войти"),
+                  onTap: () async {
+                    await context.read(authProvider).signInByGoogle();
+                    Navigator.pushReplacementNamed(context, Routes.loading);
+                  },
+                  trailing: Icon(Icons.login),
+                )
+            ],
+          ),
           ContainerCard(
             children: [
               ListTile(

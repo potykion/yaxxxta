@@ -56,15 +56,11 @@ class FirebaseToHiveSync {
 
   /// Вставляет фаербейз инфу в хайв
   Future<void> call({
-    String? userId,
+    required String userId,
     Source from = Source.firebase,
     Source to = Source.hive,
   }) async {
     assert(from != to);
-    // если [source] == [Source.firebase], то [userId] должен быть передан
-    assert(
-      from == Source.firebase && userId != null || from != Source.firebase,
-    );
 
     // Выставляем репо
     // region
@@ -96,7 +92,7 @@ class FirebaseToHiveSync {
     // region
     late UserData fromUserData;
     if (from == Source.firebase) {
-      fromUserData = (await fromUserDataRepo.getByUserId(userId!))!;
+      fromUserData = (await fromUserDataRepo.getByUserId(userId))!;
     } else {
       fromUserData = (await fromUserDataRepo.first())!;
     }
@@ -150,7 +146,7 @@ class FirebaseToHiveSync {
     // Если [to] == [Source.firebase], то берем данные о юзере по [userId]
     // и объединяем привычки, награды; баллы складываем; настройки оставляем
     else {
-      toUserDataToUpdate = (await toUserDataRepo.getByUserId(userId!))!;
+      toUserDataToUpdate = (await toUserDataRepo.getByUserId(userId))!;
       toUserDataToUpdate = toUserDataToUpdate.copyWith(
         rewardIds: {...toUserDataToUpdate.rewardIds, ...toRewardIds}.toList(),
         habitIds: {...toUserDataToUpdate.habitIds, ...toHabitIds}.toList(),

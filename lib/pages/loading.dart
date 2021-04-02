@@ -35,7 +35,9 @@ class LoadingPage extends HookWidget {
         Intl.defaultLocale = 'ru_RU';
         initializeDateFormatting('ru_RU');
 
-        await Hive.initFlutter();
+        try {
+          await Hive.initFlutter();
+        } on HiveError {}
         await Hive.openBox<Map>('user_data');
         await Hive.openBox<Map>('habits');
         await Hive.openBox<Map>('habit_performings');

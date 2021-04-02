@@ -5,7 +5,21 @@ import 'deps.dart';
 import 'routes.dart';
 import 'theme.dart';
 
-void main() async => runApp(ProviderScope(child: MyApp()));
+class Logger extends ProviderObserver {
+  @override
+  void didUpdateProvider(ProviderBase provider, Object? newValue) {
+    print('''
+{
+  "provider": "${provider.name ?? provider.runtimeType}",
+  "newValue": "$newValue"
+}''');
+  }
+}
+
+void main() async => runApp(
+      // ProviderScope(observers: [Logger()], child: MyApp()),
+      ProviderScope(child: MyApp()),
+    );
 
 /// Приложуха
 class MyApp extends StatelessWidget {
@@ -13,6 +27,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) => MaterialApp(
         navigatorKey: navigatorKey,
         routes: routes,
+        // home: PlaygroundPage(),
         initialRoute: Routes.loading,
         theme: buildTheme(context),
         debugShowCheckedModeBanner: false,
