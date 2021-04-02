@@ -150,8 +150,6 @@ class FirebaseToHiveSync {
       toUserDataToUpdate = toUserDataToUpdate.copyWith(
         rewardIds: {...toUserDataToUpdate.rewardIds, ...toRewardIds}.toList(),
         habitIds: {...toUserDataToUpdate.habitIds, ...toHabitIds}.toList(),
-        performingPoints:
-            toUserDataToUpdate.performingPoints + fromUserData.performingPoints,
       );
     }
     await toUserDataRepo.update(toUserDataToUpdate);
