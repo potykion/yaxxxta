@@ -216,6 +216,7 @@ mixin WithInsertOrUpdateManyByExternalId<T extends WithExternalId> {
         (await listByExternalIds(externalIds))
             .map((e) => MapEntry<String, T>(e.externalId!, e)),
       ),
+      // todo не сработало =/ надо потестить получше
       // Берем сушности с [id] из [externalIds]
       // Делаем это, потому что в сутуации Firebase > Hive
       // В Firebase данные остаются без externalId =>
