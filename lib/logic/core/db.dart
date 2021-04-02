@@ -53,6 +53,7 @@ abstract class FirebaseRepo<T extends WithExternalId>
       entityFromFirebase((await collectionReference.doc(id).get()));
 
   /// Получает сущности из фаерстор по айди
+  @override
   Future<List<T>> listByIds(List<String> ids) async =>
       (await listDocsByIds(ids)).map(entityFromFirebase).toList();
 
@@ -77,7 +78,7 @@ abstract class FirebaseRepo<T extends WithExternalId>
   }
 
   @override
-  Future<List<T>> getAllByExternalIds(List<String> externalIds) async =>
+  Future<List<T>> listByExternalIds(List<String> externalIds) async =>
       (await listDocsByIds(externalIds, idField: "externalId"))
           .map(entityFromFirebase)
           .toList();
@@ -168,11 +169,19 @@ abstract class HiveRepo<T extends WithExternalId>
   }
 
   @override
-  Future<List<T>> getAllByExternalIds(List<String> externalIds) async => box
+  Future<List<T>> listByExternalIds(List<String> externalIds) async => box
       .toMap()
       .entries
       .map((e) => entityFromHive(e.key as String, e.value))
       .where((e) => externalIds.contains(e.externalId))
+      .toList();
+
+  @override
+  Future<List<T>> listByIds(List<String> externalIds) async => box
+      .toMap()
+      .entries
+      .map((e) => entityFromHive(e.key as String, e.value))
+      .where((e) => externalIds.contains(e.id))
       .toList();
 }
 
@@ -180,7 +189,10 @@ abstract class HiveRepo<T extends WithExternalId>
 mixin WithInsertOrUpdateManyByExternalId<T extends WithExternalId> {
   /// Получает все сущности с [externalId] из [externalIds]
   @protected
-  Future<List<T>> getAllByExternalIds(List<String> externalIds);
+  Future<List<T>> listByExternalIds(List<String> externalIds);
+
+  /// Получает все сущности с [id] из [ids]
+  Future<List<T>> listByIds(List<String> ids);
 
   /// Вставляет несколько сущностей
   @protected
@@ -198,10 +210,23 @@ mixin WithInsertOrUpdateManyByExternalId<T extends WithExternalId> {
     var externalIds = List<String>.from(
       entities.map((e) => e.externalId).where((id) => id != null),
     );
-    var existingEntitiesMap = Map<String, T>.fromEntries(
-      (await getAllByExternalIds(externalIds))
-          .map((e) => MapEntry<String, T>(e.externalId!, e)),
-    );
+    var existingEntitiesMap = {
+      // Берем сушности с [externalId] из [externalIds]
+      ...Map<String, T>.fromEntries(
+        (await listByExternalIds(externalIds))
+            .map((e) => MapEntry<String, T>(e.externalId!, e)),
+      ),
+      // Берем сушности с [id] из [externalIds]
+      // Делаем это, потому что в сутуации Firebase > Hive
+      // В Firebase данные остаются без externalId =>
+      // при Firebase < Hive появятся дубликаты =>
+      // нужно брать сушности с [id] из [externalIds]
+      // (id из Hive и id из Firebase генерятся по разному - так что все ок)
+      ...Map<String, T>.fromEntries(
+        (await listByIds(externalIds))
+            .map((e) => MapEntry<String, T>(e.id!, e)),
+      )
+    };
 
     // Распределяем [entities] на те, которые есть в [existingEntitiesMap], и
     // на те, которых нет; а также создаем массив айдишек,
