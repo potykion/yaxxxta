@@ -117,3 +117,30 @@ class BiggestText extends StatelessWidget {
     );
   }
 }
+
+/// Текст обычного размера
+class RegularText extends StatelessWidget {
+  /// Текст
+  final String text;
+
+  /// Если true, то текст серый
+  final bool disabled;
+
+  /// Текст обычного размера
+  const RegularText(
+    this.text, {
+    Key? key,
+    this.disabled = false,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: TextStyle(
+        fontWeight: FontWeight.bold,
+        color: disabled ? CustomColors.grey : null,
+      ),
+    );
+  }
+}

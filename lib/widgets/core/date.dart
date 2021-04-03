@@ -117,13 +117,10 @@ class DateCell extends StatelessWidget {
             width: 40,
             height: 40,
             child: Center(
-              child: Text(
+              child: RegularText(
                 (withMonth ? DateFormat("dd.\nMM") : DateFormat("dd"))
                     .format(date),
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: disabled ? CustomColors.grey : null,
-                ),
+                disabled: disabled,
               ),
             ),
           ),
@@ -227,9 +224,8 @@ class Calendar extends HookWidget {
                   onTap: () => addMonth(-1),
                 ),
                 Spacer(),
-                Text(
+                RegularText(
                   DateFormat("MM.yyyy").format(selectedMonth.value),
-                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 Spacer(),
                 FitIconButton(
