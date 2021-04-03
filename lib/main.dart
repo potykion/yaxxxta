@@ -5,6 +5,8 @@ import 'deps.dart';
 import 'routes.dart';
 import 'theme.dart';
 
+/// Логгер провайдеров
+/// Нужно для логгирования изменений стейта
 class Logger extends ProviderObserver {
   @override
   void didUpdateProvider(ProviderBase provider, Object? newValue) {

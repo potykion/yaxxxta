@@ -16,6 +16,7 @@ import 'habit_progress_control.dart';
 /// Контрол прогресса привычки для страницы календаря
 // ignore: camel_case_types
 class HabitCalendarPage_HabitProgressControl extends HookWidget {
+  /// Привычка
   final Habit habit;
 
   /// Вм прогресса привычки

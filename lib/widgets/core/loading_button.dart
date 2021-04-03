@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:yaxxxta/widgets/core/circular_progress.dart';
 
+/// Кнопка, при нажатии на которую появляется спиннер
 class LoadingButton extends HookWidget {
+  /// Дочерний виджет
   final Widget child;
+
+  /// Событие-фьюча нажатия на кнопку
   final Future Function() onTapFuture;
 
+  /// Кнопка, при нажатии на которую появляется спиннер
   const LoadingButton({
     Key? key,
     required this.child,
