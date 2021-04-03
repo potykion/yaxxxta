@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
+import 'package:yaxxxta/logic/habit/stats/models.dart';
 
 void main() {
   group("nextPerformDateTime", () {
@@ -8,6 +9,7 @@ void main() {
         created: DateTime(2020, 1, 1),
         periodType: HabitPeriodType.day,
         performTime: DateTime(2020, 1, 1, 13, 00),
+        stats: HabitStats(),
       );
 
       var performDateTime =
@@ -23,6 +25,8 @@ void main() {
         periodType: HabitPeriodType.week,
         performWeekdays: [Weekday.monday],
         performTime: DateTime(2020, 1, 1, 13, 00),
+        stats: HabitStats(),
+
       );
 
       var performDateTime =
@@ -38,6 +42,8 @@ void main() {
         periodType: HabitPeriodType.month,
         performMonthDay: 22,
         performTime: DateTime(2020, 1, 1, 13, 00),
+        stats: HabitStats(),
+
       );
 
       var performDateTime =

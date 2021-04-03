@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:yaxxxta/logic/core/models.dart';
 import 'package:yaxxxta/logic/core/utils/dt.dart';
+import 'package:yaxxxta/logic/habit/stats/models.dart';
 
 part 'models.g.dart';
 
@@ -51,6 +52,9 @@ abstract class Habit implements _$Habit, WithExternalId {
 
     /// Айди сторонней системы, напр. айди из Firebase
     String? externalId,
+
+    /// Статы
+    required HabitStats stats,
   }) = _Habit;
 
   /// Созадет пустую привычку
@@ -61,6 +65,7 @@ abstract class Habit implements _$Habit, WithExternalId {
       Habit(
         created: created ?? DateTime.now(),
         performTime: performTime,
+        stats: HabitStats(),
       );
 
   /// Если true, то привычка создана и редактируется;

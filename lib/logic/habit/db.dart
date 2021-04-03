@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/core/db.dart';
 import 'package:yaxxxta/logic/core/utils/dt.dart';
+import 'package:yaxxxta/logic/habit/stats/models.dart';
 import 'package:yaxxxta/logic/user/controllers.dart';
 
 import 'models.dart';
@@ -67,6 +68,7 @@ class FirebaseHabitRepo extends FirebaseRepo<Habit> implements HabitRepo {
     var data = doc.data()!;
     data["created"] = (data["created"] as Timestamp).toDate().toIso8601String();
     data["id"] = doc.id;
+    data["stats"] = data["stats"] ?? HabitStats().toJson();
     return Habit.fromJson(data);
   }
 
@@ -187,7 +189,9 @@ class HiveHabitRepo extends HiveRepo<Habit>
 
   @override
   Habit entityFromHive(String id, Map hiveData) {
-    return Habit.fromJson(hiveData..["id"] = id);
+    hiveData["id"] = id;
+    hiveData["stats"] = hiveData["stats"] ?? HabitStats().toJson();
+    return Habit.fromJson(hiveData);
   }
 }
 

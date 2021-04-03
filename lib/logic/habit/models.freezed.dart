@@ -32,7 +32,8 @@ class _$HabitTearOff {
       List<Weekday> performWeekdays = const <Weekday>[],
       int performMonthDay = 1,
       bool isCustomPeriod = false,
-      String? externalId}) {
+      String? externalId,
+      required HabitStats stats}) {
     return _Habit(
       id: id,
       created: created,
@@ -46,6 +47,7 @@ class _$HabitTearOff {
       performMonthDay: performMonthDay,
       isCustomPeriod: isCustomPeriod,
       externalId: externalId,
+      stats: stats,
     );
   }
 
@@ -96,6 +98,9 @@ mixin _$Habit {
   /// Айди сторонней системы, напр. айди из Firebase
   String? get externalId => throw _privateConstructorUsedError;
 
+  /// Статы
+  HabitStats get stats => throw _privateConstructorUsedError;
+
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $HabitCopyWith<Habit> get copyWith => throw _privateConstructorUsedError;
@@ -117,7 +122,10 @@ abstract class $HabitCopyWith<$Res> {
       List<Weekday> performWeekdays,
       int performMonthDay,
       bool isCustomPeriod,
-      String? externalId});
+      String? externalId,
+      HabitStats stats});
+
+  $HabitStatsCopyWith<$Res> get stats;
 }
 
 /// @nodoc
@@ -142,6 +150,7 @@ class _$HabitCopyWithImpl<$Res> implements $HabitCopyWith<$Res> {
     Object? performMonthDay = freezed,
     Object? isCustomPeriod = freezed,
     Object? externalId = freezed,
+    Object? stats = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed ? _value.id : id as String?,
@@ -168,7 +177,15 @@ class _$HabitCopyWithImpl<$Res> implements $HabitCopyWith<$Res> {
           : isCustomPeriod as bool,
       externalId:
           externalId == freezed ? _value.externalId : externalId as String?,
+      stats: stats == freezed ? _value.stats : stats as HabitStats,
     ));
+  }
+
+  @override
+  $HabitStatsCopyWith<$Res> get stats {
+    return $HabitStatsCopyWith<$Res>(_value.stats, (value) {
+      return _then(_value.copyWith(stats: value));
+    });
   }
 }
 
@@ -189,7 +206,11 @@ abstract class _$HabitCopyWith<$Res> implements $HabitCopyWith<$Res> {
       List<Weekday> performWeekdays,
       int performMonthDay,
       bool isCustomPeriod,
-      String? externalId});
+      String? externalId,
+      HabitStats stats});
+
+  @override
+  $HabitStatsCopyWith<$Res> get stats;
 }
 
 /// @nodoc
@@ -215,6 +236,7 @@ class __$HabitCopyWithImpl<$Res> extends _$HabitCopyWithImpl<$Res>
     Object? performMonthDay = freezed,
     Object? isCustomPeriod = freezed,
     Object? externalId = freezed,
+    Object? stats = freezed,
   }) {
     return _then(_Habit(
       id: id == freezed ? _value.id : id as String?,
@@ -241,6 +263,7 @@ class __$HabitCopyWithImpl<$Res> extends _$HabitCopyWithImpl<$Res>
           : isCustomPeriod as bool,
       externalId:
           externalId == freezed ? _value.externalId : externalId as String?,
+      stats: stats == freezed ? _value.stats : stats as HabitStats,
     ));
   }
 }
@@ -261,7 +284,8 @@ class _$_Habit extends _Habit {
       this.performWeekdays = const <Weekday>[],
       this.performMonthDay = 1,
       this.isCustomPeriod = false,
-      this.externalId})
+      this.externalId,
+      required this.stats})
       : super._();
 
   factory _$_Habit.fromJson(Map<String, dynamic> json) =>
@@ -324,10 +348,14 @@ class _$_Habit extends _Habit {
 
   /// Айди сторонней системы, напр. айди из Firebase
   final String? externalId;
+  @override
+
+  /// Статы
+  final HabitStats stats;
 
   @override
   String toString() {
-    return 'Habit(id: $id, created: $created, title: $title, type: $type, goalValue: $goalValue, performTime: $performTime, periodType: $periodType, periodValue: $periodValue, performWeekdays: $performWeekdays, performMonthDay: $performMonthDay, isCustomPeriod: $isCustomPeriod, externalId: $externalId)';
+    return 'Habit(id: $id, created: $created, title: $title, type: $type, goalValue: $goalValue, performTime: $performTime, periodType: $periodType, periodValue: $periodValue, performWeekdays: $performWeekdays, performMonthDay: $performMonthDay, isCustomPeriod: $isCustomPeriod, externalId: $externalId, stats: $stats)';
   }
 
   @override
@@ -366,7 +394,9 @@ class _$_Habit extends _Habit {
                     .equals(other.isCustomPeriod, isCustomPeriod)) &&
             (identical(other.externalId, externalId) ||
                 const DeepCollectionEquality()
-                    .equals(other.externalId, externalId)));
+                    .equals(other.externalId, externalId)) &&
+            (identical(other.stats, stats) ||
+                const DeepCollectionEquality().equals(other.stats, stats)));
   }
 
   @override
@@ -383,7 +413,8 @@ class _$_Habit extends _Habit {
       const DeepCollectionEquality().hash(performWeekdays) ^
       const DeepCollectionEquality().hash(performMonthDay) ^
       const DeepCollectionEquality().hash(isCustomPeriod) ^
-      const DeepCollectionEquality().hash(externalId);
+      const DeepCollectionEquality().hash(externalId) ^
+      const DeepCollectionEquality().hash(stats);
 
   @JsonKey(ignore: true)
   @override
@@ -410,7 +441,8 @@ abstract class _Habit extends Habit {
       List<Weekday> performWeekdays,
       int performMonthDay,
       bool isCustomPeriod,
-      String? externalId}) = _$_Habit;
+      String? externalId,
+      required HabitStats stats}) = _$_Habit;
 
   factory _Habit.fromJson(Map<String, dynamic> json) = _$_Habit.fromJson;
 
@@ -463,6 +495,10 @@ abstract class _Habit extends Habit {
 
   /// Айди сторонней системы, напр. айди из Firebase
   String? get externalId => throw _privateConstructorUsedError;
+  @override
+
+  /// Статы
+  HabitStats get stats => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$HabitCopyWith<_Habit> get copyWith => throw _privateConstructorUsedError;

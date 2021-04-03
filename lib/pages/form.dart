@@ -30,8 +30,8 @@ class HabitFormPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var vmState = useState(
-        ModalRoute.of(context)!.settings.arguments as Habit? ??
-            Habit(created: DateTime.now()));
+      ModalRoute.of(context)!.settings.arguments as Habit? ?? Habit.blank(),
+    );
     var habit = vmState.value;
     setVM(Habit newVm) => vmState.value = newVm;
 

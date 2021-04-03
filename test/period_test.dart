@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
+import 'package:yaxxxta/logic/habit/stats/models.dart';
 
 void main() {
   test("Кастомная периодичность по месяцам", () {
@@ -8,6 +9,7 @@ void main() {
       periodType: HabitPeriodType.month,
       periodValue: 2,
       performMonthDay: 1,
+      stats: HabitStats(),
     );
 
     expect(monthHabit.matchDate(DateTime(2020, 1, 1)), true);
@@ -22,6 +24,7 @@ void main() {
       periodType: HabitPeriodType.week,
       periodValue: 2,
       performWeekdays: [Weekday.wednesday],
+      stats: HabitStats(),
     );
 
     expect(monthHabit.matchDate(DateTime(2020, 1, 1)), true);
@@ -35,6 +38,7 @@ void main() {
       created: DateTime(2020, 1, 1),
       periodType: HabitPeriodType.day,
       periodValue: 2,
+      stats: HabitStats(),
     );
 
     expect(monthHabit.matchDate(DateTime(2020, 1, 1)), true);
@@ -48,6 +52,7 @@ void main() {
       created: DateTime(2020, 1, 1),
       periodType: HabitPeriodType.day,
       periodValue: 12,
+      stats: HabitStats(),
     );
 
     expect(monthHabit.matchDate(DateTime(2020, 1, 1)), true);

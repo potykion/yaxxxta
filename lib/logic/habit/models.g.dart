@@ -28,6 +28,7 @@ _$_Habit _$_$_HabitFromJson(Map json) {
     performMonthDay: json['performMonthDay'] as int? ?? 1,
     isCustomPeriod: json['isCustomPeriod'] as bool? ?? false,
     externalId: json['externalId'] as String?,
+    stats: HabitStats.fromJson(Map<String, dynamic>.from(json['stats'] as Map)),
   );
 }
 
@@ -45,6 +46,7 @@ Map<String, dynamic> _$_$_HabitToJson(_$_Habit instance) => <String, dynamic>{
       'performMonthDay': instance.performMonthDay,
       'isCustomPeriod': instance.isCustomPeriod,
       'externalId': instance.externalId,
+      'stats': instance.stats.toJson(),
     };
 
 K _$enumDecode<K, V>(
