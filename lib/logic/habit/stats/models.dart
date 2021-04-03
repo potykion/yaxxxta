@@ -1,9 +1,9 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:yaxxxta/logic/core/utils/dt.dart';
 
 part 'models.freezed.dart';
 
 part 'models.g.dart';
-
 
 @freezed
 abstract class HabitStats with _$HabitStats {
@@ -15,4 +15,11 @@ abstract class HabitStats with _$HabitStats {
 
   factory HabitStats.fromJson(Map<String, dynamic> json) =>
       _$HabitStatsFromJson(json);
+
+  int computeTodayCurrentStrike(DateRange todayDateRange) =>
+      lastPerforming == null
+          ? 0
+          : todayDateRange.date.difference(lastPerforming!) >= Duration(days: 2)
+              ? 0
+              : currentStrike;
 }

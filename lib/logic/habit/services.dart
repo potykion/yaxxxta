@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/core/utils/dt.dart';
 import 'package:tuple/tuple.dart';
 import 'package:yaxxxta/logic/core/push.dart';
+import 'package:yaxxxta/logic/habit/stats/models.dart';
 import '../../deps.dart';
 import 'db.dart';
 import 'models.dart';
@@ -69,9 +71,7 @@ class ScheduleNotificationsForHabitsWithoutNotifications {
     now = now ?? DateTime.now();
 
     //  Берем все привычки со временем выполнения и флагом отправки уведомления
-    habits = habits
-        .where((h) => h.isNotificationsEnabled)
-        .toList();
+    habits = habits.where((h) => h.isNotificationsEnabled).toList();
 
     //  Берем все пендинг уведомления
     var allPendingNotifications = await notificationSender.getAllPending();
@@ -204,6 +204,9 @@ class LoadUserHabits {
 
 /// Создает выполнение привычки
 class CreateHabitPerforming {
+  /// Репо привычек
+  final HabitRepo habitRepo;
+
   /// Репо выполнений привычек
   final HabitPerformingRepo hpRepo;
 
@@ -215,16 +218,19 @@ class CreateHabitPerforming {
 
   /// Создает выполнение привычки
   CreateHabitPerforming({
+    required this.habitRepo,
     required this.hpRepo,
     required this.settingsDayTimes,
     required this.increaseUserPerformingPoints,
   });
 
   /// Создает выполнение привычки +
-  /// начисляет баллы юзеру, если привычка выполняется впервые за день +
+  /// Начисляет баллы юзеру, если привычка выполняется впервые за день +
   /// Обновляет статы
   Future<HabitPerforming> call(Habit habit, HabitPerforming hp) async {
     var date = hp.performDateTime.date();
+
+    // Начисляет баллы юзеру, если привычка выполняется впервые за день
     var dateRange = DateRange.fromDateAndTimes(
       date,
       settingsDayTimes.item1,
@@ -235,12 +241,40 @@ class CreateHabitPerforming {
       dateRange.from,
       dateRange.to,
     );
-
-    hp = hp.copyWith(id: await hpRepo.insert(hp));
-
     if (!dateHPExists) {
       await increaseUserPerformingPoints();
     }
+
+    hp = hp.copyWith(id: await hpRepo.insert(hp));
+
+    // Обновляет статы
+    var lastPerforming = habit.stats.lastPerforming;
+    var currentStrike = habit.stats.currentStrike;
+    if (habit.stats.lastPerforming?.isBefore(date) ?? false) {
+      currentStrike = habit.stats.computeTodayCurrentStrike(
+        DateRange.fromDateTimeAndTimes(
+          DateTime.now(),
+          settingsDayTimes.item1,
+          settingsDayTimes.item2,
+        ),
+      );
+
+      var dateIsTodayAndLastPerformingIsYesterday = (date.isToday() &&
+          date.difference(habit.stats.lastPerforming!) == Duration(days: 1));
+      currentStrike += dateIsTodayAndLastPerformingIsYesterday ? 1 : 0;
+
+      lastPerforming = date;
+    }
+    var maxStrike = max(currentStrike, habit.stats.maxStrike);
+
+    habit = habit.copyWith(
+      stats: habit.stats.copyWith(
+        lastPerforming: lastPerforming,
+        currentStrike: currentStrike,
+        maxStrike: maxStrike,
+      ),
+    );
+    habitRepo.update(habit);
 
     return hp;
   }
