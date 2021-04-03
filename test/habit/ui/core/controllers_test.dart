@@ -6,13 +6,17 @@ import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:yaxxxta/logic/habit/db.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
 import 'package:yaxxxta/logic/habit/services.dart';
+import 'package:yaxxxta/logic/habit/stats/models.dart';
 import 'package:yaxxxta/logic/user/models.dart';
 
 class MockHabitPerformingRepo extends Mock implements HabitPerformingRepo {}
 
+class MockHabitRepo extends Mock implements HabitRepo {}
+
 void main() {
   group("NewHabitPerformingController", () {
-    late HabitPerformingRepo repo;
+    late HabitPerformingRepo hpRepo;
+    late HabitRepo habitRepo;
     late AppSettings settings;
     late DateTime date;
     late DateRange dateRange;
@@ -22,10 +26,12 @@ void main() {
 
     setUpAll(() {
       registerFallbackValue<DateTime>(DateTime.now());
+      registerFallbackValue<Habit>(Habit.blank());
     });
 
     setUp(() {
-      repo = MockHabitPerformingRepo();
+      hpRepo = MockHabitPerformingRepo();
+      habitRepo = MockHabitRepo();
       settings = AppSettings.blank();
       date = DateTime(2020, 1, 1);
       settingsDayTimes = Tuple2(settings.dayStartTime, settings.dayEndTime);
@@ -36,7 +42,8 @@ void main() {
       );
 
       createHabitPerforming = CreateHabitPerforming(
-        hpRepo: repo,
+        hpRepo: hpRepo,
+        habitRepo: habitRepo,
         settingsDayTimes: settingsDayTimes,
         increaseUserPerformingPoints: () async {},
       );
@@ -50,10 +57,10 @@ void main() {
         performValue: 1,
         performDateTime: DateTime(2020, 1, 1, 11),
       );
-      when(() => repo.list(dateRange.from, dateRange.to))
+      when(() => hpRepo.list(dateRange.from, dateRange.to))
           .thenAnswer((_) async => [hp]);
       var controller = HabitPerformingController(
-        repo: repo,
+        repo: hpRepo,
         settingsDayTimes: settingsDayTimes,
         createHabitPerforming: createHabitPerforming,
       );
@@ -81,10 +88,10 @@ void main() {
         performValue: 2,
         performDateTime: DateTime(2020, 1, 1, 12),
       );
-      when(() => repo.list(dateRange.from, dateRange.to))
+      when(() => hpRepo.list(dateRange.from, dateRange.to))
           .thenAnswer((_) async => [hp1]);
       var controller = HabitPerformingController(
-        repo: repo,
+        repo: hpRepo,
         settingsDayTimes: settingsDayTimes,
         createHabitPerforming: createHabitPerforming,
         state: {
@@ -115,10 +122,10 @@ void main() {
         performValue: 2,
         performDateTime: DateTime(2020, 1, 1, 12),
       );
-      when(() => repo.list(dateRange.from, dateRange.to))
+      when(() => hpRepo.list(dateRange.from, dateRange.to))
           .thenAnswer((_) async => [hp1]);
       var controller = HabitPerformingController(
-        repo: repo,
+        repo: hpRepo,
         settingsDayTimes: settingsDayTimes,
         createHabitPerforming: createHabitPerforming,
         state: {
@@ -149,10 +156,10 @@ void main() {
         performValue: 2,
         performDateTime: DateTime(2020, 1, 2, 12),
       );
-      when(() => repo.listByHabit(hp1.habitId))
+      when(() => hpRepo.listByHabit(hp1.habitId))
           .thenAnswer((_) async => [hp1, hp2]);
       var controller = HabitPerformingController(
-        repo: repo,
+        repo: hpRepo,
         settingsDayTimes: settingsDayTimes,
         createHabitPerforming: createHabitPerforming,
       );
@@ -174,11 +181,13 @@ void main() {
         performValue: 1,
         performDateTime: DateTime(2020, 1, 1, 11),
       );
-      when(() => repo.insert(hp1)).thenAnswer((_) async => "hp1");
-      when(() => repo.checkHabitPerformingExistInDateRange(any(), any(), any()))
+      when(() => habitRepo.update(any())).thenAnswer((_) async {});
+      when(() => hpRepo.insert(hp1)).thenAnswer((_) async => "hp1");
+      when(() =>
+              hpRepo.checkHabitPerformingExistInDateRange(any(), any(), any()))
           .thenAnswer((_) async => true);
       var controller = HabitPerformingController(
-        repo: repo,
+        repo: hpRepo,
         settingsDayTimes: settingsDayTimes,
         createHabitPerforming: createHabitPerforming,
       );
@@ -200,11 +209,12 @@ void main() {
         performValue: 1,
         performDateTime: DateTime(2020, 1, 1, 11),
       );
-      when(() => repo.checkHabitPerformingExistInDateRange(any(), any(), any()))
+      when(() =>
+              hpRepo.checkHabitPerformingExistInDateRange(any(), any(), any()))
           .thenAnswer((_) async => true);
-      when(() => repo.delete(any(), any(), any())).thenAnswer((_) async {});
+      when(() => hpRepo.delete(any(), any(), any())).thenAnswer((_) async {});
       var controller = HabitPerformingController(
-          repo: repo,
+          repo: hpRepo,
           settingsDayTimes: settingsDayTimes,
           createHabitPerforming: createHabitPerforming,
           state: {
@@ -227,12 +237,14 @@ void main() {
         performValue: 1,
         performDateTime: DateTime(2020, 1, 1, 11),
       );
-      when(() => repo.insert(hp1)).thenAnswer((_) async => "hp1");
-      when(() => repo.checkHabitPerformingExistInDateRange(any(), any(), any()))
+      when(() => habitRepo.update(any())).thenAnswer((_) async {});
+      when(() => hpRepo.insert(hp1)).thenAnswer((_) async => "hp1");
+      when(() =>
+              hpRepo.checkHabitPerformingExistInDateRange(any(), any(), any()))
           .thenAnswer((_) async => true);
-      when(() => repo.delete(any(), any(), any())).thenAnswer((_) async {});
+      when(() => hpRepo.delete(any(), any(), any())).thenAnswer((_) async {});
       var controller = HabitPerformingController(
-        repo: repo,
+        repo: hpRepo,
         settingsDayTimes: settingsDayTimes,
         createHabitPerforming: createHabitPerforming,
         state: {
@@ -247,6 +259,38 @@ void main() {
         {
           DateTime(2020, 1, 1): [hp1.copyWith(id: "hp1")],
         },
+      );
+    });
+
+    test("insert updates habit stats", () async {
+      var hp1 = HabitPerforming(
+        habitId: "sam",
+        performValue: 1,
+        performDateTime: DateTime.now(),
+      );
+      when(() => habitRepo.update(any())).thenAnswer((_) async {});
+      when(() => hpRepo.insert(hp1)).thenAnswer((_) async => "hp1");
+      when(() =>
+              hpRepo.checkHabitPerformingExistInDateRange(any(), any(), any()))
+          .thenAnswer((_) async => true);
+      var controller = HabitPerformingController(
+        repo: hpRepo,
+        settingsDayTimes: settingsDayTimes,
+        createHabitPerforming: createHabitPerforming,
+      );
+
+      await controller.insert(habit, hp1);
+
+      final updatedHabit =
+          verify(() => habitRepo.update(captureAny())).captured.last as Habit;
+
+      expect(
+        updatedHabit.stats,
+        HabitStats(
+          maxStrike: 1,
+          currentStrike: 1,
+          lastPerforming: hp1.performDateTime.date(),
+        ),
       );
     });
   });

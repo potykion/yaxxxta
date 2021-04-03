@@ -123,9 +123,10 @@ class __$HabitStatsCopyWithImpl<$Res> extends _$HabitStatsCopyWithImpl<$Res>
 @JsonSerializable()
 
 /// @nodoc
-class _$_HabitStats implements _HabitStats {
+class _$_HabitStats extends _HabitStats {
   const _$_HabitStats(
-      {this.maxStrike = 0, this.currentStrike = 0, this.lastPerforming});
+      {this.maxStrike = 0, this.currentStrike = 0, this.lastPerforming})
+      : super._();
 
   factory _$_HabitStats.fromJson(Map<String, dynamic> json) =>
       _$_$_HabitStatsFromJson(json);
@@ -177,7 +178,8 @@ class _$_HabitStats implements _HabitStats {
   }
 }
 
-abstract class _HabitStats implements HabitStats {
+abstract class _HabitStats extends HabitStats {
+  const _HabitStats._() : super._();
   const factory _HabitStats(
       {int maxStrike,
       int currentStrike,

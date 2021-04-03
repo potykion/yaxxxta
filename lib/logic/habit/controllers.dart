@@ -201,14 +201,16 @@ StateNotifierProvider<HabitController> habitControllerProvider =
 StateNotifierProvider<HabitPerformingController> habitPerformingController =
     StateNotifierProvider(
   (ref) {
-    var repo = ref.watch(habitPerformingRepoProvider);
+    var hpRepo = ref.watch(habitPerformingRepoProvider);
+    var habitRepo = ref.watch(habitRepoProvider);
     var settingsDayTimes = ref.watch(settingsDayTimesProvider);
 
     return HabitPerformingController(
-      repo: repo,
+      repo: hpRepo,
       settingsDayTimes: settingsDayTimes,
       createHabitPerforming: CreateHabitPerforming(
-        hpRepo: repo,
+        habitRepo: habitRepo,
+        hpRepo: hpRepo,
         settingsDayTimes: settingsDayTimes,
         increaseUserPerformingPoints:
             ref.watch(increaseUserPerformingPointsProvider),

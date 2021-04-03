@@ -250,18 +250,21 @@ class CreateHabitPerforming {
     // Обновляет статы
     var lastPerforming = habit.stats.lastPerforming;
     var currentStrike = habit.stats.currentStrike;
-    if (habit.stats.lastPerforming?.isBefore(date) ?? false) {
-      currentStrike = habit.stats.computeTodayCurrentStrike(
-        DateRange.fromDateTimeAndTimes(
-          DateTime.now(),
-          settingsDayTimes.item1,
-          settingsDayTimes.item2,
-        ),
-      );
-
-      var dateIsTodayAndLastPerformingIsYesterday = (date.isToday() &&
-          date.difference(habit.stats.lastPerforming!) == Duration(days: 1));
-      currentStrike += dateIsTodayAndLastPerformingIsYesterday ? 1 : 0;
+    if (habit.stats.lastPerforming?.isBefore(date) ?? true) {
+      if (date.isToday()) {
+        currentStrike = habit.stats.computeTodayCurrentStrike(
+          DateRange.fromDateTimeAndTimes(
+            DateTime.now(),
+            settingsDayTimes.item1,
+            settingsDayTimes.item2,
+          ),
+        );
+        currentStrike += habit.stats.lastPerforming == null ||
+                (date.difference(habit.stats.lastPerforming!) ==
+                    Duration(days: 1))
+            ? 1
+            : 0;
+      }
 
       lastPerforming = date;
     }
