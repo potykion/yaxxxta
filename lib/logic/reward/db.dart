@@ -49,10 +49,6 @@ class HiveRewardRepo extends HiveRepo<Reward>
   HiveRewardRepo(Box<Map> box) : super(box);
 
   @override
-  Future<List<Reward>> listByIds(List<String> ids) async =>
-      ids.map((id) => entityFromHive(id, box.get(id)!)).toList();
-
-  @override
   Map<String, dynamic> entityToHive(Reward entity) => entity.toJson();
 
   @override

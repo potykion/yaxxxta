@@ -221,8 +221,9 @@ class CreateHabitPerforming {
   });
 
   /// Создает выполнение привычки +
-  /// начисляет баллы юзеру, если привычка выполняется впервые за день
-  Future<HabitPerforming> call(HabitPerforming hp) async {
+  /// начисляет баллы юзеру, если привычка выполняется впервые за день +
+  /// Обновляет статы
+  Future<HabitPerforming> call(Habit habit, HabitPerforming hp) async {
     var date = hp.performDateTime.date();
     var dateRange = DateRange.fromDateAndTimes(
       date,

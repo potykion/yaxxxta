@@ -40,7 +40,7 @@ class CreateHabitPerformingButton extends StatelessWidget {
           ),
         );
         if (habitPerforming != null) {
-          await context.read(habitPerformingController).insert(habitPerforming);
+          await context.read(habitPerformingController).insert(habit, habitPerforming);
         }
       },
     );

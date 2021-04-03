@@ -19,6 +19,7 @@ import '../widgets/core/text.dart';
 class HabitCalendarPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
+    var idHabits = useProvider(idHabitsProvider);
     var listHabitVMs = useProvider(listHabitVMsProvider);
     var selectedDate = useProvider(selectedDateProvider).state;
 
@@ -66,8 +67,8 @@ class HabitCalendarPage extends HookWidget {
                         itemCount: vms.length,
                         itemBuilder: (context, index) => vms.length > index
                             ? HabitCalendarPage_HabitProgressControl(
-                                index: index,
                                 vm: vms[index],
+                                habit: idHabits[vms[index].id]!,
                               )
                             : Container(),
                       )

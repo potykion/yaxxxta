@@ -67,7 +67,7 @@ class HabitHistoryEntrySlidable extends StatelessWidget {
             if (habitPerforming != null) {
               await context
                   .read(habitPerformingController)
-                  .update(habitPerforming);
+                  .update(habit, habitPerforming);
             }
           },
         ),

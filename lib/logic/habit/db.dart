@@ -184,10 +184,6 @@ class HiveHabitRepo extends HiveRepo<Habit>
   Future<Habit> get(String id) async => entityFromHive(id, box.get(id)!);
 
   @override
-  Future<List<Habit>> listByIds(List<String> habitIds) async =>
-      habitIds.map((id) => entityFromHive(id, box.get(id)!)).toList();
-
-  @override
   Habit entityFromHive(String id, Map hiveData) {
     hiveData["id"] = id;
     hiveData["stats"] = hiveData["stats"] ?? HabitStats().toJson();

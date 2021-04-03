@@ -16,8 +16,7 @@ import 'habit_progress_control.dart';
 /// Контрол прогресса привычки для страницы календаря
 // ignore: camel_case_types
 class HabitCalendarPage_HabitProgressControl extends HookWidget {
-  /// Индекс в списке
-  final int index;
+  final Habit habit;
 
   /// Вм прогресса привычки
   final HabitProgressVM vm;
@@ -25,8 +24,8 @@ class HabitCalendarPage_HabitProgressControl extends HookWidget {
   /// Контрол прогресса привычки для страницы календаря
   const HabitCalendarPage_HabitProgressControl({
     Key? key,
-    required this.index,
     required this.vm,
+    required this.habit,
   }) : super(key: key);
 
   @override
@@ -74,6 +73,7 @@ class HabitCalendarPage_HabitProgressControl extends HookWidget {
         showProgress: showProgress.value,
         onRepeatIncrement: (incrementValue, progressStatus, [date]) async {
           context.read(habitPerformingController).insert(
+            habit,
                 HabitPerforming(
                   habitId: vm.id,
                   performValue: incrementValue,

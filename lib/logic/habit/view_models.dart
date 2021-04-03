@@ -103,6 +103,14 @@ HabitProgressStatus buildHabitProgressStatus(
 StateProvider<DateTime> selectedDateProvider =
     StateProvider((ref) => DateTime.now().date());
 
+/// Провайдер мапы, где ключ - айди привычки, значение - привычка
+Provider<Map<String, Habit>> idHabitsProvider = Provider(
+  (ref) => ref
+      .watch(habitControllerProvider.state)
+      .asMap()
+      .map((key, value) => MapEntry(value.id!, value)),
+);
+
 /// Провайдер ВМок для страницы со списком привычек
 Provider<AsyncValue<List<HabitProgressVM>>> listHabitVMsProvider = Provider(
   (ref) => ref

@@ -18,6 +18,7 @@ void main() {
     late DateRange dateRange;
     late Tuple2<DateTime, DateTime> settingsDayTimes;
     late CreateHabitPerforming createHabitPerforming;
+    late Habit habit;
 
     setUpAll(() {
       registerFallbackValue<DateTime>(DateTime.now());
@@ -39,6 +40,7 @@ void main() {
         settingsDayTimes: settingsDayTimes,
         increaseUserPerformingPoints: () async {},
       );
+      habit = Habit.blank();
     });
 
     test("loadDateHabitPerformings", () async {
@@ -181,7 +183,7 @@ void main() {
         createHabitPerforming: createHabitPerforming,
       );
 
-      await controller.insert(hp1);
+      await controller.insert(habit, hp1);
 
       expect(
         controller.debugState.data!.value,
@@ -200,8 +202,7 @@ void main() {
       );
       when(() => repo.checkHabitPerformingExistInDateRange(any(), any(), any()))
           .thenAnswer((_) async => true);
-      when(() => repo.delete(any(), any(), any()))
-          .thenAnswer((_) async {});
+      when(() => repo.delete(any(), any(), any())).thenAnswer((_) async {});
       var controller = HabitPerformingController(
           repo: repo,
           settingsDayTimes: settingsDayTimes,
@@ -229,8 +230,7 @@ void main() {
       when(() => repo.insert(hp1)).thenAnswer((_) async => "hp1");
       when(() => repo.checkHabitPerformingExistInDateRange(any(), any(), any()))
           .thenAnswer((_) async => true);
-      when(() => repo.delete(any(), any(), any()))
-          .thenAnswer((_) async {});
+      when(() => repo.delete(any(), any(), any())).thenAnswer((_) async {});
       var controller = HabitPerformingController(
         repo: repo,
         settingsDayTimes: settingsDayTimes,
@@ -240,7 +240,7 @@ void main() {
         },
       );
 
-      await controller.update(hp1);
+      await controller.update(habit, hp1);
 
       expect(
         controller.debugState.data!.value,

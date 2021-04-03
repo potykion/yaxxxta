@@ -111,10 +111,13 @@ class HabitDetailsPage extends HookWidget {
         onRepeatIncrement: (incrementValue, _, [__]) async {
           await navigatorKey.currentContext!
               .read(habitPerformingController)
-              .insert(HabitPerforming.blank(
-                habitId: habit.id!,
-                performValue: incrementValue,
-              ));
+              .insert(
+                habit,
+                HabitPerforming.blank(
+                  habitId: habit.id!,
+                  performValue: incrementValue,
+                ),
+              );
         },
         title: BiggerText(text: "Сегодня"),
       );

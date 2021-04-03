@@ -140,8 +140,8 @@ class HabitPerformingController
       ).date;
 
   /// Вставка выполнения
-  Future<void> insert(HabitPerforming hp) async {
-    hp = await createHabitPerforming(hp);
+  Future<void> insert(Habit habit, HabitPerforming hp) async {
+    hp = await createHabitPerforming(habit, hp);
 
     var date = _dateFromDateTime(hp.performDateTime);
     var newState = _createNewState();
@@ -168,9 +168,9 @@ class HabitPerformingController
 
   /// Обновление выполнения привычки: удаление привычек в пределах минуты +
   /// вставка выполнения привычки
-  Future<void> update(HabitPerforming hp) async {
+  Future<void> update(Habit habit, HabitPerforming hp) async {
     await deleteForDateTime(hp.habitId, hp.performDateTime);
-    await insert(hp);
+    await insert(habit, hp);
   }
 }
 
