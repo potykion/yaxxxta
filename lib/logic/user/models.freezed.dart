@@ -272,7 +272,7 @@ class _$UserDataTearOff {
       required AppSettings settings,
       int performingPoints = 0,
       List<String> rewardIds = const <String>[],
-      String? externalId}) {
+      @deprecated String? externalId}) {
     return _UserData(
       id: id,
       userId: userId,
@@ -313,6 +313,7 @@ mixin _$UserData {
   List<String> get rewardIds => throw _privateConstructorUsedError;
 
   /// Айди сторонней системы, напр. айди из Firebase
+  @deprecated
   String? get externalId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -332,7 +333,7 @@ abstract class $UserDataCopyWith<$Res> {
       AppSettings settings,
       int performingPoints,
       List<String> rewardIds,
-      String? externalId});
+      @deprecated String? externalId});
 
   $AppSettingsCopyWith<$Res> get settings;
 }
@@ -391,7 +392,7 @@ abstract class _$UserDataCopyWith<$Res> implements $UserDataCopyWith<$Res> {
       AppSettings settings,
       int performingPoints,
       List<String> rewardIds,
-      String? externalId});
+      @deprecated String? externalId});
 
   @override
   $AppSettingsCopyWith<$Res> get settings;
@@ -444,7 +445,7 @@ class _$_UserData extends _UserData {
       required this.settings,
       this.performingPoints = 0,
       this.rewardIds = const <String>[],
-      this.externalId})
+      @deprecated this.externalId})
       : super._();
 
   factory _$_UserData.fromJson(Map<String, dynamic> json) =>
@@ -480,6 +481,7 @@ class _$_UserData extends _UserData {
   @override
 
   /// Айди сторонней системы, напр. айди из Firebase
+  @deprecated
   final String? externalId;
 
   @override
@@ -543,7 +545,7 @@ abstract class _UserData extends UserData {
       required AppSettings settings,
       int performingPoints,
       List<String> rewardIds,
-      String? externalId}) = _$_UserData;
+      @deprecated String? externalId}) = _$_UserData;
 
   factory _UserData.fromJson(Map<String, dynamic> json) = _$_UserData.fromJson;
 
@@ -574,6 +576,7 @@ abstract class _UserData extends UserData {
   @override
 
   /// Айди сторонней системы, напр. айди из Firebase
+  @deprecated
   String? get externalId => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
