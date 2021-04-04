@@ -13,12 +13,16 @@ class SmallerText extends StatelessWidget {
   /// Светлый текст (по умолчанию серый)
   final bool light;
 
+  /// Красит текст в красный
+  final bool error;
+
   /// Создает текст
   const SmallerText({
     Key? key,
     required this.text,
     this.dark = false,
     this.light = false,
+    this.error = false,
   }) : super(key: key);
 
   @override
@@ -31,7 +35,9 @@ class SmallerText extends StatelessWidget {
             ? CustomColors.almostBlack
             : light
                 ? CustomColors.lightGrey
-                : CustomColors.grey,
+                : error
+                    ? CustomColors.red
+                    : CustomColors.grey,
         fontSize: 12,
       ),
     );

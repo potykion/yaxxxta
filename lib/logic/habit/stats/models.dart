@@ -21,11 +21,12 @@ abstract class HabitStats with _$HabitStats {
   factory HabitStats.fromJson(Map<String, dynamic> json) =>
       _$HabitStatsFromJson(json);
 
+  /// Определяет давно ли не выполнялась привычка
+  bool isPerformedLongAgo(DateRange todayDateRange) => lastPerforming == null
+      ? false
+      : todayDateRange.date.difference(lastPerforming!) >= Duration(days: 2);
+
   /// Считает страйк за текущий день
   int computeTodayCurrentStrike(DateRange todayDateRange) =>
-      lastPerforming == null
-          ? 0
-          : todayDateRange.date.difference(lastPerforming!) >= Duration(days: 2)
-              ? 0
-              : currentStrike;
+      isPerformedLongAgo(todayDateRange) ? 0 : currentStrike;
 }

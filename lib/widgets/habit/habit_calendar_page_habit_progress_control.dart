@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/all.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
+import 'package:yaxxxta/logic/user/controllers.dart';
+import 'package:yaxxxta/theme.dart';
 import 'package:yaxxxta/widgets/core/fit_icon_button.dart';
 import 'package:yaxxxta/widgets/core/padding.dart';
 import 'package:yaxxxta/widgets/core/text.dart';
 
 import '../../logic/core/utils/dt.dart';
+import '../../logic/core/utils/list.dart';
 import '../../routes.dart';
 import '../core/time.dart';
 import '../../logic/habit/models.dart';
@@ -36,6 +40,8 @@ class HabitCalendarPage_HabitProgressControl extends HookWidget {
       showProgress.value = !(vm.isComplete || vm.isExceeded);
     });
 
+    var todayDateRange = useProvider(todayDateRangeProvider);
+
     return GestureDetector(
       onTap: () async {
         context.read(selectedHabitIdProvider).state = vm.id;
@@ -45,36 +51,38 @@ class HabitCalendarPage_HabitProgressControl extends HookWidget {
         key: Key(vm.id),
         title: Row(
           children: [
-            ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: 200),
-              child: BiggerText(
-                text: vm.title,
-                disabled: vm.isComplete || vm.isExceeded,
-              ),
+            BiggerText(
+              text: vm.title,
+              disabled: vm.isComplete || vm.isExceeded,
             ),
-            SmallPadding.between(),
-            if (vm.performTime != null) ...[
-              SmallerText(text: "🔔 ${vm.performTimeStr}")
-            ],
-            Spacer(),
-            if (vm.isComplete || vm.isExceeded)
-              FitIconButton(
+          ],
+        ),
+        subtitle: Row(
+          children: [
+            if (vm.performTime != null)
+              SmallerText(text: "🔔 ${vm.performTimeStr}"),
+            if (habit.stats.isPerformedLongAgo(todayDateRange))
+              SmallerText(text: "Привычка давно не выполнялась!", error: true),
+          ].joinObject(SmallerText(text: " · ")).toList(),
+        ),
+        trailing: vm.isComplete || vm.isExceeded
+            ? FitIconButton(
                 icon: Icon(
                   showProgress.value
                       ? Icons.keyboard_arrow_up
                       : Icons.keyboard_arrow_down,
+                  color: CustomColors.almostBlack,
                 ),
                 onTap: () {
                   showProgress.value = !showProgress.value;
                 },
-              ),
-          ],
-        ),
+              )
+            : null,
         vm: vm,
         showProgress: showProgress.value,
         onRepeatIncrement: (incrementValue, progressStatus, [date]) async {
           context.read(habitPerformingController).insert(
-            habit,
+                habit,
                 HabitPerforming(
                   habitId: vm.id,
                   performValue: incrementValue,

@@ -20,6 +20,12 @@ class HabitProgressControl extends StatelessWidget {
   /// Текст на карточке с повтором
   final Widget title;
 
+  /// Подтекст на карточке с повтором
+  final Widget? subtitle;
+
+  /// Виджет на конце
+  final Widget? trailing;
+
   /// Начальная дата
   final DateTime? initialDate;
 
@@ -34,11 +40,20 @@ class HabitProgressControl extends StatelessWidget {
     required this.title,
     this.initialDate,
     this.showProgress = true,
+    this.trailing,
+    this.subtitle,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ContainerCard(children: [
-        ListTile(title: title, dense: true),
+        ListTile(
+          title: title,
+          trailing: trailing,
+          subtitle: subtitle is Row && (subtitle as Row).children.isEmpty
+              ? null
+              : subtitle,
+          dense: true,
+        ),
         if (showProgress)
           SmallPadding(
             child: (vm.type == HabitType.repeats

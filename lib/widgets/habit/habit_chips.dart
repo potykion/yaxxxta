@@ -45,7 +45,7 @@ class HabitChips extends HookWidget {
           backgroundColor: CustomColors.pink,
         ),
         Chip(
-          label: RegularText("Максимальный стрик: ${habit.stats.maxStrike}"),
+          label: RegularText("Макс. стрик: ${habit.stats.maxStrike}"),
           backgroundColor: CustomColors.cyan,
         )
       ],
