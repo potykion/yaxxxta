@@ -136,21 +136,20 @@ Provider<AppSettings> settingsProvider = Provider(
       AppSettings.blank(),
 );
 
-/// Дейтренж текущего дня
-Provider<DateRange> todayDateRange = Provider((ref) {
-  var settings = ref.watch(settingsProvider);
-
-  return DateRange.fromDateAndTimes(
-    DateTime.now(),
-    settings.dayStartTime,
-    settings.dayEndTime,
-  );
-});
-
 /// Провайдер настроек начачла и конца дня
 Provider<Tuple2<DateTime, DateTime>> settingsDayTimesProvider = Provider((ref) {
   var settings = ref.watch(settingsProvider);
   return Tuple2(settings.dayStartTime, settings.dayEndTime);
+});
+
+/// Дейтренж текущего дня
+Provider<DateRange> todayDateRangeProvider = Provider((ref) {
+  var times = ref.watch(settingsDayTimesProvider);
+  return DateRange.fromDateAndTimes(
+    DateTime.now(),
+    times.item1,
+    times.item2,
+  );
 });
 
 /// Провайдер, который увеличивает кол-во баллов юзера
