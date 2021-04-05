@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:flutter_local_notifications_platform_interface/src/types.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/core/utils/dt.dart';
 import 'package:tuple/tuple.dart';
@@ -108,7 +109,7 @@ class TryDeletePendingNotification {
 
   /// Попытка удалить запланированное уведомление о привычке
   Future<void> call(String habitId) async {
-    var allPendingNotifications = await notificationSender.getAllPending();
+    List<PendingNotificationRequest> allPendingNotifications = await notificationSender.getAllPending();
     try {
       var habitPendingNotification = allPendingNotifications
           .where((n) => jsonDecode(n.payload!)["habitId"] == habitId)
