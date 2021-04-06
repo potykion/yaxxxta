@@ -44,7 +44,7 @@ class HabitCalendarPage extends HookWidget {
               change: (date) {
                 context.read(selectedDateProvider).state = date;
                 context
-                    .read(habitPerformingController)
+                    .read(habitPerformingController.notifier)
                     .loadDateHabitPerformings(date);
               },
             ),
@@ -58,7 +58,7 @@ class HabitCalendarPage extends HookWidget {
                     .add(Duration(days: isSwipeLeft ? 1 : -1));
                 context.read(selectedDateProvider).state = newDate;
                 context
-                    .read(habitPerformingController)
+                    .read(habitPerformingController.notifier)
                     .loadDateHabitPerformings(newDate);
               },
               builder: (context) => listHabitVMs.maybeWhen(

@@ -1,11 +1,13 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:yaxxxta/logic/notifications/models.dart';
+import 'models.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 abstract class HabitNotificationRepo {
   Future<void> schedule(HabitNotification notification);
 
   Future<List<HabitNotification>> getPending();
+
+  Future<void> cancel(int notificationId);
 }
 
 class LocalHabitNotificationRepo implements HabitNotificationRepo {
@@ -46,4 +48,8 @@ class LocalHabitNotificationRepo implements HabitNotificationRepo {
       (await _flutterLocalNotificationsPlugin.pendingNotificationRequests())
           .map((p) => HabitNotification.fromPendingNotification(p))
           .toList();
+
+  @override
+  Future<void> cancel(int notificationId) =>
+      _flutterLocalNotificationsPlugin.cancel(notificationId);
 }

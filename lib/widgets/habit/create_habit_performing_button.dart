@@ -41,7 +41,7 @@ class CreateHabitPerformingButton extends StatelessWidget {
         );
         if (habitPerforming != null) {
           await context
-              .read(habitPerformingController)
+              .read(habitPerformingController.notifier)
               .insert(habit, habitPerforming);
         }
       },

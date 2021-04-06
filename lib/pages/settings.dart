@@ -24,7 +24,9 @@ class SettingsPage extends HookWidget {
     var settings = useProvider(settingsProvider);
 
     setSettings(AppSettings newSettings) {
-      context.read(userDataControllerProvider).updateSettings(newSettings);
+      context
+          .read(userDataControllerProvider.notifier)
+          .updateSettings(newSettings);
     }
 
     return Scaffold(

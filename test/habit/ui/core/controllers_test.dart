@@ -5,7 +5,7 @@ import 'package:yaxxxta/logic/core/utils/dt.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:yaxxxta/logic/habit/db.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
-import 'package:yaxxxta/logic/habit/services.dart';
+import 'package:yaxxxta/logic/habit/services/services.dart';
 import 'package:yaxxxta/logic/habit/stats/models.dart';
 import 'package:yaxxxta/logic/user/models.dart';
 

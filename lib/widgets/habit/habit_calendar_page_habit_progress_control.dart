@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hooks_riverpod/all.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
 import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:yaxxxta/logic/user/controllers.dart';
 import 'package:yaxxxta/theme.dart';
 import 'package:yaxxxta/widgets/core/fit_icon_button.dart';
-import 'package:yaxxxta/widgets/core/padding.dart';
 import 'package:yaxxxta/widgets/core/text.dart';
 
 import '../../logic/core/utils/dt.dart';
@@ -81,7 +81,7 @@ class HabitCalendarPage_HabitProgressControl extends HookWidget {
         vm: vm,
         showProgress: showProgress.value,
         onRepeatIncrement: (incrementValue, progressStatus, [date]) async {
-          context.read(habitPerformingController).insert(
+          context.read(habitPerformingController.notifier).insert(
                 habit,
                 HabitPerforming(
                   habitId: vm.id,

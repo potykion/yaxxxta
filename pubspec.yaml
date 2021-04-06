@@ -41,7 +41,7 @@ dependencies:
 
   # стейт-менеджмент, диай, сахарок
   flutter_hooks: ^0.16.0
-  hooks_riverpod: ^0.13.1
+  hooks_riverpod: ^0.14.0
 
   # дата-классы
   freezed_annotation:

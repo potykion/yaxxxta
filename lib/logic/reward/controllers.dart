@@ -69,15 +69,16 @@ class RewardController extends StateNotifier<List<Reward>> {
 }
 
 var _addRewardToUserProvider = Provider(
-  (ref) => ref.watch(userDataControllerProvider).addReward,
+  (ref) => ref.watch(userDataControllerProvider.notifier).addReward,
 );
 var _decreasePerformingPointsProvider = Provider(
-  (ref) => ref.watch(userDataControllerProvider).decreasePerformingPoints,
+  (ref) =>
+      ref.watch(userDataControllerProvider.notifier).decreasePerformingPoints,
 );
 
 /// Провайдер RewardController
-StateNotifierProvider<RewardController> rewardControllerProvider =
-    StateNotifierProvider(
+StateNotifierProvider<RewardController, List<Reward>> rewardControllerProvider =
+    StateNotifierProvider<RewardController, List<Reward>>(
   (ref) {
     var repo = ref.watch(rewardRepoProvider);
     return RewardController(
@@ -97,7 +98,7 @@ StateNotifierProvider<RewardController> rewardControllerProvider =
 /// Награды, отсортированные по получению и возможности получения
 ProviderFamily<List<Reward>, int> sortedRewardsProvider =
     Provider.family<List<Reward>, int>(
-  (ref, userPerformingPoints) => ref.watch(rewardControllerProvider.state)
+  (ref, userPerformingPoints) => ref.watch(rewardControllerProvider)
     ..sort(
       (r1, r2) =>
           Tuple2<bool, int>(r1.collected, -(userPerformingPoints - r1.cost))

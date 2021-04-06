@@ -116,24 +116,25 @@ Provider<UserDataRepo> userDataRepoProvider = Provider<UserDataRepo>(
 );
 
 /// Провайдер контроллера данных о юзере
-StateNotifierProvider<UserDataController> userDataControllerProvider =
-    StateNotifierProvider(
+StateNotifierProvider<UserDataController, UserData?>
+    userDataControllerProvider =
+    StateNotifierProvider<UserDataController, UserData?>(
   (ref) => UserDataController(repo: ref.watch(userDataRepoProvider)),
 );
 
 /// Провайдер привязки привычки к данным юзера
 Provider<Future<void> Function(Habit habit)> addHabitToUserProvider =
-    Provider((ref) => ref.watch(userDataControllerProvider).addHabit);
+    Provider((ref) => ref.watch(userDataControllerProvider.notifier).addHabit);
 
 /// Провайдер отвязки привычки к данным юзера
 Provider<Future<void> Function(String habitId)> removeHabitFromUserProvider =
-    Provider((ref) => ref.watch(userDataControllerProvider).removeHabit);
+    Provider(
+        (ref) => ref.watch(userDataControllerProvider.notifier).removeHabit);
 
 /// Провайдер настроек
 Provider<AppSettings> settingsProvider = Provider(
   (ref) =>
-      ref.watch(userDataControllerProvider.state)?.settings ??
-      AppSettings.blank(),
+      ref.watch(userDataControllerProvider)?.settings ?? AppSettings.blank(),
 );
 
 /// Провайдер настроек начачла и конца дня
@@ -155,5 +156,7 @@ Provider<DateRange> todayDateRangeProvider = Provider((ref) {
 /// Провайдер, который увеличивает кол-во баллов юзера
 Provider<Future<void> Function([int points])>
     increaseUserPerformingPointsProvider = Provider(
-  (ref) => ref.watch(userDataControllerProvider).increaseUserPerformingPoints,
+  (ref) => ref
+      .watch(userDataControllerProvider.notifier)
+      .increaseUserPerformingPoints,
 );

@@ -11,7 +11,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:yaxxxta/logic/habit/controllers.dart';
-import 'package:yaxxxta/logic/habit/services.dart';
+import 'package:yaxxxta/logic/habit/services/services.dart';
 import 'package:yaxxxta/logic/reward/controllers.dart';
 import 'package:yaxxxta/logic/user/controllers.dart';
 import 'package:yaxxxta/logic/user/services.dart';
@@ -68,29 +68,35 @@ class LoadingPage extends HookWidget {
 
         loadingTextState.value = "Синхроним данные о юзере...";
         context.read(userProvider).state = user;
-        await context.read(userDataControllerProvider).load(user: user);
-        var userData = context.read(userDataControllerProvider.state)!;
+        await context
+            .read(userDataControllerProvider.notifier)
+            .load(user: user);
+        var userData = context.read(userDataControllerProvider)!;
         // endregion
 
         loadingTextState.value = "Грузим привычки...";
 
         // region
-        await context.read(habitControllerProvider).load(userData.habitIds);
+        await context
+            .read(habitControllerProvider.notifier)
+            .load(userData.habitIds);
 
         if (!kIsWeb) {
           await context
               .read(scheduleNotificationsForHabitsWithoutNotificationsProvider)(
-            context.read(habitControllerProvider.state),
+            context.read(habitControllerProvider),
           );
         }
 
         await context
-            .read(habitPerformingController)
+            .read(habitPerformingController.notifier)
             .loadDateHabitPerformings(DateTime.now());
         // endregion
 
         loadingTextState.value = "Грузим награды...";
-        await context.read(rewardControllerProvider).load(userData.rewardIds);
+        await context
+            .read(rewardControllerProvider.notifier)
+            .load(userData.rewardIds);
 
         Navigator.pushReplacementNamed(context, Routes.calendar);
       });

@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:yaxxxta/logic/core/push.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
-import 'package:yaxxxta/logic/habit/services.dart';
+import 'package:yaxxxta/logic/habit/services/services.dart';
 
 class MockNotificationSender extends Mock implements NotificationSender {}
 

@@ -77,7 +77,7 @@ class HabitActionsButton extends StatelessWidget {
             ),
           );
           if (isDelete ?? false) {
-            await context.read(habitControllerProvider).delete(habit.id!);
+            await context.read(habitControllerProvider.notifier).delete(habit.id!);
             Navigator.of(context).pop(true);
           }
         }

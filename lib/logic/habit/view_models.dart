@@ -106,7 +106,7 @@ StateProvider<DateTime> selectedDateProvider =
 /// Провайдер мапы, где ключ - айди привычки, значение - привычка
 Provider<Map<String, Habit>> idHabitsProvider = Provider(
   (ref) => ref
-      .watch(habitControllerProvider.state)
+      .watch(habitControllerProvider)
       .asMap()
       .map((key, value) => MapEntry(value.id!, value)),
 );
@@ -114,9 +114,9 @@ Provider<Map<String, Habit>> idHabitsProvider = Provider(
 /// Провайдер ВМок для страницы со списком привычек
 Provider<AsyncValue<List<HabitProgressVM>>> listHabitVMsProvider = Provider(
   (ref) => ref
-      .watch(habitPerformingController.state)
+      .watch(habitPerformingController)
       .whenData((dateHabitPerformings) {
-    var habits = ref.watch(habitControllerProvider.state);
+    var habits = ref.watch(habitControllerProvider);
 
     var selectedDate = ref.watch(selectedDateProvider).state;
 
@@ -234,8 +234,8 @@ StateProvider<String?> selectedHabitIdProvider = StateProvider((ref) => null);
 
 /// Провайдер ВМ страницы деталей привычки
 Provider<AsyncValue<HabitDetailsPageVM>> habitDetailsPageVMProvider = Provider(
-  (ref) => ref.watch(habitPerformingController.state).whenData((performings) {
-    var habits = ref.watch(habitControllerProvider.state);
+  (ref) => ref.watch(habitPerformingController).whenData((performings) {
+    var habits = ref.watch(habitControllerProvider);
 
     var selectedHabitId = ref.watch(selectedHabitIdProvider).state;
     var selectedHabit = habits.firstWhere(

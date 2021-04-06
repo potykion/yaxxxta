@@ -15,7 +15,7 @@ import '../widgets/reward/reward_modal.dart';
 class RewardsPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    var userData = useProvider(userDataControllerProvider.state)!;
+    var userData = useProvider(userDataControllerProvider)!;
     var rewards = useProvider(sortedRewardsProvider(userData.performingPoints));
 
     return Scaffold(
@@ -57,7 +57,7 @@ class RewardsPage extends HookWidget {
             builder: (context) => RewardModal(),
           );
           if (reward != null) {
-            await context.read(rewardControllerProvider).create(reward);
+            await context.read(rewardControllerProvider.notifier).create(reward);
           }
         },
       ),

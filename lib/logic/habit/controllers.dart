@@ -9,7 +9,7 @@ import 'package:yaxxxta/logic/core/utils/list.dart';
 import '../../deps.dart';
 import 'db.dart';
 import 'models.dart';
-import 'services.dart';
+import 'services/services.dart';
 
 /// Контроллер привычек
 class HabitController extends StateNotifier<List<Habit>> {
@@ -175,8 +175,8 @@ class HabitPerformingController
 }
 
 /// Провайдер контроллера привычек
-StateNotifierProvider<HabitController> habitControllerProvider =
-    StateNotifierProvider(
+StateNotifierProvider<HabitController, List<Habit>> habitControllerProvider =
+    StateNotifierProvider<HabitController, List<Habit>>(
   (ref) => HabitController(
     createOrUpdateHabit: CreateOrUpdateHabit(
       habitRepo: ref.watch(habitRepoProvider),
@@ -198,8 +198,10 @@ StateNotifierProvider<HabitController> habitControllerProvider =
 );
 
 /// Провайдер контроллера выполнений привычек
-StateNotifierProvider<HabitPerformingController> habitPerformingController =
-    StateNotifierProvider(
+StateNotifierProvider<HabitPerformingController,
+        AsyncValue<Map<DateTime, List<HabitPerforming>>>>
+    habitPerformingController = StateNotifierProvider<HabitPerformingController,
+        AsyncValue<Map<DateTime, List<HabitPerforming>>>>(
   (ref) {
     var hpRepo = ref.watch(habitPerformingRepoProvider);
     var habitRepo = ref.watch(habitRepoProvider);

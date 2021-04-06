@@ -46,7 +46,7 @@ class RewardCard extends StatelessWidget {
                     onPressed: reward.canBeCollected(userPerformingPoints)
                         ? () async {
                             await context
-                                .read(rewardControllerProvider)
+                                .read(rewardControllerProvider.notifier)
                                 .collect(reward);
                           }
                         : null,
@@ -68,7 +68,7 @@ class RewardCard extends StatelessWidget {
                 );
                 if (updatedReward != null) {
                   await context
-                      .read(rewardControllerProvider)
+                      .read(rewardControllerProvider.notifier)
                       .update(updatedReward);
                 }
               },
@@ -78,7 +78,7 @@ class RewardCard extends StatelessWidget {
               color: CustomColors.red,
               icon: Icons.delete,
               onTap: () {
-                context.read(rewardControllerProvider).delete(reward);
+                context.read(rewardControllerProvider.notifier).delete(reward);
               },
             ),
           ],

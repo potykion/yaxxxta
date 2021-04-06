@@ -15,7 +15,7 @@ import '../widgets/core/text.dart';
 class HabitListPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    var habits = useProvider(habitControllerProvider.state);
+    var habits = useProvider(habitControllerProvider);
 
     return Scaffold(
       appBar: buildAppBar(

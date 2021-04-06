@@ -66,7 +66,7 @@ class HabitHistoryEntrySlidable extends StatelessWidget {
             );
             if (habitPerforming != null) {
               await context
-                  .read(habitPerformingController)
+                  .read(habitPerformingController.notifier)
                   .update(habit, habitPerforming);
             }
           },
@@ -76,7 +76,7 @@ class HabitHistoryEntrySlidable extends StatelessWidget {
           color: CustomColors.red,
           icon: Icons.delete,
           onTap: () => context
-              .read(habitPerformingController)
+              .read(habitPerformingController.notifier)
               .deleteForDateTime(habit.id!, historyEntry.time),
         ),
       ],

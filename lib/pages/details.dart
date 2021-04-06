@@ -28,8 +28,10 @@ class HabitDetailsPage extends HookWidget {
   Widget build(BuildContext context) {
     useEffect(() {
       WidgetsBinding.instance!.addPostFrameCallback((_) async {
-        context.read(habitPerformingController).loadSelectedHabitPerformings(
-            context.read(selectedHabitIdProvider).state!);
+        context
+            .read(habitPerformingController.notifier)
+            .loadSelectedHabitPerformings(
+                context.read(selectedHabitIdProvider).state!);
       });
       return;
     }, []);
@@ -110,7 +112,7 @@ class HabitDetailsPage extends HookWidget {
         vm: progress,
         onRepeatIncrement: (incrementValue, _, [__]) async {
           await navigatorKey.currentContext!
-              .read(habitPerformingController)
+              .read(habitPerformingController.notifier)
               .insert(
                 habit,
                 HabitPerforming.blank(

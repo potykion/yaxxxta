@@ -338,7 +338,7 @@ class HabitFormPage extends HookWidget {
             onPressed: error.isEmpty
                 ? () async {
                     var createdHabit = await context
-                        .read(habitControllerProvider)
+                        .read(habitControllerProvider.notifier)
                         .createOrUpdate(habit);
                     Navigator.of(context).pop(createdHabit);
                   }
