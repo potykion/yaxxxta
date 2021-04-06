@@ -2,6 +2,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tuple/tuple.dart';
 import 'package:yaxxxta/logic/habit/db.dart';
+import 'package:yaxxxta/logic/habit/services/perform.dart';
+import 'package:yaxxxta/logic/transactions/db.dart';
 import 'package:yaxxxta/logic/user/controllers.dart';
 import '../core/utils/dt.dart';
 import 'package:yaxxxta/logic/core/utils/list.dart';
@@ -9,6 +11,8 @@ import 'package:yaxxxta/logic/core/utils/list.dart';
 import '../../deps.dart';
 import 'db.dart';
 import 'models.dart';
+import 'notifications/db.dart';
+import 'notifications/services.dart';
 import 'services/services.dart';
 
 /// Контроллер привычек
@@ -71,12 +75,14 @@ class HabitPerformingController
 
   /// Создает выполнение привычки
   final CreateHabitPerforming createHabitPerforming;
+  final PerformHabitNow performHabitNow;
 
   /// Контроллер выполнений привычек
   HabitPerformingController({
     required this.repo,
     required this.settingsDayTimes,
     required this.createHabitPerforming,
+    required this.performHabitNow,
     Map<DateTime, List<HabitPerforming>> state = const {},
   }) : super(AsyncValue.data(state));
 
@@ -141,7 +147,18 @@ class HabitPerformingController
 
   /// Вставка выполнения
   Future<void> insert(Habit habit, HabitPerforming hp) async {
-    hp = await createHabitPerforming(habit, hp);
+    if (hp.performDateTime.isToday()) {
+      hp = await performHabitNow(
+        habit: habit,
+        performValue: hp.performValue,
+      );
+    } else {
+      hp = await createHabitPerforming(
+        habitId: habit.id!,
+        performDateTime: hp.performDateTime,
+        performValue: hp.performValue,
+      );
+    }
 
     var date = _dateFromDateTime(hp.performDateTime);
     var newState = _createNewState();
@@ -206,16 +223,25 @@ StateNotifierProvider<HabitPerformingController,
     var hpRepo = ref.watch(habitPerformingRepoProvider);
     var habitRepo = ref.watch(habitRepoProvider);
     var settingsDayTimes = ref.watch(settingsDayTimesProvider);
+    var habitNotificationRepo = ref.watch(habitNotificationRepoProvider);
+    var createHabitPerforming = CreateHabitPerforming(hpRepo);
 
     return HabitPerformingController(
       repo: hpRepo,
       settingsDayTimes: settingsDayTimes,
-      createHabitPerforming: CreateHabitPerforming(
-        habitRepo: habitRepo,
-        hpRepo: hpRepo,
-        settingsDayTimes: settingsDayTimes,
-        increaseUserPerformingPoints:
-            ref.watch(increaseUserPerformingPointsProvider),
+      createHabitPerforming: createHabitPerforming,
+      performHabitNow: PerformHabitNow(
+        getTodayDateRange: GetTodayDateRange(settingsDayTimes),
+        createHabitPerforming: createHabitPerforming,
+        tryChargePoints: TryChargePoints(
+          transactionRepo: ref.watch(transactionRepoProvider),
+        ),
+        updateHabitStats: UpdateHabitStats(habitRepo: habitRepo),
+        rescheduleHabitNotification: RescheduleHabitNotification(
+          habitNotificationRepo: habitNotificationRepo,
+          deletePendingNotifications:
+              DeletePendingNotifications(habitNotificationRepo),
+        ),
       ),
     );
   },

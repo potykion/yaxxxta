@@ -50,6 +50,8 @@ abstract class Habit implements _$Habit, WithExternalId {
     /// Вообще тупа в гуи юзается
     @Default(false) bool isCustomPeriod,
 
+    String? userId,
+
     /// Айди сторонней системы, напр. айди из Firebase
     String? externalId,
 

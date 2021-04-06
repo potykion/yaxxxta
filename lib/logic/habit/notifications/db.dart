@@ -1,4 +1,6 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:yaxxxta/deps.dart';
 import 'models.dart';
 import 'package:timezone/timezone.dart' as tz;
 
@@ -53,3 +55,9 @@ class LocalHabitNotificationRepo implements HabitNotificationRepo {
   Future<void> cancel(int notificationId) =>
       _flutterLocalNotificationsPlugin.cancel(notificationId);
 }
+
+var habitNotificationRepoProvider = Provider(
+  (ref) => LocalHabitNotificationRepo(
+    ref.watch(flutterLocalNotificationsPluginProvider),
+  ),
+);

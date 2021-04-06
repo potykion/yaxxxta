@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+import '../models.dart';
+
 /// Уведомление о привычке
 class HabitNotification {
   /// Айди
@@ -35,6 +37,17 @@ class HabitNotification {
 
   /// Пейлоад уведомления с айди привычки
   String get habitIdPayload => jsonEncode({"habitId": habitId});
+
+  factory HabitNotification.createPerformNotification(
+    Habit habit,
+    DateTime sendDateTime,
+  ) =>
+      HabitNotification(
+        title: habit.title,
+        habitId: habit.id!,
+        body: "Пора выполнить привычку",
+        sendDateTime: sendDateTime,
+      );
 
   /// Создает из PendingNotificationRequest
   factory HabitNotification.fromPendingNotification(

@@ -32,6 +32,7 @@ class _$HabitTearOff {
       List<Weekday> performWeekdays = const <Weekday>[],
       int performMonthDay = 1,
       bool isCustomPeriod = false,
+      String? userId,
       String? externalId,
       required HabitStats stats}) {
     return _Habit(
@@ -46,6 +47,7 @@ class _$HabitTearOff {
       performWeekdays: performWeekdays,
       performMonthDay: performMonthDay,
       isCustomPeriod: isCustomPeriod,
+      userId: userId,
       externalId: externalId,
       stats: stats,
     );
@@ -94,6 +96,7 @@ mixin _$Habit {
   /// Если false, то {periodValue} = 1; иначе можно задавать {periodValue} > 1
   /// Вообще тупа в гуи юзается
   bool get isCustomPeriod => throw _privateConstructorUsedError;
+  String? get userId => throw _privateConstructorUsedError;
 
   /// Айди сторонней системы, напр. айди из Firebase
   String? get externalId => throw _privateConstructorUsedError;
@@ -122,6 +125,7 @@ abstract class $HabitCopyWith<$Res> {
       List<Weekday> performWeekdays,
       int performMonthDay,
       bool isCustomPeriod,
+      String? userId,
       String? externalId,
       HabitStats stats});
 
@@ -149,6 +153,7 @@ class _$HabitCopyWithImpl<$Res> implements $HabitCopyWith<$Res> {
     Object? performWeekdays = freezed,
     Object? performMonthDay = freezed,
     Object? isCustomPeriod = freezed,
+    Object? userId = freezed,
     Object? externalId = freezed,
     Object? stats = freezed,
   }) {
@@ -175,6 +180,7 @@ class _$HabitCopyWithImpl<$Res> implements $HabitCopyWith<$Res> {
       isCustomPeriod: isCustomPeriod == freezed
           ? _value.isCustomPeriod
           : isCustomPeriod as bool,
+      userId: userId == freezed ? _value.userId : userId as String?,
       externalId:
           externalId == freezed ? _value.externalId : externalId as String?,
       stats: stats == freezed ? _value.stats : stats as HabitStats,
@@ -206,6 +212,7 @@ abstract class _$HabitCopyWith<$Res> implements $HabitCopyWith<$Res> {
       List<Weekday> performWeekdays,
       int performMonthDay,
       bool isCustomPeriod,
+      String? userId,
       String? externalId,
       HabitStats stats});
 
@@ -235,6 +242,7 @@ class __$HabitCopyWithImpl<$Res> extends _$HabitCopyWithImpl<$Res>
     Object? performWeekdays = freezed,
     Object? performMonthDay = freezed,
     Object? isCustomPeriod = freezed,
+    Object? userId = freezed,
     Object? externalId = freezed,
     Object? stats = freezed,
   }) {
@@ -261,6 +269,7 @@ class __$HabitCopyWithImpl<$Res> extends _$HabitCopyWithImpl<$Res>
       isCustomPeriod: isCustomPeriod == freezed
           ? _value.isCustomPeriod
           : isCustomPeriod as bool,
+      userId: userId == freezed ? _value.userId : userId as String?,
       externalId:
           externalId == freezed ? _value.externalId : externalId as String?,
       stats: stats == freezed ? _value.stats : stats as HabitStats,
@@ -284,6 +293,7 @@ class _$_Habit extends _Habit {
       this.performWeekdays = const <Weekday>[],
       this.performMonthDay = 1,
       this.isCustomPeriod = false,
+      this.userId,
       this.externalId,
       required this.stats})
       : super._();
@@ -345,6 +355,8 @@ class _$_Habit extends _Habit {
   /// Вообще тупа в гуи юзается
   final bool isCustomPeriod;
   @override
+  final String? userId;
+  @override
 
   /// Айди сторонней системы, напр. айди из Firebase
   final String? externalId;
@@ -355,7 +367,7 @@ class _$_Habit extends _Habit {
 
   @override
   String toString() {
-    return 'Habit(id: $id, created: $created, title: $title, type: $type, goalValue: $goalValue, performTime: $performTime, periodType: $periodType, periodValue: $periodValue, performWeekdays: $performWeekdays, performMonthDay: $performMonthDay, isCustomPeriod: $isCustomPeriod, externalId: $externalId, stats: $stats)';
+    return 'Habit(id: $id, created: $created, title: $title, type: $type, goalValue: $goalValue, performTime: $performTime, periodType: $periodType, periodValue: $periodValue, performWeekdays: $performWeekdays, performMonthDay: $performMonthDay, isCustomPeriod: $isCustomPeriod, userId: $userId, externalId: $externalId, stats: $stats)';
   }
 
   @override
@@ -392,6 +404,8 @@ class _$_Habit extends _Habit {
             (identical(other.isCustomPeriod, isCustomPeriod) ||
                 const DeepCollectionEquality()
                     .equals(other.isCustomPeriod, isCustomPeriod)) &&
+            (identical(other.userId, userId) ||
+                const DeepCollectionEquality().equals(other.userId, userId)) &&
             (identical(other.externalId, externalId) ||
                 const DeepCollectionEquality()
                     .equals(other.externalId, externalId)) &&
@@ -413,6 +427,7 @@ class _$_Habit extends _Habit {
       const DeepCollectionEquality().hash(performWeekdays) ^
       const DeepCollectionEquality().hash(performMonthDay) ^
       const DeepCollectionEquality().hash(isCustomPeriod) ^
+      const DeepCollectionEquality().hash(userId) ^
       const DeepCollectionEquality().hash(externalId) ^
       const DeepCollectionEquality().hash(stats);
 
@@ -441,6 +456,7 @@ abstract class _Habit extends Habit {
       List<Weekday> performWeekdays,
       int performMonthDay,
       bool isCustomPeriod,
+      String? userId,
       String? externalId,
       required HabitStats stats}) = _$_Habit;
 
@@ -491,6 +507,8 @@ abstract class _Habit extends Habit {
   /// Если false, то {periodValue} = 1; иначе можно задавать {periodValue} > 1
   /// Вообще тупа в гуи юзается
   bool get isCustomPeriod => throw _privateConstructorUsedError;
+  @override
+  String? get userId => throw _privateConstructorUsedError;
   @override
 
   /// Айди сторонней системы, напр. айди из Firebase
