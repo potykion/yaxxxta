@@ -36,9 +36,3 @@ mixin WithId {
   /// Айди
   String? get id;
 }
-
-/// Сущность с айди сторонней системы (напр. айди из Firebase)
-mixin WithExternalId on WithId {
-  ///  Айди сторонней системы
-  String? get externalId;
-}

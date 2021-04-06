@@ -1,9 +1,6 @@
-import 'dart:collection';
 
-import 'package:hive/hive.dart';
 import 'package:meta/meta.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:uuid/uuid.dart';
 import 'package:yaxxxta/logic/core/models.dart';
 import 'utils/list.dart';
 
@@ -12,8 +9,7 @@ import 'utils/list.dart';
 typedef CreateBatch = WriteBatch Function();
 
 /// Firebase / Firestore репо
-abstract class FirebaseRepo<T extends WithExternalId>
-    with WithInsertOrUpdateManyByExternalId<T> {
+abstract class FirebaseRepo<T extends WithId> {
   /// Фаерстор коллекция
   @protected
   @visibleForTesting
@@ -111,156 +107,5 @@ abstract class FirebaseRepo<T extends WithExternalId>
 
     await batch.commit();
     return ids;
-  }
-}
-
-/// Базовый класс для хайв репозиториев
-abstract class HiveRepo<T extends WithExternalId>
-    with WithInsertOrUpdateManyByExternalId<T> {
-  /// Хайв коробка (типа табличка)
-  @visibleForTesting
-  @protected
-  final Box<Map> box;
-  final Uuid _uuid = Uuid();
-
-  /// Базовый класс для хайв репозиториев
-  HiveRepo(this.box);
-
-  /// Вставляет в бд
-  Future<String> insert(T entity) async {
-    var id = _uuid.v1();
-    await box.put(id, entityToHive(entity));
-    return id;
-  }
-
-  /// Обновляет в бд
-  Future<void> update(T entity) async {
-    await box.put(entity.id, entityToHive(entity));
-  }
-
-  /// Удаляет по айди в бд
-  Future<void> deleteById(String id) => box.delete(id);
-
-  /// Конвертит сущность в хайв словарик
-  @protected
-  Map entityToHive(T entity);
-
-  /// Создает сущность из хайв словарика
-  @protected
-  T entityFromHive(String id, Map hiveData);
-
-  @override
-  Future<List<String>> insertMany(List<T> entities) async {
-    var ids = entities.map((e) => _uuid.v1()).toList();
-    await box.putAll(Map<String, Map>.fromIterables(
-      ids,
-      entities.map(entityToHive),
-    ));
-    return ids;
-  }
-
-  @override
-  Future<void> updateMany(List<T> entities) async {
-    var ids = entities.map((e) => e.id!).toList();
-    await box.putAll(Map<String, Map>.fromIterables(
-      ids,
-      entities.map(entityToHive),
-    ));
-  }
-
-  @override
-  Future<List<T>> listByExternalIds(List<String> externalIds) async => box
-      .toMap()
-      .entries
-      .map((e) => entityFromHive(e.key as String, e.value))
-      .where((e) => externalIds.contains(e.externalId))
-      .toList();
-
-  @override
-  Future<List<T>> listByIds(List<String> externalIds) async => box
-      .toMap()
-      .entries
-      .map((e) => entityFromHive(e.key as String, e.value))
-      .where((e) => externalIds.contains(e.id))
-      .toList();
-}
-
-/// Вставляет или обновляет сущности по [externalId].
-mixin WithInsertOrUpdateManyByExternalId<T extends WithExternalId> {
-  /// Получает все сущности с [externalId] из [externalIds]
-  @protected
-  Future<List<T>> listByExternalIds(List<String> externalIds);
-
-  /// Получает все сущности с [id] из [ids]
-  Future<List<T>> listByIds(List<String> ids);
-
-  /// Вставляет несколько сущностей
-  @protected
-  Future<List<String>> insertMany(List<T> entities);
-
-  /// Обновляет несколько сущностей
-  @protected
-  Future<void> updateMany(List<T> entities);
-
-  /// Вставляет или обновляет сущности по [externalId]
-  /// Возвращает список айди, как новых, так и старых
-  /// Порядок совпадает с [entities]
-  Future<List<String>> insertOrUpdateManyByExternalId(List<T> entities) async {
-    // Ищем в бд все сущности с [externalId]
-    var externalIds = List<String>.from(
-      entities.map((e) => e.externalId).where((id) => id != null),
-    );
-    var existingEntitiesMap = {
-      // Берем сушности с [externalId] из [externalIds]
-      ...Map<String, T>.fromEntries(
-        (await listByExternalIds(externalIds))
-            .map((e) => MapEntry<String, T>(e.externalId!, e)),
-      ),
-      // todo не сработало =/ надо потестить получше
-      // Берем сушности с [id] из [externalIds]
-      // Делаем это, потому что в сутуации Firebase > Hive
-      // В Firebase данные остаются без externalId =>
-      // при Firebase < Hive появятся дубликаты =>
-      // нужно брать сушности с [id] из [externalIds]
-      // (id из Hive и id из Firebase генерятся по разному - так что все ок)
-      ...Map<String, T>.fromEntries(
-        (await listByIds(externalIds))
-            .map((e) => MapEntry<String, T>(e.id!, e)),
-      )
-    };
-
-    // Распределяем [entities] на те, которые есть в [existingEntitiesMap], и
-    // на те, которых нет; а также создаем массив айдишек,
-    // в котором null обозначает, что сущности нет в бд => нет айди
-    var entitiesToUpdate = <T>[];
-    var entitiesToInsert = <T>[];
-    var ids = <String?>[];
-
-    for (var e in entities) {
-      if (existingEntitiesMap.containsKey(e.externalId)) {
-        entitiesToUpdate.add(existingEntitiesMap[e.externalId]!);
-        ids.add(e.id!);
-      } else {
-        entitiesToInsert.add(e);
-        ids.add(null);
-      }
-    }
-
-    // Вставляем сущности, которых нет в бд + обновляем те, что есть
-    var results = await Future.wait([
-      insertMany(entitiesToInsert),
-      updateMany(entitiesToUpdate),
-    ]);
-
-    // Проставляем в [ids] вместо null айди,
-    // котороые получили после вставки в бд
-    var insertIds = Queue.of(results[0] as List<String>);
-    for (var i in List.generate(ids.length, (index) => index)) {
-      if (ids[i] == null) {
-        ids[i] = insertIds.removeFirst();
-      }
-    }
-
-    return List<String>.from(ids);
   }
 }

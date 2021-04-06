@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:hive/hive.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/core/db.dart';
 import 'package:yaxxxta/logic/core/utils/dt.dart';
@@ -170,73 +169,6 @@ class FirebaseHabitPerformingRepo extends FirebaseRepo<HabitPerforming>
       0;
 }
 
-/// Хайв репо привычек
-class HiveHabitRepo extends HiveRepo<Habit>
-    with WithInsertOrUpdateManyByExternalId<Habit>
-    implements HabitRepo {
-  /// Хайв репо привычек
-  HiveHabitRepo(Box<Map> box) : super(box);
-
-  @override
-  Map<String, dynamic> entityToHive(Habit entity) => entity.toJson();
-
-  @override
-  Future<Habit> get(String id) async => entityFromHive(id, box.get(id)!);
-
-  @override
-  Habit entityFromHive(String id, Map hiveData) {
-    hiveData["id"] = id;
-    hiveData["stats"] = hiveData["stats"] ?? HabitStats().toJson();
-    return Habit.fromJson(hiveData);
-  }
-}
-
-/// Хайв репо выполнений привычек
-class HiveHabitPerformingRepo extends HiveRepo<HabitPerforming>
-    with WithInsertOrUpdateManyByExternalId<HabitPerforming>
-    implements HabitPerformingRepo {
-  /// Хайв репо выполнений привычек
-  HiveHabitPerformingRepo(Box<Map> box) : super(box);
-
-  @override
-  Future<bool> checkHabitPerformingExistInDateRange(
-          String habitId, DateTime from, DateTime to) async =>
-      (await list(from, to)).any((hp) => hp.habitId == habitId);
-
-  @override
-  Future<void> delete(String habitId, DateTime from, DateTime to) async {
-    await box.deleteAll((await list(from, to))
-        .where((hp) => hp.habitId == habitId)
-        .map<String>((hp) => hp.id!));
-  }
-
-  @override
-  Map<String, dynamic> entityToHive(HabitPerforming entity) => entity.toJson();
-
-  @override
-  Future<List<HabitPerforming>> list(DateTime from, DateTime to) async =>
-      _getAll().where((hp) => hp.performDateTime.isBetween(from, to)).toList();
-
-  @override
-  Future<List<HabitPerforming>> listByHabit(String habitId) async =>
-      _getAll().where((hp) => hp.habitId == habitId).toList();
-
-  Iterable<HabitPerforming> _getAll() =>
-      box.keys.map((dynamic id) => entityFromHive(id as String, box.get(id)!));
-
-  @override
-  HabitPerforming entityFromHive(String id, Map hiveData) =>
-      HabitPerforming.fromJson(hiveData..["id"] = id);
-
-  @override
-  Future<List<HabitPerforming>> listByHabits(List<String> habitIds) async =>
-      _getAll().where((hp) => habitIds.contains(hp.habitId)).toList();
-}
-
-/// Провайдер HiveHabitRepo
-Provider<HiveHabitRepo> hiveHabitRepoProvider =
-    Provider((ref) => HiveHabitRepo(Hive.box<Map>("habits")));
-
 /// Провайдер FirebaseHabitRepo
 Provider<FirebaseHabitRepo> fbHabitRepoProvider =
     Provider((ref) => FirebaseHabitRepo(
@@ -246,14 +178,8 @@ Provider<FirebaseHabitRepo> fbHabitRepoProvider =
 
 /// Провайдер репо привычек
 Provider<HabitRepo> habitRepoProvider = Provider(
-  (ref) => ref.watch(isFreeProvider)
-      ? ref.watch(hiveHabitRepoProvider)
-      : ref.watch(fbHabitRepoProvider),
+  (ref) => ref.watch(fbHabitRepoProvider),
 );
-
-/// Провайдер HiveHabitPerformingRepo
-Provider<HiveHabitPerformingRepo> hiveHabitPerformingRepoProvider = Provider(
-    (ref) => HiveHabitPerformingRepo(Hive.box<Map>("habit_performings")));
 
 /// Провайдер FirebaseHabitPerformingRepo
 Provider<FirebaseHabitPerformingRepo> fbHabitPerformingRepoProvider =
@@ -264,7 +190,5 @@ Provider<FirebaseHabitPerformingRepo> fbHabitPerformingRepoProvider =
 
 /// Провайдер репо выполнений привычек
 Provider<HabitPerformingRepo> habitPerformingRepoProvider = Provider(
-  (ref) => ref.watch(isFreeProvider)
-      ? ref.watch(hiveHabitPerformingRepoProvider)
-      : ref.watch(fbHabitPerformingRepoProvider),
+  (ref) => ref.watch(fbHabitPerformingRepoProvider),
 );

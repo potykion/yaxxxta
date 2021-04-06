@@ -36,7 +36,7 @@ class AppSettings with _$AppSettings {
 
 /// Данные о юзере
 @freezed
-abstract class UserData implements _$UserData, WithExternalId {
+abstract class UserData implements _$UserData, WithId {
   const UserData._();
 
   /// Данные о юзере

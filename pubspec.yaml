@@ -74,10 +74,6 @@ dependencies:
   # слайдабл экшены
   flutter_slidable: 0.6.0-nullsafety.0
 
-  # персистенс
-  hive: ^2.0.0
-  hive_flutter: ^1.0.0
-
   # Открытие ссылочек
   url_launcher: ^6.0.2
 
@@ -102,12 +98,9 @@ dev_dependencies:
   cloud_firestore_mocks: ^0.8.0
   mocktail: ^0.1.1
 
-
   # Иконочка
   flutter_launcher_icons: ^0.9.0
 
-  # Кодген для hive
-  hive_generator: ^1.0.0
 
 
 flutter_icons:

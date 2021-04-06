@@ -11,7 +11,7 @@ part 'models.freezed.dart';
 
 /// Привычка
 @freezed
-abstract class Habit implements _$Habit, WithExternalId {
+abstract class Habit implements _$Habit, WithId {
   const Habit._();
 
   /// Создает привычку
@@ -322,7 +322,7 @@ extension HabitTypeToStr on HabitType {
 
 /// Выполнение прички
 @freezed
-abstract class HabitPerforming implements _$HabitPerforming, WithExternalId {
+abstract class HabitPerforming implements _$HabitPerforming, WithId {
   HabitPerforming._();
 
   /// Создает выполнение привычки

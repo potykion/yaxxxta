@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:hive/hive.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:yaxxxta/logic/core/db.dart';
 
@@ -61,37 +60,9 @@ class FirebaseUserDataRepo extends FirebaseRepo<UserData>
       entityFromFirebase((await collectionReference.get()).docs.first);
 }
 
-/// Хайв репо для данных о юзере
-class HiveUserDataRepo extends HiveRepo<UserData>
-    with WithInsertOrUpdateManyByExternalId<UserData>
-    implements UserDataRepo {
-  /// Хайв репо для данных о юзере
-  HiveUserDataRepo(Box<Map> box) : super(box);
-
-  @override
-  Future<UserData?> first() async => box.isNotEmpty
-      ? entityFromHive(box.keyAt(0) as String, box.getAt(0)!)
-      : null;
-
-  @override
-  Future<UserData?> getByUserId(String userId) => first();
-
-  @override
-  Map<String, dynamic> entityToHive(UserData entity) => entity.toJson();
-
-  @override
-  UserData entityFromHive(String id, Map hiveData) =>
-      UserData.fromJson(hiveData..["id"] = id);
-}
-
 /// Провайдер FirebaseUserDataRepo
 Provider<FirebaseUserDataRepo> fbUserDataRepoProvider =
     Provider((ref) => FirebaseUserDataRepo(
           FirebaseFirestore.instance.collection("user_data"),
           FirebaseFirestore.instance.batch,
         ));
-
-/// Провайдер HiveUserDataRepo
-Provider<HiveUserDataRepo> hiveUserDataRepoProvider = Provider(
-  (ref) => HiveUserDataRepo(Hive.box<Map>("user_data")),
-);

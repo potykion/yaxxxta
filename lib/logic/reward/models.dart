@@ -7,7 +7,7 @@ part 'models.g.dart';
 
 /// Награда
 @freezed
-abstract class Reward implements _$Reward, WithExternalId {
+abstract class Reward implements _$Reward, WithId {
   const Reward._();
 
   /// Награда

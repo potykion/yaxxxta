@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:timezone/data/latest.dart' as tz;
@@ -34,14 +32,6 @@ class LoadingPage extends HookWidget {
 
         Intl.defaultLocale = 'ru_RU';
         initializeDateFormatting('ru_RU');
-
-        try {
-          await Hive.initFlutter();
-        } on HiveError {}
-        await Hive.openBox<Map>('user_data');
-        await Hive.openBox<Map>('habits');
-        await Hive.openBox<Map>('habit_performings');
-        await Hive.openBox<Map>('rewards');
 
         // пуши
         if (!kIsWeb) {

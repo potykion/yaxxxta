@@ -110,9 +110,7 @@ Provider<bool> isFreeProvider =
 
 /// Провайдер репо данных о юзере
 Provider<UserDataRepo> userDataRepoProvider = Provider<UserDataRepo>(
-  (ref) => ref.watch(isFreeProvider)
-      ? ref.watch(hiveUserDataRepoProvider)
-      : ref.watch(fbUserDataRepoProvider),
+  (ref) => ref.watch(fbUserDataRepoProvider),
 );
 
 /// Провайдер контроллера данных о юзере

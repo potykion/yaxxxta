@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:hive/hive.dart';
 import 'package:riverpod/riverpod.dart';
 
 import 'package:yaxxxta/logic/core/db.dart';
@@ -41,25 +40,6 @@ class FirebaseRewardRepo extends FirebaseRepo<Reward> implements RewardRepo {
   Map<String, dynamic> entityToFirebase(Reward entity) => entity.toJson();
 }
 
-/// Хайв репо наград
-class HiveRewardRepo extends HiveRepo<Reward>
-    with WithInsertOrUpdateManyByExternalId<Reward>
-    implements RewardRepo {
-  /// Хайв репо наград
-  HiveRewardRepo(Box<Map> box) : super(box);
-
-  @override
-  Map<String, dynamic> entityToHive(Reward entity) => entity.toJson();
-
-  @override
-  Reward entityFromHive(String id, Map hiveData) =>
-      Reward.fromJson(hiveData..["id"] = id);
-}
-
-/// Провайдер HiveRewardRepo
-Provider<HiveRewardRepo> hiveRewardRepoProvider =
-    Provider((ref) => HiveRewardRepo(Hive.box<Map>("rewards")));
-
 /// Провайдер FirebaseRewardRepo
 Provider<FirebaseRewardRepo> fbRewardRepoProvider = Provider(
   (ref) => FirebaseRewardRepo(
@@ -69,8 +49,5 @@ Provider<FirebaseRewardRepo> fbRewardRepoProvider = Provider(
 );
 
 /// Провайдер RewardRepo
-Provider<RewardRepo> rewardRepoProvider = Provider<RewardRepo>(
-  (ref) => ref.watch(isFreeProvider)
-      ? ref.watch(hiveRewardRepoProvider)
-      : ref.watch(fbRewardRepoProvider),
-);
+Provider<RewardRepo> rewardRepoProvider =
+    Provider<RewardRepo>((ref) => ref.watch(fbRewardRepoProvider));

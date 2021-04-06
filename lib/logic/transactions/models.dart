@@ -9,7 +9,7 @@ part 'models.g.dart';
 @freezed
 class PerformingPointTransaction
     with _$PerformingPointTransaction
-    implements WithExternalId {
+    implements WithId {
   const factory PerformingPointTransaction.habitIncome({
     String? id,
     String? externalId,

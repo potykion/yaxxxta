@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:yaxxxta/logic/sync/services.dart';
 import 'package:yaxxxta/logic/user/controllers.dart';
 import 'package:yaxxxta/logic/user/models.dart';
 import 'package:yaxxxta/logic/user/services.dart';
@@ -58,20 +57,6 @@ class SettingsPage extends HookWidget {
                         },
                       ),
                     ),
-                    SmallPadding(
-                      child: LoadingButton(
-                        child: BiggerText(text: "Засинхронить"),
-                        onTapFuture: () async {
-                          await context.read(firebaseToHiveSyncProvider)(
-                            userId: user.uid,
-                            from: Source.hive,
-                            to: Source.firebase,
-                          );
-                          Navigator.pushReplacementNamed(
-                              context, Routes.loading);
-                        },
-                      ),
-                    )
                   ],
                 )
               else

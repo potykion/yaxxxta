@@ -436,27 +436,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.0"
-  hive:
-    dependency: "direct main"
-    description:
-      name: hive
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
-  hive_flutter:
-    dependency: "direct main"
-    description:
-      name: hive_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0"
-  hive_generator:
-    dependency: "direct dev"
-    description:
-      name: hive_generator
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0"
   hooks_riverpod:
     dependency: "direct main"
     description:
