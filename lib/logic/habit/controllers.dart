@@ -86,19 +86,18 @@ class HabitPerformingController
   }) : super(AsyncValue.data(state));
 
   /// Грузит выполнения за дату
-  Future<void> loadDateHabitPerformings(DateTime date) async {
-    date = date.date();
-
+  Future<void> loadDateHabitPerformings(DateTime datetime) async {
     var newState = _createNewState();
 
     state = AsyncValue.loading();
 
-    var dateRange = DateRange.fromDateAndTimes(
-      date,
+    var dateRange = DateRange.fromDateTimeAndTimes(
+      datetime,
       settingsDayTimes.item1,
       settingsDayTimes.item2,
     );
 
+    var date = datetime.date();
     newState[date] = <HabitPerforming>[
       ...(newState[date] ?? []),
       ...await repo.list(dateRange.from, dateRange.to)

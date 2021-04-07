@@ -121,7 +121,7 @@ class GetTodayDateRange {
 
   GetTodayDateRange(this.settingsDayTimes);
 
-  DateRange call([DateTime? now]) => DateRange.fromDateAndTimes(
+  DateRange call([DateTime? now]) => DateRange.fromDateTimeAndTimes(
         now ?? DateTime.now(),
         settingsDayTimes.item1,
         settingsDayTimes.item2,

@@ -113,15 +113,16 @@ Provider<Map<String, Habit>> idHabitsProvider = Provider(
 
 /// Провайдер ВМок для страницы со списком привычек
 Provider<AsyncValue<List<HabitProgressVM>>> listHabitVMsProvider = Provider(
-  (ref) => ref
-      .watch(habitPerformingController)
-      .whenData((dateHabitPerformings) {
+  (ref) =>
+      ref.watch(habitPerformingController).whenData((dateHabitPerformings) {
     var habits = ref.watch(habitControllerProvider);
 
     var selectedDate = ref.watch(selectedDateProvider).state;
 
     var groupedHabitPerformings = groupBy<HabitPerforming, String>(
-        dateHabitPerformings[selectedDate] ?? [], (hp) => hp.habitId);
+      dateHabitPerformings[selectedDate] ?? [],
+      (hp) => hp.habitId,
+    );
 
     var vms = habits
         .where((h) => h.matchDate(selectedDate))

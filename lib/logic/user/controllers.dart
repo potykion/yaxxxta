@@ -144,7 +144,7 @@ Provider<Tuple2<DateTime, DateTime>> settingsDayTimesProvider = Provider((ref) {
 /// Дейтренж текущего дня
 Provider<DateRange> todayDateRangeProvider = Provider((ref) {
   var times = ref.watch(settingsDayTimesProvider);
-  return DateRange.fromDateAndTimes(
+  return DateRange.fromDateTimeAndTimes(
     DateTime.now(),
     times.item1,
     times.item2,
