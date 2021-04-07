@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yaxxxta/pages/auth.dart';
 
 import 'pages/calendar.dart';
 import 'pages/details.dart';
@@ -31,6 +32,9 @@ abstract class Routes {
 
   /// Страница с наградами
   static final String rewards = "/rewards";
+
+  /// Страница аутентификации
+  static final String auth = "/auth";
 }
 
 /// Маппинг роутов в страницы
@@ -42,6 +46,7 @@ final Map<String, Widget Function(BuildContext context)> routes = {
   Routes.form: (_) => HabitFormPage(),
   Routes.settings: (_) => SettingsPage(),
   Routes.rewards: (_) => RewardsPage(),
+  Routes.auth: (_) => AuthPage(),
 };
 
 /// Маппинг индексов bottomNavBar'а в роуты

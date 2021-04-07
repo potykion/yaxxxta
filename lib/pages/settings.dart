@@ -39,35 +39,24 @@ class SettingsPage extends HookWidget {
         children: [
           ContainerCard(
             children: [
-              if (!(user?.isAnonymous ?? true))
-                Column(
-                  children: [
-                    ListTile(
-                      leading: CircleAvatar(
-                        backgroundImage: NetworkImage(user!.photoURL!),
-                      ),
-                      title: BiggerText(text: user.displayName!),
-                      // subtitle: SmallerText(text: "Синхронизация отключена"),
-                      trailing: IconButton(
-                        icon: Icon(Icons.logout),
-                        onPressed: () async {
-                          await context.read(authProvider).signOut();
-                          Navigator.pushReplacementNamed(
-                              context, Routes.loading);
-                        },
-                      ),
+              Column(
+                children: [
+                  ListTile(
+                    leading: CircleAvatar(
+                      backgroundImage: NetworkImage(user!.photoURL!),
                     ),
-                  ],
-                )
-              else
-                ListTile(
-                  title: BiggerText(text: "Войти"),
-                  onTap: () async {
-                    await context.read(authProvider).signInByGoogle();
-                    Navigator.pushReplacementNamed(context, Routes.loading);
-                  },
-                  trailing: Icon(Icons.login),
-                )
+                    title: BiggerText(text: user.displayName!),
+                    // subtitle: SmallerText(text: "Синхронизация отключена"),
+                    trailing: IconButton(
+                      icon: Icon(Icons.logout),
+                      onPressed: () async {
+                        await context.read(authProvider).signOut();
+                        Navigator.pushReplacementNamed(context, Routes.loading);
+                      },
+                    ),
+                  ),
+                ],
+              )
             ],
           ),
           ContainerCard(

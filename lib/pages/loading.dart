@@ -51,16 +51,18 @@ class LoadingPage extends HookWidget {
         await Firebase.initializeApp();
 
         var auth = context.read(authProvider);
-        var user = auth.tryGetUser() ?? (await auth.signInAnon());
+        var user = auth.tryGetUser();
 
-        // loadingTextState.value = "Синхроним fb2hive...";
-        // await context.read(firebaseToHiveSyncProvider)();
+        if (user?.isAnonymous ?? true) {
+          Navigator.pushReplacementNamed(context, Routes.auth);
+          return;
+        }
 
         loadingTextState.value = "Синхроним данные о юзере...";
         context.read(userProvider).state = user;
         await context
             .read(userDataControllerProvider.notifier)
-            .load(user: user);
+            .load(user: user!);
         var userData = context.read(userDataControllerProvider)!;
         // endregion
 
