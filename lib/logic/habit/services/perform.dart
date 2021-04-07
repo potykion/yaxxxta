@@ -5,15 +5,13 @@ import 'package:yaxxxta/logic/core/utils/dt.dart';
 import 'package:yaxxxta/logic/habit/db.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
 import 'package:yaxxxta/logic/habit/notifications/services.dart';
-import 'package:yaxxxta/logic/transactions/db.dart';
-import 'package:yaxxxta/logic/transactions/models.dart';
 
 class PerformHabitNow {
   final CreateHabitPerforming createHabitPerforming;
   final TryChargePoints tryChargePoints;
   final UpdateHabitStats updateHabitStats;
   final GetTodayDateRange getTodayDateRange;
-  final RescheduleHabitNotification rescheduleHabitNotification;
+  final TryRescheduleHabitNotification rescheduleHabitNotification;
 
   PerformHabitNow({
     required this.getTodayDateRange,
@@ -25,14 +23,12 @@ class PerformHabitNow {
 
   Future<HabitPerforming> call({
     required Habit habit,
-    String? userId,
     required double performValue,
   }) async {
     var now = DateTime.now();
     var todayDateRange = getTodayDateRange(now);
     await tryChargePoints(
       habitId: habit.id!,
-      userId: userId,
       todayDateRange: todayDateRange,
     );
     await updateHabitStats(habit, todayDateRange);
@@ -66,32 +62,29 @@ class CreateHabitPerforming {
 }
 
 class TryChargePoints {
-  final PerformingPointTransactionRepo transactionRepo;
+  final Future<void> Function([int points]) increaseUserPerformingPoints;
+  final HabitPerformingRepo habitPerformingRepo;
 
   TryChargePoints({
-    required this.transactionRepo,
+    required this.increaseUserPerformingPoints,
+    required this.habitPerformingRepo,
   });
 
   Future<void> call({
     required String habitId,
-    String? userId,
     required DateRange todayDateRange,
   }) async {
     var habitTransactionExistsInDateRange =
-        await transactionRepo.checkHabitTransactionExistsInDateRange(
+        await habitPerformingRepo.checkHabitPerformingExistInDateRange(
       habitId,
-      todayDateRange,
+      todayDateRange.from,
+      todayDateRange.to,
     );
     if (habitTransactionExistsInDateRange) {
       return;
     }
 
-    var trans = PerformingPointTransaction.habitIncome(
-      created: DateTime.now(),
-      userId: userId,
-      habitId: habitId,
-    );
-    await transactionRepo.insert(trans);
+    await increaseUserPerformingPoints();
   }
 }
 

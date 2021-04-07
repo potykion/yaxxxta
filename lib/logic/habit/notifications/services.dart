@@ -17,16 +17,18 @@ class DeletePendingNotifications {
   }
 }
 
-class RescheduleHabitNotification {
+class TryRescheduleHabitNotification {
   final HabitNotificationRepo habitNotificationRepo;
   final DeletePendingNotifications deletePendingNotifications;
 
-  RescheduleHabitNotification({
+  TryRescheduleHabitNotification({
     required this.habitNotificationRepo,
     required this.deletePendingNotifications,
   });
 
   Future<void> call(Habit habit, DateRange todayDateRange) async {
+    if (habit.performTime == null) return;
+
     await deletePendingNotifications(habit.id!);
 
     var notificationDateTime = habit

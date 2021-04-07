@@ -3,7 +3,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tuple/tuple.dart';
 import 'package:yaxxxta/logic/habit/db.dart';
 import 'package:yaxxxta/logic/habit/services/perform.dart';
-import 'package:yaxxxta/logic/transactions/db.dart';
 import 'package:yaxxxta/logic/user/controllers.dart';
 import '../core/utils/dt.dart';
 import 'package:yaxxxta/logic/core/utils/list.dart';
@@ -234,10 +233,12 @@ StateNotifierProvider<HabitPerformingController,
         getTodayDateRange: GetTodayDateRange(settingsDayTimes),
         createHabitPerforming: createHabitPerforming,
         tryChargePoints: TryChargePoints(
-          transactionRepo: ref.watch(transactionRepoProvider),
+          habitPerformingRepo: hpRepo,
+          increaseUserPerformingPoints:
+              ref.watch(increaseUserPerformingPointsProvider),
         ),
         updateHabitStats: UpdateHabitStats(habitRepo: habitRepo),
-        rescheduleHabitNotification: RescheduleHabitNotification(
+        rescheduleHabitNotification: TryRescheduleHabitNotification(
           habitNotificationRepo: habitNotificationRepo,
           deletePendingNotifications:
               DeletePendingNotifications(habitNotificationRepo),
