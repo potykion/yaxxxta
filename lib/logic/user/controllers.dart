@@ -23,16 +23,10 @@ class UserDataController extends StateNotifier<UserData?> {
   Future<void> load({
     required User user,
   }) async {
-    /// Если анон юзер => не юзаем фаербейз => берем первого юзера из бд
-    /// Иначе по юзер айди
-    var userData = user.isAnonymous
-        ? await repo.first()
-        : await repo.getByUserId(user.uid);
+    var userData = await repo.getByUserId(user.uid);
 
-    /// Если нет UserData => анон юзер в первый раз =>
-    /// создаем для девайса UserData
     if (userData == null) {
-      userData = UserData.blank(userId: !user.isAnonymous ? user.uid : null);
+      userData = UserData.blank(userId: user.uid);
       userData = userData.copyWith(id: await repo.insert(userData));
     }
 

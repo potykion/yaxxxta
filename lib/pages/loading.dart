@@ -9,6 +9,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:yaxxxta/logic/habit/controllers.dart';
+import 'package:yaxxxta/logic/habit/notifications/services.dart';
 import 'package:yaxxxta/logic/habit/services/services.dart';
 import 'package:yaxxxta/logic/reward/controllers.dart';
 import 'package:yaxxxta/logic/user/controllers.dart';
@@ -28,8 +29,8 @@ class LoadingPage extends HookWidget {
 
     useEffect(() {
       WidgetsBinding.instance!.addPostFrameCallback((_) async {
-        loadingTextState.value = "Грузим настройки...";
-
+        loadingTextState.value = "Грузим системные настройки...";
+        // region
         Intl.defaultLocale = 'ru_RU';
         initializeDateFormatting('ru_RU');
 
@@ -49,7 +50,10 @@ class LoadingPage extends HookWidget {
 
         /// фаер-бейз
         await Firebase.initializeApp();
+        // endregion
 
+        loadingTextState.value = "Грузим данные о юзере...";
+        // region
         var auth = context.read(authProvider);
         var user = auth.tryGetUser();
 
@@ -58,7 +62,6 @@ class LoadingPage extends HookWidget {
           return;
         }
 
-        loadingTextState.value = "Синхроним данные о юзере...";
         context.read(userProvider).state = user;
         await context
             .read(userDataControllerProvider.notifier)
@@ -67,7 +70,6 @@ class LoadingPage extends HookWidget {
         // endregion
 
         loadingTextState.value = "Грузим привычки...";
-
         // region
         await context
             .read(habitControllerProvider.notifier)
@@ -86,9 +88,11 @@ class LoadingPage extends HookWidget {
         // endregion
 
         loadingTextState.value = "Грузим награды...";
+        // region
         await context
             .read(rewardControllerProvider.notifier)
             .load(userData.rewardIds);
+        // endregion
 
         Navigator.pushReplacementNamed(context, Routes.calendar);
       });

@@ -88,7 +88,6 @@ class HabitPerformingController
   /// Грузит выполнения за дату
   Future<void> loadDateHabitPerformings(DateTime datetime) async {
     var newState = _createNewState();
-
     state = AsyncValue.loading();
 
     var dateRange = DateRange.fromDateTimeAndTimes(
@@ -96,20 +95,20 @@ class HabitPerformingController
       settingsDayTimes.item1,
       settingsDayTimes.item2,
     );
+    var date = dateRange.date;
+    var dateRangeHabitPerformings =
+        await repo.list(dateRange.from, dateRange.to);
 
-    var date = datetime.date();
     newState[date] = <HabitPerforming>[
       ...(newState[date] ?? []),
-      ...await repo.list(dateRange.from, dateRange.to)
+      ...dateRangeHabitPerformings
     ].distinctBy((item) => item.id);
-
     state = AsyncValue.data(newState);
   }
 
   /// Грузит выполнения для определенной привычки
   Future<void> loadSelectedHabitPerformings(String habitId) async {
     var newState = _createNewState();
-
     state = AsyncValue.loading();
 
     var performings = await repo.listByHabit(habitId);

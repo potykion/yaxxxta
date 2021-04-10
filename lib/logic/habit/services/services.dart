@@ -1,9 +1,7 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:flutter_local_notifications_platform_interface/src/types.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:yaxxxta/logic/core/utils/dt.dart';
 import 'package:tuple/tuple.dart';
 import 'package:yaxxxta/logic/core/push.dart';
 import '../../../deps.dart';
@@ -53,51 +51,6 @@ class ScheduleSingleHabitNotification {
   }
 }
 
-/// Планирует уведомления о выполнении привычки для всех привычек,
-/// у которых нет запланированных уведомлений
-class ScheduleNotificationsForHabitsWithoutNotifications {
-  /// Отправщик уведомлений
-  final NotificationSender notificationSender;
-
-  /// Планирует уведомления о выполнении привычки для всех привычек,
-  /// у которых нет запланированных уведомлений
-  ScheduleNotificationsForHabitsWithoutNotifications({
-    required this.notificationSender,
-  });
-
-  /// Планирует уведомления о выполнении привычки для всех привычек,
-  /// у которых нет запланированных уведомлений
-  Future<void> call(List<Habit> habits, {DateTime? now}) async {
-    now = now ?? DateTime.now();
-
-    //  Берем все привычки со временем выполнения и флагом отправки уведомления
-    habits = habits.where((h) => h.isNotificationsEnabled).toList();
-
-    //  Берем все пендинг уведомления
-    var allPendingNotifications = await notificationSender.getAllPending();
-
-    //  Фильтруем привычки, у которых нет уведомлений
-    var notificationHabitIds = allPendingNotifications
-        .where((n) => n.payload != null && n.payload!.isNotEmpty)
-        .map((n) => jsonDecode(n.payload!)["habitId"] as String)
-        .toSet();
-    var habitsWithoutNotifications =
-        habits.where((h) => !notificationHabitIds.contains(h.id)).toList();
-
-    //  Для каждой привычки скедулим некст уведомление
-    await Future.wait(
-      habitsWithoutNotifications.map(
-        (habit) => notificationSender.schedule(
-          title: habit.title,
-          body: "Пора выполнить привычку",
-          sendAfterSeconds:
-              habit.nextPerformDateTime(now!).first.difference(now).inSeconds,
-          payload: jsonEncode({"habitId": habit.id}),
-        ),
-      ),
-    );
-  }
-}
 
 /// Попытка удалить запланированное уведомление о привычке
 class TryDeletePendingNotification {
@@ -202,13 +155,5 @@ class LoadUserHabits {
       await habitRepo.listByIds(userHabitIds);
 }
 
-/// Провайдер функции планирования уведомл. для привычек
-/// без запланированных уведомл.
-Provider<ScheduleNotificationsForHabitsWithoutNotifications>
-    scheduleNotificationsForHabitsWithoutNotificationsProvider = Provider(
-  (ref) => ScheduleNotificationsForHabitsWithoutNotifications(
-    notificationSender: ref.watch(notificationSenderProvider),
-  ),
-);
 
 // endregion
