@@ -90,7 +90,7 @@ class LoadingPage extends HookWidget {
             .read(rewardControllerProvider.notifier)
             .load(userData.rewardIds);
 
-        Navigator.pushReplacementNamed(context, Routes.calendar);
+        Navigator.pushReplacementNamed(context, Routes.newMain);
       });
       return;
     }, []);

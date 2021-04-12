@@ -188,12 +188,15 @@ class Calendar extends HookWidget {
   /// (напр. ячейка даты зеленая - в этот день привычка была выполнена)
   final Map<DateTime, double> highlights;
 
+  final bool hideMonth;
+
   /// Календарик
   const Calendar({
     Key? key,
     required this.initial,
     required this.change,
     required this.highlights,
+    this.hideMonth = false,
   }) : super(key: key);
 
   @override
@@ -213,28 +216,29 @@ class Calendar extends HookWidget {
     ).from;
 
     return SizedBox(
-      height: 300,
+      height: hideMonth ? 270 : 300,
       child: Column(
         children: [
-          SmallPadding.noBottom(
-            child: Row(
-              children: [
-                FitIconButton(
-                  icon: Icon(Icons.chevron_left),
-                  onTap: () => addMonth(-1),
-                ),
-                Spacer(),
-                RegularText(
-                  DateFormat("MM.yyyy").format(selectedMonth.value),
-                ),
-                Spacer(),
-                FitIconButton(
-                  icon: Icon(Icons.chevron_right),
-                  onTap: addMonth,
-                ),
-              ],
+          if (!hideMonth)
+            SmallPadding.noBottom(
+              child: Row(
+                children: [
+                  FitIconButton(
+                    icon: Icon(Icons.chevron_left),
+                    onTap: () => addMonth(-1),
+                  ),
+                  Spacer(),
+                  RegularText(
+                    DateFormat("MM.yyyy").format(selectedMonth.value),
+                  ),
+                  Spacer(),
+                  FitIconButton(
+                    icon: Icon(Icons.chevron_right),
+                    onTap: addMonth,
+                  ),
+                ],
+              ),
             ),
-          ),
           Expanded(
             child: Swiper(
               builder: (context) => Column(
