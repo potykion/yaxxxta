@@ -43,6 +43,11 @@ ThemeData buildTheme(BuildContext context) => ThemeData(
       accentColor: CustomColors.yellow,
       textTheme: GoogleFonts.montserratTextTheme(
         Theme.of(context).textTheme,
+      ).copyWith(
+        headline4: TextStyle(
+          color: CustomColors.almostBlack,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       inputDecorationTheme: InputDecorationTheme(
         fillColor: CustomColors.lightGrey,
@@ -73,5 +78,4 @@ ThemeData buildTheme(BuildContext context) => ThemeData(
         foregroundColor: CustomColors.almostBlack,
         backgroundColor: CustomColors.yellow,
       ),
-
     );

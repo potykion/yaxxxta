@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -8,7 +9,10 @@ import 'package:yaxxxta/widgets/core/card.dart';
 import 'package:yaxxxta/widgets/core/circular_progress.dart';
 import 'package:yaxxxta/widgets/core/date.dart';
 import 'package:yaxxxta/logic/core/utils/num.dart';
+import 'package:yaxxxta/logic/core/utils/list.dart';
 import 'package:yaxxxta/logic/core/utils/dt.dart';
+import 'package:yaxxxta/widgets/core/padding.dart';
+import 'package:yaxxxta/widgets/core/text.dart';
 
 class NewMainPage extends HookWidget {
   @override
@@ -39,126 +43,137 @@ class NewMainPage extends HookWidget {
 
         return Scaffold(
           body: PageView.builder(
+            itemCount: habits.length,
             itemBuilder: (_, index) => Stack(
               alignment: Alignment.center,
               children: [
                 Positioned(
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(50),
-                    child: Container(
-                      color: Colors.white,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            for (var i in habits.length.range())
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Container(
-                                  width: 10,
-                                  height: 10,
-                                  color: i == index
-                                      ? CustomColors.yellow
-                                      : CustomColors.lightGrey,
-                                ),
-                              )
-                          ],
-                        ),
-                      ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        for (var i in habits.length.range())
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Container(
+                              width: 8,
+                              height: 8,
+                              color: i == index
+                                  ? CustomColors.almostBlack
+                                  : CustomColors.grey.withAlpha(47),
+                            ),
+                          )
+                      ]
+                          .joinObject(
+                              Padding(padding: EdgeInsets.only(right: 4)))
+                          .toList(),
                     ),
                   ),
                   top: MediaQuery.of(context).padding.top + 10,
                 ),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Flexible(
-                      child: Text(
-                        habits[index].title,
-                        style: Theme.of(context).textTheme.headline4!.copyWith(
-                              color: CustomColors.almostBlack,
-                              fontWeight: FontWeight.bold,
-                            ),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Opacity(
-                          opacity: 0.0,
-                          child: IconButton(
-                              icon: Icon(Icons.edit), onPressed: () {}),
+                Positioned(
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          habits[index].title,
+                          style: Theme.of(context).textTheme.headline4,
+                          textAlign: TextAlign.center,
                         ),
-                        Stack(
-                          children: [
-                            SizedBox(
-                              width: 100,
-                              height: 100,
-                              child: CircularProgressIndicator(
-                                value: 0.3,
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                    CustomColors.green),
-                                strokeWidth: 10,
-                              ),
-                            ),
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(100),
-                              child: Container(
+                      ),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          FloatingActionButton(
+                            child: Icon(Icons.done),
+                            onPressed: () {},
+                            backgroundColor: Colors.white,
+                          ),
+                          Stack(
+                            children: [
+                              SizedBox(
                                 width: 100,
                                 height: 100,
-                                color: Colors.white,
-                                child: Icon(Icons.done, size: 50),
+                                child: CircularProgressIndicator(
+                                  value: 0.3,
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                      CustomColors.green),
+                                  strokeWidth: 10,
+                                ),
                               ),
-                            )
-                          ],
-                          alignment: Alignment.center,
+                              Container(
+                                width: 84,
+                                height: 84,
+                                child: FittedBox(
+                                  child: FloatingActionButton(
+                                    // elevation: 0,
+                                    onPressed: () {},
+                                    child: Text(
+                                      "+1",
+                                      style:
+                                          Theme.of(context).textTheme.headline6,
+                                    ),
+                                    backgroundColor: Colors.white,
+                                  ),
+                                ),
+                              )
+                            ],
+                            alignment: Alignment.center,
+                          ),
+                          FloatingActionButton(
+                            onPressed: () {},
+                            child: Icon(Icons.edit),
+                            backgroundColor: Colors.white,
+                          )
+                        ],
+                      ),
+                      SizedBox(height: 8),
+                      Calendar30Days(
+                        initial: historyDateState.value,
+                        change: (d) => historyDateState.value = d,
+                        highlights: history.highlights,
+                        hideMonth: true,
+                      ),
+                      SizedBox(height: 8),
+                      Material(
+                        elevation: 6,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(100),
                         ),
-                        IconButton(icon: Icon(Icons.edit), onPressed: () {}),
-                      ],
-                    ),
-                  ],
-                ),
-                Positioned(
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        ContainerCard(
-                          children: [
-                            Calendar(
-                              initial: historyDateState.value,
-                              change: (d) => historyDateState.value = d,
-                              highlights: history.highlights,
-                              hideMonth: true,
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 10),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(50),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
                           child: Container(
                             color: Colors.white,
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                IconButton(
-                                    icon: Icon(Icons.add), onPressed: () {}),
-                                IconButton(
-                                    icon: Icon(Icons.list), onPressed: () {}),
-                                // IconButton(icon: Icon(Icons.search), onPressed: () {}),
-                                IconButton(
-                                    icon: Icon(Icons.settings), onPressed: () {}),
+                                FloatingActionButton(
+                                    elevation: 0,
+                                    backgroundColor: Colors.white,
+                                    child: Icon(Icons.add),
+                                    onPressed: () {}),
+                                FloatingActionButton(
+                                    elevation: 0,
+                                    backgroundColor: Colors.white,
+                                    child: Icon(Icons.list),
+                                    onPressed: () {}),
+                                FloatingActionButton(
+                                    elevation: 0,
+                                    backgroundColor: Colors.white,
+                                    child: Icon(Icons.settings),
+                                    onPressed: () {}),
                               ],
                             ),
                           ),
-                        )
-                      ],
-                    ),
+                        ),
+                      )
+                    ],
                   ),
                   bottom: 10,
                 ),

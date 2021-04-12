@@ -12,10 +12,13 @@ class Swiper extends HookWidget {
   /// Событие свайпа
   final OnSwipe onSwipe;
 
+  final Axis scrollDirection;
+
   /// Свайпер
   Swiper({
     required this.builder,
     required this.onSwipe,
+    this.scrollDirection = Axis.horizontal
   });
 
   @override
@@ -26,6 +29,7 @@ class Swiper extends HookWidget {
     var pageViewController = useState(PageController(initialPage: 1488));
 
     return PageView.builder(
+      scrollDirection: scrollDirection,
       controller: pageViewController.value,
       onPageChanged: (index) {
         var isSwipeLeft = index > initialIndex.value;

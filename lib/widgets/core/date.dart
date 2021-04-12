@@ -92,44 +92,55 @@ class DateCell extends StatelessWidget {
   /// Если true, то делает текст серым
   final bool disabled;
 
+  final bool selected;
+
   /// Создает ячейку
-  const DateCell({
-    Key? key,
-    required this.date,
-    this.color,
-    this.withWeekday = true,
-    this.withMonth = true,
-    this.disabled = false,
-  }) : super(key: key);
+  const DateCell(
+      {Key? key,
+      required this.date,
+      this.color,
+      this.withWeekday = true,
+      this.withMonth = true,
+      this.disabled = false,
+      this.selected = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: color ?? Colors.white,
-            ),
-            width: 40,
-            height: 40,
-            child: Center(
-              child: RegularText(
-                (withMonth ? DateFormat("dd.\nMM") : DateFormat("dd"))
-                    .format(date),
-                disabled: disabled,
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        border: Border.all(
+            width: 2,
+            color: selected ? CustomColors.almostBlack : Colors.transparent),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 3),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: color ?? Colors.white,
+              ),
+              width: 40,
+              height: 40,
+              child: Center(
+                child: RegularText(
+                  (withMonth ? DateFormat("dd.\nMM") : DateFormat("dd"))
+                      .format(date),
+                  disabled: disabled,
+                ),
               ),
             ),
-          ),
-          if (withWeekday)
-            SmallestText(
-              "${DateFormat("E").format(date)}"
-              "${date.isToday() ? " (седня)" : ""}",
-            )
-        ],
+            if (withWeekday)
+              SmallestText(
+                "${DateFormat("E").format(date)}"
+                "${date.isToday() ? " (седня)" : ""}",
+              )
+          ],
+        ),
       ),
     );
   }
@@ -247,7 +258,7 @@ class Calendar extends HookWidget {
                     Row(
                       children: [
                         for (var weekday in 7.range())
-                          _buildDateCell(
+                          buildDateCell(
                             selectedMonth.value,
                             startDay,
                             week,
@@ -265,7 +276,8 @@ class Calendar extends HookWidget {
     );
   }
 
-  Widget _buildDateCell(
+  @protected
+  Widget buildDateCell(
     DateTime selectedMonth,
     DateTime startDay,
     int week,
@@ -285,6 +297,100 @@ class Calendar extends HookWidget {
         withWeekday: false,
         withMonth: false,
         disabled: date != initial && selectedMonth.month != date.month,
+      ),
+    );
+  }
+}
+
+class Calendar30Days extends HookWidget {
+  /// Начальная дата
+  final DateTime initial;
+
+  /// Событие изменения даты
+  final Function(DateTime date) change;
+
+  /// Подсветска выбора даты - мапа, где ключ - дата, значение - интенсивность
+  /// (напр. ячейка даты зеленая - в этот день привычка была выполнена)
+  final Map<DateTime, double> highlights;
+
+  final bool hideMonth;
+
+  /// Календарик
+  const Calendar30Days({
+    Key? key,
+    required this.initial,
+    required this.change,
+    required this.highlights,
+    this.hideMonth = false,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var selectedMonth = useState(initial);
+
+    addMonth([int months = 1]) {
+      selectedMonth.value = DateTime(
+        selectedMonth.value.year,
+        selectedMonth.value.month + months,
+        1,
+      );
+    }
+
+    var startDay = DateTime.now().date();
+
+    return SizedBox(
+      height: 250,
+      child: PageView.builder(
+        scrollDirection: Axis.vertical,
+        itemBuilder: (context, index) => Column(
+          children: [
+            // todo week
+            // SizedBox(
+            //   width: (42 + 5 + 5) * 7,
+            //   height: 42,
+            //   child: Container(color: CustomColors.yellow),
+            // )
+
+            for (var week in 5.range())
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  for (var weekday in 7.range())
+                    buildDateCell(
+                      selectedMonth.value,
+                      startDay,
+                      week,
+                      weekday,
+                    )
+                ],
+              )
+          ],
+        ),
+        // onSwipe: (isSwipeLeft) => addMonth(isSwipeLeft ? 1 : -1),
+      ),
+    );
+  }
+
+  @protected
+  Widget buildDateCell(
+    DateTime selectedMonth,
+    DateTime startDay,
+    int week,
+    int weekday,
+  ) {
+    var date = startDay.add(Duration(days: -(weekday + week * 7)));
+
+    return GestureDetector(
+      onTap: () => change(date),
+      child: DateCell(
+        date: date,
+        // selected: date == initial,
+        color: (highlights[date] ?? 0) > 0
+            ? CustomColors.green
+            : CustomColors.lightGrey,
+        withWeekday: false,
+        // withMonth: false,
+        // disabled: date != initial && selectedMonth.month != date.month,
       ),
     );
   }
