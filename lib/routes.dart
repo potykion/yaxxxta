@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yaxxxta/pages/auth.dart';
+import 'package:yaxxxta/pages/new_main.dart';
 
 import 'pages/calendar.dart';
 import 'pages/details.dart';
@@ -14,6 +15,8 @@ import 'pages/settings.dart';
 abstract class Routes {
   /// Страница подгрузки всего
   static final String loading = "/loading";
+
+  static final String newMain = "/new_main";
 
   /// Страница с календарем привычек
   static final String calendar = "/calendar";
@@ -47,6 +50,7 @@ final Map<String, Widget Function(BuildContext context)> routes = {
   Routes.settings: (_) => SettingsPage(),
   Routes.rewards: (_) => RewardsPage(),
   Routes.auth: (_) => AuthPage(),
+  Routes.newMain: (_) => NewMainPage(),
 };
 
 /// Маппинг индексов bottomNavBar'а в роуты
