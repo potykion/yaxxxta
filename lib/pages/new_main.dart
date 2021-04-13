@@ -3,48 +3,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
-import 'package:yaxxxta/logic/habit/view_models.dart';
+import 'package:yaxxxta/logic/habit/new/controllers.dart';
 import 'package:yaxxxta/theme.dart';
-import 'package:yaxxxta/widgets/core/card.dart';
 import 'package:yaxxxta/widgets/core/circular_progress.dart';
-import 'package:yaxxxta/widgets/core/date.dart';
 import 'package:yaxxxta/logic/core/utils/num.dart';
 import 'package:yaxxxta/logic/core/utils/list.dart';
-import 'package:yaxxxta/logic/core/utils/dt.dart';
-import 'package:yaxxxta/widgets/core/padding.dart';
-import 'package:yaxxxta/widgets/core/text.dart';
 
 class NewMainPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var habits = useProvider(habitControllerProvider);
+    var habitPerformingsValue =
+        useProvider(newHabitPerformingControllerProvider);
 
-    useEffect(() {
-      WidgetsBinding.instance!.addPostFrameCallback((_) async {
-        context.read(selectedHabitIdProvider).state = habits[0].id!;
-
-        context
-            .read(habitPerformingController.notifier)
-            .loadSelectedHabitPerformings(
-              context.read(selectedHabitIdProvider).state!,
-            );
-      });
-      return;
-    }, []);
-
-    var historyDateState = useState(DateTime.now().date());
-    var vmAsyncValue = useProvider(habitDetailsPageVMProvider);
-
-    return vmAsyncValue.maybeWhen(
-      data: (vm) {
-        var habit = vm.habit;
-        var progress = vm.progress;
-        var history = vm.history;
-
-        return Scaffold(
-          body: PageView.builder(
-            itemCount: habits.length,
-            itemBuilder: (_, index) => Stack(
+    return Scaffold(
+      body: PageView.builder(
+        itemCount: habits.length,
+        onPageChanged: (index) => context
+            .read(newHabitPerformingControllerProvider.notifier)
+            .load(habits[index].id!),
+        itemBuilder: (_, index) => habitPerformingsValue.maybeWhen(
+          data: (habitPerformings) {
+            return Stack(
               alignment: Alignment.center,
               children: [
                 Positioned(
@@ -133,12 +113,12 @@ class NewMainPage extends HookWidget {
                         ],
                       ),
                       SizedBox(height: 8),
-                      Calendar30Days(
-                        initial: historyDateState.value,
-                        change: (d) => historyDateState.value = d,
-                        highlights: history.highlights,
-                        hideMonth: true,
-                      ),
+                      // Calendar30Days(
+                      //   initial: historyDateState.value,
+                      //   change: (d) => historyDateState.value = d,
+                      //   highlights: history.highlights,
+                      //   hideMonth: true,
+                      // ),
                       SizedBox(height: 8),
                       Material(
                         elevation: 6,
@@ -178,12 +158,12 @@ class NewMainPage extends HookWidget {
                   bottom: 10,
                 ),
               ],
-            ),
+            );
+          },
+          orElse: () => Scaffold(
+            body: CenteredCircularProgress(),
           ),
-        );
-      },
-      orElse: () => Scaffold(
-        body: CenteredCircularProgress(),
+        ),
       ),
     );
   }

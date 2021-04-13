@@ -9,8 +9,10 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:yaxxxta/logic/habit/controllers.dart';
+import 'package:yaxxxta/logic/habit/new/controllers.dart';
 import 'package:yaxxxta/logic/habit/notifications/services.dart';
 import 'package:yaxxxta/logic/habit/services/services.dart';
+import 'package:yaxxxta/logic/habit/view_models.dart';
 import 'package:yaxxxta/logic/reward/controllers.dart';
 import 'package:yaxxxta/logic/user/controllers.dart';
 import 'package:yaxxxta/logic/user/services.dart';
@@ -75,16 +77,19 @@ class LoadingPage extends HookWidget {
             .read(habitControllerProvider.notifier)
             .load(userData.habitIds);
 
+        var habits = context.read(habitControllerProvider);
+
         if (!kIsWeb) {
-          await context
-              .read(scheduleNotificationsForHabitsWithoutNotificationsProvider)(
-            context.read(habitControllerProvider),
-          );
+          await context.read(
+                  scheduleNotificationsForHabitsWithoutNotificationsProvider)(
+              habits);
         }
 
-        await context
-            .read(habitPerformingController.notifier)
-            .loadDateHabitPerformings(DateTime.now());
+        if (habits.isNotEmpty) {
+          context
+              .read(newHabitPerformingControllerProvider.notifier)
+              .load(habits[0].id!);
+        }
         // endregion
 
         loadingTextState.value = "Грузим награды...";
