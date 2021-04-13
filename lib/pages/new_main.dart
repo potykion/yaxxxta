@@ -60,7 +60,11 @@ class NewMainPage extends HookWidget {
                               height: 8,
                               color: i == index
                                   ? CustomColors.almostBlack
-                                  : (habits[i].stats.lastPerforming?.isToday() ?? false)
+                                  : (habits[i]
+                                              .stats
+                                              .lastPerforming
+                                              ?.isToday() ??
+                                          false)
                                       ? CustomColors.green
                                       : CustomColors.grey.withAlpha(47),
                             ),
@@ -142,20 +146,32 @@ class NewMainPage extends HookWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 FloatingActionButton(
-                                    elevation: 0,
-                                    backgroundColor: Colors.white,
-                                    child: Icon(Icons.add),
-                                    onPressed: () {}),
+                                  elevation: 0,
+                                  backgroundColor: Colors.white,
+                                  child: Icon(Icons.add),
+                                  onPressed: () => Navigator.pushNamed(
+                                    context,
+                                    Routes.form,
+                                  ),
+                                ),
                                 FloatingActionButton(
-                                    elevation: 0,
-                                    backgroundColor: Colors.white,
-                                    child: Icon(Icons.list),
-                                    onPressed: () {}),
+                                  elevation: 0,
+                                  backgroundColor: Colors.white,
+                                  child: Icon(Icons.list),
+                                  onPressed: () => Navigator.pushNamed(
+                                    context,
+                                    Routes.list,
+                                  ),
+                                ),
                                 FloatingActionButton(
-                                    elevation: 0,
-                                    backgroundColor: Colors.white,
-                                    child: Icon(Icons.settings),
-                                    onPressed: () {}),
+                                  elevation: 0,
+                                  backgroundColor: Colors.white,
+                                  child: Icon(Icons.settings),
+                                  onPressed: () => Navigator.pushNamed(
+                                    context,
+                                    Routes.settings,
+                                  ),
+                                ),
                               ],
                             ),
                           ),
