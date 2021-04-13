@@ -60,7 +60,9 @@ class NewMainPage extends HookWidget {
                               height: 8,
                               color: i == index
                                   ? CustomColors.almostBlack
-                                  : CustomColors.grey.withAlpha(47),
+                                  : (habits[i].stats.lastPerforming?.isToday() ?? false)
+                                      ? CustomColors.green
+                                      : CustomColors.grey.withAlpha(47),
                             ),
                           )
                       ]
