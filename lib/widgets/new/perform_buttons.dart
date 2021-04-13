@@ -17,16 +17,19 @@ class HabitProgressButton extends HookWidget {
     required this.habitPerformings,
   }) : super(key: key);
 
-  double get habitPerformingValueSum {
-    if (habitPerformings.isEmpty) return 0;
-    return habitPerformings
-        .map((hp) => hp.performValue)
-        .reduce((v1, v2) => v1 + v2);
-  }
-
   @override
   Widget build(BuildContext context) {
-    var currentProgress = useState(habitPerformingValueSum);
+    double sumPerformings() {
+      return habitPerformings.isEmpty
+          ? 0
+          : habitPerformings
+              .map((hp) => hp.performValue)
+              .reduce((v1, v2) => v1 + v2);
+    }
+    var currentProgress = useState(sumPerformings());
+    useValueChanged<List<HabitPerforming>, void>(habitPerformings, (_, __) {
+      currentProgress.value = sumPerformings();
+    });
 
     return Stack(
       children: [
@@ -51,7 +54,7 @@ class HabitProgressButton extends HookWidget {
               },
               child: habit.type == HabitType.time
                   ? Icon(Icons.play_arrow)
-                  : (habitPerformingValueSum == 0 && habit.goalValue == 1)
+                  : (currentProgress.value == 0 && habit.goalValue == 1)
                       ? Icon(Icons.done)
                       : Text(
                           "+1",
