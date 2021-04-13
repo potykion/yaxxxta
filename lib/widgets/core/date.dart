@@ -252,7 +252,7 @@ class Calendar extends HookWidget {
             ),
           Expanded(
             child: Swiper(
-              builder: (context) => Column(
+              builder: (context, _) => Column(
                 children: [
                   for (var week in 6.range())
                     Row(
@@ -302,10 +302,9 @@ class Calendar extends HookWidget {
   }
 }
 
-class Calendar30Days extends HookWidget {
+class Calendar35Days extends HookWidget {
   /// Начальная дата
   final DateTime initial;
-
 
   /// Подсветска выбора даты - мапа, где ключ - дата, значение - интенсивность
   /// (напр. ячейка даты зеленая - в этот день привычка была выполнена)
@@ -314,7 +313,7 @@ class Calendar30Days extends HookWidget {
   final bool hideMonth;
 
   /// Календарик
-  const Calendar30Days({
+  const Calendar35Days({
     Key? key,
     required this.initial,
     required this.highlights,
@@ -322,61 +321,32 @@ class Calendar30Days extends HookWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    var selectedMonth = useState(initial);
-
-    addMonth([int months = 1]) {
-      selectedMonth.value = DateTime(
-        selectedMonth.value.year,
-        selectedMonth.value.month + months,
-        1,
-      );
-    }
-
-    var startDay = DateTime.now().date();
-
-    return SizedBox(
-      height: 250,
-      child: PageView.builder(
-        scrollDirection: Axis.vertical,
-        itemBuilder: (context, index) => Column(
-          children: [
-            // todo week
-            // SizedBox(
-            //   width: (42 + 5 + 5) * 7,
-            //   height: 42,
-            //   child: Container(color: CustomColors.yellow),
-            // )
-
-            for (var week in 5.range())
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  for (var weekday in 7.range())
-                    buildDateCell(
-                      selectedMonth.value,
-                      startDay,
-                      week,
-                      weekday,
-                    )
-                ],
-              )
-          ],
+  Widget build(BuildContext context) => SizedBox(
+        height: 250,
+        child: PageView.builder(
+          scrollDirection: Axis.vertical,
+          itemBuilder: (context, index) => Column(
+            children: [
+              for (var week in 5.range())
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    for (var weekday in 7.range())
+                      buildDateCell(
+                        initial
+                            .date()
+                            .add(Duration(days: -index * 5 * 7))
+                            .add(Duration(days: -(weekday + week * 7))),
+                      )
+                  ],
+                )
+            ],
+          ),
         ),
-        // onSwipe: (isSwipeLeft) => addMonth(isSwipeLeft ? 1 : -1),
-      ),
-    );
-  }
+      );
 
   @protected
-  Widget buildDateCell(
-    DateTime selectedMonth,
-    DateTime startDay,
-    int week,
-    int weekday,
-  ) {
-    var date = startDay.add(Duration(days: -(weekday + week * 7)));
-
+  Widget buildDateCell(DateTime date) {
     return GestureDetector(
       // onTap: () => change(date),
       child: DateCell(

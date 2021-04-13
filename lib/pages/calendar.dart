@@ -61,7 +61,7 @@ class HabitCalendarPage extends HookWidget {
                     .read(habitPerformingController.notifier)
                     .loadDateHabitPerformings(newDate);
               },
-              builder: (context) => listHabitVMs.maybeWhen(
+              builder: (context, _) => listHabitVMs.maybeWhen(
                 data: (vms) => vms.isNotEmpty
                     ? ListView.builder(
                         itemCount: vms.length,

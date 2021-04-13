@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -20,7 +19,6 @@ class NewMainPage extends HookWidget {
 
     return Scaffold(
       body: PageView.builder(
-        // itemCount: habits.length,
         onPageChanged: (index) {
           index %= habits.length;
           context
@@ -31,7 +29,7 @@ class NewMainPage extends HookWidget {
           data: (habitPerformings) {
             index %= habits.length;
 
-            var hightlights = Map.fromEntries(
+            var highlights = Map.fromEntries(
               habitPerformings.map(
                 (hp) => MapEntry(hp.performDateTime.date(), 1.0),
               ),
@@ -126,9 +124,9 @@ class NewMainPage extends HookWidget {
                         ],
                       ),
                       SizedBox(height: 8),
-                      Calendar30Days(
+                      Calendar35Days(
                         initial: DateTime.now(),
-                        highlights: hightlights,
+                        highlights: highlights,
                         hideMonth: true,
                       ),
                       SizedBox(height: 8),
@@ -172,9 +170,7 @@ class NewMainPage extends HookWidget {
               ],
             );
           },
-          orElse: () => Scaffold(
-            body: CenteredCircularProgress(),
-          ),
+          orElse: () => CenteredCircularProgress(),
         ),
       ),
     );

@@ -7,7 +7,7 @@ typedef OnSwipe = void Function(bool isSwipeLeft);
 /// Свайпер
 class Swiper extends HookWidget {
   /// Ребенок
-  final Widget Function(BuildContext context) builder;
+  final Widget Function(BuildContext context, int index) builder;
 
   /// Событие свайпа
   final OnSwipe onSwipe;
@@ -37,7 +37,7 @@ class Swiper extends HookWidget {
 
         onSwipe(isSwipeLeft);
       },
-      itemBuilder: (context, _) => builder(context),
+      itemBuilder: builder,
     );
   }
 }
