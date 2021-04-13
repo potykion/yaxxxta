@@ -6,14 +6,20 @@ import '../models.dart';
 class NewHabitPerformingController
     extends StateNotifier<AsyncValue<List<HabitPerforming>>> {
   final HabitPerformingRepo repo;
+  final Map<String, List<HabitPerforming>> _cache = {};
 
   NewHabitPerformingController({
     required this.repo,
   }) : super(AsyncValue.data([]));
 
   Future<void> load(String habitId) async {
-    state = AsyncValue.loading();
-    state = AsyncValue.data(await repo.listByHabit(habitId));
+    if (_cache.containsKey(habitId)) {
+      state = AsyncValue.data(_cache[habitId]!);
+    } else {
+      state = AsyncValue.loading();
+      _cache[habitId] = await repo.listByHabit(habitId);
+      state = AsyncValue.data(_cache[habitId]!);
+    }
   }
 }
 
@@ -25,5 +31,3 @@ StateNotifierProvider<NewHabitPerformingController,
     repo: ref.watch(habitPerformingRepoProvider),
   ),
 );
-
-
