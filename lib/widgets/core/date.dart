@@ -306,8 +306,6 @@ class Calendar30Days extends HookWidget {
   /// Начальная дата
   final DateTime initial;
 
-  /// Событие изменения даты
-  final Function(DateTime date) change;
 
   /// Подсветска выбора даты - мапа, где ключ - дата, значение - интенсивность
   /// (напр. ячейка даты зеленая - в этот день привычка была выполнена)
@@ -319,7 +317,6 @@ class Calendar30Days extends HookWidget {
   const Calendar30Days({
     Key? key,
     required this.initial,
-    required this.change,
     required this.highlights,
     this.hideMonth = false,
   }) : super(key: key);
@@ -381,7 +378,7 @@ class Calendar30Days extends HookWidget {
     var date = startDay.add(Duration(days: -(weekday + week * 7)));
 
     return GestureDetector(
-      onTap: () => change(date),
+      // onTap: () => change(date),
       child: DateCell(
         date: date,
         // selected: date == initial,

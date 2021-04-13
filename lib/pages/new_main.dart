@@ -8,6 +8,8 @@ import 'package:yaxxxta/theme.dart';
 import 'package:yaxxxta/widgets/core/circular_progress.dart';
 import 'package:yaxxxta/logic/core/utils/num.dart';
 import 'package:yaxxxta/logic/core/utils/list.dart';
+import 'package:yaxxxta/logic/core/utils/dt.dart';
+import 'package:yaxxxta/widgets/core/date.dart';
 
 class NewMainPage extends HookWidget {
   @override
@@ -18,12 +20,23 @@ class NewMainPage extends HookWidget {
 
     return Scaffold(
       body: PageView.builder(
-        itemCount: habits.length,
-        onPageChanged: (index) => context
-            .read(newHabitPerformingControllerProvider.notifier)
-            .load(habits[index].id!),
+        // itemCount: habits.length,
+        onPageChanged: (index) {
+          index %= habits.length;
+          context
+              .read(newHabitPerformingControllerProvider.notifier)
+              .load(habits[index].id!);
+        },
         itemBuilder: (_, index) => habitPerformingsValue.maybeWhen(
           data: (habitPerformings) {
+            index %= habits.length;
+
+            var hightlights = Map.fromEntries(
+              habitPerformings.map(
+                (hp) => MapEntry(hp.performDateTime.date(), 1.0),
+              ),
+            );
+
             return Stack(
               alignment: Alignment.center,
               children: [
@@ -113,12 +126,11 @@ class NewMainPage extends HookWidget {
                         ],
                       ),
                       SizedBox(height: 8),
-                      // Calendar30Days(
-                      //   initial: historyDateState.value,
-                      //   change: (d) => historyDateState.value = d,
-                      //   highlights: history.highlights,
-                      //   hideMonth: true,
-                      // ),
+                      Calendar30Days(
+                        initial: DateTime.now(),
+                        highlights: hightlights,
+                        hideMonth: true,
+                      ),
                       SizedBox(height: 8),
                       Material(
                         elevation: 6,
