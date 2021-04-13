@@ -218,30 +218,14 @@ StateNotifierProvider<HabitPerformingController,
         AsyncValue<Map<DateTime, List<HabitPerforming>>>>(
   (ref) {
     var hpRepo = ref.watch(habitPerformingRepoProvider);
-    var habitRepo = ref.watch(habitRepoProvider);
     var settingsDayTimes = ref.watch(settingsDayTimesProvider);
-    var habitNotificationRepo = ref.watch(habitNotificationRepoProvider);
     var createHabitPerforming = CreateHabitPerforming(hpRepo);
 
     return HabitPerformingController(
       repo: hpRepo,
       settingsDayTimes: settingsDayTimes,
       createHabitPerforming: createHabitPerforming,
-      performHabitNow: PerformHabitNow(
-        getTodayDateRange: GetTodayDateRange(settingsDayTimes),
-        createHabitPerforming: createHabitPerforming,
-        tryChargePoints: TryChargePoints(
-          habitPerformingRepo: hpRepo,
-          increaseUserPerformingPoints:
-              ref.watch(increaseUserPerformingPointsProvider),
-        ),
-        updateHabitStats: UpdateHabitStats(habitRepo: habitRepo),
-        rescheduleHabitNotification: TryRescheduleHabitNotification(
-          habitNotificationRepo: habitNotificationRepo,
-          deletePendingNotifications:
-              DeletePendingNotifications(habitNotificationRepo),
-        ),
-      ),
+      performHabitNow: ref.watch(performHabitNowProvider),
     );
   },
 );

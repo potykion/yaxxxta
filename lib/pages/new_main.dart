@@ -9,6 +9,9 @@ import 'package:yaxxxta/logic/core/utils/num.dart';
 import 'package:yaxxxta/logic/core/utils/list.dart';
 import 'package:yaxxxta/logic/core/utils/dt.dart';
 import 'package:yaxxxta/widgets/core/date.dart';
+import 'package:yaxxxta/widgets/new/perform_buttons.dart';
+
+import '../routes.dart';
 
 class NewMainPage extends HookWidget {
   @override
@@ -16,6 +19,8 @@ class NewMainPage extends HookWidget {
     var habits = useProvider(habitControllerProvider);
     var habitPerformingsValue =
         useProvider(newHabitPerformingControllerProvider);
+    var todayValue = useProvider(todayValueProvider);
+    var todayHabitPerformings = useProvider(todayHabitPerformingsProvider);
 
     return Scaffold(
       body: PageView.builder(
@@ -28,6 +33,8 @@ class NewMainPage extends HookWidget {
         itemBuilder: (_, index) => habitPerformingsValue.maybeWhen(
           data: (habitPerformings) {
             index %= habits.length;
+
+            var habit = habits[index];
 
             var highlights = Map.fromEntries(
               habitPerformings.map(
@@ -71,7 +78,7 @@ class NewMainPage extends HookWidget {
                     children: [
                       Flexible(
                         child: Text(
-                          habits[index].title,
+                          habit.title,
                           style: Theme.of(context).textTheme.headline4,
                           textAlign: TextAlign.center,
                         ),
@@ -80,44 +87,33 @@ class NewMainPage extends HookWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          FloatingActionButton(
-                            child: Icon(Icons.done),
-                            onPressed: () {},
-                            backgroundColor: Colors.white,
+                          Opacity(
+                            opacity: habit.goalValue > 1 &&
+                                    habit.goalValue != todayValue
+                                ? 1
+                                : 0,
+                            child: FloatingActionButton(
+                              child: Icon(Icons.done),
+                              onPressed: () {
+                                context
+                                    .read(newHabitPerformingControllerProvider
+                                        .notifier)
+                                    .perform(
+                                        habit, habit.goalValue - todayValue);
+                              },
+                              backgroundColor: Colors.white,
+                            ),
                           ),
-                          Stack(
-                            children: [
-                              SizedBox(
-                                width: 100,
-                                height: 100,
-                                child: CircularProgressIndicator(
-                                  value: 0.3,
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                      CustomColors.green),
-                                  strokeWidth: 10,
-                                ),
-                              ),
-                              Container(
-                                width: 84,
-                                height: 84,
-                                child: FittedBox(
-                                  child: FloatingActionButton(
-                                    // elevation: 0,
-                                    onPressed: () {},
-                                    child: Text(
-                                      "+1",
-                                      style:
-                                          Theme.of(context).textTheme.headline6,
-                                    ),
-                                    backgroundColor: Colors.white,
-                                  ),
-                                ),
-                              )
-                            ],
-                            alignment: Alignment.center,
+                          HabitProgressButton(
+                            habit: habit,
+                            habitPerformings: todayHabitPerformings,
                           ),
                           FloatingActionButton(
-                            onPressed: () {},
+                            onPressed: () => Navigator.pushNamed(
+                              context,
+                              Routes.form,
+                              arguments: habit,
+                            ),
                             child: Icon(Icons.edit),
                             backgroundColor: Colors.white,
                           )

@@ -1,10 +1,13 @@
 import 'dart:math';
 
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tuple/tuple.dart';
 import 'package:yaxxxta/logic/core/utils/dt.dart';
 import 'package:yaxxxta/logic/habit/db.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
+import 'package:yaxxxta/logic/habit/notifications/db.dart';
 import 'package:yaxxxta/logic/habit/notifications/services.dart';
+import 'package:yaxxxta/logic/user/controllers.dart';
 
 class PerformHabitNow {
   final CreateHabitPerforming createHabitPerforming;
@@ -127,3 +130,27 @@ class GetTodayDateRange {
         settingsDayTimes.item2,
       );
 }
+
+Provider<PerformHabitNow> performHabitNowProvider = Provider((ref) {
+  var hpRepo = ref.watch(habitPerformingRepoProvider);
+  var habitRepo = ref.watch(habitRepoProvider);
+  var settingsDayTimes = ref.watch(settingsDayTimesProvider);
+  var habitNotificationRepo = ref.watch(habitNotificationRepoProvider);
+  var createHabitPerforming = CreateHabitPerforming(hpRepo);
+
+  return PerformHabitNow(
+    getTodayDateRange: GetTodayDateRange(settingsDayTimes),
+    createHabitPerforming: createHabitPerforming,
+    tryChargePoints: TryChargePoints(
+      habitPerformingRepo: hpRepo,
+      increaseUserPerformingPoints:
+          ref.watch(increaseUserPerformingPointsProvider),
+    ),
+    updateHabitStats: UpdateHabitStats(habitRepo: habitRepo),
+    rescheduleHabitNotification: TryRescheduleHabitNotification(
+      habitNotificationRepo: habitNotificationRepo,
+      deletePendingNotifications:
+          DeletePendingNotifications(habitNotificationRepo),
+    ),
+  );
+});
