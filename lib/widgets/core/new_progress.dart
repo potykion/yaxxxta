@@ -150,7 +150,7 @@ class TimeProgressControl extends HookWidget {
       }
     }
 
-    Future _activateTimer() async {
+    Future _toggleTimer() async {
       if (timerState.value?.isActive ?? false) {
         _cancelTimer(withCancelNotification: true);
       } else {
@@ -233,7 +233,7 @@ class TimeProgressControl extends HookWidget {
             icon: (timerState.value?.isActive ?? false)
                 ? Icon(Icons.pause)
                 : Icon(Icons.play_arrow),
-            onTap: _activateTimer,
+            onTap: _toggleTimer,
           ),
           if (currentValueState.value < goalValue)
             FitIconButton(

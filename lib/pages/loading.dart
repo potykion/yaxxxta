@@ -99,7 +99,8 @@ class LoadingPage extends HookWidget {
             .load(userData.rewardIds);
         // endregion
 
-        Navigator.pushReplacementNamed(context, Routes.newMain);
+        // Navigator.pushReplacementNamed(context, Routes.newMain);
+        Navigator.pushReplacementNamed(context, Routes.calendar);
       });
       return;
     }, []);
