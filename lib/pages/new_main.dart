@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -9,6 +10,7 @@ import 'package:yaxxxta/logic/core/utils/num.dart';
 import 'package:yaxxxta/logic/core/utils/list.dart';
 import 'package:yaxxxta/logic/core/utils/dt.dart';
 import 'package:yaxxxta/widgets/core/date.dart';
+import 'package:yaxxxta/widgets/new/new_bottom.dart';
 import 'package:yaxxxta/widgets/new/perform_buttons.dart';
 
 import '../routes.dart';
@@ -59,7 +61,7 @@ class NewMainPage extends HookWidget {
                               width: 8,
                               height: 8,
                               color: i == index
-                                  ? CustomColors.almostBlack
+                                  ? CustomColors.yellow
                                   : (habits[i]
                                               .stats
                                               .lastPerforming
@@ -77,109 +79,61 @@ class NewMainPage extends HookWidget {
                   ),
                   top: MediaQuery.of(context).padding.top + 10,
                 ),
-                Positioned(
-                  width: MediaQuery.of(context).size.width,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Flexible(
-                        child: Text(
-                          habit.title,
-                          style: Theme.of(context).textTheme.headline4,
-                          textAlign: TextAlign.center,
-                        ),
+                Column(
+                  // mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Flexible(
+                      child: Text(
+                        habit.title,
+                        style: Theme.of(context).textTheme.headline4,
+                        textAlign: TextAlign.center,
                       ),
-                      SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Opacity(
-                            opacity: habit.goalValue > 1 &&
-                                    habit.goalValue != todayValue
-                                ? 1
-                                : 0,
-                            child: FloatingActionButton(
-                              child: Icon(Icons.done),
-                              onPressed: () {
-                                context
-                                    .read(newHabitPerformingControllerProvider
-                                        .notifier)
-                                    .perform(
-                                        habit, habit.goalValue - todayValue);
-                              },
-                              backgroundColor: Colors.white,
-                            ),
-                          ),
-                          HabitProgressButton(
-                            habit: habit,
-                            habitPerformings: todayHabitPerformings,
-                          ),
-                          FloatingActionButton(
-                            onPressed: () => Navigator.pushNamed(
-                              context,
-                              Routes.form,
-                              arguments: habit,
-                            ),
-                            child: Icon(Icons.edit),
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Opacity(
+                          opacity: habit.goalValue > 1 &&
+                              habit.goalValue != todayValue
+                              ? 1
+                              : 0,
+                          child: FloatingActionButton(
+                            child: Icon(Icons.done),
+                            onPressed: () {
+                              context
+                                  .read(newHabitPerformingControllerProvider
+                                  .notifier)
+                                  .perform(
+                                  habit, habit.goalValue - todayValue);
+                            },
                             backgroundColor: Colors.white,
-                          )
-                        ],
-                      ),
-                      SizedBox(height: 8),
-                      Calendar35Days(
-                        initial: DateTime.now(),
-                        highlights: highlights,
-                        hideMonth: true,
-                      ),
-                      SizedBox(height: 8),
-                      Material(
-                        elevation: 6,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: Container(
-                            color: Colors.white,
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                FloatingActionButton(
-                                  elevation: 0,
-                                  backgroundColor: Colors.white,
-                                  child: Icon(Icons.add),
-                                  onPressed: () => Navigator.pushNamed(
-                                    context,
-                                    Routes.form,
-                                  ),
-                                ),
-                                FloatingActionButton(
-                                  elevation: 0,
-                                  backgroundColor: Colors.white,
-                                  child: Icon(Icons.list),
-                                  onPressed: () => Navigator.pushNamed(
-                                    context,
-                                    Routes.list,
-                                  ),
-                                ),
-                                FloatingActionButton(
-                                  elevation: 0,
-                                  backgroundColor: Colors.white,
-                                  child: Icon(Icons.settings),
-                                  onPressed: () => Navigator.pushNamed(
-                                    context,
-                                    Routes.settings,
-                                  ),
-                                ),
-                              ],
-                            ),
                           ),
                         ),
-                      )
-                    ],
-                  ),
-                  bottom: 10,
+                        HabitProgressButton(
+                          habit: habit,
+                          habitPerformings: todayHabitPerformings,
+                        ),
+                        FloatingActionButton(
+                          onPressed: () => Navigator.pushNamed(
+                            context,
+                            Routes.form,
+                            arguments: habit,
+                          ),
+                          child: Icon(Icons.edit),
+                          backgroundColor: Colors.white,
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 8),
+                    Calendar35Days(
+                      initial: DateTime.now(),
+                      highlights: highlights,
+                      hideMonth: true,
+                    ),
+                    SizedBox(height: 88),
+                  ],
                 ),
               ],
             );
@@ -187,6 +141,8 @@ class NewMainPage extends HookWidget {
           orElse: () => CenteredCircularProgress(),
         ),
       ),
+      floatingActionButton: NewBottomBar(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }

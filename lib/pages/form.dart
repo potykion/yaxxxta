@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
 import 'package:yaxxxta/widgets/habit/habit_type_radio_group.dart';
+import 'package:yaxxxta/widgets/new/new_bottom.dart';
 
 import '../logic/core/models.dart';
 import '../theme.dart';
@@ -46,7 +47,17 @@ class HabitFormPage extends HookWidget {
             text: habit.isUpdate
                 ? "Редактирование привычки"
                 : "Создание привычки",
-          )
+          ),
+          Spacer(),
+          IconButton(
+            icon: Icon(Icons.done),
+            onPressed: () async {
+              var createdHabit = await context
+                  .read(habitControllerProvider.notifier)
+                  .createOrUpdate(habit);
+              Navigator.of(context).pop(createdHabit);
+            },
+          ),
         ],
       ),
       body: ListView(
@@ -326,33 +337,11 @@ class HabitFormPage extends HookWidget {
           //////////////////////////////////////////////////////////////////////
           // Воздух, чтобы кнопка "Сохранить" не перекрывала последний инпут
           //////////////////////////////////////////////////////////////////////
-          SizedBox(height: 60)
+          SizedBox(height: 80)
         ],
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: SizedBox(
-          width: double.infinity,
-          child: FloatingActionButton.extended(
-            onPressed: error.isEmpty
-                ? () async {
-                    var createdHabit = await context
-                        .read(habitControllerProvider.notifier)
-                        .createOrUpdate(habit);
-                    Navigator.of(context).pop(createdHabit);
-                  }
-                : null,
-            label: SmallerText(
-                text: error.isEmpty ? "Сохранить" : error, dark: true),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
-            ),
-            backgroundColor: CustomColors.yellow,
-            foregroundColor: CustomColors.almostBlack,
-          ),
-        ),
-      ),
+      floatingActionButton: NewBottomBar(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }

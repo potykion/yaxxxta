@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:yaxxxta/logic/habit/view_models.dart';
 import 'package:yaxxxta/widgets/habit/habit_chips.dart';
+import 'package:yaxxxta/widgets/new/new_bottom.dart';
 
 import '../routes.dart';
 import '../widgets/core/app_bars.dart';
@@ -43,7 +44,9 @@ class HabitListPage extends HookWidget {
                         SmallPadding(child: HabitChips(habit: habit)),
                       ],
                     ),
-                  )
+                  ),
+                SizedBox(height: 80),
+
               ],
             )
           : Center(
@@ -55,12 +58,8 @@ class HabitListPage extends HookWidget {
                 ],
               ),
             ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: FloatingActionButton(
-        heroTag: "HabitListPage",
-        child: Icon(Icons.add, size: 50),
-        onPressed: () => Navigator.of(context).pushNamed(Routes.form),
-      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: NewBottomBar(),
     );
   }
 }

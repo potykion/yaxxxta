@@ -6,6 +6,7 @@ import 'package:yaxxxta/logic/user/controllers.dart';
 import 'package:yaxxxta/logic/user/models.dart';
 import 'package:yaxxxta/logic/user/services.dart';
 import 'package:yaxxxta/widgets/core/loading_button.dart';
+import 'package:yaxxxta/widgets/new/new_bottom.dart';
 
 import '../routes.dart';
 import '../widgets/core/app_bars.dart';
@@ -102,7 +103,9 @@ class SettingsPage extends HookWidget {
           ])
         ],
       ),
-      bottomNavigationBar: AppBottomNavigationBar(),
+
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: NewBottomBar(),
     );
   }
 }
