@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:yaxxxta/logic/habit/new/controllers.dart';
+import 'package:yaxxxta/logic/new/vms.dart';
 import 'package:yaxxxta/theme.dart';
 import 'package:yaxxxta/widgets/core/circular_progress.dart';
 import 'package:yaxxxta/logic/core/utils/num.dart';
@@ -21,7 +22,6 @@ class NewMainPage extends HookWidget {
     var habits = useProvider(habitControllerProvider);
     var habitPerformingsValue =
         useProvider(newHabitPerformingControllerProvider);
-    var todayValue = useProvider(todayValueProvider);
     var todayHabitPerformings = useProvider(todayHabitPerformingsProvider);
 
     return Scaffold(
@@ -36,12 +36,11 @@ class NewMainPage extends HookWidget {
           data: (habitPerformings) {
             index %= habits.length;
 
-            var habit = habits[index];
-
-            var highlights = Map.fromEntries(
-              habitPerformings.map(
-                (hp) => MapEntry(hp.performDateTime.date(), 1.0),
-              ),
+            var vm = NewHabitVM(
+              context: context,
+              habit: habits[index],
+              allPerformings: habitPerformings,
+              todayPerformings: todayHabitPerformings,
             );
 
             return Stack(
@@ -85,7 +84,7 @@ class NewMainPage extends HookWidget {
                   children: [
                     Flexible(
                       child: Text(
-                        habit.title,
+                        vm.habit.title,
                         style: Theme.of(context).textTheme.headline4,
                         textAlign: TextAlign.center,
                       ),
@@ -95,31 +94,19 @@ class NewMainPage extends HookWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Opacity(
-                          opacity: habit.goalValue > 1 &&
-                              habit.goalValue != todayValue
-                              ? 1
-                              : 0,
+                          opacity: vm.isMultiplePerformingsLeft ? 1 : 0,
                           child: FloatingActionButton(
                             child: Icon(Icons.done),
-                            onPressed: () {
-                              context
-                                  .read(newHabitPerformingControllerProvider
-                                  .notifier)
-                                  .perform(
-                                  habit, habit.goalValue - todayValue);
-                            },
+                            onPressed: () => vm.performFull(),
                             backgroundColor: Colors.white,
                           ),
                         ),
-                        HabitProgressButton(
-                          habit: habit,
-                          habitPerformings: todayHabitPerformings,
-                        ),
+                        HabitProgressButton(vm),
                         FloatingActionButton(
                           onPressed: () => Navigator.pushNamed(
                             context,
                             Routes.form,
-                            arguments: habit,
+                            arguments: vm.habit,
                           ),
                           child: Icon(Icons.edit),
                           backgroundColor: Colors.white,
@@ -129,7 +116,7 @@ class NewMainPage extends HookWidget {
                     SizedBox(height: 8),
                     Calendar35Days(
                       initial: DateTime.now(),
-                      highlights: highlights,
+                      highlights: vm.highlights,
                       hideMonth: true,
                     ),
                     SizedBox(height: 88),

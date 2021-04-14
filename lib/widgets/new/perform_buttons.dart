@@ -5,31 +5,17 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
 import 'package:yaxxxta/logic/habit/new/controllers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:yaxxxta/logic/new/vms.dart';
 import '../../theme.dart';
 
 class HabitProgressButton extends HookWidget {
-  final Habit habit;
-  final List<HabitPerforming> habitPerformings;
+  final NewHabitVM vm;
 
-  const HabitProgressButton({
-    Key? key,
-    required this.habit,
-    required this.habitPerformings,
-  }) : super(key: key);
+  HabitProgressButton(this.vm);
 
   @override
   Widget build(BuildContext context) {
-    double sumPerformings() {
-      return habitPerformings.isEmpty
-          ? 0
-          : habitPerformings
-              .map((hp) => hp.performValue)
-              .reduce((v1, v2) => v1 + v2);
-    }
-    var currentProgress = useState(sumPerformings());
-    useValueChanged<List<HabitPerforming>, void>(habitPerformings, (_, __) {
-      currentProgress.value = sumPerformings();
-    });
+    var currentProgress = useState(vm.todayValue);
 
     return Stack(
       children: [
@@ -37,7 +23,7 @@ class HabitProgressButton extends HookWidget {
           width: 100,
           height: 100,
           child: CircularProgressIndicator(
-            value: min(currentProgress.value / habit.goalValue, 1),
+            value: min(currentProgress.value / vm.habit.goalValue, 1),
             valueColor: AlwaysStoppedAnimation<Color>(CustomColors.green),
             strokeWidth: 10,
           ),
@@ -47,14 +33,10 @@ class HabitProgressButton extends HookWidget {
           height: 84,
           child: FittedBox(
             child: FloatingActionButton(
-              onPressed: () {
-                context
-                    .read(newHabitPerformingControllerProvider.notifier)
-                    .perform(habit);
-              },
-              child: habit.type == HabitType.time
+              onPressed: vm.perform,
+              child: vm.habit.type == HabitType.time
                   ? Icon(Icons.play_arrow)
-                  : (currentProgress.value == 0 && habit.goalValue == 1)
+                  : vm.isOnePerformingLeft
                       ? Icon(Icons.done)
                       : Text(
                           "+1",
