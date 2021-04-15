@@ -29,5 +29,11 @@ class MyApp extends StatelessWidget {
         // home: PlaygroundPage(),
         initialRoute: Routes.loading,
         debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          bottomNavigationBarTheme: BottomNavigationBarThemeData(
+            unselectedItemColor: Colors.grey,
+            selectedItemColor: Colors.blue,
+          ),
+        ),
       );
 }
