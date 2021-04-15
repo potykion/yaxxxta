@@ -1,9 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:yaxxxta/logic/user/services.dart';
-import 'package:yaxxxta/widgets/core/buttons.dart';
-import 'package:yaxxxta/widgets/core/padding.dart';
-import 'package:yaxxxta/widgets/core/text.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../routes.dart';
 
@@ -11,29 +8,34 @@ class AuthPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SmallPadding(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            BiggerText(text: "Нужно тебя идентифицировать"),
-            SmallPadding.onlyBottom(),
-            FullWidthButton(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.perm_identity),
-                  SmallPadding.between(),
-                  BiggerText(text: "Войти"),
-                ],
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Text("Надо бы войти"),
+              ElevatedButton.icon(
+                label: Text("Войти"),
+                icon: Image.asset('assets/g.png'),
+                onPressed: () async {
+                  await signInByGoogle();
+                  Navigator.pushReplacementNamed(context, Routes.loading);
+                },
               ),
-              onPressed: () async {
-                await context.read(authProvider).signInByGoogle();
-                Navigator.pushReplacementNamed(context, Routes.loading);
-              },
-            )
-          ],
-        ),
-      ),
+            ],
+          ),
+        ));
+  }
+
+  Future<User> signInByGoogle() async {
+    final googleUser = await GoogleSignIn().signIn();
+    var googleAuth = await googleUser!.authentication;
+    var credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
     );
+    var fbCredential =
+    await FirebaseAuth.instance.signInWithCredential(credential);
+    return fbCredential.user!;
   }
 }

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'deps.dart';
 import 'routes.dart';
-import 'theme.dart';
 
 /// Логгер провайдеров
 /// Нужно для логгирования изменений стейта
@@ -27,11 +25,9 @@ void main() async => runApp(
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MaterialApp(
-        navigatorKey: navigatorKey,
         routes: routes,
         // home: PlaygroundPage(),
         initialRoute: Routes.loading,
-        theme: buildTheme(context),
         debugShowCheckedModeBanner: false,
       );
 }
