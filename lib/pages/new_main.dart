@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:yaxxxta/logic/habit/new/controllers.dart';
@@ -25,16 +26,15 @@ class NewMainPage extends HookWidget {
     var todayHabitPerformings = useProvider(todayHabitPerformingsProvider);
 
     return Scaffold(
-      body: PageView.builder(
-        onPageChanged: (index) {
-          index %= habits.length;
+      body: Swiper(
+        loop: true,
+        onIndexChanged: (index) {
           context
               .read(newHabitPerformingControllerProvider.notifier)
               .load(habits[index].id!);
         },
         itemBuilder: (_, index) => habitPerformingsValue.maybeWhen(
           data: (habitPerformings) {
-            index %= habits.length;
 
             var vm = NewHabitVM(
               context: context,
@@ -96,6 +96,8 @@ class NewMainPage extends HookWidget {
                         Opacity(
                           opacity: vm.isMultiplePerformingsLeft ? 1 : 0,
                           child: FloatingActionButton(
+                            heroTag: null,
+
                             child: Icon(Icons.done),
                             onPressed: () => vm.performFull(),
                             backgroundColor: Colors.white,
@@ -103,6 +105,8 @@ class NewMainPage extends HookWidget {
                         ),
                         HabitProgressButton(vm),
                         FloatingActionButton(
+                          heroTag: null,
+
                           onPressed: () => Navigator.pushNamed(
                             context,
                             Routes.form,
@@ -127,6 +131,7 @@ class NewMainPage extends HookWidget {
           },
           orElse: () => CenteredCircularProgress(),
         ),
+        itemCount: habits.length,
       ),
       floatingActionButton: NewBottomBar(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

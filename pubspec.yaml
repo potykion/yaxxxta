@@ -80,6 +80,9 @@ dependencies:
   # Монетизация
   in_app_purchase: ^0.5.1+1
 
+  # Нормальный свайпер
+#  flutter_swiper: ^1.1.6
+  flutter_swiper_null_safety: ^1.0.0
 
 dev_dependencies:
   flutter_test:

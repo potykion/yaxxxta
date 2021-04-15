@@ -34,6 +34,18 @@ class NewHabitVM {
         ),
       );
 
+  String formatProgress(double progress) {
+    if (habit.type == HabitType.time) {
+      var currentValueDuration = Duration(seconds: progress.toInt()).format();
+      var goalValueDuration =
+          Duration(seconds: habit.goalValue.toInt()).format();
+      var progressStr = "$currentValueDuration / $goalValueDuration";
+      return progressStr;
+    } else {
+      return "${progress.toInt()} / ${habit.goalValue.toInt()}";
+    }
+  }
+
   void perform([double performValue = 1]) {
     context
         .read(newHabitPerformingControllerProvider.notifier)

@@ -39,6 +39,8 @@ class NewBottomBar extends StatelessWidget {
                     children: [
                       for (var action in actions)
                         FloatingActionButton(
+                          heroTag: null,
+
                           elevation: 0,
                           backgroundColor:
                               ModalRoute.of(context)!.settings.name ==

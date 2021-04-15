@@ -15,15 +15,19 @@ class SmartTimer {
   int initialSeconds;
   int limitSeconds;
   final void Function(int passedSecods) onTimerStop;
+  final void Function(int passedSecods)? onTimerUpdate;
 
   SmartTimer({
     this.initialSeconds = 0,
     required this.limitSeconds,
     required this.onTimerStop,
+    this.onTimerUpdate,
   });
 
+  bool get isActive => timer?.isActive ?? false;
+
   void toggle() {
-    if (timer?.isActive ?? false) {
+    if (isActive) {
       cancel();
     } else {
       activate();
@@ -59,6 +63,7 @@ class SmartTimer {
         timerStart = currentTime;
 
         _passedSeconds += secondDiff;
+        if (onTimerUpdate != null) onTimerUpdate!(secondDiff);
 
         if (initialSeconds + _passedSeconds == limitSeconds) {
           cancel();
@@ -72,11 +77,13 @@ SmartTimer useSmartTimer({
   int initialSeconds = 0,
   required int limitSeconds,
   required void Function(int passedSecods) onTimerStop,
+  required void Function(int timerFreq) onTimerUpdate,
 }) {
   return use(_SmartTimerHook(
     initialSeconds: initialSeconds,
     limitSeconds: limitSeconds,
     onTimerStop: onTimerStop,
+    onTimerUpdate: onTimerUpdate,
   ));
 }
 
@@ -84,11 +91,13 @@ class _SmartTimerHook extends Hook<SmartTimer> {
   int initialSeconds;
   int limitSeconds;
   final void Function(int passedSecods) onTimerStop;
+  final void Function(int passedSecods)? onTimerUpdate;
 
   _SmartTimerHook({
     this.initialSeconds = 0,
     required this.limitSeconds,
     required this.onTimerStop,
+    required this.onTimerUpdate,
   });
 
   @override
@@ -106,6 +115,7 @@ class _SmartTimerHookState extends HookState<SmartTimer, _SmartTimerHook> {
       limitSeconds: hook.limitSeconds,
       initialSeconds: hook.initialSeconds,
       onTimerStop: hook.onTimerStop,
+      onTimerUpdate: hook.onTimerUpdate,
     );
   }
 
@@ -116,6 +126,7 @@ class _SmartTimerHookState extends HookState<SmartTimer, _SmartTimerHook> {
 
   @override
   void dispose() {
+    timer.cancel();
     super.dispose();
   }
 }
@@ -128,43 +139,62 @@ class HabitProgressButton extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var currentProgress = useState(vm.todayValue);
+    SmartTimer timer = useSmartTimer(
+      limitSeconds: vm.habit.goalValue.toInt(),
+      initialSeconds: vm.todayValue.toInt(),
+      onTimerStop: (performValue) {
+        vm.perform(performValue.toDouble());
+      },
+      onTimerUpdate: (passed) {
+        currentProgress.value += passed.toDouble();
+      },
+    );
 
-    return Stack(
+    return Column(
       children: [
-        SizedBox(
-          width: 100,
-          height: 100,
-          child: CircularProgressIndicator(
-            value: min(currentProgress.value / vm.habit.goalValue, 1),
-            valueColor: AlwaysStoppedAnimation<Color>(CustomColors.green),
-            strokeWidth: 10,
-          ),
-        ),
-        Container(
-          width: 84,
-          height: 84,
-          child: FittedBox(
-            child: FloatingActionButton(
-              onPressed: () {
-                if (vm.habit.type == HabitType.time) {
-                } else {
-                  vm.perform();
-                }
-              },
-              child: vm.habit.type == HabitType.time
-                  ? Icon(Icons.play_arrow)
-                  : vm.isOnePerformingLeft
-                      ? Icon(Icons.done)
-                      : Text(
-                          "+1",
-                          style: Theme.of(context).textTheme.headline6,
-                        ),
-              backgroundColor: Colors.white,
+        Stack(
+          children: [
+            SizedBox(
+              width: 100,
+              height: 100,
+              child: CircularProgressIndicator(
+                value: min(currentProgress.value / vm.habit.goalValue, 1),
+                valueColor: AlwaysStoppedAnimation<Color>(CustomColors.green),
+                strokeWidth: 10,
+              ),
             ),
-          ),
-        )
+            Container(
+              width: 84,
+              height: 84,
+              child: FittedBox(
+                child: FloatingActionButton(
+                  heroTag: null,
+
+                  onPressed: () {
+                    if (vm.habit.type == HabitType.time) {
+                      timer.toggle();
+                    } else {
+                      vm.perform();
+                    }
+                  },
+                  child: vm.habit.type == HabitType.time
+                      ? timer.isActive ? Icon(Icons.pause) : Icon(Icons.play_arrow)
+                      : vm.isOnePerformingLeft
+                          ? Icon(Icons.done)
+                          : Text(
+                              "+1",
+                              style: Theme.of(context).textTheme.headline6,
+                            ),
+                  backgroundColor: Colors.white,
+                ),
+              ),
+            ),
+          ],
+          alignment: Alignment.center,
+        ),
+        SizedBox(height: 8),
+        Text(vm.formatProgress(currentProgress.value)),
       ],
-      alignment: Alignment.center,
     );
   }
 }

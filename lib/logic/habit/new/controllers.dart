@@ -17,21 +17,14 @@ class NewHabitPerformingController
   }) : super(AsyncValue.data([]));
 
   Future<void> load(String habitId) async {
-    if (_cache.containsKey(habitId)) {
-      state = AsyncValue.data(_cache[habitId]!);
-    } else {
-      state = AsyncValue.loading();
-      _cache[habitId] = await repo.listByHabit(habitId);
-      state = AsyncValue.data(_cache[habitId]!);
-    }
+    state = AsyncValue.loading();
+    _cache[habitId] = _cache[habitId] ?? await repo.listByHabit(habitId);
+    state = AsyncValue.data(_cache[habitId]!);
   }
 
   Future<void> perform(Habit habit, [double performValue = 1]) async {
-    var hp = await performHabitNow(
-      habit: habit,
-      performValue: performValue,
-    );
-    _cache[habit.id!] = [..._cache[habit.id!]!, hp];
+    var hp = await performHabitNow(habit: habit, performValue: performValue);
+    _cache[habit.id!] = [..._cache[habit.id!] ?? [], hp];
     state = AsyncValue.data(_cache[habit.id!]!);
   }
 }
