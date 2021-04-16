@@ -3,27 +3,20 @@ import 'package:yaxxxta/logic/core/utils/map.dart';
 import 'package:yaxxxta/routes.dart';
 
 class MyBottomNav extends StatelessWidget {
-  static Map<int, String> navRoutes = {
-    0: Routes.calendar,
-    1: Routes.add,
-    2: Routes.list,
-    3: Routes.settings,
-  };
+  static List<String> navRoutes = [
+    Routes.calendar,
+    Routes.list,
+    Routes.settings,
+  ];
 
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      currentIndex: navRoutes.keyByValue(
-        ModalRoute.of(context)!.settings.name!,
-      )!,
+      currentIndex: navRoutes.indexOf(ModalRoute.of(context)!.settings.name!),
       items: [
         BottomNavigationBarItem(
           icon: Icon(Icons.today),
           label: "Календарь",
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.add),
-          label: "Создание",
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.list),
@@ -35,7 +28,7 @@ class MyBottomNav extends StatelessWidget {
         ),
       ],
       onTap: (index) =>
-          Navigator.pushReplacementNamed(context, navRoutes[index]!),
+          Navigator.pushReplacementNamed(context, navRoutes[index]),
     );
   }
 }

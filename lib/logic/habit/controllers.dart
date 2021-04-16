@@ -11,6 +11,11 @@ class HabitController extends StateNotifier<List<Habit>> {
   Future<void> load(String userId) async {
     state = await repo.listByUserId(userId);
   }
+
+  Future<void> create(Habit habit) async {
+    await repo.insert(habit);
+    state = [...state, habit];
+  }
 }
 
 var habitControllerProvider =
