@@ -32,8 +32,8 @@ class HabitController extends StateNotifier<List<HabitVM>> {
     state = [...state, HabitVM(habit: habit)];
   }
 
-  Future<void> perform(Habit habit) async {
-    var performing = HabitPerforming.blank(habit.id!);
+  Future<void> perform(Habit habit, [DateTime? performDatetime]) async {
+    var performing = HabitPerforming.blank(habit.id!, performDatetime);
     performing = performing.copyWith(
       id: await habitPerformingRepo.insert(performing),
     );

@@ -30,7 +30,10 @@ abstract class HabitPerforming implements _$HabitPerforming, WithId {
   factory HabitPerforming.fromJson(Map<String, dynamic> json) =>
       _$HabitPerformingFromJson(json);
 
-  factory HabitPerforming.blank(String habitId) {
-    return HabitPerforming(created: DateTime.now(), habitId: habitId);
+  factory HabitPerforming.blank(String habitId, [DateTime? performDatetime]) {
+    return HabitPerforming(
+      created: performDatetime ?? DateTime.now(),
+      habitId: habitId,
+    );
   }
 }
