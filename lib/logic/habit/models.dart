@@ -17,3 +17,20 @@ abstract class Habit implements _$Habit, WithId {
 
   factory Habit.fromJson(Map<String, dynamic> json) => _$HabitFromJson(json);
 }
+
+@freezed
+abstract class HabitPerforming implements _$HabitPerforming, WithId {
+  const HabitPerforming._();
+
+  const factory HabitPerforming(
+      {String? id,
+      required DateTime created,
+      required String habitId}) = _HabitPerforming;
+
+  factory HabitPerforming.fromJson(Map<String, dynamic> json) =>
+      _$HabitPerformingFromJson(json);
+
+  factory HabitPerforming.blank(String habitId) {
+    return HabitPerforming(created: DateTime.now(), habitId: habitId);
+  }
+}

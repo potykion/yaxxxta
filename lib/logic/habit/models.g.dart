@@ -19,3 +19,18 @@ Map<String, dynamic> _$_$_HabitToJson(_$_Habit instance) => <String, dynamic>{
       'title': instance.title,
       'userId': instance.userId,
     };
+
+_$_HabitPerforming _$_$_HabitPerformingFromJson(Map json) {
+  return _$_HabitPerforming(
+    id: json['id'] as String?,
+    created: DateTime.parse(json['created'] as String),
+    habitId: json['habitId'] as String,
+  );
+}
+
+Map<String, dynamic> _$_$_HabitPerformingToJson(_$_HabitPerforming instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'created': instance.created.toIso8601String(),
+      'habitId': instance.habitId,
+    };

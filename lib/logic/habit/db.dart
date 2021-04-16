@@ -23,4 +23,23 @@ class FirebaseHabitRepo extends FirebaseRepo<Habit> {
   }
 }
 
+class FirebaseHabitPerformingRepo extends FirebaseRepo<HabitPerforming> {
+  FirebaseHabitPerformingRepo(
+    CollectionReference collectionReference,
+  ) : super(
+          collectionReference: collectionReference,
+        );
 
+  @override
+  HabitPerforming entityFromFirebase(DocumentSnapshot doc) {
+    var data = doc.data()!;
+    data["id"] = doc.id;
+    data["created"] = (data["created"] as Timestamp).toDate().toIso8601String();
+    return HabitPerforming.fromJson(data);
+  }
+
+  @override
+  Map<String, dynamic> entityToFirebase(HabitPerforming entity) {
+    return entity.toJson()..["created"] = Timestamp.fromDate(entity.created);
+  }
+}
