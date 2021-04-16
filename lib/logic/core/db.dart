@@ -47,4 +47,7 @@ abstract class FirebaseRepo<T extends WithId> {
           .docs
           .map(entityFromFirebase)
           .toList();
+
+  Future<List<T>> list() async =>
+      (await collectionReference.get()).docs.map(entityFromFirebase).toList();
 }

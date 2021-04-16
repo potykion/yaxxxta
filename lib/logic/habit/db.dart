@@ -42,4 +42,5 @@ class FirebaseHabitPerformingRepo extends FirebaseRepo<HabitPerforming> {
   Map<String, dynamic> entityToFirebase(HabitPerforming entity) {
     return entity.toJson()..["created"] = Timestamp.fromDate(entity.created);
   }
+
 }

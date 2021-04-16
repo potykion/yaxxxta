@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/habit/db.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
@@ -12,7 +13,18 @@ class HabitController extends StateNotifier<List<HabitVM>> {
 
   Future<void> load(String userId) async {
     var habits = await habitRepo.listByUserId(userId);
-    state = habits.map((h) => HabitVM(habit: h)).toList();
+    var performings = groupBy<HabitPerforming, String>(
+      await habitPerformingRepo.list(),
+      (hp) => hp.habitId,
+    );
+    state = habits
+        .map(
+          (h) => HabitVM(
+            habit: h,
+            performings: performings[h.id!] ?? [],
+          ),
+        )
+        .toList();
   }
 
   Future<void> create(Habit habit) async {
