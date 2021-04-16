@@ -124,14 +124,13 @@ class PerformingsFor35Days extends StatelessWidget {
           Duration(days: week * 7 + day),
         )
         .date();
+    var hasDatePerformings = performings.any((hp) => hp.created.date() == date);
     return Padding(
       padding: const EdgeInsets.all(4),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: performings.any((hp) => hp.created.date() == date)
-              ? Theme.of(context).accentColor
-              : null,
+          color: hasDatePerformings ? Theme.of(context).accentColor : null,
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10),
@@ -147,6 +146,9 @@ class PerformingsFor35Days extends StatelessWidget {
                 child: Center(
                   child: Text(
                     DateFormat("dd.\nMM").format(date),
+                    style: TextStyle(
+                      color: hasDatePerformings ? Colors.white : null,
+                    ),
                   ),
                 ),
               ),
