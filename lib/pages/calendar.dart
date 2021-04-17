@@ -28,6 +28,7 @@ class CalendarPage extends HookWidget {
       body: vms.isEmpty
           ? Center(child: Text("Привычки не найдены"))
           : Swiper(
+              key: ValueKey(vms.length),
               itemCount: vms.length,
               itemBuilder: (context, index) {
                 var vm = vms[index];
