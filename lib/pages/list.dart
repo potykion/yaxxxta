@@ -34,7 +34,9 @@ class ListHabitPage extends HookWidget {
       var item = _items.removeAt(oldIndex);
       _items.insert(newIndex, item);
       vms.value = _items;
+    }
 
+    doneReorder() {
       var oldOrders =
           context.read(habitVMsProvider).map((vm) => vm.habit.order).toList();
       var newOrders = vms.value.map((vm) => vm.habit.order).toList();
@@ -51,8 +53,14 @@ class ListHabitPage extends HookWidget {
       appBar: AppBar(
         actions: [
           IconButton(
-            icon: reorderEnabled.value ? Icon(Icons.list) : Icon(Icons.reorder),
-            onPressed: () => reorderEnabled.value = !reorderEnabled.value,
+            icon: reorderEnabled.value ? Icon(Icons.done) : Icon(Icons.reorder),
+            onPressed: () {
+              if (reorderEnabled.value) {
+                doneReorder();
+              }
+
+              reorderEnabled.value = !reorderEnabled.value;
+            },
           ),
         ],
       ),
