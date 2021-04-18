@@ -10,7 +10,7 @@ class AddHabitPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var userId = FirebaseAuth.instance.currentUser!.uid;
-    var habit = useState(Habit(title: "", userId: userId));
+    var habit = useState(Habit.blank(userId));
 
     var titleTec = useTextEditingController(text: habit.value.title);
     titleTec.addListener(() {

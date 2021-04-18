@@ -13,9 +13,18 @@ abstract class Habit implements _$Habit, WithId {
     String? id,
     required String title,
     required String userId,
+    required int order,
   }) = _Habit;
 
   factory Habit.fromJson(Map<String, dynamic> json) => _$HabitFromJson(json);
+
+  factory Habit.blank(String userId) {
+    return Habit(
+      title: "",
+      userId: userId,
+      order: DateTime.now().millisecondsSinceEpoch,
+    );
+  }
 }
 
 @freezed

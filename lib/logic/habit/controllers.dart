@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tuple/tuple.dart';
 import 'package:yaxxxta/logic/habit/db.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
 import 'package:yaxxxta/logic/habit/vms.dart';
@@ -44,6 +45,25 @@ class HabitController extends StateNotifier<List<HabitVM>> {
       vm.copyWith(performings: [...vm.performings, performing]),
     ];
   }
+
+  Future<void> reorder(
+    Map<String, int> habitNewOrders,
+  ) async {
+    await habitRepo.reorder(habitNewOrders);
+    var newState = <HabitVM>[];
+    for (var vm in state) {
+      if (habitNewOrders.containsKey(vm.habit.id)) {
+        vm = vm.copyWith(
+          habit: vm.habit.copyWith(
+            order: habitNewOrders[vm.habit.id]!,
+          ),
+        );
+      }
+      newState.add(vm);
+    }
+
+    state = newState;
+  }
 }
 
 var habitControllerProvider =
@@ -51,6 +71,7 @@ var habitControllerProvider =
   (ref) => HabitController(
     FirebaseHabitRepo(
       FirebaseFirestore.instance.collection("FirebaseHabitRepo"),
+      FirebaseFirestore.instance.batch,
     ),
     FirebaseHabitPerformingRepo(
       FirebaseFirestore.instance.collection("FirebaseHabitPerformingRepo"),
@@ -59,6 +80,8 @@ var habitControllerProvider =
 );
 
 var habitVMsProvider = Provider(
-  (ref) => ref.watch(habitControllerProvider)
-    ..sort((vm1, vm2) => vm1.habit.id!.compareTo(vm2.habit.id!)),
+  (ref) {
+    return ref.watch(habitControllerProvider)
+      ..sort((vm1, vm2) => vm1.habit.order.compareTo(vm2.habit.order));
+  },
 );

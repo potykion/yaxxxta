@@ -20,11 +20,16 @@ Habit _$HabitFromJson(Map<String, dynamic> json) {
 class _$HabitTearOff {
   const _$HabitTearOff();
 
-  _Habit call({String? id, required String title, required String userId}) {
+  _Habit call(
+      {String? id,
+      required String title,
+      required String userId,
+      required int order}) {
     return _Habit(
       id: id,
       title: title,
       userId: userId,
+      order: order,
     );
   }
 
@@ -41,6 +46,7 @@ mixin _$Habit {
   String? get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
+  int get order => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -51,7 +57,7 @@ mixin _$Habit {
 abstract class $HabitCopyWith<$Res> {
   factory $HabitCopyWith(Habit value, $Res Function(Habit) then) =
       _$HabitCopyWithImpl<$Res>;
-  $Res call({String? id, String title, String userId});
+  $Res call({String? id, String title, String userId, int order});
 }
 
 /// @nodoc
@@ -67,11 +73,13 @@ class _$HabitCopyWithImpl<$Res> implements $HabitCopyWith<$Res> {
     Object? id = freezed,
     Object? title = freezed,
     Object? userId = freezed,
+    Object? order = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed ? _value.id : id as String?,
       title: title == freezed ? _value.title : title as String,
       userId: userId == freezed ? _value.userId : userId as String,
+      order: order == freezed ? _value.order : order as int,
     ));
   }
 }
@@ -81,7 +89,7 @@ abstract class _$HabitCopyWith<$Res> implements $HabitCopyWith<$Res> {
   factory _$HabitCopyWith(_Habit value, $Res Function(_Habit) then) =
       __$HabitCopyWithImpl<$Res>;
   @override
-  $Res call({String? id, String title, String userId});
+  $Res call({String? id, String title, String userId, int order});
 }
 
 /// @nodoc
@@ -98,11 +106,13 @@ class __$HabitCopyWithImpl<$Res> extends _$HabitCopyWithImpl<$Res>
     Object? id = freezed,
     Object? title = freezed,
     Object? userId = freezed,
+    Object? order = freezed,
   }) {
     return _then(_Habit(
       id: id == freezed ? _value.id : id as String?,
       title: title == freezed ? _value.title : title as String,
       userId: userId == freezed ? _value.userId : userId as String,
+      order: order == freezed ? _value.order : order as int,
     ));
   }
 }
@@ -111,7 +121,8 @@ class __$HabitCopyWithImpl<$Res> extends _$HabitCopyWithImpl<$Res>
 
 /// @nodoc
 class _$_Habit extends _Habit {
-  const _$_Habit({this.id, required this.title, required this.userId})
+  const _$_Habit(
+      {this.id, required this.title, required this.userId, required this.order})
       : super._();
 
   factory _$_Habit.fromJson(Map<String, dynamic> json) =>
@@ -123,10 +134,12 @@ class _$_Habit extends _Habit {
   final String title;
   @override
   final String userId;
+  @override
+  final int order;
 
   @override
   String toString() {
-    return 'Habit(id: $id, title: $title, userId: $userId)';
+    return 'Habit(id: $id, title: $title, userId: $userId, order: $order)';
   }
 
   @override
@@ -138,7 +151,9 @@ class _$_Habit extends _Habit {
             (identical(other.title, title) ||
                 const DeepCollectionEquality().equals(other.title, title)) &&
             (identical(other.userId, userId) ||
-                const DeepCollectionEquality().equals(other.userId, userId)));
+                const DeepCollectionEquality().equals(other.userId, userId)) &&
+            (identical(other.order, order) ||
+                const DeepCollectionEquality().equals(other.order, order)));
   }
 
   @override
@@ -146,7 +161,8 @@ class _$_Habit extends _Habit {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(title) ^
-      const DeepCollectionEquality().hash(userId);
+      const DeepCollectionEquality().hash(userId) ^
+      const DeepCollectionEquality().hash(order);
 
   @JsonKey(ignore: true)
   @override
@@ -162,7 +178,10 @@ class _$_Habit extends _Habit {
 abstract class _Habit extends Habit {
   const _Habit._() : super._();
   const factory _Habit(
-      {String? id, required String title, required String userId}) = _$_Habit;
+      {String? id,
+      required String title,
+      required String userId,
+      required int order}) = _$_Habit;
 
   factory _Habit.fromJson(Map<String, dynamic> json) = _$_Habit.fromJson;
 
@@ -172,6 +191,8 @@ abstract class _Habit extends Habit {
   String get title => throw _privateConstructorUsedError;
   @override
   String get userId => throw _privateConstructorUsedError;
+  @override
+  int get order => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$HabitCopyWith<_Habit> get copyWith => throw _privateConstructorUsedError;
