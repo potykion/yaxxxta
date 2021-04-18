@@ -57,3 +57,8 @@ var habitControllerProvider =
     ),
   ),
 );
+
+var habitVMsProvider = Provider(
+  (ref) => ref.watch(habitControllerProvider)
+    ..sort((vm1, vm2) => vm1.habit.id!.compareTo(vm2.habit.id!)),
+);

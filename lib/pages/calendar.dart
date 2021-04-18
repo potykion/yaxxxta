@@ -14,7 +14,7 @@ import '../routes.dart';
 class CalendarPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    var vms = useProvider(habitControllerProvider);
+    var vms = useProvider(habitVMsProvider);
 
     return Scaffold(
       appBar: AppBar(
