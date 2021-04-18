@@ -59,7 +59,12 @@ class CalendarPage extends HookWidget {
                   ),
                 );
               },
-              pagination: SwiperPagination(alignment: Alignment.topCenter),
+              pagination: SwiperPagination(
+                alignment: Alignment.topCenter,
+                builder: DotSwiperPaginationBuilder(
+                  color: Colors.grey.shade200
+                )
+              ),
             ),
       bottomNavigationBar: MyBottomNav(),
     );
