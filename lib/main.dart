@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:yaxxxta/theme.dart';
 
 import 'routes.dart';
 
@@ -29,11 +30,6 @@ class MyApp extends StatelessWidget {
         // home: PlaygroundPage(),
         initialRoute: Routes.loading,
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          bottomNavigationBarTheme: BottomNavigationBarThemeData(
-            unselectedItemColor: Colors.grey,
-            selectedItemColor: Colors.blue,
-          ),
-        ),
+        theme: buildThemeData(context),
       );
 }

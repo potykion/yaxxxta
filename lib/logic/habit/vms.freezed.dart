@@ -111,9 +111,10 @@ class __$HabitVMCopyWithImpl<$Res> extends _$HabitVMCopyWithImpl<$Res>
 }
 
 /// @nodoc
-class _$_HabitVM implements _HabitVM {
+class _$_HabitVM extends _HabitVM {
   const _$_HabitVM(
-      {required this.habit, this.performings = const <HabitPerforming>[]});
+      {required this.habit, this.performings = const <HabitPerforming>[]})
+      : super._();
 
   @override
   final Habit habit;
@@ -149,7 +150,8 @@ class _$_HabitVM implements _HabitVM {
       __$HabitVMCopyWithImpl<_HabitVM>(this, _$identity);
 }
 
-abstract class _HabitVM implements HabitVM {
+abstract class _HabitVM extends HabitVM {
+  const _HabitVM._() : super._();
   const factory _HabitVM(
       {required Habit habit, List<HabitPerforming> performings}) = _$_HabitVM;
 
