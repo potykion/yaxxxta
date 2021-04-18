@@ -40,7 +40,7 @@ class CalendarPage extends HookWidget {
 
                       return Center(
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Text(
                               vm.habit.title,
@@ -48,8 +48,9 @@ class CalendarPage extends HookWidget {
                             ),
                             SizedBox(height: 10),
                             PerformHabitButton(vm: vm),
-                            SizedBox(height: 10),
+                            SizedBox(height: 20),
                             HabitPerformingCalendar(vm: vm),
+                            SizedBox(height: 20),
                           ],
                         ),
                       );

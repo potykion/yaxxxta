@@ -29,7 +29,7 @@ class HabitPagination extends StatelessWidget {
                     ? CustomColors.yellow
                     : vms[i].isPerformedToday
                         ? CustomColors.green
-                        : CustomColors.lightGrey.withAlpha(63),
+                        : CustomColors.lightGrey.withAlpha(31),
                 borderRadius: BorderRadius.circular(20),
               ),
             ),

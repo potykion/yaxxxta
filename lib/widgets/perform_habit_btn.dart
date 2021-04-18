@@ -7,8 +7,13 @@ import '../theme.dart';
 
 class PerformHabitButton extends StatelessWidget {
   final HabitVM vm;
+  final double size;
 
-  const PerformHabitButton({Key? key, required this.vm}) : super(key: key);
+  const PerformHabitButton({
+    Key? key,
+    required this.vm,
+    this.size = 90,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +21,8 @@ class PerformHabitButton extends StatelessWidget {
       alignment: Alignment.center,
       children: [
         SizedBox(
-          width: 90,
-          height: 90,
+          width: size + 10,
+          height: size + 10,
           child: CircularProgressIndicator(
             valueColor: AlwaysStoppedAnimation<Color>(CustomColors.green),
             value: vm.isPerformedToday ? 1 : 0,
@@ -25,11 +30,11 @@ class PerformHabitButton extends StatelessWidget {
           ),
         ),
         SizedBox(
-          width: 80,
-          height: 80,
+          width: size,
+          height: size,
           child: FloatingActionButton(
             heroTag: null,
-            child: Icon(Icons.done, size: 40),
+            child: Icon(Icons.done, size: size / 2),
             onPressed: () => context
                 .read(habitControllerProvider.notifier)
                 .perform(vm.habit),
