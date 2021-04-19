@@ -41,7 +41,7 @@ class AddHabitPage extends HookWidget {
                     borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide.none,
                   ),
-                  hintText: "Название привычки",
+                  hintText: 'Название привычки, напр. "Зайти в приложение"',
                   filled: true),
             ),
           ),
