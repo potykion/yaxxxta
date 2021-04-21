@@ -3,6 +3,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tuple/tuple.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
+import 'package:yaxxxta/logic/core/utils/list.dart';
+import 'package:yaxxxta/theme.dart';
 import 'package:yaxxxta/widgets/bottom_nav.dart';
 
 import '../routes.dart';
@@ -14,17 +16,32 @@ class ListHabitPage extends HookWidget {
     var reorderEnabled = useState(false);
 
     Widget buildListTile(int index) {
-      return ListTile(
+      var vm = vms.value[index];
+
+      return Container(
         key: ValueKey(index),
-        title: Text(vms.value[index].habit.title),
-        onTap: reorderEnabled.value
-            ? null
-            : () => Navigator.pushReplacementNamed(
-                  context,
-                  Routes.calendar,
-                  arguments: index,
-                ),
-        trailing: reorderEnabled.value ? Icon(Icons.reorder) : null,
+        decoration: BoxDecoration(
+          border: Border(
+            left: BorderSide(
+              color: vm.isPerformedToday
+                  ? CustomColors.green
+                  : CustomColors.lightGrey.withAlpha(31),
+              width: 8,
+            ),
+            bottom: BorderSide(color: CustomColors.lightGrey.withAlpha(31)),
+          ),
+        ),
+        child: ListTile(
+          title: Text(vm.habit.title),
+          onTap: reorderEnabled.value
+              ? null
+              : () => Navigator.pushReplacementNamed(
+                    context,
+                    Routes.calendar,
+                    arguments: index,
+                  ),
+          trailing: reorderEnabled.value ? Icon(Icons.reorder) : null,
+        ),
       );
     }
 
@@ -49,6 +66,9 @@ class ListHabitPage extends HookWidget {
       context.read(habitControllerProvider.notifier).reorder(habitsToUpdate);
     }
 
+    List<Widget> children = List.generate(vms.value.length, (index) => index)
+        .map(buildListTile)
+        .toList();
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -65,15 +85,8 @@ class ListHabitPage extends HookWidget {
         ],
       ),
       body: reorderEnabled.value
-          ? ReorderableListView.builder(
-              itemBuilder: (_, index) => buildListTile(index),
-              itemCount: vms.value.length,
-              onReorder: reorder,
-            )
-          : ListView.builder(
-              itemCount: vms.value.length,
-              itemBuilder: (_, index) => buildListTile(index),
-            ),
+          ? ReorderableListView(children: children, onReorder: reorder)
+          : ListView(children: children),
       bottomNavigationBar: MyBottomNav(),
     );
   }
