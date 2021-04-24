@@ -12,3 +12,10 @@ https://github.com/potykion/yaxxxta/issues/assigned/potykion
 pub get
 firebase emulators:start
 ```
+
+## Деплой
+
+```
+flutter build web
+firebase deploy --only hosting
+```
