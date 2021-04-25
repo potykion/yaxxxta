@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
@@ -19,66 +20,65 @@ class CalendarPage extends HookWidget {
     var vms = useProvider(habitVMsProvider);
 
     return Scaffold(
-      body: Column(
+      appBar: AppBar(
+        title: HabitPagination(
+          vms: vms,
+          currentIndex: currentIndex.value,
+        ),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () => Navigator.of(context).pushNamed(Routes.add),
+          ),
+          IconButton(
+              icon: Icon(Icons.list),
+              onPressed: () => Navigator.of(context).pushNamed(Routes.list))
+        ].reversed.toList(),
+        // titleSpacing: 0,
+        leading: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: CircleAvatar(
+            backgroundImage:
+                NetworkImage(FirebaseAuth.instance.currentUser!.photoURL!),
+            // radius: 2,
+          ),
+        ),
+      ),
+      body: Stack(
         children: [
-          SizedBox(
-            height: MediaQuery.of(context).padding.top,
-          ),
-          Expanded(
-            child: Stack(
-              children: [
-                if (vms.isEmpty)
-                  Center(child: Text("Привычки не найдены"))
-                else ...[
-                  Swiper(
-                    onIndexChanged: (index) => currentIndex.value = index,
-                    index: currentIndex.value,
-                    key: ValueKey(vms.length),
-                    itemCount: vms.length,
-                    itemBuilder: (context, index) {
-                      var vm = vms[index];
+          if (vms.isEmpty)
+            Center(child: Text("Привычки не найдены"))
+          else ...[
+            Swiper(
+              onIndexChanged: (index) => currentIndex.value = index,
+              index: currentIndex.value,
+              key: ValueKey(vms.length),
+              itemCount: vms.length,
+              itemBuilder: (context, index) {
+                var vm = vms[index];
 
-                      return Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                              vm.habit.title,
-                              style: Theme.of(context).textTheme.headline4,
-                            ),
-                            SizedBox(height: 10),
-                            PerformHabitButton(vm: vm),
-                            SizedBox(height: 20),
-                            HabitPerformingCalendar(vm: vm),
-                            SizedBox(height: 20),
-                          ],
-                        ),
-                      );
-                    },
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        vm.habit.title,
+                        style: Theme.of(context).textTheme.headline4,
+                      ),
+                      SizedBox(height: 10),
+                      PerformHabitButton(vm: vm),
+                      SizedBox(height: 20),
+                      HabitPerformingCalendar(vm: vm),
+                      SizedBox(height: 20),
+                    ],
                   ),
-                  Positioned(
-                    top: 15,
-                    width: MediaQuery.of(context).size.width,
-                    child: HabitPagination(
-                      vms: vms,
-                      currentIndex: currentIndex.value,
-                    ),
-                  )
-                ],
-                Positioned(
-                  child: IconButton(
-                    icon: Icon(Icons.add),
-                    onPressed: () =>
-                        Navigator.of(context).pushNamed(Routes.add),
-                  ),
-                  right: 0,
-                )
-              ],
+                );
+              },
             ),
-          ),
+          ],
         ],
       ),
-      bottomNavigationBar: MyBottomNav(),
     );
   }
 }

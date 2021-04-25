@@ -16,6 +16,7 @@ class HabitPagination extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         for (var i in List.generate(vms.length, (index) => index))

@@ -16,7 +16,6 @@ class HabitPerformingCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(vm);
     return SizedBox(
       height: 250,
       child: PageView.builder(
