@@ -87,7 +87,6 @@ class ListHabitPage extends HookWidget {
       body: reorderEnabled.value
           ? ReorderableListView(children: children, onReorder: reorder)
           : ListView(children: children),
-      bottomNavigationBar: MyBottomNav(),
     );
   }
 }
