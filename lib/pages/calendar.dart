@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -8,6 +10,7 @@ import 'package:yaxxxta/widgets/bottom_nav.dart';
 import 'package:yaxxxta/widgets/habit_performing_calendar.dart';
 import 'package:yaxxxta/widgets/pagination.dart';
 import 'package:yaxxxta/widgets/perform_habit_btn.dart';
+import 'package:yaxxxta/widgets/web_padding.dart';
 
 import '../routes.dart';
 
@@ -19,65 +22,69 @@ class CalendarPage extends HookWidget {
 
     var vms = useProvider(habitVMsProvider);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: HabitPagination(
-          vms: vms,
-          currentIndex: currentIndex.value,
-        ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () => Navigator.of(context).pushNamed(Routes.add),
+    return WebPadding(
+      child: Scaffold(
+        appBar: AppBar(
+          title: HabitPagination(
+            vms: vms,
+            currentIndex: currentIndex.value,
           ),
-          IconButton(
-              icon: Icon(Icons.list),
-              onPressed: () => Navigator.of(context).pushNamed(Routes.list))
-        ].reversed.toList(),
-        // titleSpacing: 0,
-        leading: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: CircleAvatar(
-            backgroundImage:
-                NetworkImage(FirebaseAuth.instance.currentUser!.photoURL!),
-            // radius: 2,
-          ),
-        ),
-      ),
-      body: Stack(
-        children: [
-          if (vms.isEmpty)
-            Center(child: Text("Привычки не найдены"))
-          else ...[
-            Swiper(
-              onIndexChanged: (index) => currentIndex.value = index,
-              index: currentIndex.value,
-              key: ValueKey(vms.length),
-              itemCount: vms.length,
-              itemBuilder: (context, index) {
-                var vm = vms[index];
-
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        vm.habit.title,
-                        style: Theme.of(context).textTheme.headline4,
-                      ),
-                      SizedBox(height: 10),
-                      PerformHabitButton(vm: vm),
-                      SizedBox(height: 20),
-                      HabitPerformingCalendar(vm: vm),
-                      SizedBox(height: 20),
-                    ],
-                  ),
-                );
-              },
+          centerTitle: true,
+          actions: [
+            IconButton(
+              icon: Icon(Icons.add),
+              onPressed: () => Navigator.of(context).pushNamed(Routes.add),
             ),
+            IconButton(
+                icon: Icon(Icons.list),
+                onPressed: () => Navigator.of(context).pushNamed(Routes.list))
+          ].reversed.toList(),
+          // titleSpacing: 0,
+          leading: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: FirebaseAuth.instance.currentUser?.photoURL != null
+                ? CircleAvatar(
+                    backgroundImage: NetworkImage(
+                      FirebaseAuth.instance.currentUser!.photoURL!,
+                    ),
+                  )
+                : Icon(Icons.account_circle),
+          ),
+        ),
+        body: Stack(
+          children: [
+            if (vms.isEmpty)
+              Center(child: Text("Привычки не найдены"))
+            else ...[
+              Swiper(
+                onIndexChanged: (index) => currentIndex.value = index,
+                index: currentIndex.value,
+                key: ValueKey(vms.length),
+                itemCount: vms.length,
+                itemBuilder: (context, index) {
+                  var vm = vms[index];
+
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          vm.habit.title,
+                          style: Theme.of(context).textTheme.headline4,
+                        ),
+                        SizedBox(height: 10),
+                        PerformHabitButton(vm: vm),
+                        SizedBox(height: 20),
+                        HabitPerformingCalendar(vm: vm),
+                        SizedBox(height: 20),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }
