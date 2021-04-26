@@ -24,5 +24,11 @@ ThemeData buildThemeData(BuildContext context) {
       elevation: 0,
       selectedItemColor: CustomColors.darkGreen,
     ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(CustomColors.yellow),
+        foregroundColor: MaterialStateProperty.all<Color>(CustomColors.darkGreen)
+      )
+    )
   );
 }
