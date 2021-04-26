@@ -8,6 +8,7 @@ import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:yaxxxta/widgets/web_padding.dart';
 
 import '../routes.dart';
 
@@ -52,16 +53,18 @@ class LoadingPage extends HookWidget {
       return;
     }, []);
 
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            CircularProgressIndicator(),
-            SizedBox(height: 8),
-            Text(loadingTextState.value),
-          ],
+    return WebPadding(
+      child: Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(height: 8),
+              Text(loadingTextState.value),
+            ],
+          ),
         ),
       ),
     );

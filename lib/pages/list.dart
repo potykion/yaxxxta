@@ -6,6 +6,7 @@ import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:yaxxxta/logic/core/utils/list.dart';
 import 'package:yaxxxta/theme.dart';
 import 'package:yaxxxta/widgets/bottom_nav.dart';
+import 'package:yaxxxta/widgets/web_padding.dart';
 
 import '../routes.dart';
 
@@ -69,24 +70,26 @@ class ListHabitPage extends HookWidget {
     List<Widget> children = List.generate(vms.value.length, (index) => index)
         .map(buildListTile)
         .toList();
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            icon: reorderEnabled.value ? Icon(Icons.done) : Icon(Icons.reorder),
-            onPressed: () {
-              if (reorderEnabled.value) {
-                doneReorder();
-              }
+    return WebPadding(
+      child: Scaffold(
+        appBar: AppBar(
+          actions: [
+            IconButton(
+              icon: reorderEnabled.value ? Icon(Icons.done) : Icon(Icons.reorder),
+              onPressed: () {
+                if (reorderEnabled.value) {
+                  doneReorder();
+                }
 
-              reorderEnabled.value = !reorderEnabled.value;
-            },
-          ),
-        ],
+                reorderEnabled.value = !reorderEnabled.value;
+              },
+            ),
+          ],
+        ),
+        body: reorderEnabled.value
+            ? ReorderableListView(children: children, onReorder: reorder)
+            : ListView(children: children),
       ),
-      body: reorderEnabled.value
-          ? ReorderableListView(children: children, onReorder: reorder)
-          : ListView(children: children),
     );
   }
 }

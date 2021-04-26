@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
 import 'package:yaxxxta/widgets/bottom_nav.dart';
+import 'package:yaxxxta/widgets/web_padding.dart';
 
 class AddHabitPage extends HookWidget {
   @override
@@ -17,35 +18,37 @@ class AddHabitPage extends HookWidget {
       habit.value = habit.value.copyWith(title: titleTec.text);
     });
 
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-              icon: Icon(Icons.done),
-              onPressed: () async {
-                await context
-                    .read(habitControllerProvider.notifier)
-                    .create(habit.value);
-                Navigator.of(context).pop();
-              }),
-        ],
-      ),
-      body: ListView(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              controller: titleTec,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide.none,
-                  ),
-                  hintText: 'Название привычки, напр. "Зайти в приложение"',
-                  filled: true),
+    return WebPadding(
+      child: Scaffold(
+        appBar: AppBar(
+          actions: [
+            IconButton(
+                icon: Icon(Icons.done),
+                onPressed: () async {
+                  await context
+                      .read(habitControllerProvider.notifier)
+                      .create(habit.value);
+                  Navigator.of(context).pop();
+                }),
+          ],
+        ),
+        body: ListView(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                controller: titleTec,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide.none,
+                    ),
+                    hintText: 'Название привычки, напр. "Зайти в приложение"',
+                    filled: true),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
