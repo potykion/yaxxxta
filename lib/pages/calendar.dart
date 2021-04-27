@@ -33,7 +33,7 @@ class CalendarPage extends HookWidget {
           actions: [
             IconButton(
               icon: Icon(Icons.add),
-              onPressed: () => Navigator.of(context).pushNamed(Routes.add),
+              onPressed: () => Navigator.of(context).pushNamed(Routes.form),
             ),
             IconButton(
                 icon: Icon(Icons.list),
@@ -73,7 +73,26 @@ class CalendarPage extends HookWidget {
                           style: Theme.of(context).textTheme.headline4,
                         ),
                         SizedBox(height: 10),
-                        PerformHabitButton(vm: vm),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Opacity(
+                              opacity: 0,
+                              child: FloatingActionButton(
+                                heroTag: null,
+                                onPressed: () {},
+                                child: Icon(Icons.edit),
+                              ),
+                            ),
+                            PerformHabitButton(vm: vm),
+                            FloatingActionButton(
+                              heroTag: null,
+                              onPressed: () => Navigator.of(context)
+                                  .pushNamed(Routes.form, arguments: vm.habit),
+                              child: Icon(Icons.edit),
+                            ),
+                          ],
+                        ),
                         SizedBox(height: 20),
                         HabitPerformingCalendar(vm: vm),
                         SizedBox(height: 20),

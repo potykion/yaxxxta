@@ -18,7 +18,7 @@ abstract class Habit implements _$Habit, WithId {
 
   factory Habit.fromJson(Map<String, dynamic> json) => _$HabitFromJson(json);
 
-  factory Habit.blank(String userId) {
+  factory Habit.blank({required String userId}) {
     return Habit(
       title: "",
       userId: userId,

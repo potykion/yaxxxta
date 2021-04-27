@@ -33,6 +33,15 @@ class HabitController extends StateNotifier<List<HabitVM>> {
     state = [...state, HabitVM(habit: habit)];
   }
 
+  Future<void> update(Habit habit) async {
+    await habitRepo.update(habit);
+    var habitToUpdate = state.where((vm) => vm.habit.id == habit.id).first;
+    state = [
+      ...state.where((vm) => vm.habit.id != habit.id),
+      habitToUpdate.copyWith(habit: habit),
+    ];
+  }
+
   Future<void> perform(Habit habit, [DateTime? performDatetime]) async {
     var performing = HabitPerforming.blank(habit.id!, performDatetime);
     performing = performing.copyWith(
