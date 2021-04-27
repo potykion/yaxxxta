@@ -24,12 +24,14 @@ class _$HabitTearOff {
       {String? id,
       required String title,
       required String userId,
-      required int order}) {
+      required int order,
+      bool archived = false}) {
     return _Habit(
       id: id,
       title: title,
       userId: userId,
       order: order,
+      archived: archived,
     );
   }
 
@@ -47,6 +49,7 @@ mixin _$Habit {
   String get title => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   int get order => throw _privateConstructorUsedError;
+  bool get archived => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -57,7 +60,8 @@ mixin _$Habit {
 abstract class $HabitCopyWith<$Res> {
   factory $HabitCopyWith(Habit value, $Res Function(Habit) then) =
       _$HabitCopyWithImpl<$Res>;
-  $Res call({String? id, String title, String userId, int order});
+  $Res call(
+      {String? id, String title, String userId, int order, bool archived});
 }
 
 /// @nodoc
@@ -74,12 +78,29 @@ class _$HabitCopyWithImpl<$Res> implements $HabitCopyWith<$Res> {
     Object? title = freezed,
     Object? userId = freezed,
     Object? order = freezed,
+    Object? archived = freezed,
   }) {
     return _then(_value.copyWith(
-      id: id == freezed ? _value.id : id as String?,
-      title: title == freezed ? _value.title : title as String,
-      userId: userId == freezed ? _value.userId : userId as String,
-      order: order == freezed ? _value.order : order as int,
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      title: title == freezed
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: userId == freezed
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      order: order == freezed
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as int,
+      archived: archived == freezed
+          ? _value.archived
+          : archived // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -89,7 +110,8 @@ abstract class _$HabitCopyWith<$Res> implements $HabitCopyWith<$Res> {
   factory _$HabitCopyWith(_Habit value, $Res Function(_Habit) then) =
       __$HabitCopyWithImpl<$Res>;
   @override
-  $Res call({String? id, String title, String userId, int order});
+  $Res call(
+      {String? id, String title, String userId, int order, bool archived});
 }
 
 /// @nodoc
@@ -107,22 +129,42 @@ class __$HabitCopyWithImpl<$Res> extends _$HabitCopyWithImpl<$Res>
     Object? title = freezed,
     Object? userId = freezed,
     Object? order = freezed,
+    Object? archived = freezed,
   }) {
     return _then(_Habit(
-      id: id == freezed ? _value.id : id as String?,
-      title: title == freezed ? _value.title : title as String,
-      userId: userId == freezed ? _value.userId : userId as String,
-      order: order == freezed ? _value.order : order as int,
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      title: title == freezed
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: userId == freezed
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      order: order == freezed
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as int,
+      archived: archived == freezed
+          ? _value.archived
+          : archived // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
 
-@JsonSerializable()
-
 /// @nodoc
+@JsonSerializable()
 class _$_Habit extends _Habit {
   const _$_Habit(
-      {this.id, required this.title, required this.userId, required this.order})
+      {this.id,
+      required this.title,
+      required this.userId,
+      required this.order,
+      this.archived = false})
       : super._();
 
   factory _$_Habit.fromJson(Map<String, dynamic> json) =>
@@ -136,10 +178,13 @@ class _$_Habit extends _Habit {
   final String userId;
   @override
   final int order;
+  @JsonKey(defaultValue: false)
+  @override
+  final bool archived;
 
   @override
   String toString() {
-    return 'Habit(id: $id, title: $title, userId: $userId, order: $order)';
+    return 'Habit(id: $id, title: $title, userId: $userId, order: $order, archived: $archived)';
   }
 
   @override
@@ -153,7 +198,10 @@ class _$_Habit extends _Habit {
             (identical(other.userId, userId) ||
                 const DeepCollectionEquality().equals(other.userId, userId)) &&
             (identical(other.order, order) ||
-                const DeepCollectionEquality().equals(other.order, order)));
+                const DeepCollectionEquality().equals(other.order, order)) &&
+            (identical(other.archived, archived) ||
+                const DeepCollectionEquality()
+                    .equals(other.archived, archived)));
   }
 
   @override
@@ -162,7 +210,8 @@ class _$_Habit extends _Habit {
       const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(title) ^
       const DeepCollectionEquality().hash(userId) ^
-      const DeepCollectionEquality().hash(order);
+      const DeepCollectionEquality().hash(order) ^
+      const DeepCollectionEquality().hash(archived);
 
   @JsonKey(ignore: true)
   @override
@@ -176,12 +225,13 @@ class _$_Habit extends _Habit {
 }
 
 abstract class _Habit extends Habit {
-  const _Habit._() : super._();
   const factory _Habit(
       {String? id,
       required String title,
       required String userId,
-      required int order}) = _$_Habit;
+      required int order,
+      bool archived}) = _$_Habit;
+  const _Habit._() : super._();
 
   factory _Habit.fromJson(Map<String, dynamic> json) = _$_Habit.fromJson;
 
@@ -193,6 +243,8 @@ abstract class _Habit extends Habit {
   String get userId => throw _privateConstructorUsedError;
   @override
   int get order => throw _privateConstructorUsedError;
+  @override
+  bool get archived => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$HabitCopyWith<_Habit> get copyWith => throw _privateConstructorUsedError;
@@ -259,9 +311,18 @@ class _$HabitPerformingCopyWithImpl<$Res>
     Object? habitId = freezed,
   }) {
     return _then(_value.copyWith(
-      id: id == freezed ? _value.id : id as String?,
-      created: created == freezed ? _value.created : created as DateTime,
-      habitId: habitId == freezed ? _value.habitId : habitId as String,
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      created: created == freezed
+          ? _value.created
+          : created // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      habitId: habitId == freezed
+          ? _value.habitId
+          : habitId // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -294,16 +355,24 @@ class __$HabitPerformingCopyWithImpl<$Res>
     Object? habitId = freezed,
   }) {
     return _then(_HabitPerforming(
-      id: id == freezed ? _value.id : id as String?,
-      created: created == freezed ? _value.created : created as DateTime,
-      habitId: habitId == freezed ? _value.habitId : habitId as String,
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      created: created == freezed
+          ? _value.created
+          : created // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      habitId: habitId == freezed
+          ? _value.habitId
+          : habitId // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
 
-@JsonSerializable()
-
 /// @nodoc
+@JsonSerializable()
 class _$_HabitPerforming extends _HabitPerforming {
   const _$_HabitPerforming(
       {this.id, required this.created, required this.habitId})
@@ -356,11 +425,11 @@ class _$_HabitPerforming extends _HabitPerforming {
 }
 
 abstract class _HabitPerforming extends HabitPerforming {
-  const _HabitPerforming._() : super._();
   const factory _HabitPerforming(
       {String? id,
       required DateTime created,
       required String habitId}) = _$_HabitPerforming;
+  const _HabitPerforming._() : super._();
 
   factory _HabitPerforming.fromJson(Map<String, dynamic> json) =
       _$_HabitPerforming.fromJson;

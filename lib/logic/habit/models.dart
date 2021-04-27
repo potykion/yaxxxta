@@ -14,6 +14,7 @@ abstract class Habit implements _$Habit, WithId {
     required String title,
     required String userId,
     required int order,
+    @Default(false) bool archived,
   }) = _Habit;
 
   factory Habit.fromJson(Map<String, dynamic> json) => _$HabitFromJson(json);

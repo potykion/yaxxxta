@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/src/foundation/change_notifier.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tuple/tuple.dart';
@@ -73,6 +74,10 @@ class HabitController extends StateNotifier<List<HabitVM>> {
 
     state = newState;
   }
+
+  Future<void> archive(Habit habit) async {
+    await update(habit.copyWith(archived: true));
+  }
 }
 
 var habitControllerProvider =
@@ -90,7 +95,10 @@ var habitControllerProvider =
 
 var habitVMsProvider = Provider(
   (ref) {
-    return ref.watch(habitControllerProvider)
-      ..sort((vm1, vm2) => vm1.habit.order.compareTo(vm2.habit.order));
+    return ref
+        .watch(habitControllerProvider)
+        .where((vm) => !vm.habit.archived)
+        .toList()
+          ..sort((vm1, vm2) => vm1.habit.order.compareTo(vm2.habit.order));
   },
 );

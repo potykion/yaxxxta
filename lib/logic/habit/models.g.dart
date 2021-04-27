@@ -12,6 +12,7 @@ _$_Habit _$_$_HabitFromJson(Map json) {
     title: json['title'] as String,
     userId: json['userId'] as String,
     order: json['order'] as int,
+    archived: json['archived'] as bool? ?? false,
   );
 }
 
@@ -20,6 +21,7 @@ Map<String, dynamic> _$_$_HabitToJson(_$_Habit instance) => <String, dynamic>{
       'title': instance.title,
       'userId': instance.userId,
       'order': instance.order,
+      'archived': instance.archived,
     };
 
 _$_HabitPerforming _$_$_HabitPerformingFromJson(Map json) {

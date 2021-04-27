@@ -6,6 +6,8 @@ import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
 import 'package:yaxxxta/widgets/web_padding.dart';
 
+import '../theme.dart';
+
 class HabitFormPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
@@ -42,7 +44,8 @@ class HabitFormPage extends HookWidget {
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: ListView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 "Название привычки",
@@ -60,6 +63,26 @@ class HabitFormPage extends HookWidget {
                   filled: true,
                 ),
               ),
+              Spacer(),
+              if (habit.value.id != null)
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(CustomColors.grey),
+                      foregroundColor:
+                          MaterialStateProperty.all<Color>(CustomColors.white),
+                    ),
+                    onPressed: () async {
+                      await context
+                          .read(habitControllerProvider.notifier)
+                          .archive(habit.value);
+                      Navigator.of(context).pop();
+                    },
+                    child: Text("Архивировать"),
+                  ),
+                )
             ],
           ),
         ),

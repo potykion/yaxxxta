@@ -61,10 +61,14 @@ class _$HabitVMCopyWithImpl<$Res> implements $HabitVMCopyWith<$Res> {
     Object? performings = freezed,
   }) {
     return _then(_value.copyWith(
-      habit: habit == freezed ? _value.habit : habit as Habit,
+      habit: habit == freezed
+          ? _value.habit
+          : habit // ignore: cast_nullable_to_non_nullable
+              as Habit,
       performings: performings == freezed
           ? _value.performings
-          : performings as List<HabitPerforming>,
+          : performings // ignore: cast_nullable_to_non_nullable
+              as List<HabitPerforming>,
     ));
   }
 
@@ -102,15 +106,20 @@ class __$HabitVMCopyWithImpl<$Res> extends _$HabitVMCopyWithImpl<$Res>
     Object? performings = freezed,
   }) {
     return _then(_HabitVM(
-      habit: habit == freezed ? _value.habit : habit as Habit,
+      habit: habit == freezed
+          ? _value.habit
+          : habit // ignore: cast_nullable_to_non_nullable
+              as Habit,
       performings: performings == freezed
           ? _value.performings
-          : performings as List<HabitPerforming>,
+          : performings // ignore: cast_nullable_to_non_nullable
+              as List<HabitPerforming>,
     ));
   }
 }
 
 /// @nodoc
+
 class _$_HabitVM extends _HabitVM {
   const _$_HabitVM(
       {required this.habit, this.performings = const <HabitPerforming>[]})
@@ -151,9 +160,9 @@ class _$_HabitVM extends _HabitVM {
 }
 
 abstract class _HabitVM extends HabitVM {
-  const _HabitVM._() : super._();
   const factory _HabitVM(
       {required Habit habit, List<HabitPerforming> performings}) = _$_HabitVM;
+  const _HabitVM._() : super._();
 
   @override
   Habit get habit => throw _privateConstructorUsedError;
