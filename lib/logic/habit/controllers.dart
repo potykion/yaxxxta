@@ -102,4 +102,3 @@ var habitVMsProvider = Provider(
           ..sort((vm1, vm2) => vm1.habit.order.compareTo(vm2.habit.order));
   },
 );
-StateProvider<int> selectedHabitIndexProvider = StateProvider((_) => 0);

@@ -14,13 +14,9 @@ import '../routes.dart';
 class CalendarPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    var currentIndex = useProvider(selectedHabitIndexProvider).state;
+    var currentIndex = useState(0);
 
     var controller = useState(SwiperController());
-    useValueChanged<int, void>(currentIndex, (_, __) {
-      if (currentIndex == controller.value.index) return;
-      controller.value.move(currentIndex);
-    });
 
     var vms = useProvider(habitVMsProvider);
 
@@ -29,7 +25,7 @@ class CalendarPage extends HookWidget {
         appBar: AppBar(
           title: HabitPagination(
             vms: vms,
-            currentIndex: currentIndex,
+            currentIndex: currentIndex.value,
           ),
           centerTitle: true,
           actions: [
@@ -38,8 +34,16 @@ class CalendarPage extends HookWidget {
               onPressed: () => Navigator.of(context).pushNamed(Routes.form),
             ),
             IconButton(
-                icon: Icon(Icons.list),
-                onPressed: () => Navigator.of(context).pushNamed(Routes.list))
+              icon: Icon(Icons.list),
+              onPressed: () async {
+                var index =
+                    await Navigator.of(context).pushNamed(Routes.list) as int?;
+                if (index != null) {
+                  currentIndex.value = index;
+                  controller.value.move(index);
+                }
+              },
+            )
           ].reversed.toList(),
           // titleSpacing: 0,
           leading: Padding(
@@ -57,10 +61,7 @@ class CalendarPage extends HookWidget {
             ? Center(child: Text("Привычки не найдены"))
             : Swiper(
                 controller: controller.value,
-                onIndexChanged: (index) {
-                  print("onIndexChanged");
-                  context.read(selectedHabitIndexProvider).state = index;
-                },
+                onIndexChanged: (index) => currentIndex.value = index,
                 key: ValueKey(vms.length),
                 itemCount: vms.length,
                 itemBuilder: (context, index) {
@@ -90,8 +91,15 @@ class CalendarPage extends HookWidget {
                             PerformHabitButton(vm: vm),
                             FloatingActionButton(
                               heroTag: null,
-                              onPressed: () => Navigator.of(context)
-                                  .pushNamed(Routes.form, arguments: vm.habit),
+                              onPressed: () async {
+                                var archived = await Navigator.of(context)
+                                    .pushNamed(Routes.form,
+                                        arguments: vm.habit) as bool?;
+                                if (archived ?? false) {
+                                  currentIndex.value = 0;
+                                  controller.value.move(0);
+                                }
+                              },
                               child: Icon(Icons.edit),
                             ),
                           ],

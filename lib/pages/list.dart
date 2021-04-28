@@ -2,14 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tuple/tuple.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
-import 'package:yaxxxta/logic/core/utils/list.dart';
 import 'package:yaxxxta/theme.dart';
-import 'package:yaxxxta/widgets/bottom_nav.dart';
 import 'package:yaxxxta/widgets/web_padding.dart';
-
-import '../routes.dart';
 
 class ListHabitPage extends HookWidget {
   @override
@@ -37,10 +32,7 @@ class ListHabitPage extends HookWidget {
           title: Text(vm.habit.title),
           onTap: reorderEnabled.value
               ? null
-              : () {
-                  context.read(selectedHabitIndexProvider).state = index;
-                  Navigator.pop(context);
-                },
+              : () => Navigator.of(context).pop(index),
           trailing:
               !kIsWeb && reorderEnabled.value ? Icon(Icons.drag_handle) : null,
         ),

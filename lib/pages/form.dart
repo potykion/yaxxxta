@@ -75,11 +75,10 @@ class HabitFormPage extends HookWidget {
                           MaterialStateProperty.all<Color>(CustomColors.white),
                     ),
                     onPressed: () async {
-                      context.read(selectedHabitIndexProvider).state = 0;
                       await context
                           .read(habitControllerProvider.notifier)
                           .archive(habit.value);
-                      Navigator.of(context).pop();
+                      Navigator.of(context).pop(true);
                     },
                     child: Text("Архивировать"),
                   ),
