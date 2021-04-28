@@ -1,12 +1,9 @@
-import 'dart:math';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
-import 'package:yaxxxta/widgets/bottom_nav.dart';
 import 'package:yaxxxta/widgets/habit_performing_calendar.dart';
 import 'package:yaxxxta/widgets/pagination.dart';
 import 'package:yaxxxta/widgets/perform_habit_btn.dart';
@@ -17,8 +14,13 @@ import '../routes.dart';
 class CalendarPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    var initialIndex = ModalRoute.of(context)!.settings.arguments as int? ?? 0;
-    var currentIndex = useState(initialIndex);
+    var currentIndex = useProvider(selectedHabitIndexProvider).state;
+
+    var controller = useState(SwiperController());
+    useValueChanged<int, void>(currentIndex, (_, __) {
+      if (currentIndex == controller.value.index) return;
+      controller.value.move(currentIndex);
+    });
 
     var vms = useProvider(habitVMsProvider);
 
@@ -27,7 +29,7 @@ class CalendarPage extends HookWidget {
         appBar: AppBar(
           title: HabitPagination(
             vms: vms,
-            currentIndex: currentIndex.value,
+            currentIndex: currentIndex,
           ),
           centerTitle: true,
           actions: [
@@ -51,14 +53,14 @@ class CalendarPage extends HookWidget {
                 : Icon(Icons.account_circle),
           ),
         ),
-        body: Stack(
-          children: [
-            if (vms.isEmpty)
-              Center(child: Text("Привычки не найдены"))
-            else ...[
-              Swiper(
-                onIndexChanged: (index) => currentIndex.value = index,
-                index: currentIndex.value,
+        body: vms.isEmpty
+            ? Center(child: Text("Привычки не найдены"))
+            : Swiper(
+                controller: controller.value,
+                onIndexChanged: (index) {
+                  print("onIndexChanged");
+                  context.read(selectedHabitIndexProvider).state = index;
+                },
                 key: ValueKey(vms.length),
                 itemCount: vms.length,
                 itemBuilder: (context, index) {
@@ -78,6 +80,7 @@ class CalendarPage extends HookWidget {
                           children: [
                             Opacity(
                               opacity: 0,
+                              // opacity: 1,
                               child: FloatingActionButton(
                                 heroTag: null,
                                 onPressed: () {},
@@ -101,9 +104,6 @@ class CalendarPage extends HookWidget {
                   );
                 },
               ),
-            ],
-          ],
-        ),
       ),
     );
   }

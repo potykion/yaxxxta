@@ -37,11 +37,10 @@ class ListHabitPage extends HookWidget {
           title: Text(vm.habit.title),
           onTap: reorderEnabled.value
               ? null
-              : () => Navigator.pushReplacementNamed(
-                    context,
-                    Routes.calendar,
-                    arguments: index,
-                  ),
+              : () {
+                  context.read(selectedHabitIndexProvider).state = index;
+                  Navigator.pop(context);
+                },
           trailing:
               !kIsWeb && reorderEnabled.value ? Icon(Icons.drag_handle) : null,
         ),
