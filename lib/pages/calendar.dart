@@ -14,11 +14,27 @@ import '../routes.dart';
 class CalendarPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    var currentIndex = useState(0);
-
-    var controller = useState(SwiperController());
-
     var vms = useProvider(habitVMsProvider);
+
+    var currentIndex = useState(0);
+    var controller = useState(SwiperController());
+    // При открытии аппа скроллим на первую невыполненную привычку
+    useEffect(
+      () {
+        WidgetsBinding.instance!.addPostFrameCallback((_) async {
+          var nextIndex = getNextUnperformedHabitIndex(
+            vms,
+            initialIndex: 0,
+            includeInitial: true,
+          );
+          if (nextIndex != -1) {
+            currentIndex.value = nextIndex;
+            controller.value.move(nextIndex);
+          }
+        });
+      },
+      [],
+    );
 
     return WebPadding(
       child: Scaffold(
@@ -88,7 +104,19 @@ class CalendarPage extends HookWidget {
                                 child: Icon(Icons.edit),
                               ),
                             ),
-                            PerformHabitButton(vm: vm),
+                            PerformHabitButton(
+                              vm: vm,
+                              onPerform: () {
+                                var nextIndex = getNextUnperformedHabitIndex(
+                                  vms,
+                                  initialIndex: index,
+                                );
+                                if (nextIndex != -1) {
+                                  currentIndex.value = nextIndex;
+                                  controller.value.move(nextIndex);
+                                }
+                              },
+                            ),
                             FloatingActionButton(
                               heroTag: null,
                               onPressed: () async {

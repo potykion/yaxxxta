@@ -102,3 +102,15 @@ var habitVMsProvider = Provider(
           ..sort((vm1, vm2) => vm1.habit.order.compareTo(vm2.habit.order));
   },
 );
+
+int getNextUnperformedHabitIndex(
+  List<HabitVM> habits, {
+  int initialIndex = 0,
+  bool includeInitial = false,
+}) {
+  var index = habits.indexWhere(
+    (h) => !h.isPerformedToday,
+    includeInitial ? initialIndex : (initialIndex + 1) % habits.length,
+  );
+  return index == -1 ? habits.indexWhere((h) => !h.isPerformedToday) : index;
+}

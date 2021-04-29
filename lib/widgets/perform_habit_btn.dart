@@ -8,12 +8,11 @@ import '../theme.dart';
 class PerformHabitButton extends StatelessWidget {
   final HabitVM vm;
   final double size;
+  final void Function()? onPerform;
 
-  const PerformHabitButton({
-    Key? key,
-    required this.vm,
-    this.size = 90,
-  }) : super(key: key);
+  const PerformHabitButton(
+      {Key? key, required this.vm, this.size = 90, this.onPerform})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +34,10 @@ class PerformHabitButton extends StatelessWidget {
           child: FloatingActionButton(
             heroTag: null,
             child: Icon(Icons.done, size: size / 2),
-            onPressed: () => context
-                .read(habitControllerProvider.notifier)
-                .perform(vm.habit),
+            onPressed: () async {
+              await context.read(habitControllerProvider.notifier).perform(vm.habit);
+              if (onPerform != null) onPerform!();
+            },
           ),
         ),
       ],
