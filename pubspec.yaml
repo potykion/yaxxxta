@@ -87,6 +87,8 @@ dependencies:
   # Кнопуля аутентификации
   flutter_signin_button: ^2.0.0
 
+  # анимашки
+  confetti: ^0.6.0-nullsafety
 dev_dependencies:
   flutter_test:
     sdk: flutter
