@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vibration/vibration.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
 import 'package:yaxxxta/logic/core/utils/dt.dart';
@@ -78,9 +80,14 @@ class _HabitPerformingsFor35Days extends StatelessWidget {
           child: Material(
             color: Colors.transparent,
             child: InkWell(
-              onLongPress: () => context
-                  .read(habitControllerProvider.notifier)
-                  .perform(habit, date),
+              onLongPress: () async {
+                await context
+                    .read(habitControllerProvider.notifier)
+                    .perform(habit, date);
+                if (await Vibration.hasVibrator() ?? false) {
+                  Vibration.vibrate(duration: 100);
+                }
+              },
               child: Container(
                 width: 42,
                 height: 42,

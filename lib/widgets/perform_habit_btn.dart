@@ -24,7 +24,7 @@ class PerformHabitButton extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var confettiController = useMemoized(
-      () => ConfettiController(duration: Duration(milliseconds: 500)),
+      () => ConfettiController(duration: Duration(milliseconds: 600)),
     );
     useEffect(() => confettiController.dispose, []);
 
