@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
 import 'package:yaxxxta/pages/auth.dart';
 import 'package:yaxxxta/pages/calendar.dart';
 import 'package:yaxxxta/pages/loading.dart';
@@ -7,8 +6,6 @@ import 'package:yaxxxta/pages/loading.dart';
 import 'pages/form.dart';
 import 'pages/list.dart';
 import 'pages/settings.dart';
-
-part 'routes.gr.dart';
 
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',
@@ -22,5 +19,3 @@ part 'routes.gr.dart';
   ],
 )
 class $AppRouter {}
-
-final appRouter = AppRouter();

@@ -9,11 +9,14 @@ import 'package:yaxxxta/widgets/web_padding.dart';
 import '../theme.dart';
 
 class HabitFormPage extends HookWidget {
+  final Habit? initial;
+
+  HabitFormPage({this.initial});
+
   @override
   Widget build(BuildContext context) {
     var habit = useState(
-      (ModalRoute.of(context)!.settings.arguments as Habit?) ??
-          Habit.blank(userId: FirebaseAuth.instance.currentUser!.uid),
+      initial ?? Habit.blank(userId: FirebaseAuth.instance.currentUser!.uid),
     );
 
     var titleTec = useTextEditingController(text: habit.value.title);

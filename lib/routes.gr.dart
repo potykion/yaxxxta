@@ -4,93 +4,103 @@
 // AutoRouteGenerator
 // **************************************************************************
 
-import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
+import 'package:auto_route/auto_route.dart' as _i1;
+import 'package:flutter/material.dart' as _i2;
 
-import 'pages/auth.dart';
-import 'pages/calendar.dart';
-import 'pages/form.dart';
-import 'pages/list.dart';
-import 'pages/loading.dart';
-import 'pages/settings.dart';
+import 'logic/habit/models.dart' as _i9;
+import 'pages/auth.dart' as _i4;
+import 'pages/calendar.dart' as _i5;
+import 'pages/form.dart' as _i6;
+import 'pages/list.dart' as _i7;
+import 'pages/loading.dart' as _i3;
+import 'pages/settings.dart' as _i8;
 
-part of 'routes.dart';
-
-
-class AppRouter extends RootStackRouter {
-  AppRouter([GlobalKey<NavigatorState>? navigatorKey])
+class AppRouter extends _i1.RootStackRouter {
+  AppRouter([_i2.GlobalKey<_i2.NavigatorState>? navigatorKey])
       : super(navigatorKey);
 
   @override
-  final Map<String, PageFactory> pagesMap = {
+  final Map<String, _i1.PageFactory> pagesMap = {
     LoadingRoute.name: (routeData) {
-      return MaterialPageX<dynamic>(
-          routeData: routeData, child: LoadingPage());
+      return _i1.MaterialPageX<dynamic>(
+          routeData: routeData, child: _i3.LoadingPage());
     },
     AuthRoute.name: (routeData) {
-      return MaterialPageX<dynamic>(
-          routeData: routeData, child: AuthPage());
+      return _i1.MaterialPageX<dynamic>(
+          routeData: routeData, child: _i4.AuthPage());
     },
     CalendarRoute.name: (routeData) {
-      return MaterialPageX<dynamic>(
-          routeData: routeData, child: CalendarPage());
+      return _i1.MaterialPageX<dynamic>(
+          routeData: routeData, child: _i5.CalendarPage());
     },
     HabitFormRoute.name: (routeData) {
-      return MaterialPageX<dynamic>(
-          routeData: routeData, child: HabitFormPage());
+      final args = routeData.argsAs<HabitFormRouteArgs>(
+          orElse: () => const HabitFormRouteArgs());
+      return _i1.MaterialPageX<dynamic>(
+          routeData: routeData,
+          child: _i6.HabitFormPage(initial: args.initial));
     },
     ListHabitRoute.name: (routeData) {
-      return MaterialPageX<int>(
-          routeData: routeData, child: ListHabitPage());
+      return _i1.MaterialPageX<int>(
+          routeData: routeData, child: _i7.ListHabitPage());
     },
     SettingsRoute.name: (routeData) {
-      return MaterialPageX<dynamic>(
-          routeData: routeData, child: SettingsPage());
+      return _i1.MaterialPageX<dynamic>(
+          routeData: routeData, child: _i8.SettingsPage());
     }
   };
 
   @override
-  List<RouteConfig> get routes => [
-        RouteConfig(LoadingRoute.name, path: '/'),
-        RouteConfig(AuthRoute.name, path: '/auth-page'),
-        RouteConfig(CalendarRoute.name, path: '/calendar-page'),
-        RouteConfig(HabitFormRoute.name, path: '/habit-form-page'),
-        RouteConfig(ListHabitRoute.name, path: '/list-habit-page'),
-        RouteConfig(SettingsRoute.name, path: '/settings-page')
+  List<_i1.RouteConfig> get routes => [
+        _i1.RouteConfig(LoadingRoute.name, path: '/'),
+        _i1.RouteConfig(AuthRoute.name, path: '/auth-page'),
+        _i1.RouteConfig(CalendarRoute.name, path: '/calendar-page'),
+        _i1.RouteConfig(HabitFormRoute.name, path: '/habit-form-page'),
+        _i1.RouteConfig(ListHabitRoute.name, path: '/list-habit-page'),
+        _i1.RouteConfig(SettingsRoute.name, path: '/settings-page')
       ];
 }
 
-class LoadingRoute extends PageRouteInfo {
+class LoadingRoute extends _i1.PageRouteInfo {
   const LoadingRoute() : super(name, path: '/');
 
   static const String name = 'LoadingRoute';
 }
 
-class AuthRoute extends PageRouteInfo {
+class AuthRoute extends _i1.PageRouteInfo {
   const AuthRoute() : super(name, path: '/auth-page');
 
   static const String name = 'AuthRoute';
 }
 
-class CalendarRoute extends PageRouteInfo {
+class CalendarRoute extends _i1.PageRouteInfo {
   const CalendarRoute() : super(name, path: '/calendar-page');
 
   static const String name = 'CalendarRoute';
 }
 
-class HabitFormRoute extends PageRouteInfo {
-  const HabitFormRoute() : super(name, path: '/habit-form-page');
+class HabitFormRoute extends _i1.PageRouteInfo<HabitFormRouteArgs> {
+  HabitFormRoute({_i9.Habit? initial})
+      : super(name,
+            path: '/habit-form-page',
+            args: HabitFormRouteArgs(initial: initial));
 
   static const String name = 'HabitFormRoute';
 }
 
-class ListHabitRoute extends PageRouteInfo {
+class HabitFormRouteArgs {
+  const HabitFormRouteArgs({this.initial});
+
+  final _i9.Habit? initial;
+}
+
+class ListHabitRoute extends _i1.PageRouteInfo {
   const ListHabitRoute() : super(name, path: '/list-habit-page');
 
   static const String name = 'ListHabitRoute';
 }
 
-class SettingsRoute extends PageRouteInfo {
+class SettingsRoute extends _i1.PageRouteInfo {
   const SettingsRoute() : super(name, path: '/settings-page');
 
   static const String name = 'SettingsRoute';

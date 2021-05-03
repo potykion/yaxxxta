@@ -1,9 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
-import 'package:yaxxxta/theme.dart';
+import 'package:yaxxxta/widgets/habit_list_tile.dart';
 import 'package:yaxxxta/widgets/web_padding.dart';
 
 class ListHabitPage extends HookWidget {
@@ -11,33 +10,6 @@ class ListHabitPage extends HookWidget {
   Widget build(BuildContext context) {
     var vms = useState(context.read(habitVMsProvider));
     var reorderEnabled = useState(false);
-
-    Widget buildListTile(int index) {
-      var vm = vms.value[index];
-
-      return Container(
-        key: ValueKey(index),
-        decoration: BoxDecoration(
-          border: Border(
-            left: BorderSide(
-              color: vm.isPerformedToday
-                  ? CustomColors.green
-                  : CustomColors.lightGrey.withAlpha(31),
-              width: 8,
-            ),
-            bottom: BorderSide(color: CustomColors.lightGrey.withAlpha(31)),
-          ),
-        ),
-        child: ListTile(
-          title: Text(vm.habit.title),
-          onTap: reorderEnabled.value
-              ? null
-              : () => Navigator.of(context).pop(index),
-          trailing:
-              !kIsWeb && reorderEnabled.value ? Icon(Icons.drag_handle) : null,
-        ),
-      );
-    }
 
     reorder(int oldIndex, int newIndex) {
       var _items = [...vms.value];
@@ -61,8 +33,16 @@ class ListHabitPage extends HookWidget {
     }
 
     List<Widget> children = List.generate(vms.value.length, (index) => index)
-        .map(buildListTile)
+        .map(
+          (index) => HabitListTile(
+            vm: vms.value[index],
+            index: index,
+            onTap: () => Navigator.of(context).pop(index),
+            isReorder: reorderEnabled.value,
+          ),
+        )
         .toList();
+
     return WebPadding(
       child: Scaffold(
         appBar: AppBar(

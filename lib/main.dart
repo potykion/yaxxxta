@@ -1,9 +1,9 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/theme.dart';
+import 'routes.gr.dart';
 
-import 'routes.dart';
+final appRouter = AppRouter();
 
 /// Логгер провайдеров
 /// Нужно для логгирования изменений стейта
@@ -27,9 +27,8 @@ void main() async => runApp(
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MaterialApp.router(
-        routerDelegate: (appRouter as RootStackRouter).delegate(),
-        routeInformationParser:
-            (appRouter as RootStackRouter).defaultRouteParser(),
+        routerDelegate: (appRouter).delegate(),
+        routeInformationParser: (appRouter).defaultRouteParser(),
         debugShowCheckedModeBanner: false,
         theme: buildThemeData(context),
       );
