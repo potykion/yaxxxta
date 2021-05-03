@@ -8,6 +8,7 @@ analyzer:
   # Игнорим кодогенерацию
   exclude:
     - "**/*.g.dart"
+    - "**/*.gr.dart"
     - "**/*.freezed.dart"
     - "**/*.mocks.dart"
 

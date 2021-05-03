@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
@@ -24,7 +25,7 @@ class AuthPage extends StatelessWidget {
                   Buttons.Google,
                   onPressed: () async {
                     await signInByGoogle();
-                    Navigator.pushReplacementNamed(context, Routes.loading);
+                    AutoRouter.of(context).replace(LoadingRoute());
                   },
                 ),
               ],

@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/theme.dart';
@@ -25,10 +26,10 @@ void main() async => runApp(
 /// Приложуха
 class MyApp extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => MaterialApp(
-        routes: routes,
-        // home: PlaygroundPage(),
-        initialRoute: Routes.loading,
+  Widget build(BuildContext context) => MaterialApp.router(
+        routerDelegate: (appRouter as RootStackRouter).delegate(),
+        routeInformationParser:
+            (appRouter as RootStackRouter).defaultRouteParser(),
         debugShowCheckedModeBanner: false,
         theme: buildThemeData(context),
       );

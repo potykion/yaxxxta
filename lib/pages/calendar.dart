@@ -10,6 +10,7 @@ import 'package:yaxxxta/widgets/perform_habit_btn.dart';
 import 'package:yaxxxta/widgets/web_padding.dart';
 
 import '../routes.dart';
+import 'package:auto_route/auto_route.dart';
 
 class CalendarPage extends HookWidget {
   @override
@@ -47,13 +48,13 @@ class CalendarPage extends HookWidget {
           actions: [
             IconButton(
               icon: Icon(Icons.add),
-              onPressed: () => Navigator.of(context).pushNamed(Routes.form),
+              onPressed: () => AutoRouter.of(context).push(HabitFormRoute()),
             ),
             IconButton(
               icon: Icon(Icons.list),
               onPressed: () async {
                 var index =
-                    await Navigator.of(context).pushNamed(Routes.list) as int?;
+                    await AutoRouter.of(context).push(ListHabitRoute()) as int?;
                 if (index != null) {
                   currentIndex.value = index;
                   controller.value.move(index);
@@ -121,7 +122,7 @@ class CalendarPage extends HookWidget {
                               heroTag: null,
                               onPressed: () async {
                                 var archived = await Navigator.of(context)
-                                    .pushNamed(Routes.form,
+                                    .pushNamed(HabitFormRoute.name,
                                         arguments: vm.habit) as bool?;
                                 if (archived ?? false) {
                                   currentIndex.value = 0;

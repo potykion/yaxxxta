@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,7 @@ class LoadingPage extends HookWidget {
         var user = await FirebaseAuth.instance.authStateChanges().first;
 
         if (user?.isAnonymous ?? true) {
-          Navigator.pushReplacementNamed(context, Routes.auth);
+          AutoRouter.of(context).replace(AuthRoute());
           return;
         }
         // endregion
@@ -48,7 +49,7 @@ class LoadingPage extends HookWidget {
         await context.read(habitControllerProvider.notifier).load(user!.uid);
         // endregion
 
-        Navigator.pushReplacementNamed(context, Routes.calendar);
+        AutoRouter.of(context).replace(CalendarRoute());
       });
       return;
     }, []);

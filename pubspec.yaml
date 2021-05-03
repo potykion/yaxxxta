@@ -93,18 +93,20 @@ dependencies:
   # вибрация
   vibration: ^1.7.4-nullsafety.0
 
+  # роуты
+  auto_route: ^2.0.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   # кодген
   build_runner:
+  freezed:
+  auto_route_generator:
 
   # линтер
   effective_dart: ^1.3.1
-
-  # кодогенерация датаклассов
-  freezed:
 
   # моки: обычные, фаерстор специфик
   cloud_firestore_mocks: ^0.8.0

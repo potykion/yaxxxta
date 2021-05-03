@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:yaxxxta/widgets/bottom_nav.dart';
 import 'package:yaxxxta/widgets/web_padding.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -10,8 +9,6 @@ class SettingsPage extends StatelessWidget {
         body: Center(
           child: Text("SettingsPage"),
         ),
-        bottomNavigationBar: MyBottomNav(),
-
       ),
     );
   }
