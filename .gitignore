@@ -43,3 +43,8 @@ app.*.map.json
 # Hive
 *_test.lock
 *_test.hive
+
+# upload-keystore.jks
+*.jks
+
+.firebase

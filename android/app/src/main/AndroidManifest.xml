@@ -2,6 +2,7 @@
     package="dev.palka.yaxxxta">
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="com.android.vending.BILLING" />
+    <uses-permission android:name="com.android.vending.INTERNET" />
 
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
