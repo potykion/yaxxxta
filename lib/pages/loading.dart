@@ -9,6 +9,7 @@ import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:yaxxxta/logic/web/controllers.dart';
 import 'package:yaxxxta/widgets/web_padding.dart';
 import 'package:yaxxxta/routes.gr.dart';
 
@@ -48,7 +49,10 @@ class LoadingPage extends HookWidget {
         await context.read(habitControllerProvider.notifier).load(user!.uid);
         // endregion
 
-        AutoRouter.of(context).replace(CalendarRoute());
+        webContentLoaded = true;
+
+        AutoRouter.of(context)
+            .replace(HabitRouter(children: [CalendarRoute()]));
       });
       return;
     }, []);

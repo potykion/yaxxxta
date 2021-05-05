@@ -3,6 +3,7 @@ import 'package:yaxxxta/pages/auth.dart';
 import 'package:yaxxxta/pages/calendar.dart';
 import 'package:yaxxxta/pages/loading.dart';
 
+import 'logic/web/controllers.dart';
 import 'pages/form.dart';
 import 'pages/list.dart';
 import 'pages/settings.dart';
@@ -10,12 +11,20 @@ import 'pages/settings.dart';
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',
   routes: <AutoRoute>[
-    AutoRoute<dynamic>(page: LoadingPage, initial: true),
-    AutoRoute<dynamic>(page: AuthPage),
-    AutoRoute<dynamic>(page: CalendarPage),
-    AutoRoute<dynamic>(page: HabitFormPage),
-    AutoRoute<int>(page: ListHabitPage),
-    AutoRoute<dynamic>(page: SettingsPage),
+    AutoRoute<dynamic>(path: "/loading", page: LoadingPage, initial: true),
+    AutoRoute<dynamic>(path: "/auth", page: AuthPage),
+    AutoRoute<dynamic>(
+      page: EmptyRouterPage,
+      guards: [WebContentLoadedGuard],
+      name: "HabitRouter",
+      path: "/habits",
+      children: [
+        AutoRoute<dynamic>(path: "calendar", page: CalendarPage),
+        AutoRoute<dynamic>(path: "form", page: HabitFormPage),
+        AutoRoute<int>(path: "list", page: ListHabitPage),
+        AutoRoute<dynamic>(path: "settings", page: SettingsPage),
+      ],
+    ),
   ],
 )
 class $AppRouter {}
