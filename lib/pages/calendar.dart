@@ -26,6 +26,23 @@ class CalendarWebPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var selectedHabitIndex = useProvider(_selectedHabitIndexProvider).state;
+
+    var pageController =
+        useMemoized(() => PageController(initialPage: selectedHabitIndex));
+    useEffect(() {
+      updateIndex() {
+        context.read(_selectedHabitIndexProvider).state =
+            pageController.page!.toInt();
+      }
+
+      pageController.addListener(updateIndex);
+      return () => pageController.removeListener(updateIndex);
+    }, []);
+    useValueChanged<int, void>(selectedHabitIndex, (_, __) {
+      if (selectedHabitIndex == pageController.page) return;
+      pageController.jumpToPage(selectedHabitIndex);
+    });
+
     var vms = useProvider(habitVMsProvider);
 
     List<Widget> children = List.generate(vms.length, (index) => index)
@@ -35,6 +52,7 @@ class CalendarWebPage extends HookWidget {
             index: index,
             onTap: () =>
                 context.read(_selectedHabitIndexProvider).state = index,
+            isSelected: selectedHabitIndex == index,
           ),
         )
         .toList();
@@ -46,7 +64,23 @@ class CalendarWebPage extends HookWidget {
           Flexible(child: ListView(children: children)),
           VerticalDivider(),
           Flexible(
-            child: HabitPerformingCard(vm: vms[selectedHabitIndex]),
+            child: PageView.builder(
+              itemCount: vms.length,
+              scrollDirection: Axis.vertical,
+              controller: pageController,
+              itemBuilder: (_, index) => HabitPerformingCard(
+                vm: vms[index],
+                onPerform: () {
+                  var nextIndex = getNextUnperformedHabitIndex(
+                    vms,
+                    initialIndex: index,
+                  );
+                  if (nextIndex != -1) {
+                    context.read(_selectedHabitIndexProvider).state = nextIndex;
+                  }
+                },
+              ),
+            ),
             flex: 3,
           ),
         ],

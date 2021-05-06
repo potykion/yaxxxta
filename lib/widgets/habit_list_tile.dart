@@ -8,6 +8,7 @@ class HabitListTile extends StatelessWidget {
   final int index;
   final void Function() onTap;
   final bool isReorder;
+  final bool isSelected;
 
   const HabitListTile({
     Key? key,
@@ -15,6 +16,7 @@ class HabitListTile extends StatelessWidget {
     required this.index,
     required this.onTap,
     this.isReorder = false,
+    this.isSelected = false,
   }) : super(key: key);
 
   @override
@@ -24,9 +26,11 @@ class HabitListTile extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border(
           left: BorderSide(
-            color: vm.isPerformedToday
-                ? CustomColors.green
-                : CustomColors.lightGrey.withAlpha(31),
+            color: isSelected
+                ? CustomColors.yellow
+                : vm.isPerformedToday
+                    ? CustomColors.green
+                    : CustomColors.lightGrey.withAlpha(31),
             width: 8,
           ),
           bottom: BorderSide(color: CustomColors.lightGrey.withAlpha(31)),

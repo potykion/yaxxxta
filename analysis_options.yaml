@@ -22,3 +22,4 @@ linter:
     directives_ordering: false
     prefer_relative_imports: false
     avoid_catching_errors: false
+    prefer_function_declarations_over_variables: false

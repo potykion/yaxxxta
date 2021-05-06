@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vibration/vibration.dart';
@@ -8,27 +10,44 @@ import 'package:yaxxxta/logic/habit/models.dart';
 import 'package:yaxxxta/logic/core/utils/dt.dart';
 import 'package:yaxxxta/logic/habit/vms.dart';
 
-class HabitPerformingCalendar extends StatelessWidget {
+class HabitPerformingCalendar extends HookWidget {
+  final HabitVM vm;
+
+  final bool showScrollbar;
+
   const HabitPerformingCalendar({
     Key? key,
     required this.vm,
+    this.showScrollbar = kIsWeb,
   }) : super(key: key);
-
-  final HabitVM vm;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 250,
-      child: PageView.builder(
-        scrollDirection: Axis.vertical,
-        itemBuilder: (context, index) => _HabitPerformingsFor35Days(
-          from: DateTime.now().subtract(Duration(days: 35 * index)),
-          performings: vm.performings,
-          habit: vm.habit,
-        ),
+    var scrollController = useMemoized(() => PageController());
+
+
+    Widget pv = PageView.builder(
+
+      controller: scrollController,
+      itemCount: 12,
+      scrollDirection: Axis.vertical,
+      itemBuilder: (context, index) => _HabitPerformingsFor35Days(
+        from: DateTime.now().subtract(Duration(days: 35 * index)),
+        performings: vm.performings,
+        habit: vm.habit,
       ),
     );
+
+    if (showScrollbar) {
+      pv = Scrollbar(
+        controller: scrollController,
+        child: pv,
+        isAlwaysShown: true,
+        // showTrackOnHover: true,
+      );
+    }
+
+    return SizedBox(height: 250, width: 380, child: pv,);
   }
 }
 

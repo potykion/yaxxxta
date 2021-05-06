@@ -36,7 +36,8 @@ class LoadingPage extends HookWidget {
 
         loadingTextState.value = "Грузим данные о юзере...";
         // region
-        var user = await FirebaseAuth.instance.authStateChanges().first;
+        var user = FirebaseAuth.instance.currentUser ??
+            await FirebaseAuth.instance.authStateChanges().first;
 
         if (user?.isAnonymous ?? true) {
           AutoRouter.of(context).replace(AuthRoute());

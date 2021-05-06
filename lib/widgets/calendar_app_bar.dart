@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import '../routes.gr.dart';
 import 'user_avatar.dart';
 
@@ -13,9 +14,12 @@ AppBar buildCalendarAppBar(
     actions: [
       Padding(
         padding: const EdgeInsets.all(12.0),
-        child: GestureDetector(
-          onTap: () => AutoRouter.of(context).push(SettingsRoute()),
-          child: UserAvatar(),
+        child: MouseRegion(
+          cursor: SystemMouseCursors.click,
+          child: GestureDetector(
+            onTap: () => AutoRouter.of(context).push(SettingsRoute()),
+            child: UserAvatar(),
+          ),
         ),
       ),
       IconButton(
@@ -35,4 +39,3 @@ class Logo extends StatelessWidget {
         child: Image(image: AssetImage("assets/icon/app_icon.png")),
       );
 }
-
