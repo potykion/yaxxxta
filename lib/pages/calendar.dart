@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:yaxxxta/logic/core/controllers.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:yaxxxta/widgets/habit_list_tile.dart';
 import 'package:yaxxxta/widgets/habit_performing_card.dart';
@@ -10,6 +13,7 @@ import 'package:yaxxxta/widgets/web_padding.dart';
 import 'package:yaxxxta/routes.gr.dart';
 import 'package:yaxxxta/widgets/calendar_app_bar.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class CalendarPage extends StatelessWidget {
   @override
@@ -89,6 +93,17 @@ class CalendarWebPage extends HookWidget {
   }
 }
 
+var _adProvider = Provider.family(
+  (ref, __) => BannerAd(
+    adUnitId: ref.read(isPhysicalDeviceProvider).state
+        ? "ca-app-pub-6011780463667583/9890116434"
+        : BannerAd.testAdUnitId,
+    size: AdSize.banner,
+    request: AdRequest(),
+    listener: AdListener(),
+  )..load(),
+);
+
 class CalendarAppPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
@@ -148,22 +163,32 @@ class CalendarAppPage extends HookWidget {
                   itemBuilder: (context, index) {
                     var vm = vms[index];
 
-                    return HabitPerformingCard(
-                      vm: vm,
-                      onPerform: () {
-                        var nextIndex = getNextUnperformedHabitIndex(
-                          vms,
-                          initialIndex: index,
-                        );
-                        if (nextIndex != -1) {
-                          currentIndex.value = nextIndex;
-                          controller.value.move(nextIndex);
-                        }
-                      },
-                      onArchive: () {
-                        currentIndex.value = 0;
-                        controller.value.move(0);
-                      },
+                    return Column(
+                      children: [
+                        Expanded(
+                          child: HabitPerformingCard(
+                            vm: vm,
+                            onPerform: () {
+                              var nextIndex = getNextUnperformedHabitIndex(
+                                vms,
+                                initialIndex: index,
+                              );
+                              if (nextIndex != -1) {
+                                currentIndex.value = nextIndex;
+                                controller.value.move(nextIndex);
+                              }
+                            },
+                            onArchive: () {
+                              currentIndex.value = 0;
+                              controller.value.move(0);
+                            },
+                          ),
+                        ),
+                        Container(
+                          height: 50,
+                          child: AdWidget(ad: context.read(_adProvider(index))),
+                        ),
+                      ],
                     );
                   },
                 )
