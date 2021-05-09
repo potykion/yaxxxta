@@ -1,21 +1,17 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
-import 'package:yaxxxta/logic/core/controllers.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yaxxxta/logic/web/controllers.dart';
 import 'package:yaxxxta/widgets/web_padding.dart';
 import 'package:yaxxxta/routes.gr.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 /// Страничка, на которой подгружается все необходимое
 class LoadingPage extends HookWidget {
@@ -37,13 +33,6 @@ class LoadingPage extends HookWidget {
         /// фаер-бейз
         await Firebase.initializeApp();
 
-        /// рекламка
-        if (!kIsWeb) {
-          await MobileAds.instance.initialize();
-
-          context.read(isPhysicalDeviceProvider).state =
-              (await DeviceInfoPlugin().androidInfo).isPhysicalDevice ?? false;
-        }
         // endregion
 
         loadingTextState.value = "Грузим данные о юзере...";

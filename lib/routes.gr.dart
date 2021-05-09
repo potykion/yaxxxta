@@ -10,7 +10,7 @@ import 'package:flutter/material.dart' as _i2;
 import 'logic/habit/models.dart' as _i10;
 import 'logic/web/controllers.dart' as _i3;
 import 'pages/auth.dart' as _i5;
-import 'pages/calendar.dart' as _i6;
+import 'pages/calendar/calendar.dart' as _i6;
 import 'pages/form.dart' as _i7;
 import 'pages/list.dart' as _i8;
 import 'pages/loading.dart' as _i4;

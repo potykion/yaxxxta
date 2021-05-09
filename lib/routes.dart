@@ -1,9 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:yaxxxta/pages/auth.dart';
-import 'package:yaxxxta/pages/calendar.dart';
 import 'package:yaxxxta/pages/loading.dart';
 
 import 'logic/web/controllers.dart';
+import 'pages/calendar/calendar.dart';
 import 'pages/form.dart';
 import 'pages/list.dart';
 import 'pages/settings.dart';
