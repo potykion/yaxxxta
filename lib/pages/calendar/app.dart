@@ -92,7 +92,22 @@ class CalendarAppPage extends HookWidget {
                 ),
                 Swiper(
                   controller: controller.value,
-                  onIndexChanged: (index) => currentIndex.value = index,
+                  onIndexChanged: (newIndex) {
+                    if (vms[newIndex].isPerformedToday &&
+                        vms.any((vm) => !vm.isPerformedToday)) {
+                      var isSwipeLeft = (currentIndex.value == vms.length - 1 &&
+                              newIndex == 0) ||
+                          (currentIndex.value < newIndex);
+
+                      if (isSwipeLeft) {
+                        controller.value.next();
+                      } else {
+                        controller.value.previous();
+                      }
+                    } else {
+                      currentIndex.value = newIndex;
+                    }
+                  },
                   key: ValueKey(vms.length),
                   itemCount: vms.length,
                   itemBuilder: (context, index) {
