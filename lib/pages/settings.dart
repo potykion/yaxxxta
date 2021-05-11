@@ -31,7 +31,7 @@ class SettingsPage extends HookWidget {
                   .insertOrUpdate(
                     swipeToNextUnperformed: newSwipeToNextUnperformed,
                   ),
-              activeColor: Theme.of(context).,
+              activeColor: Theme.of(context).primaryColor,
             ),
             if (!kIsWeb)
               ListTile(
