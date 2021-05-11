@@ -45,7 +45,7 @@ class CalendarAppPage extends HookWidget {
     var vms = useProvider(habitVMsProvider);
 
     var currentIndex = useState(0);
-    var controller = useState(SwiperController());
+    var controller = useMemoized(() => SwiperController());
     // При открытии аппа скроллим на первую невыполненную привычку
     useEffect(
       () {
@@ -57,7 +57,7 @@ class CalendarAppPage extends HookWidget {
           );
           if (nextIndex != -1) {
             currentIndex.value = nextIndex;
-            controller.value.move(nextIndex);
+            controller.move(nextIndex);
           }
         });
       },
@@ -73,7 +73,7 @@ class CalendarAppPage extends HookWidget {
                 await AutoRouter.of(context).push(ListHabitRoute()) as int?;
             if (index != null) {
               currentIndex.value = index;
-              controller.value.move(index);
+              controller.move(index);
             }
           },
         ),
@@ -91,22 +91,27 @@ class CalendarAppPage extends HookWidget {
                   ),
                 ),
                 Swiper(
-                  controller: controller.value,
+                  controller: controller,
                   onIndexChanged: (newIndex) {
-                    if (vms[newIndex].isPerformedToday &&
-                        vms.any((vm) => !vm.isPerformedToday)) {
+                    if (currentIndex.value == newIndex) return;
+
+                    var swipeToNextUnperformed =
+                        vms[newIndex].isPerformedToday &&
+                            vms.any((vm) => !vm.isPerformedToday);
+                    if (swipeToNextUnperformed) {
                       var isSwipeLeft = (currentIndex.value == vms.length - 1 &&
                               newIndex == 0) ||
                           (currentIndex.value < newIndex);
 
                       if (isSwipeLeft) {
-                        controller.value.next();
+                        controller.next();
                       } else {
-                        controller.value.previous();
+                        controller.previous();
                       }
-                    } else {
-                      currentIndex.value = newIndex;
+                      return;
                     }
+
+                    currentIndex.value = newIndex;
                   },
                   key: ValueKey(vms.length),
                   itemCount: vms.length,
@@ -125,12 +130,12 @@ class CalendarAppPage extends HookWidget {
                               );
                               if (nextIndex != -1) {
                                 currentIndex.value = nextIndex;
-                                controller.value.move(nextIndex);
+                                controller.move(nextIndex);
                               }
                             },
                             onArchive: () {
                               currentIndex.value = 0;
-                              controller.value.move(0);
+                              controller.move(0);
                             },
                           ),
                         ),
