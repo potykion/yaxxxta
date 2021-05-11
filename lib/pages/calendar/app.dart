@@ -23,17 +23,17 @@ FutureProvider<InitializationStatus?> _adsInitializedProvider = FutureProvider(
 ProviderFamily<BannerAd?, int> _adProvider = Provider.family(
   (ref, __) => ref.watch(_adsInitializedProvider).maybeWhen(
         data: (status) => status != null
-            ? (BannerAd(
-                adUnitId: ref.watch(_isPhysicalDeviceProvider).maybeWhen(
-                      data: (isPhysicalDevice) => isPhysicalDevice
-                          ? "ca-app-pub-6011780463667583/9890116434"
-                          : BannerAd.testAdUnitId,
-                      orElse: () => BannerAd.testAdUnitId,
-                    ),
-                size: AdSize.banner,
-                request: AdRequest(),
-                listener: AdListener(),
-              )..load())
+            ? ref.watch(_isPhysicalDeviceProvider).maybeWhen(
+                  data: (isPhysicalDevice) => BannerAd(
+                    adUnitId: isPhysicalDevice
+                        ? "ca-app-pub-6011780463667583/9890116434"
+                        : BannerAd.testAdUnitId,
+                    size: AdSize.banner,
+                    request: AdRequest(),
+                    listener: AdListener(),
+                  )..load(),
+                  orElse: () => null,
+                )
             : null,
         orElse: () => null,
       ),
