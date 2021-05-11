@@ -7,8 +7,8 @@
 import 'package:auto_route/auto_route.dart' as _i1;
 import 'package:flutter/material.dart' as _i2;
 
+import 'logic/core/web/controllers.dart' as _i3;
 import 'logic/habit/models.dart' as _i10;
-import 'logic/web/controllers.dart' as _i3;
 import 'pages/auth.dart' as _i5;
 import 'pages/calendar/calendar.dart' as _i6;
 import 'pages/form.dart' as _i7;

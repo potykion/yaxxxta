@@ -24,6 +24,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # утилитки для работы с коллекциями
+  collection: ^1.15.0
+
   # лист-вью с отрицательным скролом
   indexed_list_view: ^2.0.0
 

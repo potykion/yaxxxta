@@ -7,9 +7,10 @@ import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+import 'package:yaxxxta/logic/app_user_info/controllers.dart';
+import 'package:yaxxxta/logic/core/web/controllers.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:yaxxxta/logic/web/controllers.dart';
 import 'package:yaxxxta/widgets/web_padding.dart';
 import 'package:yaxxxta/routes.gr.dart';
 
@@ -44,11 +45,15 @@ class LoadingPage extends HookWidget {
           AutoRouter.of(context).replace(AuthRoute());
           return;
         }
+
+        await context
+            .read(appUserInfoControllerProvider.notifier)
+            .load(user!.uid);
         // endregion
 
         loadingTextState.value = "Грузим привычки...";
         // region
-        await context.read(habitControllerProvider.notifier).load(user!.uid);
+        await context.read(habitControllerProvider.notifier).load(user.uid);
         // endregion
 
         webContentLoaded = true;

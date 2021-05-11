@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:yaxxxta/logic/web/controllers.dart';
 import 'package:yaxxxta/theme.dart';
+import 'logic/core/web/controllers.dart';
 import 'routes.gr.dart';
 
 final appRouter = AppRouter(webContentLoadedGuard: WebContentLoadedGuard());

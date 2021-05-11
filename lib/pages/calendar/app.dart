@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:yaxxxta/logic/app_user_info/controllers.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:yaxxxta/widgets/habit_performing_card.dart';
 import 'package:yaxxxta/widgets/pagination.dart';
@@ -44,20 +45,24 @@ class CalendarAppPage extends HookWidget {
   Widget build(BuildContext context) {
     var vms = useProvider(habitVMsProvider);
 
+    var swipeToNextUnperformed = useProvider(swipeToNextUnperformedProvider);
+
     var currentIndex = useState(0);
     var controller = useMemoized(() => SwiperController());
     // При открытии аппа скроллим на первую невыполненную привычку
     useEffect(
       () {
         WidgetsBinding.instance!.addPostFrameCallback((_) async {
-          var nextIndex = getNextUnperformedHabitIndex(
-            vms,
-            initialIndex: 0,
-            includeInitial: true,
-          );
-          if (nextIndex != -1) {
-            currentIndex.value = nextIndex;
-            controller.move(nextIndex);
+          if (swipeToNextUnperformed) {
+            var nextIndex = getNextUnperformedHabitIndex(
+              vms,
+              initialIndex: 0,
+              includeInitial: true,
+            );
+            if (nextIndex != -1) {
+              currentIndex.value = nextIndex;
+              controller.move(nextIndex);
+            }
           }
         });
       },
@@ -95,20 +100,22 @@ class CalendarAppPage extends HookWidget {
                   onIndexChanged: (newIndex) {
                     if (currentIndex.value == newIndex) return;
 
-                    var swipeToNextUnperformed =
-                        vms[newIndex].isPerformedToday &&
-                            vms.any((vm) => !vm.isPerformedToday);
                     if (swipeToNextUnperformed) {
-                      var isSwipeLeft = (currentIndex.value == vms.length - 1 &&
-                              newIndex == 0) ||
-                          (currentIndex.value < newIndex);
+                      var canSwipe = vms[newIndex].isPerformedToday &&
+                          vms.any((vm) => !vm.isPerformedToday);
+                      if (canSwipe) {
+                        var isSwipeLeft =
+                            (currentIndex.value == vms.length - 1 &&
+                                    newIndex == 0) ||
+                                (currentIndex.value < newIndex);
 
-                      if (isSwipeLeft) {
-                        controller.next();
-                      } else {
-                        controller.previous();
+                        if (isSwipeLeft) {
+                          controller.next();
+                        } else {
+                          controller.previous();
+                        }
+                        return;
                       }
-                      return;
                     }
 
                     currentIndex.value = newIndex;
@@ -124,13 +131,15 @@ class CalendarAppPage extends HookWidget {
                           child: HabitPerformingCard(
                             vm: vm,
                             onPerform: () {
-                              var nextIndex = getNextUnperformedHabitIndex(
-                                vms,
-                                initialIndex: index,
-                              );
-                              if (nextIndex != -1) {
-                                currentIndex.value = nextIndex;
-                                controller.move(nextIndex);
+                              if (swipeToNextUnperformed) {
+                                var nextIndex = getNextUnperformedHabitIndex(
+                                  vms,
+                                  initialIndex: index,
+                                );
+                                if (nextIndex != -1) {
+                                  currentIndex.value = nextIndex;
+                                  controller.move(nextIndex);
+                                }
                               }
                             },
                             onArchive: () {
