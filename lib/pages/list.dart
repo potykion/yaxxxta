@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
-import 'package:yaxxxta/widgets/habit_list_tile.dart';
-import 'package:yaxxxta/widgets/web_padding.dart';
+import 'package:yaxxxta/ui/calendar/core/habit_list_tile.dart';
 
 class ListHabitPage extends HookWidget {
   @override
@@ -43,27 +42,25 @@ class ListHabitPage extends HookWidget {
         )
         .toList();
 
-    return WebPadding(
-      child: Scaffold(
-        appBar: AppBar(
-          actions: [
-            IconButton(
-              icon:
-                  reorderEnabled.value ? Icon(Icons.done) : Icon(Icons.reorder),
-              onPressed: () {
-                if (reorderEnabled.value) {
-                  doneReorder();
-                }
+    return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            icon:
+                reorderEnabled.value ? Icon(Icons.done) : Icon(Icons.reorder),
+            onPressed: () {
+              if (reorderEnabled.value) {
+                doneReorder();
+              }
 
-                reorderEnabled.value = !reorderEnabled.value;
-              },
-            ),
-          ],
-        ),
-        body: reorderEnabled.value
-            ? ReorderableListView(children: children, onReorder: reorder)
-            : ListView(children: children),
+              reorderEnabled.value = !reorderEnabled.value;
+            },
+          ),
+        ],
       ),
+      body: reorderEnabled.value
+          ? ReorderableListView(children: children, onReorder: reorder)
+          : ListView(children: children),
     );
   }
 }

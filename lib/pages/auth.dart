@@ -4,33 +4,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:yaxxxta/widgets/web_padding.dart';
 import 'package:yaxxxta/routes.gr.dart';
 
 class AuthPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return WebPadding(
-      child: Scaffold(
-          body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text("Надо бы войти"),
-            SizedBox(height: 10),
-            SignInButton(
-              Buttons.Google,
-              onPressed: () async {
-                await signInByGoogle();
-                AutoRouter.of(context).replace(LoadingRoute());
-              },
-            ),
-          ],
-        ),
-      )),
-    );
+    return Scaffold(
+        body: Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text("Надо бы войти"),
+          SizedBox(height: 10),
+          SignInButton(
+            Buttons.Google,
+            onPressed: () async {
+              await signInByGoogle();
+              AutoRouter.of(context).replace(LoadingRoute());
+            },
+          ),
+        ],
+      ),
+    ));
   }
 
   Future<User> signInByGoogle() async {

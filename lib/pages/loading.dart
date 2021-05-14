@@ -11,7 +11,6 @@ import 'package:yaxxxta/logic/app_user_info/controllers.dart';
 import 'package:yaxxxta/logic/core/web/controllers.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:yaxxxta/widgets/web_padding.dart';
 import 'package:yaxxxta/routes.gr.dart';
 
 /// Страничка, на которой подгружается все необходимое
@@ -64,18 +63,16 @@ class LoadingPage extends HookWidget {
       return;
     }, []);
 
-    return WebPadding(
-      child: Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              CircularProgressIndicator(),
-              SizedBox(height: 8),
-              Text(loadingTextState.value),
-            ],
-          ),
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(height: 8),
+            Text(loadingTextState.value),
+          ],
         ),
       ),
     );
