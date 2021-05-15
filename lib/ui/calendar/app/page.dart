@@ -29,6 +29,7 @@ var _adProvider = Provider.family(
                   data: (isPhysicalDevice) => BannerAd(
                     adUnitId: isPhysicalDevice
                         ? "ca-app-pub-6011780463667583/9890116434"
+                        // ? BannerAd.testAdUnitId
                         : BannerAd.testAdUnitId,
                     size: AdSize.banner,
                     request: AdRequest(),
@@ -44,6 +45,8 @@ var _adProvider = Provider.family(
 class CalendarAppPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
+    print(DateTime.now());
+
     var vms = useProvider(habitVMsProvider);
     var swipeToNextUnperformed = useProvider(swipeToNextUnperformedProvider);
 
@@ -56,7 +59,7 @@ class CalendarAppPage extends HookWidget {
           swipeToNextUnperformed ? getNextUnperformedHabitIndex(vms) : 0;
       if (nextIndex != 0 && nextIndex != -1) {
         WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-          controller.next(animation: false);
+          controller.next();
         });
       }
     }, []);
@@ -148,15 +151,13 @@ class CalendarAppPage extends HookWidget {
                             );
                       if (nextIndex != -1 && nextIndex != index) {
                         currentIndex.value = index;
-                        controller.move(nextIndex, animation: false);
-                        // if (swipe == Swipe.rightToLeft) {
-                        //
-                        // } else {
-                        //   controller.previous(animation: false);
-                        // }
+                        if (swipe == Swipe.rightToLeft) {
+                          controller.next();
+                        } else {
+                          controller.previous();
+                        }
                       } else {
                         currentIndex.value = index;
-                        // controller.move(index, animation: false);
                       }
                     } else {
                       currentIndex.value = index;
