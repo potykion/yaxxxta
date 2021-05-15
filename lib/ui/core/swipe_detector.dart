@@ -3,6 +3,11 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 enum Swipe { rightToLeft, leftToRight }
 
+Swipe createSwipe(int indexFrom, int indexTo, int length) {
+  if (indexFrom > indexTo) return Swipe.leftToRight;
+  return Swipe.rightToLeft;
+}
+
 class SwipeDetector extends HookWidget {
   final Widget Function(BuildContext context) builder;
   final void Function(Swipe swipe) onSwipe;

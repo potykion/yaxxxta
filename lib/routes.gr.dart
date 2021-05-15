@@ -39,8 +39,12 @@ class AppRouter extends _i1.RootStackRouter {
           routeData: routeData, child: const _i1.EmptyRouterPage());
     },
     CalendarRoute.name: (routeData) {
+      final args = routeData.argsAs<CalendarRouteArgs>(
+          orElse: () => const CalendarRouteArgs());
       return _i1.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i6.CalendarPage());
+          routeData: routeData,
+          child:
+              _i6.CalendarPage(key: args.key, initialIndex: args.initialIndex));
     },
     HabitFormRoute.name: (routeData) {
       final args = routeData.argsAs<HabitFormRouteArgs>(
@@ -95,10 +99,21 @@ class HabitRouter extends _i1.PageRouteInfo {
   static const String name = 'HabitRouter';
 }
 
-class CalendarRoute extends _i1.PageRouteInfo {
-  const CalendarRoute() : super(name, path: 'calendar');
+class CalendarRoute extends _i1.PageRouteInfo<CalendarRouteArgs> {
+  CalendarRoute({_i2.Key? key, int? initialIndex})
+      : super(name,
+            path: 'calendar',
+            args: CalendarRouteArgs(key: key, initialIndex: initialIndex));
 
   static const String name = 'CalendarRoute';
+}
+
+class CalendarRouteArgs {
+  const CalendarRouteArgs({this.key, this.initialIndex});
+
+  final _i2.Key? key;
+
+  final int? initialIndex;
 }
 
 class HabitFormRoute extends _i1.PageRouteInfo<HabitFormRouteArgs> {
