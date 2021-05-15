@@ -114,3 +114,20 @@ int getNextUnperformedHabitIndex(
   );
   return index == -1 ? habits.indexWhere((h) => !h.isPerformedToday) : index;
 }
+
+int getPreviousUnperformedHabitIndex(
+  List<HabitVM> habits, {
+  int initialIndex = 0,
+}) {
+  var index = -1;
+
+  index = habits
+      .sublist(0, initialIndex)
+      .lastIndexWhere((h) => !h.isPerformedToday);
+
+  if (index == -1) {
+    index = habits.lastIndexWhere((h) => !h.isPerformedToday);
+  }
+
+  return index;
+}
