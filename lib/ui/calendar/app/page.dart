@@ -22,8 +22,8 @@ FutureProvider<InitializationStatus?> _adsInitializedProvider = FutureProvider(
   (_) async => kIsWeb ? null : MobileAds.instance.initialize(),
 );
 
-var _adProvider = Provider(
-  (ref) => ref.watch(_adsInitializedProvider).maybeWhen(
+var _adProvider = Provider.family(
+  (ref, __) => ref.watch(_adsInitializedProvider).maybeWhen(
         data: (status) => status != null
             ? ref.watch(_isPhysicalDeviceProvider).maybeWhen(
                   data: (isPhysicalDevice) => BannerAd(
@@ -47,16 +47,19 @@ class CalendarAppPage extends HookWidget {
     var vms = useProvider(habitVMsProvider);
     var swipeToNextUnperformed = useProvider(swipeToNextUnperformedProvider);
 
-    var currentIndexState = useState(
-      swipeToNextUnperformed ? getNextUnperformedHabitIndex(vms) : 0,
-    );
-    var currentIndex = currentIndexState.value;
-    setCurrentIndex(int newIndex) => currentIndexState.value = newIndex;
+    var currentIndex = useState(0);
 
-    var vm = vms[currentIndex];
+    var controller = useMemoized(() => SwiperController());
 
-    var ad = useProvider(_adProvider);
-
+    useEffect(() {
+      var nextIndex =
+          swipeToNextUnperformed ? getNextUnperformedHabitIndex(vms) : 0;
+      if (nextIndex != 0 && nextIndex != -1) {
+        WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+          controller.next(animation: false);
+        });
+      }
+    }, []);
 
     return Scaffold(
       appBar: buildCalendarAppBar(context, extraActions: [
@@ -66,7 +69,7 @@ class CalendarAppPage extends HookWidget {
             var index =
                 await AutoRouter.of(context).push(ListHabitRoute()) as int?;
             if (index != null) {
-              setCurrentIndex(index);
+              currentIndex.value = index;
             }
           },
         ),
@@ -80,57 +83,84 @@ class CalendarAppPage extends HookWidget {
                   top: 0,
                   child: HabitPagination(
                     vms: vms,
-                    currentIndex: currentIndex,
+                    currentIndex: currentIndex.value,
                   ),
                 ),
-                SwipeDetector(
-                  builder: (_) => Column(
-                    children: [
-                      Expanded(
-                        child: HabitPerformingCard(
-                          vm: vm,
-                          onPerform: () {
-                            if (swipeToNextUnperformed) {
-                              var nextIndex = getNextUnperformedHabitIndex(
-                                vms,
-                                initialIndex: currentIndex,
-                              );
-                              if (nextIndex != -1) {
-                                setCurrentIndex(nextIndex);
+                Swiper(
+                  controller: controller,
+                  itemBuilder: (BuildContext context, int index) {
+                    print(index);
+                    var vm = vms[index];
+
+                    return Column(
+                      children: [
+                        Expanded(
+                          child: HabitPerformingCard(
+                            vm: vm,
+                            onPerform: () {
+                              if (swipeToNextUnperformed) {
+                                var nextIndex = getNextUnperformedHabitIndex(
+                                  vms,
+                                  initialIndex: index,
+                                );
+                                if (nextIndex != -1) {
+                                  currentIndex.value = nextIndex;
+                                }
                               }
-                            }
-                          },
-                          onArchive: () => setCurrentIndex(0),
+                            },
+                            onArchive: () => currentIndex.value = 0,
+                          ),
                         ),
-                      ),
-                      Container(
-                        height: 50,
-                        child: ad != null
-                            ? AdWidget(ad: ad)
-                            : null,
-                      ),
-                    ],
-                  ),
-                  onSwipe: (swipe) {
+                        Consumer(
+                          builder: (context, watch, child) {
+                            var ad = watch(_adProvider(index));
+
+                            return Container(
+                              height: 50,
+                              child: ad != null ? AdWidget(ad: ad) : null,
+                            );
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                  itemCount: vms.length,
+                  onIndexChanged: (index) {
+                    if (index == currentIndex.value) return;
+
                     if (swipeToNextUnperformed) {
+                      var oldIndex = currentIndex.value;
+                      var swipe = index > oldIndex && index - oldIndex == 1 ||
+                              index == 0 && oldIndex == vms.length - 1
+                          ? Swipe.rightToLeft
+                          : Swipe.leftToRight;
+
                       var nextIndex = swipe == Swipe.rightToLeft
                           ? getNextUnperformedHabitIndex(
                               vms,
-                              initialIndex: currentIndex,
+                              initialIndex: index,
+                              includeInitial: true,
                             )
                           : getPreviousUnperformedHabitIndex(
                               vms,
-                              initialIndex: currentIndex,
+                              initialIndex: index,
+                              includeInitial: true,
                             );
-                      if (nextIndex != -1) {
-                        setCurrentIndex(nextIndex);
-                        return;
+                      if (nextIndex != -1 && nextIndex != index) {
+                        currentIndex.value = index;
+                        controller.move(nextIndex, animation: false);
+                        // if (swipe == Swipe.rightToLeft) {
+                        //
+                        // } else {
+                        //   controller.previous(animation: false);
+                        // }
+                      } else {
+                        currentIndex.value = index;
+                        // controller.move(index, animation: false);
                       }
+                    } else {
+                      currentIndex.value = index;
                     }
-                    setCurrentIndex(
-                      (currentIndex + (swipe == Swipe.rightToLeft ? 1 : -1)) %
-                          vms.length,
-                    );
                   },
                 ),
               ],

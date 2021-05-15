@@ -118,7 +118,12 @@ int getNextUnperformedHabitIndex(
 int getPreviousUnperformedHabitIndex(
   List<HabitVM> habits, {
   int initialIndex = 0,
+  bool includeInitial = false,
 }) {
+  if (includeInitial) {
+    if (!habits[initialIndex].isPerformedToday) return initialIndex;
+  }
+
   var index = -1;
 
   index = habits
