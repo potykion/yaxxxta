@@ -6,13 +6,13 @@ import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/app_user_info/controllers.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
-import 'package:yaxxxta/ui/core/swipe_detector.dart';
 import 'package:yaxxxta/widgets/habit_performing_card.dart';
 import 'package:yaxxxta/widgets/pagination.dart';
 import 'package:yaxxxta/routes.gr.dart';
 import 'package:yaxxxta/widgets/calendar_app_bar.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:yaxxxta/widgets/user_avatar.dart';
 
 FutureProvider<bool> _isPhysicalDeviceProvider = FutureProvider(
   (_) async => (await DeviceInfoPlugin().androidInfo).isPhysicalDevice ?? false,
@@ -28,8 +28,8 @@ var _adProvider = Provider.family(
             ? ref.watch(_isPhysicalDeviceProvider).maybeWhen(
                   data: (isPhysicalDevice) => BannerAd(
                     adUnitId: isPhysicalDevice
-                        ? "ca-app-pub-6011780463667583/9890116434"
-                        // ? BannerAd.testAdUnitId
+                        // ? "ca-app-pub-6011780463667583/9890116434"
+                        ? BannerAd.testAdUnitId
                         : BannerAd.testAdUnitId,
                     size: AdSize.banner,
                     request: AdRequest(),
@@ -45,126 +45,89 @@ var _adProvider = Provider.family(
 class CalendarAppPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    print(DateTime.now());
 
     var vms = useProvider(habitVMsProvider);
     var swipeToNextUnperformed = useProvider(swipeToNextUnperformedProvider);
 
-    var currentIndex = useState(0);
-
     var controller = useMemoized(() => SwiperController());
 
-    useEffect(() {
-      var nextIndex =
-          swipeToNextUnperformed ? getNextUnperformedHabitIndex(vms) : 0;
-      if (nextIndex != 0 && nextIndex != -1) {
-        WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-          controller.next();
-        });
-      }
-    }, []);
-
     return Scaffold(
-      appBar: buildCalendarAppBar(context, extraActions: [
-        IconButton(
+      appBar: AppBar(
+        leading: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: GestureDetector(
+            onTap: () => AutoRouter.of(context).push(SettingsRoute()),
+            child: UserAvatar(),
+          ),
+        ),
+        title: IconButton(
           icon: Icon(Icons.list),
           onPressed: () async {
             var index =
                 await AutoRouter.of(context).push(ListHabitRoute()) as int?;
             if (index != null) {
-              currentIndex.value = index;
+              controller.move(index);
             }
           },
         ),
-      ]),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () => AutoRouter.of(context).push(HabitFormRoute()),
+          ),
+        ].reversed.toList(),
+        // titleSpacing: 0,
+      ),
       body: vms.isEmpty
           ? Center(child: Text("Привычки не найдены"))
-          : Stack(
-              alignment: Alignment.center,
-              children: [
-                Positioned(
-                  top: 0,
-                  child: HabitPagination(
-                    vms: vms,
-                    currentIndex: currentIndex.value,
-                  ),
-                ),
-                Swiper(
-                  controller: controller,
-                  itemBuilder: (BuildContext context, int index) {
-                    print(index);
-                    var vm = vms[index];
+          : Swiper(
+              controller: controller,
+              itemBuilder: (BuildContext context, int index) {
+                var vm = vms[index];
 
-                    return Column(
-                      children: [
-                        Expanded(
-                          child: HabitPerformingCard(
-                            vm: vm,
-                            onPerform: () {
-                              if (swipeToNextUnperformed) {
-                                var nextIndex = getNextUnperformedHabitIndex(
-                                  vms,
-                                  initialIndex: index,
-                                );
-                                if (nextIndex != -1) {
-                                  currentIndex.value = nextIndex;
-                                }
+                return Stack(alignment: Alignment.center, children: [
+                  Column(
+                    children: [
+                      Expanded(
+                        child: HabitPerformingCard(
+                          vm: vm,
+                          onPerform: () {
+                            if (swipeToNextUnperformed) {
+                              var nextIndex = getNextUnperformedHabitIndex(
+                                vms,
+                                initialIndex: index,
+                              );
+                              if (nextIndex != -1) {
+                                controller.move(nextIndex);
                               }
-                            },
-                            onArchive: () => currentIndex.value = 0,
-                          ),
-                        ),
-                        Consumer(
-                          builder: (context, watch, child) {
-                            var ad = watch(_adProvider(index));
-
-                            return Container(
-                              height: 50,
-                              child: ad != null ? AdWidget(ad: ad) : null,
-                            );
+                            }
                           },
+                          onArchive: () => controller.move(0),
                         ),
-                      ],
-                    );
-                  },
-                  itemCount: vms.length,
-                  onIndexChanged: (index) {
-                    if (index == currentIndex.value) return;
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: HabitPagination(
+                          vms: vms,
+                          currentIndex: index,
+                        ),
+                      ),
+                      Consumer(
+                        builder: (context, watch, child) {
+                          var ad = watch(_adProvider(index));
 
-                    if (swipeToNextUnperformed) {
-                      var oldIndex = currentIndex.value;
-                      var swipe = index > oldIndex && index - oldIndex == 1 ||
-                              index == 0 && oldIndex == vms.length - 1
-                          ? Swipe.rightToLeft
-                          : Swipe.leftToRight;
-
-                      var nextIndex = swipe == Swipe.rightToLeft
-                          ? getNextUnperformedHabitIndex(
-                              vms,
-                              initialIndex: index,
-                              includeInitial: true,
-                            )
-                          : getPreviousUnperformedHabitIndex(
-                              vms,
-                              initialIndex: index,
-                              includeInitial: true,
-                            );
-                      if (nextIndex != -1 && nextIndex != index) {
-                        currentIndex.value = index;
-                        if (swipe == Swipe.rightToLeft) {
-                          controller.next();
-                        } else {
-                          controller.previous();
-                        }
-                      } else {
-                        currentIndex.value = index;
-                      }
-                    } else {
-                      currentIndex.value = index;
-                    }
-                  },
-                ),
-              ],
+                          return Container(
+                            height: ad != null ? 50 : 0,
+                            child: ad != null ? AdWidget(ad: ad) : null,
+                          );
+                        },
+                      ),
+                    ],
+                  )
+                ]);
+              },
+              itemCount: vms.length,
             ),
     );
   }
