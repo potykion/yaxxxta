@@ -60,7 +60,6 @@ class CalendarAppPage extends HookWidget {
           : HabitSwiper(
               controller: controller,
               builder: (context, index) {
-                print(index);
                 return Column(
                 children: [
                   Expanded(
