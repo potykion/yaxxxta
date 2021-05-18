@@ -21,16 +21,6 @@ class SettingsPage extends HookWidget {
             title: Text(FirebaseAuth.instance.currentUser!.displayName!),
             subtitle: Text("Бесплатный аккаунт"),
           ),
-          SwitchListTile(
-            value: swipeToNextUnperformed,
-            title: Text("Свайпать до невыполненной привычки"),
-            onChanged: (newSwipeToNextUnperformed) => context
-                .read(appUserInfoControllerProvider.notifier)
-                .insertOrUpdate(
-                  swipeToNextUnperformed: newSwipeToNextUnperformed,
-                ),
-            activeColor: Theme.of(context).primaryColor,
-          ),
           if (!kIsWeb)
             ListTile(
               title: Text("💻 Веб-Версия"),
