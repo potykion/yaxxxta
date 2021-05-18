@@ -79,18 +79,18 @@ class HabitSwiperController {
 
     if (nextIndex == -1 || nextIndex == indexToSwipe) return;
 
-    var prevIndex = currentIndex;
-    currentIndex = nextIndex;
-
-    print(prevIndex);
-    print(nextIndex);
-    if (nextIndex < prevIndex && swipe == Swipe.rightToLeft)
-      nextIndex += habitCount + 1;
-    pageController.animateToPage(
-      pageController.page!.toInt() + (nextIndex - prevIndex),
-      curve: Curves.easeIn,
-      duration: Duration(seconds: 1),
-    );
+    if (swipe == Swipe.leftToRight){
+      pageController.previousPage(
+        curve: Curves.easeIn,
+        duration: Duration(seconds: 1),
+      );
+    }
+    else {
+      pageController.nextPage(
+        curve: Curves.easeIn,
+        duration: Duration(seconds: 1),
+      );
+    }
   }
 
   int normalizeIndex(int index) => index % habitCount;
