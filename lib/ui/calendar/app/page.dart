@@ -52,39 +52,44 @@ class CalendarAppPage extends HookWidget {
         swipeToNextUnperformed: swipeToNextUnperformed,
       ),
     );
+    useValueChanged<List<HabitVM>, void>(vms, (oldVMs, __) {
+      controller.setHabits(vms);
+    });
 
     return Scaffold(
-      appBar: CalendarAppBar(onHabitSelect: controller.swipeTo),
+      appBar: CalendarAppBar(
+        onHabitSelect: controller.swipeTo,
+      ),
       body: vms.isEmpty
           ? Center(child: Text("Привычки не найдены"))
           : HabitSwiper(
               controller: controller,
               builder: (context, index) {
                 return Column(
-                children: [
-                  Expanded(
-                    child: HabitPerformingCard(
-                      vm: vms[index],
-                      onPerform: () =>
-                          controller.swipeTo(index, toUnperformed: true),
-                      onArchive: () =>
-                          controller.swipeTo(0, toUnperformed: true),
+                  children: [
+                    Expanded(
+                      child: HabitPerformingCard(
+                        vm: vms[index],
+                        onPerform: () =>
+                            controller.swipeTo(index, toUnperformed: true),
+                        onArchive: () =>
+                            controller.swipeTo(0, toUnperformed: true),
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: HabitPagination(vms: vms, currentIndex: index),
-                  ),
-                  Consumer(
-                    builder: (context, watch, child) {
-                      var ad = watch(_adProvider(index));
-                      return ad != null
-                          ? Container(height: 50, child: AdWidget(ad: ad))
-                          : Container();
-                    },
-                  ),
-                ],
-              );
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: HabitPagination(vms: vms, currentIndex: index),
+                    ),
+                    Consumer(
+                      builder: (context, watch, child) {
+                        var ad = watch(_adProvider(index));
+                        return ad != null
+                            ? Container(height: 50, child: AdWidget(ad: ad))
+                            : Container();
+                      },
+                    ),
+                  ],
+                );
               },
             ),
     );

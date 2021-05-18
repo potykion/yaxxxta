@@ -29,6 +29,7 @@ class HabitFormPage extends HookWidget {
           IconButton(
               icon: Icon(Icons.done),
               onPressed: () async {
+                var created = false;
                 if (habit.value.id != null) {
                   await context
                       .read(habitControllerProvider.notifier)
@@ -37,9 +38,10 @@ class HabitFormPage extends HookWidget {
                   await context
                       .read(habitControllerProvider.notifier)
                       .create(habit.value);
+                  created = true;
                 }
 
-                Navigator.of(context).pop();
+                Navigator.of(context).pop(created);
               }),
         ],
       ),

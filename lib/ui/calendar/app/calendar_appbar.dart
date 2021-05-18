@@ -7,8 +7,10 @@ import '../../../routes.gr.dart';
 class CalendarAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Function(int index) onHabitSelect;
 
-  const CalendarAppBar({Key? key, required this.onHabitSelect})
-      : super(key: key);
+  const CalendarAppBar({
+    Key? key,
+    required this.onHabitSelect,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => AppBar(

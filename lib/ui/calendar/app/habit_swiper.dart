@@ -8,15 +8,15 @@ import 'package:yaxxxta/logic/habit/vms.dart';
 enum Swipe { rightToLeft, leftToRight }
 
 Swipe createSwipe(int indexFrom, int indexTo, int length) {
-  if (indexTo == length - 1 && indexFrom == 0) return Swipe.leftToRight;
-  if (indexFrom > indexTo) return Swipe.leftToRight;
-  return Swipe.rightToLeft;
+  if (indexFrom == 0 && indexTo == length - 1) return Swipe.leftToRight;
+  if (indexFrom == length - 1 && indexTo == 0) return Swipe.rightToLeft;
+  return indexFrom > indexTo ? Swipe.leftToRight : Swipe.rightToLeft;
 }
 
 typedef SwipeTo = Future<void> Function(int index, {bool toUnperformed});
 
 class HabitSwiperController {
-  final List<HabitVM> habits;
+  List<HabitVM> habits;
   final bool swipeToNextUnperformed;
 
   late PageController pageController;
@@ -46,15 +46,16 @@ class HabitSwiperController {
   /// невыполненную привычку (в зависимости от направления свайпа)
   /// Если [swipeToNextUnperformed] = false,
   /// то будет свайп на очередную привычку
-  void swipeTo(int indexToSwipe, {bool toUnperformed = false}) {
+  void swipeTo(int indexToSwipe, {bool toUnperformed = false}) async {
     indexToSwipe = normalizeIndex(indexToSwipe);
 
     if (!toUnperformed) {
       var prevIndex = currentIndex;
       currentIndex = indexToSwipe;
       swipeExact = true;
-      pageController
-          .jumpToPage(pageController.page!.toInt() + indexToSwipe - prevIndex);
+      pageController.jumpToPage(
+        pageController.page!.toInt() + indexToSwipe - prevIndex,
+      );
       return;
     }
 
@@ -79,21 +80,29 @@ class HabitSwiperController {
 
     if (nextIndex == -1 || nextIndex == indexToSwipe) return;
 
-    if (swipe == Swipe.leftToRight){
-      pageController.previousPage(
+    if (swipe == Swipe.leftToRight) {
+      // currentIndex = normalizeIndex(currentIndex - 1);
+
+      await pageController.previousPage(
         curve: Curves.easeIn,
         duration: Duration(seconds: 1),
       );
-    }
-    else {
-      pageController.nextPage(
+    } else {
+      await pageController.nextPage(
         curve: Curves.easeIn,
         duration: Duration(seconds: 1),
       );
+
     }
   }
 
   int normalizeIndex(int index) => index % habitCount;
+
+  void setHabits(List<HabitVM> vms) {
+    habits = vms;
+    pageController = PageController(initialPage: 1000 * vms.length);
+    currentIndex = 0;
+  }
 }
 
 class HabitSwiper extends HookWidget {
