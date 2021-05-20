@@ -1,8 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:timezone/data/latest.dart' as tz;
@@ -12,6 +14,7 @@ import 'package:yaxxxta/logic/core/web/controllers.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yaxxxta/routes.gr.dart';
+import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 
 /// Страничка, на которой подгружается все необходимое
 class LoadingPage extends HookWidget {
@@ -32,6 +35,16 @@ class LoadingPage extends HookWidget {
 
         /// фаер-бейз
         await Firebase.initializeApp();
+
+        if (defaultTargetPlatform == TargetPlatform.android) {
+          InAppPurchaseAndroidPlatformAddition.enablePendingPurchases();
+        }
+        final available = await InAppPurchase.instance.isAvailable();
+        if (available) {
+          var resp = await InAppPurchase.instance.queryProductDetails({'sub'});
+          context.read(subscriptionProductProvider).state =
+              resp.productDetails.first;
+        }
 
         // endregion
 

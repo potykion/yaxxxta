@@ -12,7 +12,7 @@ abstract class AppUserInfo implements _$AppUserInfo, WithId {
   factory AppUserInfo({
     String? id,
     required String userId,
-    @Default(false) bool swipeToNextUnperformed,
+    @Default(false) bool haveSubscription,
   }) = _AppUserInfo;
 
   factory AppUserInfo.fromJson(Map<String, dynamic> json) =>

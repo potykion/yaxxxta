@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:yaxxxta/logic/app_user_info/controllers.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:yaxxxta/logic/habit/vms.dart';
 import 'package:yaxxxta/ui/calendar/app/calendar_appbar.dart';
@@ -16,7 +17,11 @@ FutureProvider<bool> _isPhysicalDeviceProvider = FutureProvider(
 );
 
 FutureProvider<InitializationStatus?> _adsInitializedProvider = FutureProvider(
-  (_) async => kIsWeb ? null : MobileAds.instance.initialize(),
+  (ref) async {
+    if (kIsWeb) return null;
+    if (ref.watch(appUserInfoControllerProvider).haveSubscription) return null;
+    return MobileAds.instance.initialize();
+  },
 );
 
 var _adProvider = Provider.family(

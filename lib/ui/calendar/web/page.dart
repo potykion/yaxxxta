@@ -23,8 +23,6 @@ class CalendarWebPage extends HookWidget {
   Widget build(BuildContext context) {
     var selectedHabitIndex = useProvider(selectedHabitIndexProvider).state;
 
-    var swipeToNextUnperformed = useProvider(swipeToNextUnperformedProvider);
-
     var vms = useProvider(habitVMsProvider);
     var vm = vms[selectedHabitIndex];
 
@@ -87,18 +85,6 @@ class CalendarWebPage extends HookWidget {
                     SizedBox(width: 50),
                     PerformHabitButton(
                       vm: vm,
-                      onPerform: () {
-                        if (swipeToNextUnperformed) {
-                          var nextIndex = getNextUnperformedHabitIndex(
-                            vms,
-                            initialIndex: selectedHabitIndex,
-                          );
-                          if (nextIndex != -1) {
-                            context.read(selectedHabitIndexProvider).state =
-                                nextIndex;
-                          }
-                        }
-                      },
                     ),
                     SizedBox(width: 50),
                     Builder(

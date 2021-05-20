@@ -21,13 +21,11 @@ class _$AppUserInfoTearOff {
   const _$AppUserInfoTearOff();
 
   _AppUserInfo call(
-      {String? id,
-      required String userId,
-      bool swipeToNextUnperformed = false}) {
+      {String? id, required String userId, bool haveSubscription = false}) {
     return _AppUserInfo(
       id: id,
       userId: userId,
-      swipeToNextUnperformed: swipeToNextUnperformed,
+      haveSubscription: haveSubscription,
     );
   }
 
@@ -43,7 +41,7 @@ const $AppUserInfo = _$AppUserInfoTearOff();
 mixin _$AppUserInfo {
   String? get id => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
-  bool get swipeToNextUnperformed => throw _privateConstructorUsedError;
+  bool get haveSubscription => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -56,7 +54,7 @@ abstract class $AppUserInfoCopyWith<$Res> {
   factory $AppUserInfoCopyWith(
           AppUserInfo value, $Res Function(AppUserInfo) then) =
       _$AppUserInfoCopyWithImpl<$Res>;
-  $Res call({String? id, String userId, bool swipeToNextUnperformed});
+  $Res call({String? id, String userId, bool haveSubscription});
 }
 
 /// @nodoc
@@ -71,7 +69,7 @@ class _$AppUserInfoCopyWithImpl<$Res> implements $AppUserInfoCopyWith<$Res> {
   $Res call({
     Object? id = freezed,
     Object? userId = freezed,
-    Object? swipeToNextUnperformed = freezed,
+    Object? haveSubscription = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -82,9 +80,9 @@ class _$AppUserInfoCopyWithImpl<$Res> implements $AppUserInfoCopyWith<$Res> {
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String,
-      swipeToNextUnperformed: swipeToNextUnperformed == freezed
-          ? _value.swipeToNextUnperformed
-          : swipeToNextUnperformed // ignore: cast_nullable_to_non_nullable
+      haveSubscription: haveSubscription == freezed
+          ? _value.haveSubscription
+          : haveSubscription // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
   }
@@ -97,7 +95,7 @@ abstract class _$AppUserInfoCopyWith<$Res>
           _AppUserInfo value, $Res Function(_AppUserInfo) then) =
       __$AppUserInfoCopyWithImpl<$Res>;
   @override
-  $Res call({String? id, String userId, bool swipeToNextUnperformed});
+  $Res call({String? id, String userId, bool haveSubscription});
 }
 
 /// @nodoc
@@ -114,7 +112,7 @@ class __$AppUserInfoCopyWithImpl<$Res> extends _$AppUserInfoCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? userId = freezed,
-    Object? swipeToNextUnperformed = freezed,
+    Object? haveSubscription = freezed,
   }) {
     return _then(_AppUserInfo(
       id: id == freezed
@@ -125,9 +123,9 @@ class __$AppUserInfoCopyWithImpl<$Res> extends _$AppUserInfoCopyWithImpl<$Res>
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String,
-      swipeToNextUnperformed: swipeToNextUnperformed == freezed
-          ? _value.swipeToNextUnperformed
-          : swipeToNextUnperformed // ignore: cast_nullable_to_non_nullable
+      haveSubscription: haveSubscription == freezed
+          ? _value.haveSubscription
+          : haveSubscription // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
   }
@@ -136,8 +134,7 @@ class __$AppUserInfoCopyWithImpl<$Res> extends _$AppUserInfoCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_AppUserInfo extends _AppUserInfo {
-  _$_AppUserInfo(
-      {this.id, required this.userId, this.swipeToNextUnperformed = false})
+  _$_AppUserInfo({this.id, required this.userId, this.haveSubscription = false})
       : super._();
 
   factory _$_AppUserInfo.fromJson(Map<String, dynamic> json) =>
@@ -149,11 +146,11 @@ class _$_AppUserInfo extends _AppUserInfo {
   final String userId;
   @JsonKey(defaultValue: false)
   @override
-  final bool swipeToNextUnperformed;
+  final bool haveSubscription;
 
   @override
   String toString() {
-    return 'AppUserInfo(id: $id, userId: $userId, swipeToNextUnperformed: $swipeToNextUnperformed)';
+    return 'AppUserInfo(id: $id, userId: $userId, haveSubscription: $haveSubscription)';
   }
 
   @override
@@ -164,9 +161,9 @@ class _$_AppUserInfo extends _AppUserInfo {
                 const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.userId, userId) ||
                 const DeepCollectionEquality().equals(other.userId, userId)) &&
-            (identical(other.swipeToNextUnperformed, swipeToNextUnperformed) ||
-                const DeepCollectionEquality().equals(
-                    other.swipeToNextUnperformed, swipeToNextUnperformed)));
+            (identical(other.haveSubscription, haveSubscription) ||
+                const DeepCollectionEquality()
+                    .equals(other.haveSubscription, haveSubscription)));
   }
 
   @override
@@ -174,7 +171,7 @@ class _$_AppUserInfo extends _AppUserInfo {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(userId) ^
-      const DeepCollectionEquality().hash(swipeToNextUnperformed);
+      const DeepCollectionEquality().hash(haveSubscription);
 
   @JsonKey(ignore: true)
   @override
@@ -191,7 +188,7 @@ abstract class _AppUserInfo extends AppUserInfo {
   factory _AppUserInfo(
       {String? id,
       required String userId,
-      bool swipeToNextUnperformed}) = _$_AppUserInfo;
+      bool haveSubscription}) = _$_AppUserInfo;
   _AppUserInfo._() : super._();
 
   factory _AppUserInfo.fromJson(Map<String, dynamic> json) =
@@ -202,7 +199,7 @@ abstract class _AppUserInfo extends AppUserInfo {
   @override
   String get userId => throw _privateConstructorUsedError;
   @override
-  bool get swipeToNextUnperformed => throw _privateConstructorUsedError;
+  bool get haveSubscription => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$AppUserInfoCopyWith<_AppUserInfo> get copyWith =>

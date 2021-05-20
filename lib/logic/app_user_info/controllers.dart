@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:collection/collection.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 
 import 'db.dart';
 import 'models.dart';
@@ -18,10 +19,8 @@ class AppUserInfoController extends StateNotifier<AppUserInfo> {
     state = (await repo.listByUserId(userId)).firstOrNull ?? state;
   }
 
-  Future<void> insertOrUpdate({required bool swipeToNextUnperformed}) async {
-    var appUserInfo =
-        state.copyWith(swipeToNextUnperformed: swipeToNextUnperformed);
-
+  Future<void> insertOrUpdate({required bool haveSubscription}) async {
+    var appUserInfo = state.copyWith(haveSubscription: haveSubscription);
     if (appUserInfo.id != null) {
       await repo.update(appUserInfo);
     } else {
@@ -44,6 +43,4 @@ var appUserInfoControllerProvider =
   ),
 );
 
-var swipeToNextUnperformedProvider = Provider(
-  (ref) => ref.watch(appUserInfoControllerProvider).swipeToNextUnperformed,
-);
+var subscriptionProductProvider = StateProvider<ProductDetails?>((_) => null);
