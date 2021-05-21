@@ -10,7 +10,9 @@ _$_AppUserInfo _$_$_AppUserInfoFromJson(Map json) {
   return _$_AppUserInfo(
     id: json['id'] as String?,
     userId: json['userId'] as String,
-    haveSubscription: json['haveSubscription'] as bool? ?? false,
+    subscriptionExpiration: json['subscriptionExpiration'] == null
+        ? null
+        : DateTime.parse(json['subscriptionExpiration'] as String),
   );
 }
 
@@ -18,5 +20,6 @@ Map<String, dynamic> _$_$_AppUserInfoToJson(_$_AppUserInfo instance) =>
     <String, dynamic>{
       'id': instance.id,
       'userId': instance.userId,
-      'haveSubscription': instance.haveSubscription,
+      'subscriptionExpiration':
+          instance.subscriptionExpiration?.toIso8601String(),
     };

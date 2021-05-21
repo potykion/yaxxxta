@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:intl/intl.dart';
 import 'package:yaxxxta/logic/core/models.dart';
 
 part 'models.freezed.dart';
@@ -12,9 +13,16 @@ abstract class AppUserInfo implements _$AppUserInfo, WithId {
   factory AppUserInfo({
     String? id,
     required String userId,
-    @Default(false) bool haveSubscription,
+    DateTime? subscriptionExpiration,
   }) = _AppUserInfo;
 
   factory AppUserInfo.fromJson(Map<String, dynamic> json) =>
       _$AppUserInfoFromJson(json);
+
+  bool get haveSubscription =>
+      subscriptionExpiration?.isAfter(DateTime.now()) ?? false;
+
+  String get subscriptionExpirationStr => subscriptionExpiration != null
+      ? DateFormat.yMd().format(subscriptionExpiration!)
+      : "";
 }

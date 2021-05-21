@@ -21,11 +21,11 @@ class _$AppUserInfoTearOff {
   const _$AppUserInfoTearOff();
 
   _AppUserInfo call(
-      {String? id, required String userId, bool haveSubscription = false}) {
+      {String? id, required String userId, DateTime? subscriptionExpiration}) {
     return _AppUserInfo(
       id: id,
       userId: userId,
-      haveSubscription: haveSubscription,
+      subscriptionExpiration: subscriptionExpiration,
     );
   }
 
@@ -41,7 +41,7 @@ const $AppUserInfo = _$AppUserInfoTearOff();
 mixin _$AppUserInfo {
   String? get id => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
-  bool get haveSubscription => throw _privateConstructorUsedError;
+  DateTime? get subscriptionExpiration => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -54,7 +54,7 @@ abstract class $AppUserInfoCopyWith<$Res> {
   factory $AppUserInfoCopyWith(
           AppUserInfo value, $Res Function(AppUserInfo) then) =
       _$AppUserInfoCopyWithImpl<$Res>;
-  $Res call({String? id, String userId, bool haveSubscription});
+  $Res call({String? id, String userId, DateTime? subscriptionExpiration});
 }
 
 /// @nodoc
@@ -69,7 +69,7 @@ class _$AppUserInfoCopyWithImpl<$Res> implements $AppUserInfoCopyWith<$Res> {
   $Res call({
     Object? id = freezed,
     Object? userId = freezed,
-    Object? haveSubscription = freezed,
+    Object? subscriptionExpiration = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -80,10 +80,10 @@ class _$AppUserInfoCopyWithImpl<$Res> implements $AppUserInfoCopyWith<$Res> {
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String,
-      haveSubscription: haveSubscription == freezed
-          ? _value.haveSubscription
-          : haveSubscription // ignore: cast_nullable_to_non_nullable
-              as bool,
+      subscriptionExpiration: subscriptionExpiration == freezed
+          ? _value.subscriptionExpiration
+          : subscriptionExpiration // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -95,7 +95,7 @@ abstract class _$AppUserInfoCopyWith<$Res>
           _AppUserInfo value, $Res Function(_AppUserInfo) then) =
       __$AppUserInfoCopyWithImpl<$Res>;
   @override
-  $Res call({String? id, String userId, bool haveSubscription});
+  $Res call({String? id, String userId, DateTime? subscriptionExpiration});
 }
 
 /// @nodoc
@@ -112,7 +112,7 @@ class __$AppUserInfoCopyWithImpl<$Res> extends _$AppUserInfoCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? userId = freezed,
-    Object? haveSubscription = freezed,
+    Object? subscriptionExpiration = freezed,
   }) {
     return _then(_AppUserInfo(
       id: id == freezed
@@ -123,10 +123,10 @@ class __$AppUserInfoCopyWithImpl<$Res> extends _$AppUserInfoCopyWithImpl<$Res>
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String,
-      haveSubscription: haveSubscription == freezed
-          ? _value.haveSubscription
-          : haveSubscription // ignore: cast_nullable_to_non_nullable
-              as bool,
+      subscriptionExpiration: subscriptionExpiration == freezed
+          ? _value.subscriptionExpiration
+          : subscriptionExpiration // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -134,7 +134,7 @@ class __$AppUserInfoCopyWithImpl<$Res> extends _$AppUserInfoCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_AppUserInfo extends _AppUserInfo {
-  _$_AppUserInfo({this.id, required this.userId, this.haveSubscription = false})
+  _$_AppUserInfo({this.id, required this.userId, this.subscriptionExpiration})
       : super._();
 
   factory _$_AppUserInfo.fromJson(Map<String, dynamic> json) =>
@@ -144,13 +144,12 @@ class _$_AppUserInfo extends _AppUserInfo {
   final String? id;
   @override
   final String userId;
-  @JsonKey(defaultValue: false)
   @override
-  final bool haveSubscription;
+  final DateTime? subscriptionExpiration;
 
   @override
   String toString() {
-    return 'AppUserInfo(id: $id, userId: $userId, haveSubscription: $haveSubscription)';
+    return 'AppUserInfo(id: $id, userId: $userId, subscriptionExpiration: $subscriptionExpiration)';
   }
 
   @override
@@ -161,9 +160,9 @@ class _$_AppUserInfo extends _AppUserInfo {
                 const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.userId, userId) ||
                 const DeepCollectionEquality().equals(other.userId, userId)) &&
-            (identical(other.haveSubscription, haveSubscription) ||
-                const DeepCollectionEquality()
-                    .equals(other.haveSubscription, haveSubscription)));
+            (identical(other.subscriptionExpiration, subscriptionExpiration) ||
+                const DeepCollectionEquality().equals(
+                    other.subscriptionExpiration, subscriptionExpiration)));
   }
 
   @override
@@ -171,7 +170,7 @@ class _$_AppUserInfo extends _AppUserInfo {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(userId) ^
-      const DeepCollectionEquality().hash(haveSubscription);
+      const DeepCollectionEquality().hash(subscriptionExpiration);
 
   @JsonKey(ignore: true)
   @override
@@ -188,7 +187,7 @@ abstract class _AppUserInfo extends AppUserInfo {
   factory _AppUserInfo(
       {String? id,
       required String userId,
-      bool haveSubscription}) = _$_AppUserInfo;
+      DateTime? subscriptionExpiration}) = _$_AppUserInfo;
   _AppUserInfo._() : super._();
 
   factory _AppUserInfo.fromJson(Map<String, dynamic> json) =
@@ -199,7 +198,7 @@ abstract class _AppUserInfo extends AppUserInfo {
   @override
   String get userId => throw _privateConstructorUsedError;
   @override
-  bool get haveSubscription => throw _privateConstructorUsedError;
+  DateTime? get subscriptionExpiration => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$AppUserInfoCopyWith<_AppUserInfo> get copyWith =>

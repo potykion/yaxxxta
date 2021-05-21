@@ -19,8 +19,11 @@ class AppUserInfoController extends StateNotifier<AppUserInfo> {
     state = (await repo.listByUserId(userId)).firstOrNull ?? state;
   }
 
-  Future<void> insertOrUpdate({required bool haveSubscription}) async {
-    var appUserInfo = state.copyWith(haveSubscription: haveSubscription);
+  Future<void> insertOrUpdate(
+      {required DateTime? subscriptionExpiration}) async {
+    AppUserInfo appUserInfo = state.copyWith(
+      subscriptionExpiration: subscriptionExpiration,
+    );
     if (appUserInfo.id != null) {
       await repo.update(appUserInfo);
     } else {
