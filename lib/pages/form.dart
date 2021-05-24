@@ -5,7 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
 
-import '../theme.dart';
+
+enum HabitExtraAction { archive }
 
 class HabitFormPage extends HookWidget {
   final Habit? initial;
@@ -26,23 +27,24 @@ class HabitFormPage extends HookWidget {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          IconButton(
-              icon: Icon(Icons.done),
-              onPressed: () async {
-                var created = false;
-                if (habit.value.id != null) {
-                  await context
-                      .read(habitControllerProvider.notifier)
-                      .update(habit.value);
-                } else {
-                  await context
-                      .read(habitControllerProvider.notifier)
-                      .create(habit.value);
-                  created = true;
+          if (habit.value.id != null)
+            PopupMenuButton(
+              itemBuilder: (_) => [
+                const PopupMenuItem(
+                  value: HabitExtraAction.archive,
+                  child: Text('Архивировать'),
+                ),
+              ],
+              onSelected: (HabitExtraAction action) {
+                switch (action) {
+                  case HabitExtraAction.archive:
+                    context
+                        .read(habitControllerProvider.notifier)
+                        .archive(habit.value);
+                    return Navigator.of(context).pop(true);
                 }
-
-                Navigator.of(context).pop(created);
-              }),
+              },
+            ),
         ],
       ),
       body: Padding(
@@ -71,19 +73,25 @@ class HabitFormPage extends HookWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(CustomColors.grey),
-                    foregroundColor:
-                        MaterialStateProperty.all<Color>(CustomColors.white),
-                  ),
                   onPressed: () async {
-                    await context
-                        .read(habitControllerProvider.notifier)
-                        .archive(habit.value);
-                    Navigator.of(context).pop(true);
+                    var created = false;
+                    if (habit.value.id != null) {
+                      await context
+                          .read(habitControllerProvider.notifier)
+                          .update(habit.value);
+                    } else {
+                      await context
+                          .read(habitControllerProvider.notifier)
+                          .create(habit.value);
+                      created = true;
+                    }
+
+                    Navigator.of(context).pop(created);
                   },
-                  child: Text("Архивировать"),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text("Сохранить"),
+                  ),
                 ),
               )
           ],
