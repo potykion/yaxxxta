@@ -36,14 +36,18 @@ class LoadingPage extends HookWidget {
         /// фаер-бейз
         await Firebase.initializeApp();
 
-        if (defaultTargetPlatform == TargetPlatform.android) {
-          InAppPurchaseAndroidPlatformAddition.enablePendingPurchases();
-        }
-        final available = await InAppPurchase.instance.isAvailable();
-        if (available) {
-          var resp = await InAppPurchase.instance.queryProductDetails({'sub'});
-          context.read(subscriptionProductProvider).state =
-              resp.productDetails.first;
+        if (kIsWeb) {
+        } else {
+          if (defaultTargetPlatform == TargetPlatform.android) {
+            InAppPurchaseAndroidPlatformAddition.enablePendingPurchases();
+          }
+          final available = await InAppPurchase.instance.isAvailable();
+          if (available) {
+            var resp =
+                await InAppPurchase.instance.queryProductDetails({'sub'});
+            context.read(subscriptionProductProvider).state =
+                resp.productDetails.first;
+          }
         }
 
         // endregion
