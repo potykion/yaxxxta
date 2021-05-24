@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/app_user_info/controllers.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
+import 'package:yaxxxta/logic/habit/models.dart';
 import 'package:yaxxxta/pages/form.dart';
 import 'package:yaxxxta/pages/settings.dart';
 import 'package:yaxxxta/ui/calendar/web/habit_list.dart';
@@ -17,6 +18,8 @@ var selectedHabitIndexProvider = StateProvider((ref) => 0);
 enum DrawerType { settings, addHabit, editHabit }
 
 var drawerTypeProvider = StateProvider<DrawerType>((_) => DrawerType.addHabit);
+
+var habitToEditProvider = StateProvider<Habit?>((_) => null);
 
 class CalendarWebPage extends HookWidget {
   @override
@@ -91,6 +94,7 @@ class CalendarWebPage extends HookWidget {
                       builder: (context) => FloatingActionButton(
                         heroTag: null,
                         onPressed: () {
+                          context.read(habitToEditProvider).state = vm.habit;
                           context.read(drawerTypeProvider).state =
                               DrawerType.editHabit;
                           Scaffold.of(context).openEndDrawer();
@@ -127,7 +131,9 @@ class CalendarWebPage extends HookWidget {
               case DrawerType.addHabit:
                 return HabitFormPage();
               case DrawerType.editHabit:
-                return HabitFormPage(initial: vm.habit);
+                return HabitFormPage(
+                  initial: context.read(habitToEditProvider).state,
+                );
             }
           },
         ),

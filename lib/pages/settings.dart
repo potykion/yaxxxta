@@ -14,8 +14,11 @@ class SettingsPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var appUserInfo = useProvider(appUserInfoControllerProvider);
+
     var subscriptionProduct = useProvider(subscriptionProductProvider).state;
     useEffect(() {
+      if (kIsWeb) return () {};
+
       late StreamSubscription<List<PurchaseDetails>> _subscription;
       _subscription = InAppPurchase.instance.purchaseStream.listen(
         (purchaseDetailsList) async {

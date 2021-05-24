@@ -70,25 +70,25 @@ class HabitFormPage extends HookWidget {
               ),
             ),
             Spacer(),
-            if (habit.value.id != null)
-              if (!habit.value.archived)
-                FullWidthButton(
-                    onPressed: () async {
-                      var created = false;
-                      if (habit.value.id != null) {
-                        await context
-                            .read(habitControllerProvider.notifier)
-                            .update(habit.value);
-                      } else {
-                        await context
-                            .read(habitControllerProvider.notifier)
-                            .create(habit.value);
-                        created = true;
-                      }
+            if (!habit.value.archived)
+              FullWidthButton(
+                onPressed: () async {
+                  var created = false;
+                  if (habit.value.id != null) {
+                    await context
+                        .read(habitControllerProvider.notifier)
+                        .update(habit.value);
+                  } else {
+                    await context
+                        .read(habitControllerProvider.notifier)
+                        .create(habit.value);
+                    created = true;
+                  }
 
-                      Navigator.of(context).pop(created);
-                    },
-                    text: "Сохранить"),
+                  Navigator.of(context).pop(created);
+                },
+                text: "Сохранить",
+              ),
             if (habit.value.archived) ...<Widget>[
               FullWidthButton(
                 text: "Разархивировать",
