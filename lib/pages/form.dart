@@ -4,7 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
-
+import 'package:yaxxxta/widgets/full_width_btn.dart';
 
 enum HabitExtraAction { archive }
 
@@ -58,6 +58,7 @@ class HabitFormPage extends HookWidget {
             ),
             Padding(padding: EdgeInsets.only(bottom: 4)),
             TextFormField(
+              readOnly: habit.value.archived,
               controller: titleTec,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
@@ -70,30 +71,46 @@ class HabitFormPage extends HookWidget {
             ),
             Spacer(),
             if (habit.value.id != null)
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    var created = false;
-                    if (habit.value.id != null) {
-                      await context
-                          .read(habitControllerProvider.notifier)
-                          .update(habit.value);
-                    } else {
-                      await context
-                          .read(habitControllerProvider.notifier)
-                          .create(habit.value);
-                      created = true;
-                    }
+              if (!habit.value.archived)
+                FullWidthButton(
+                    onPressed: () async {
+                      var created = false;
+                      if (habit.value.id != null) {
+                        await context
+                            .read(habitControllerProvider.notifier)
+                            .update(habit.value);
+                      } else {
+                        await context
+                            .read(habitControllerProvider.notifier)
+                            .create(habit.value);
+                        created = true;
+                      }
 
-                    Navigator.of(context).pop(created);
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text("Сохранить"),
-                  ),
-                ),
-              )
+                      Navigator.of(context).pop(created);
+                    },
+                    text: "Сохранить"),
+            if (habit.value.archived) ...<Widget>[
+              FullWidthButton(
+                text: "Разархивировать",
+                onPressed: () async {
+                  await context
+                      .read(habitControllerProvider.notifier)
+                      .update(habit.value.copyWith(archived: false));
+                  Navigator.of(context).pop();
+                },
+              ),
+              SizedBox(height: 10),
+              FullWidthButton(
+                text: "Удалить",
+                isDanger: true,
+                onPressed: () async {
+                  await context
+                      .read(habitControllerProvider.notifier)
+                      .delete(habit.value);
+                  Navigator.of(context).pop();
+                },
+              ),
+            ]
           ],
         ),
       ),

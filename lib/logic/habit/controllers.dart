@@ -78,6 +78,11 @@ class HabitController extends StateNotifier<List<HabitVM>> {
   Future<void> archive(Habit habit) async {
     await update(habit.copyWith(archived: true));
   }
+
+  Future<void> delete(Habit habit) async {
+    await habitPerformingRepo.deleteById(habit.id!);
+    state = [...state.where((vm) => vm.habit.id != habit.id!)];
+  }
 }
 
 var habitControllerProvider =
@@ -94,13 +99,18 @@ var habitControllerProvider =
 );
 
 var habitVMsProvider = Provider(
-  (ref) {
-    return ref
-        .watch(habitControllerProvider)
-        .where((vm) => !vm.habit.archived)
-        .toList()
-          ..sort((vm1, vm2) => vm1.habit.order.compareTo(vm2.habit.order));
-  },
+  (ref) => ref
+      .watch(habitControllerProvider)
+      .where((vm) => !vm.habit.archived)
+      .toList()
+        ..sort((vm1, vm2) => vm1.habit.order.compareTo(vm2.habit.order)),
+);
+
+var archivedHabitVMsProvider = Provider(
+  (ref) => ref
+      .watch(habitControllerProvider)
+      .where((vm) => vm.habit.archived)
+      .toList(),
 );
 
 int getNextUnperformedHabitIndex(

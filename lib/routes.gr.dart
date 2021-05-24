@@ -50,8 +50,12 @@ class AppRouter extends _i1.RootStackRouter {
           child: _i7.HabitFormPage(initial: args.initial));
     },
     ListHabitRoute.name: (routeData) {
+      final args = routeData.argsAs<ListHabitRouteArgs>(
+          orElse: () => const ListHabitRouteArgs());
       return _i1.MaterialPageX<int>(
-          routeData: routeData, child: _i8.ListHabitPage());
+          routeData: routeData,
+          child: _i8.ListHabitPage(
+              canReorder: args.canReorder, archived: args.archived));
     },
     SettingsRoute.name: (routeData) {
       return _i1.MaterialPageX<dynamic>(
@@ -114,10 +118,22 @@ class HabitFormRouteArgs {
   final _i10.Habit? initial;
 }
 
-class ListHabitRoute extends _i1.PageRouteInfo {
-  const ListHabitRoute() : super(name, path: 'list');
+class ListHabitRoute extends _i1.PageRouteInfo<ListHabitRouteArgs> {
+  ListHabitRoute({bool canReorder = true, bool archived = false})
+      : super(name,
+            path: 'list',
+            args:
+                ListHabitRouteArgs(canReorder: canReorder, archived: archived));
 
   static const String name = 'ListHabitRoute';
+}
+
+class ListHabitRouteArgs {
+  const ListHabitRouteArgs({this.canReorder = true, this.archived = false});
+
+  final bool canReorder;
+
+  final bool archived;
 }
 
 class SettingsRoute extends _i1.PageRouteInfo {
