@@ -7,6 +7,7 @@ class HabitListTile extends StatelessWidget {
   final HabitVM vm;
   final int index;
   final void Function() onTap;
+  final void Function()? onLongPress;
   final bool isReorder;
   final bool isSelected;
 
@@ -15,6 +16,7 @@ class HabitListTile extends StatelessWidget {
     required this.vm,
     required this.index,
     required this.onTap,
+    this.onLongPress,
     this.isReorder = false,
     this.isSelected = false,
   }) : super(key: key);
@@ -39,6 +41,7 @@ class HabitListTile extends StatelessWidget {
       child: ListTile(
         title: Text(vm.habit.title),
         onTap: isReorder ? null : onTap,
+        onLongPress: onLongPress,
         trailing: !kIsWeb && isReorder ? Icon(Icons.drag_handle) : null,
       ),
     );
