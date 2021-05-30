@@ -54,9 +54,9 @@ class CalendarAppPage extends HookWidget {
     );
 
     return Scaffold(
-      appBar: CalendarAppBar(
-        onHabitSelect: controller.move,
-      ),
+      // appBar: CalendarAppBar(
+      //   onHabitSelect: controller.move,
+      // ),
       body: vms.isEmpty
           ? Center(child: Text("Привычки не найдены"))
           : Swiper(
@@ -67,10 +67,10 @@ class CalendarAppPage extends HookWidget {
                     Expanded(
                       child: HabitPerformingCard(vm: vms[index]),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: HabitPagination(vms: vms, currentIndex: index),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.only(bottom: 8),
+                    //   child: HabitPagination(vms: vms, currentIndex: index),
+                    // ),
                     Consumer(
                       builder: (context, watch, child) {
                         var ad = watch(_adProvider(index));

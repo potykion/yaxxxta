@@ -51,7 +51,14 @@ class PerformHabitButton extends HookWidget {
           height: size,
           child: FloatingActionButton(
             heroTag: null,
-            child: Icon(Icons.done, size: size / 2),
+            elevation: 0,
+            // shape: CircleBorder(side: BorderSide(width: 2)),
+            // backgroundColor: CustomColors.green,
+            child: Icon(
+              // Icons.done_outline_rounded,
+              Icons.done,
+              size: size / 2,
+            ),
             onPressed: () async {
               await context
                   .read(habitControllerProvider.notifier)

@@ -91,11 +91,11 @@ class _HabitPerformingsFor35Days extends StatelessWidget {
       padding: const EdgeInsets.all(4),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(12),
           color: hasDatePerformings ? Theme.of(context).accentColor : null,
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(12),
           child: Material(
             color: Colors.transparent,
             child: InkWell(
