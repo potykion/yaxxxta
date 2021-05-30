@@ -25,9 +25,7 @@ class HabitPerformingCalendar extends HookWidget {
   Widget build(BuildContext context) {
     var scrollController = useMemoized(() => PageController());
 
-
     Widget pv = PageView.builder(
-
       controller: scrollController,
       itemCount: 12,
       scrollDirection: Axis.vertical,
@@ -47,7 +45,11 @@ class HabitPerformingCalendar extends HookWidget {
     //   );
     // }
 
-    return SizedBox(height: 250, width: 380, child: pv,);
+    return SizedBox(
+      height: 260,
+      // width: 380,
+      child: pv,
+    );
   }
 }
 
@@ -108,8 +110,8 @@ class _HabitPerformingsFor35Days extends StatelessWidget {
                 }
               },
               child: Container(
-                width: 42,
-                height: 42,
+                width: 43,
+                height: 43,
                 child: Center(
                   child: Text(
                     DateFormat("dd.\nMM").format(date),

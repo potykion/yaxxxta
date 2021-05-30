@@ -18,23 +18,25 @@ ThemeData buildThemeData(BuildContext context) {
     primaryColor: CustomColors.yellow,
     appBarTheme: AppBarTheme(backgroundColor: CustomColors.white, elevation: 0),
     // canvasColor: Color(0xffF9FDFD),
-    canvasColor: Color(0xffffffff),
-    accentColor: Color(0xffbae8e8),
-    cardColor: Color(0xffe3f6f5),
+    canvasColor: Color(0xff272343),
+    // accentColor: Color(0xffbae8e8),
+    accentColor: Color(0xffe3f6f5),
+    cardColor: Color(0xffffffff),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: CustomColors.white,
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(Color(0xffbae8e8)),
         // backgroundColor: MaterialStateProperty.all<Color>(Color(0xffe3f6f5)),
-        backgroundColor: MaterialStateProperty.all<Color>(Color(0xffffffff)),
         foregroundColor: MaterialStateProperty.all<Color>(Color(0xff272343)),
       ),
     ),
     textTheme: GoogleFonts.openSansTextTheme(
       textTheme.copyWith(
-        headline4: TextStyle(color: Color(0xff272343), fontWeight: FontWeight.bold),
-        headline3: TextStyle(color: Color(0xff272343), fontWeight: FontWeight.bold),
+        headline3: TextStyle(color: Color(0xffffffff), fontWeight: FontWeight.bold),
+        headline4: TextStyle(color: Color(0xffffffff), fontWeight: FontWeight.bold),
+        headline5: TextStyle(color: Color(0xff272343), fontWeight: FontWeight.bold),
       ),
     ),
   );
