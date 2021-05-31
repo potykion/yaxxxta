@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/theme.dart';
 import 'logic/core/web/controllers.dart';
@@ -19,10 +20,19 @@ class Logger extends ProviderObserver {
   }
 }
 
-void main() async => runApp(
-      // ProviderScope(observers: [Logger()], child: MyApp()),
-      ProviderScope(child: MyApp()),
-    );
+void main() async {
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      systemNavigationBarColor: Color(0xff1b192f),
+      statusBarColor: Color(0xff1b192f),
+    ),
+  );
+
+  runApp(
+    // ProviderScope(observers: [Logger()], child: MyApp()),
+    ProviderScope(child: MyApp()),
+  );
+}
 
 /// Приложуха
 class MyApp extends StatelessWidget {

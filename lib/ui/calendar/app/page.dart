@@ -34,7 +34,7 @@ var _adProvider = Provider.family(
                         ? "ca-app-pub-6011780463667583/9890116434"
                         // ? BannerAd.testAdUnitId
                         : BannerAd.testAdUnitId,
-                    size: AdSize.banner,
+                    size: AdSize.smartBanner,
                     request: AdRequest(),
                     listener: AdListener(),
                   )..load(),
@@ -55,6 +55,24 @@ class CalendarAppPage extends HookWidget {
     );
 
     return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: kToolbarHeight + 16,
+        title: Text(
+          "Календарь",
+          style: Theme.of(context).textTheme.headline4,
+        ),
+        actions: [
+          // IconButton(onPressed: () {}, icon: Icon(Icons.add), color: Colors.white),
+          Padding(
+            padding: const EdgeInsets.only(right: 12, top: 8),
+            child: FloatingActionButton(
+              onPressed: () {},
+              child: Icon(Icons.add),
+              mini: true,
+            ),
+          )
+        ],
+      ),
       body: vms.isEmpty
           ? Center(child: Text("Привычки не найдены"))
           : Swiper(
@@ -62,94 +80,69 @@ class CalendarAppPage extends HookWidget {
               itemBuilder: (context, index) {
                 var vm = vms[index];
 
-                return Column(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          top: kToolbarHeight,
-                        ),
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 12),
-                              child: SizedBox(
-                                height: 100,
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Flexible(
-                                      child: Text(
-                                        vm.habit.title,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline4,
-                                      ),
-                                    ),
-                                    IconButton(
-                                      onPressed: () {},
-                                      icon: Icon(Icons.edit),
-                                      color: Color(0xffffffff),
-                                    ),
-                                  ],
-                                ),
+                return Consumer(
+                  builder: (context, watch, child) {
+                    var ad = watch(_adProvider(index));
+                    return HabitInfoCard(
+                      child: Column(
+                        // mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            // textBaseline: TextBaseline.alphabetic,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                vm.habit.title,
+                                style: Theme.of(context).textTheme.headline5,
                               ),
-                            ),
-                            Expanded(
-                              child: Column(
-                                children: [
-                                  HabitInfoCard(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Прогресс",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline5,
-                                        ),
-                                        SizedBox(height: 8),
-                                        HabitPerformingCalendar(vm: vm),
-                                        SizedBox(height: 8),
-                                        PerformHabitButton(habit: vm.habit),
-                                      ],
-                                    ),
-                                  ),
-                                  HabitInfoCard(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Статистика",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline5,
-                                        ),
-                                        SizedBox(height: 8),
-                                        HabitStats(vm: vm),
-                                      ],
-                                    ),
-                                  ),
-                                ],
+                              IconButton(
+                                onPressed: () {},
+                                icon: Icon(Icons.edit),
+                                color: Theme.of(context).canvasColor,
                               ),
-                            ),
-                          ],
-                        ),
+                            ],
+                          ),
+                          SizedBox(height: 8),
+                          // Divider(),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Прогресс",
+                                style: Theme.of(context).textTheme.headline6,
+                              ),
+                              SizedBox(height: 8),
+                              HabitPerformingCalendar(vm: vm),
+                              SizedBox(height: 8),
+                              PerformHabitButton(habit: vm.habit),
+                            ],
+                          ),
+                          SizedBox(height: 8),
+                          SizedBox(height: 8),
+                          // Divider(),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Статистика",
+                                style: Theme.of(context).textTheme.headline6,
+                              ),
+                              SizedBox(height: 8),
+                              HabitStats(vm: vm),
+                            ],
+                          ),
+                          if (ad != null) ...[
+                            SizedBox(height: 8),
+                            SizedBox(height: 8),
+                            Container(height: 55, child: AdWidget(ad: ad)),
+                          ]
+                        ],
                       ),
-                    ),
-                    // Consumer(
-                    //   builder: (context, watch, child) {
-                    //     var ad = watch(_adProvider(index));
-                    //     return ad != null
-                    //         ? Container(height: 50, child: AdWidget(ad: ad))
-                    //         : Container();
-                    //   },
-                    // ),
-                  ],
+                    );
+                  },
                 );
               },
               itemCount: vms.length,
@@ -159,8 +152,12 @@ class CalendarAppPage extends HookWidget {
           BottomNavigationBarItem(icon: Icon(Icons.today), label: "Календарь"),
           BottomNavigationBarItem(icon: Icon(Icons.list), label: "Список"),
           BottomNavigationBarItem(
-              icon: Icon(Icons.settings), label: "Настройки"),
+            icon: Icon(Icons.settings),
+            label: "Настройки",
+          ),
         ],
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
       ),
     );
   }

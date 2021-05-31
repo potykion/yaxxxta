@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 abstract class CustomColors {
@@ -15,8 +16,13 @@ ThemeData buildThemeData(BuildContext context) {
   final textTheme = Theme.of(context).textTheme;
 
   return ThemeData(
-    primaryColor: CustomColors.yellow,
-    appBarTheme: AppBarTheme(backgroundColor: CustomColors.white, elevation: 0),
+    brightness: Brightness.dark,
+    // primaryColor: CustomColors.yellow,
+    appBarTheme: AppBarTheme(
+      backgroundColor: Color(0xff272343),
+      elevation: 0,
+      foregroundColor: Color(0xffffffff),
+    ),
     canvasColor: Color(0xff272343),
     accentColor: Color(0xffe3f6f5),
     cardColor: Color(0xffffffff),
@@ -24,8 +30,13 @@ ThemeData buildThemeData(BuildContext context) {
       selectedItemColor: Color(0xffbae8e8),
       unselectedItemColor: Color(0xffffffff),
     ),
+    navigationRailTheme: NavigationRailThemeData(
+      backgroundColor: Color(0xff272343),
+    ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: CustomColors.white,
+      // backgroundColor: Color(0xffffffff),
+      backgroundColor: Color(0xffbae8e8),
+      foregroundColor: Color(0xff272343),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
@@ -36,10 +47,6 @@ ThemeData buildThemeData(BuildContext context) {
     ),
     textTheme: GoogleFonts.openSansTextTheme(
       textTheme.copyWith(
-        headline3: TextStyle(
-          color: Color(0xffffffff),
-          fontWeight: FontWeight.bold,
-        ),
         headline4: TextStyle(
           color: Color(0xffffffff),
           fontWeight: FontWeight.bold,
@@ -47,6 +54,11 @@ ThemeData buildThemeData(BuildContext context) {
         headline5: TextStyle(
           color: Color(0xff272343),
           fontWeight: FontWeight.bold,
+        ),
+        headline6: TextStyle(
+          color: Color(0xff272343),
+          // color: Colors.grey,
+          // fontWeight: FontWeight.bold,
         ),
       ),
     ),

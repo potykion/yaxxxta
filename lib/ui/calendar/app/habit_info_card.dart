@@ -11,7 +11,7 @@ class HabitInfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.symmetric(vertical: 4, horizontal: 4),
+      margin: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),

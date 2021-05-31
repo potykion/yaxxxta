@@ -11,22 +11,29 @@ class HabitStats extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        Column(
-          children: [
-            Text(vm.currentStrike.toString(), style: Theme.of(context).textTheme.headline5),
-            Text("Текущий стрик", style: TextStyle(color: Colors.grey))
-          ],
-        ),
-        Column(
-          children: [
-            Text(vm.maxStrike.toString(), style: Theme.of(context).textTheme.headline5),
-            Text("Макс. стрик", style: TextStyle(color: Colors.grey))
-          ],
-        ),
-      ],
+    return IntrinsicHeight(
+      child: Row(
+        // mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Expanded(
+            child: Column(
+              children: [
+                Text(vm.currentStrike.toString(), style: Theme.of(context).textTheme.headline5),
+                Text("Текущий стрик", style: TextStyle(color: Colors.grey))
+              ],
+            ),
+          ),
+          VerticalDivider(color: Colors.grey),
+          Expanded(
+            child: Column(
+              children: [
+                Text(vm.maxStrike.toString(), style: Theme.of(context).textTheme.headline5),
+                Text("Макс. стрик", style: TextStyle(color: Colors.grey))
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

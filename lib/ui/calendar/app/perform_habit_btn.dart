@@ -50,7 +50,7 @@ class ButtonWithIconAndText extends StatelessWidget {
         ),
         onPressed: onPressed,
         icon: Icon(icon),
-        label: Text(text),
+        label: Text(text, style: TextStyle(fontWeight: FontWeight.bold),),
       ),
     );
   }
