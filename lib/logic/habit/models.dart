@@ -2,6 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:yaxxxta/logic/core/models.dart';
 
 part 'models.freezed.dart';
+
 part 'models.g.dart';
 
 @freezed
@@ -31,18 +32,22 @@ abstract class Habit implements _$Habit, WithId {
 abstract class HabitPerforming implements _$HabitPerforming, WithId {
   const HabitPerforming._();
 
-  const factory HabitPerforming(
-      {String? id,
-      required DateTime created,
-      required String habitId}) = _HabitPerforming;
+  const factory HabitPerforming({
+    String? id,
+    required DateTime created,
+    required String habitId,
+    required String userId,
+  }) = _HabitPerforming;
 
   factory HabitPerforming.fromJson(Map<String, dynamic> json) =>
       _$HabitPerformingFromJson(json);
 
-  factory HabitPerforming.blank(String habitId, [DateTime? performDatetime]) {
+  factory HabitPerforming.blank(String habitId, String userId,
+      [DateTime? performDatetime]) {
     return HabitPerforming(
       created: performDatetime ?? DateTime.now(),
       habitId: habitId,
+      userId: userId,
     );
   }
 }

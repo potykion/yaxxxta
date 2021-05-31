@@ -57,4 +57,15 @@ class FirebaseHabitPerformingRepo extends FirebaseRepo<HabitPerforming> {
   Map<String, dynamic> entityToFirebase(HabitPerforming entity) {
     return entity.toJson()..["created"] = Timestamp.fromDate(entity.created);
   }
+
+  Future<List<HabitPerforming>> listSortedByCreatedAndFilterByUserId(
+    String userId,
+  ) async =>
+      (await collectionReference
+              .where("userId", isEqualTo: userId)
+              .orderBy("created", descending: true)
+              .get())
+          .docs
+          .map(entityFromFirebase)
+          .toList();
 }

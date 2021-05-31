@@ -259,11 +259,15 @@ class _$HabitPerformingTearOff {
   const _$HabitPerformingTearOff();
 
   _HabitPerforming call(
-      {String? id, required DateTime created, required String habitId}) {
+      {String? id,
+      required DateTime created,
+      required String habitId,
+      required String userId}) {
     return _HabitPerforming(
       id: id,
       created: created,
       habitId: habitId,
+      userId: userId,
     );
   }
 
@@ -280,6 +284,7 @@ mixin _$HabitPerforming {
   String? get id => throw _privateConstructorUsedError;
   DateTime get created => throw _privateConstructorUsedError;
   String get habitId => throw _privateConstructorUsedError;
+  String get userId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -292,7 +297,7 @@ abstract class $HabitPerformingCopyWith<$Res> {
   factory $HabitPerformingCopyWith(
           HabitPerforming value, $Res Function(HabitPerforming) then) =
       _$HabitPerformingCopyWithImpl<$Res>;
-  $Res call({String? id, DateTime created, String habitId});
+  $Res call({String? id, DateTime created, String habitId, String userId});
 }
 
 /// @nodoc
@@ -309,6 +314,7 @@ class _$HabitPerformingCopyWithImpl<$Res>
     Object? id = freezed,
     Object? created = freezed,
     Object? habitId = freezed,
+    Object? userId = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -323,6 +329,10 @@ class _$HabitPerformingCopyWithImpl<$Res>
           ? _value.habitId
           : habitId // ignore: cast_nullable_to_non_nullable
               as String,
+      userId: userId == freezed
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -334,7 +344,7 @@ abstract class _$HabitPerformingCopyWith<$Res>
           _HabitPerforming value, $Res Function(_HabitPerforming) then) =
       __$HabitPerformingCopyWithImpl<$Res>;
   @override
-  $Res call({String? id, DateTime created, String habitId});
+  $Res call({String? id, DateTime created, String habitId, String userId});
 }
 
 /// @nodoc
@@ -353,6 +363,7 @@ class __$HabitPerformingCopyWithImpl<$Res>
     Object? id = freezed,
     Object? created = freezed,
     Object? habitId = freezed,
+    Object? userId = freezed,
   }) {
     return _then(_HabitPerforming(
       id: id == freezed
@@ -367,6 +378,10 @@ class __$HabitPerformingCopyWithImpl<$Res>
           ? _value.habitId
           : habitId // ignore: cast_nullable_to_non_nullable
               as String,
+      userId: userId == freezed
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -375,7 +390,10 @@ class __$HabitPerformingCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_HabitPerforming extends _HabitPerforming {
   const _$_HabitPerforming(
-      {this.id, required this.created, required this.habitId})
+      {this.id,
+      required this.created,
+      required this.habitId,
+      required this.userId})
       : super._();
 
   factory _$_HabitPerforming.fromJson(Map<String, dynamic> json) =>
@@ -387,10 +405,12 @@ class _$_HabitPerforming extends _HabitPerforming {
   final DateTime created;
   @override
   final String habitId;
+  @override
+  final String userId;
 
   @override
   String toString() {
-    return 'HabitPerforming(id: $id, created: $created, habitId: $habitId)';
+    return 'HabitPerforming(id: $id, created: $created, habitId: $habitId, userId: $userId)';
   }
 
   @override
@@ -403,7 +423,10 @@ class _$_HabitPerforming extends _HabitPerforming {
                 const DeepCollectionEquality()
                     .equals(other.created, created)) &&
             (identical(other.habitId, habitId) ||
-                const DeepCollectionEquality().equals(other.habitId, habitId)));
+                const DeepCollectionEquality()
+                    .equals(other.habitId, habitId)) &&
+            (identical(other.userId, userId) ||
+                const DeepCollectionEquality().equals(other.userId, userId)));
   }
 
   @override
@@ -411,7 +434,8 @@ class _$_HabitPerforming extends _HabitPerforming {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(created) ^
-      const DeepCollectionEquality().hash(habitId);
+      const DeepCollectionEquality().hash(habitId) ^
+      const DeepCollectionEquality().hash(userId);
 
   @JsonKey(ignore: true)
   @override
@@ -428,7 +452,8 @@ abstract class _HabitPerforming extends HabitPerforming {
   const factory _HabitPerforming(
       {String? id,
       required DateTime created,
-      required String habitId}) = _$_HabitPerforming;
+      required String habitId,
+      required String userId}) = _$_HabitPerforming;
   const _HabitPerforming._() : super._();
 
   factory _HabitPerforming.fromJson(Map<String, dynamic> json) =
@@ -440,6 +465,8 @@ abstract class _HabitPerforming extends HabitPerforming {
   DateTime get created => throw _privateConstructorUsedError;
   @override
   String get habitId => throw _privateConstructorUsedError;
+  @override
+  String get userId => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$HabitPerformingCopyWith<_HabitPerforming> get copyWith =>

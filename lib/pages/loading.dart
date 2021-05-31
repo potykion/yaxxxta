@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -69,6 +70,7 @@ class LoadingPage extends HookWidget {
 
         loadingTextState.value = "Грузим привычки...";
         // region
+
         await context.read(habitControllerProvider.notifier).load(user.uid);
         // endregion
 

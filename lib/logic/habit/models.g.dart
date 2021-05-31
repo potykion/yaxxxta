@@ -29,6 +29,7 @@ _$_HabitPerforming _$_$_HabitPerformingFromJson(Map json) {
     id: json['id'] as String?,
     created: DateTime.parse(json['created'] as String),
     habitId: json['habitId'] as String,
+    userId: json['userId'] as String,
   );
 }
 
@@ -37,4 +38,5 @@ Map<String, dynamic> _$_$_HabitPerformingToJson(_$_HabitPerforming instance) =>
       'id': instance.id,
       'created': instance.created.toIso8601String(),
       'habitId': instance.habitId,
+      'userId': instance.userId,
     };

@@ -7,9 +7,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/app_user_info/controllers.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:yaxxxta/logic/habit/vms.dart';
-import 'package:yaxxxta/ui/calendar/app/calendar_appbar.dart';
-import 'package:yaxxxta/widgets/habit_performing_card.dart';
-import 'package:yaxxxta/widgets/pagination.dart';
+import 'package:yaxxxta/ui/calendar/app/habit_info_card.dart';
+import 'package:yaxxxta/ui/calendar/app/habit_stats.dart';
+import 'package:yaxxxta/ui/calendar/app/perform_habit_btn.dart';
+import 'package:yaxxxta/widgets/habit_performing_calendar.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 FutureProvider<bool> _isPhysicalDeviceProvider = FutureProvider(
@@ -54,36 +55,113 @@ class CalendarAppPage extends HookWidget {
     );
 
     return Scaffold(
-      // appBar: CalendarAppBar(
-      //   onHabitSelect: controller.move,
-      // ),
       body: vms.isEmpty
           ? Center(child: Text("Привычки не найдены"))
           : Swiper(
               controller: controller,
               itemBuilder: (context, index) {
+                var vm = vms[index];
+
                 return Column(
                   children: [
                     Expanded(
-                      child: HabitPerformingCard(vm: vms[index]),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          top: kToolbarHeight,
+                        ),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 12),
+                              child: SizedBox(
+                                height: 100,
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Flexible(
+                                      child: Text(
+                                        vm.habit.title,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline4,
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(Icons.edit),
+                                      color: Color(0xffffffff),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  HabitInfoCard(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Прогресс",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline5,
+                                        ),
+                                        SizedBox(height: 8),
+                                        HabitPerformingCalendar(vm: vm),
+                                        SizedBox(height: 8),
+                                        PerformHabitButton(habit: vm.habit),
+                                      ],
+                                    ),
+                                  ),
+                                  HabitInfoCard(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Статистика",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline5,
+                                        ),
+                                        SizedBox(height: 8),
+                                        HabitStats(vm: vm),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                    // Padding(
-                    //   padding: const EdgeInsets.only(bottom: 8),
-                    //   child: HabitPagination(vms: vms, currentIndex: index),
+                    // Consumer(
+                    //   builder: (context, watch, child) {
+                    //     var ad = watch(_adProvider(index));
+                    //     return ad != null
+                    //         ? Container(height: 50, child: AdWidget(ad: ad))
+                    //         : Container();
+                    //   },
                     // ),
-                    Consumer(
-                      builder: (context, watch, child) {
-                        var ad = watch(_adProvider(index));
-                        return ad != null
-                            ? Container(height: 50, child: AdWidget(ad: ad))
-                            : Container();
-                      },
-                    ),
                   ],
                 );
               },
               itemCount: vms.length,
             ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.today), label: "Календарь"),
+          BottomNavigationBarItem(icon: Icon(Icons.list), label: "Список"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.settings), label: "Настройки"),
+        ],
+      ),
     );
   }
 }

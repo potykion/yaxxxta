@@ -17,11 +17,13 @@ ThemeData buildThemeData(BuildContext context) {
   return ThemeData(
     primaryColor: CustomColors.yellow,
     appBarTheme: AppBarTheme(backgroundColor: CustomColors.white, elevation: 0),
-    // canvasColor: Color(0xffF9FDFD),
     canvasColor: Color(0xff272343),
-    // accentColor: Color(0xffbae8e8),
     accentColor: Color(0xffe3f6f5),
     cardColor: Color(0xffffffff),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      selectedItemColor: Color(0xffbae8e8),
+      unselectedItemColor: Color(0xffffffff),
+    ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: CustomColors.white,
     ),
@@ -34,9 +36,18 @@ ThemeData buildThemeData(BuildContext context) {
     ),
     textTheme: GoogleFonts.openSansTextTheme(
       textTheme.copyWith(
-        headline3: TextStyle(color: Color(0xffffffff), fontWeight: FontWeight.bold),
-        headline4: TextStyle(color: Color(0xffffffff), fontWeight: FontWeight.bold),
-        headline5: TextStyle(color: Color(0xff272343), fontWeight: FontWeight.bold),
+        headline3: TextStyle(
+          color: Color(0xffffffff),
+          fontWeight: FontWeight.bold,
+        ),
+        headline4: TextStyle(
+          color: Color(0xffffffff),
+          fontWeight: FontWeight.bold,
+        ),
+        headline5: TextStyle(
+          color: Color(0xff272343),
+          fontWeight: FontWeight.bold,
+        ),
       ),
     ),
   );

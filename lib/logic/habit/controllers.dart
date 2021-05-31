@@ -16,7 +16,7 @@ class HabitController extends StateNotifier<List<HabitVM>> {
   Future<void> load(String userId) async {
     var habits = await habitRepo.listByUserId(userId);
     var performings = groupBy<HabitPerforming, String>(
-      await habitPerformingRepo.list(),
+      await habitPerformingRepo.listSortedByCreatedAndFilterByUserId(userId),
       (hp) => hp.habitId,
     );
     state = habits
@@ -44,7 +44,11 @@ class HabitController extends StateNotifier<List<HabitVM>> {
   }
 
   Future<void> perform(Habit habit, [DateTime? performDatetime]) async {
-    var performing = HabitPerforming.blank(habit.id!, performDatetime);
+    var performing = HabitPerforming.blank(
+      habit.id!,
+      habit.userId,
+      performDatetime,
+    );
     performing = performing.copyWith(
       id: await habitPerformingRepo.insert(performing),
     );

@@ -46,7 +46,7 @@ class HabitPerformingCalendar extends HookWidget {
     // }
 
     return SizedBox(
-      height: 260,
+      height: 240,
       // width: 380,
       child: pv,
     );
@@ -68,16 +68,23 @@ class _HabitPerformingsFor35Days extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        for (var week in List.generate(5, (index) => index))
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              for (var day in List.generate(7, (index) => index))
-                _buildDateCell(context, week, day)
+              for (var week in List.generate(5, (index) => index))
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    for (var day in List.generate(7, (index) => index))
+                      _buildDateCell(context, week, day)
+                  ],
+                ),
             ],
-          )
+          ),
+        ),
+        SizedBox(height: 8),
       ],
     );
   }
@@ -89,33 +96,30 @@ class _HabitPerformingsFor35Days extends StatelessWidget {
         )
         .date();
     var hasDatePerformings = performings.any((hp) => hp.created.date() == date);
-    return Padding(
-      padding: const EdgeInsets.all(4),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          color: hasDatePerformings ? Theme.of(context).accentColor : null,
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onLongPress: () async {
-                await context
-                    .read(habitControllerProvider.notifier)
-                    .perform(habit, date);
-                if (await Vibration.hasVibrator() ?? false) {
-                  Vibration.vibrate(duration: 100);
-                }
-              },
-              child: Container(
-                width: 42,
-                height: 42,
-                child: Center(
-                  child: Text(
-                    DateFormat("dd.\nMM").format(date),
-                  ),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: hasDatePerformings ? Theme.of(context).accentColor : null,
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onLongPress: () async {
+              await context
+                  .read(habitControllerProvider.notifier)
+                  .perform(habit, date);
+              if (await Vibration.hasVibrator() ?? false) {
+                Vibration.vibrate(duration: 100);
+              }
+            },
+            child: Container(
+              width: 41,
+              height: 41,
+              child: Center(
+                child: Text(
+                  DateFormat("dd.\nMM").format(date),
                 ),
               ),
             ),
