@@ -110,8 +110,8 @@ class _HabitPerformingsFor35Days extends StatelessWidget {
                 }
               },
               child: Container(
-                width: 43,
-                height: 43,
+                width: 42,
+                height: 42,
                 child: Center(
                   child: Text(
                     DateFormat("dd.\nMM").format(date),

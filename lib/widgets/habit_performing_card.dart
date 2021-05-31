@@ -1,28 +1,22 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:yaxxxta/logic/habit/vms.dart';
-import 'package:yaxxxta/widgets/perform_habit_btn.dart';
 
-import 'package:yaxxxta/routes.gr.dart';
 import 'habit_performing_calendar.dart';
 
 class HabitPerformingCard extends StatelessWidget {
   final HabitVM vm;
-  final void Function()? onPerform;
-  final void Function()? onArchive;
 
   const HabitPerformingCard({
     Key? key,
     required this.vm,
-    this.onPerform,
-    this.onArchive,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: kToolbarHeight),
-      // padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+      padding: const EdgeInsets.only(
+        top: kToolbarHeight,
+      ),
       child: Column(
         children: [
           Padding(
@@ -44,42 +38,25 @@ class HabitPerformingCard extends StatelessWidget {
                     icon: Icon(Icons.edit),
                     color: Color(0xffffffff),
                   ),
-                  // FloatingActionButton(
-                  //   onPressed: () {},
-                  //   child: Icon(Icons.edit),
-                  //   mini: true,
-                  //   elevation: 0,
-                  //   foregroundColor: Color(0xff272343),
-                  //   backgroundColor: Color(0xffe3f6f5),
-                  // )
                 ],
               ),
             ),
           ),
-          // SizedBox(height: 16,),
           Expanded(
-            child: Card(
-              // elevation: 0,
-              margin: EdgeInsets.only(
-                top: 24,
-                left: 4,
-                right: 4,
-                bottom: 4,
-              ),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(32)),
-              child: Column(
-                // mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
+            child: Column(
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Card(
+                  margin: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(32)),
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 8),
+                      // SizedBox(height: 8),
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 8),
+                            horizontal: 16, vertical: 16),
                         child: Text(
                           "Прогресс",
                           style: Theme.of(context).textTheme.headline5,
@@ -97,15 +74,20 @@ class HabitPerformingCard extends StatelessWidget {
                           icon: Icons.done,
                         ),
                       ),
+                      SizedBox(height: 16),
                     ],
                   ),
-                  // SizedBox(height: 8),
-                  Column(
+                ),
+                Card(
+                  margin: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(32)),
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 8),
+                            horizontal: 16, vertical: 16),
                         child: Text(
                           "Статистика",
                           style: Theme.of(context).textTheme.headline5,
@@ -134,26 +116,35 @@ class HabitPerformingCard extends StatelessWidget {
                           ),
                         ],
                       ),
+                      SizedBox(height: 24),
                     ],
                   ),
-
-                  //
-                  Column(
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          IconButton(onPressed: () {}, icon: Icon(Icons.today)),
-                          IconButton(onPressed: () {}, icon: Icon(Icons.list)),
-                          IconButton(onPressed: () {}, icon: Icon(Icons.settings)),
-                        ],
+                      IconButton(
+                        color: Colors.white,
+                        onPressed: () {},
+                        icon: Icon(Icons.today),
                       ),
-                      SizedBox(height: 8),
+                      IconButton(
+                        color: Colors.white,
+                        onPressed: () {},
+                        icon: Icon(Icons.list),
+                      ),
+                      IconButton(
+                        color: Colors.white,
+                        onPressed: () {},
+                        icon: Icon(Icons.settings),
+                      ),
                     ],
                   ),
-                  // SizedBox(height: 8),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],
