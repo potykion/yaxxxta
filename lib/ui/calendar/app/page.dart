@@ -56,7 +56,7 @@ class CalendarAppPage extends HookWidget {
 
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: kToolbarHeight + 16,
+        // toolbarHeight: kToolbarHeight + 16,
         title: Text(
           "Календарь",
           style: Theme.of(context).textTheme.headline4,
@@ -76,6 +76,8 @@ class CalendarAppPage extends HookWidget {
       body: vms.isEmpty
           ? Center(child: Text("Привычки не найдены"))
           : Swiper(
+              viewportFraction: 0.9,
+              scale: 0.9,
               controller: controller,
               itemBuilder: (context, index) {
                 var vm = vms[index];
@@ -84,6 +86,7 @@ class CalendarAppPage extends HookWidget {
                   builder: (context, watch, child) {
                     var ad = watch(_adProvider(index));
                     return HabitInfoCard(
+                      vm: vm,
                       child: Column(
                         // mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,11 +108,11 @@ class CalendarAppPage extends HookWidget {
                               ),
                             ],
                           ),
-                          SizedBox(height: 8),
                           // Divider(),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              SizedBox(height: 8),
                               Text(
                                 "Прогресс",
                                 style: Theme.of(context).textTheme.headline6,
@@ -121,11 +124,11 @@ class CalendarAppPage extends HookWidget {
                             ],
                           ),
                           SizedBox(height: 8),
-                          SizedBox(height: 8),
                           // Divider(),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              SizedBox(height: 8),
                               Text(
                                 "Статистика",
                                 style: Theme.of(context).textTheme.headline6,
@@ -134,11 +137,12 @@ class CalendarAppPage extends HookWidget {
                               HabitStats(vm: vm),
                             ],
                           ),
-                          if (ad != null) ...[
-                            SizedBox(height: 8),
-                            SizedBox(height: 8),
-                            Container(height: 55, child: AdWidget(ad: ad)),
-                          ]
+                          SizedBox(height: 8),
+                          SizedBox(height: 8),
+                          Container(
+                            height: 55,
+                            child: ad != null ? AdWidget(ad: ad) : null,
+                          ),
                         ],
                       ),
                     );

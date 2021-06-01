@@ -24,7 +24,8 @@ ThemeData buildThemeData(BuildContext context) {
       foregroundColor: Color(0xffffffff),
     ),
     canvasColor: Color(0xff272343),
-    accentColor: Color(0xffe3f6f5),
+    // accentColor: Color(0xffe3f6f5),
+    accentColor: Color(0xffbae8e8),
     cardColor: Color(0xffffffff),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       selectedItemColor: Color(0xffbae8e8),

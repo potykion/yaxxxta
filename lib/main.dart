@@ -24,7 +24,7 @@ void main() async {
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
       systemNavigationBarColor: Color(0xff1b192f),
-      statusBarColor: Color(0xff1b192f),
+      statusBarColor: Color(0xff272343),
     ),
   );
 
@@ -38,6 +38,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MaterialApp.router(
+        title: "Яхта",
         routerDelegate: (appRouter).delegate(),
         routeInformationParser: (appRouter).defaultRouteParser(),
         debugShowCheckedModeBanner: false,
