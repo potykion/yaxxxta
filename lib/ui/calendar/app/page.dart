@@ -34,7 +34,7 @@ var _adProvider = Provider.family(
                         ? "ca-app-pub-6011780463667583/9890116434"
                         // ? BannerAd.testAdUnitId
                         : BannerAd.testAdUnitId,
-                    size: AdSize.smartBanner,
+                    size: AdSize.banner,
                     request: AdRequest(),
                     listener: AdListener(),
                   )..load(),
@@ -140,7 +140,8 @@ class CalendarAppPage extends HookWidget {
                           SizedBox(height: 8),
                           SizedBox(height: 8),
                           Container(
-                            height: 55,
+                            height: AdSize.banner.height.toDouble(),
+                            width: AdSize.banner.width.toDouble(),
                             child: ad != null ? AdWidget(ad: ad) : null,
                           ),
                         ],
