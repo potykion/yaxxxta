@@ -63,5 +63,16 @@ ThemeData buildThemeData(BuildContext context) {
         ),
       ),
     ),
+    inputDecorationTheme: InputDecorationTheme(
+      isDense: true,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: BorderSide.none,
+      ),
+      hintStyle: TextStyle(
+        color: Colors.grey,
+      ),
+      filled: true,
+    ),
   );
 }

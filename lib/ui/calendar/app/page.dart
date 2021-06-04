@@ -7,11 +7,14 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/app_user_info/controllers.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:yaxxxta/logic/habit/vms.dart';
+import 'package:yaxxxta/pages/form.dart';
 import 'package:yaxxxta/ui/calendar/app/habit_info_card.dart';
 import 'package:yaxxxta/ui/calendar/app/habit_stats.dart';
 import 'package:yaxxxta/ui/calendar/app/perform_habit_btn.dart';
 import 'package:yaxxxta/widgets/habit_performing_calendar.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+
+import 'habit_form.dart';
 
 FutureProvider<bool> _isPhysicalDeviceProvider = FutureProvider(
   (_) async => (await DeviceInfoPlugin().androidInfo).isPhysicalDevice ?? false,
@@ -62,11 +65,23 @@ class CalendarAppPage extends HookWidget {
           style: Theme.of(context).textTheme.headline4,
         ),
         actions: [
-          // IconButton(onPressed: () {}, icon: Icon(Icons.add), color: Colors.white),
           Padding(
             padding: const EdgeInsets.only(right: 12, top: 8),
             child: FloatingActionButton(
-              onPressed: () {},
+              onPressed: () {
+                showModalBottomSheet<void>(
+                    context: context,
+                    builder: (context) => Container(
+                      height: 240,
+                      child: HabitInfoCard(
+                            roundOnlyTop: true,
+                            color: Theme.of(context).canvasColor,
+                            margin: EdgeInsets.zero,
+                            child: HabitForm(),
+                          ),
+                    ),
+                    backgroundColor: Colors.transparent);
+              },
               child: Icon(Icons.add),
               mini: true,
             ),
@@ -76,8 +91,10 @@ class CalendarAppPage extends HookWidget {
       body: vms.isEmpty
           ? Center(child: Text("Привычки не найдены"))
           : Swiper(
-              viewportFraction: 0.9,
-              scale: 0.9,
+              // В релиз-моде делаем скейл карточек красивый
+              // В дебаг-моде он тормозит
+              viewportFraction: kReleaseMode ? 0.9 : 1,
+              scale: kReleaseMode ? 0.9 : 1,
               controller: controller,
               itemBuilder: (context, index) {
                 var vm = vms[index];
@@ -86,11 +103,11 @@ class CalendarAppPage extends HookWidget {
                   builder: (context, watch, child) {
                     var ad = watch(_adProvider(index));
                     return HabitInfoCard(
-                      vm: vm,
+                      color: vm.isPerformedToday ? Color(0xfff1fafa) : null,
                       child: Column(
                         // mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -108,7 +125,6 @@ class CalendarAppPage extends HookWidget {
                               ),
                             ],
                           ),
-                          // Divider(),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -123,8 +139,6 @@ class CalendarAppPage extends HookWidget {
                               PerformHabitButton(habit: vm.habit),
                             ],
                           ),
-                          SizedBox(height: 8),
-                          // Divider(),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -137,8 +151,6 @@ class CalendarAppPage extends HookWidget {
                               HabitStats(vm: vm),
                             ],
                           ),
-                          SizedBox(height: 8),
-                          SizedBox(height: 8),
                           Container(
                             height: AdSize.banner.height.toDouble(),
                             width: AdSize.banner.width.toDouble(),

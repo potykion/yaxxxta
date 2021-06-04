@@ -26,6 +26,11 @@ class HabitFormPage extends HookWidget {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Text(
+          habit.value.id != null ? "Редактирование" : "Создание",
+          style: Theme.of(context).textTheme.headline4,
+        ),
         actions: [
           if (habit.value.id != null)
             PopupMenuButton(
@@ -61,12 +66,7 @@ class HabitFormPage extends HookWidget {
               readOnly: habit.value.archived,
               controller: titleTec,
               decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide.none,
-                ),
                 hintText: 'Например "Зайти в приложение"',
-                filled: true,
               ),
             ),
             Spacer(),

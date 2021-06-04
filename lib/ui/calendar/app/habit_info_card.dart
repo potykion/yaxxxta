@@ -2,23 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:yaxxxta/logic/habit/vms.dart';
 
 class HabitInfoCard extends StatelessWidget {
-  final HabitVM vm;
   final Widget child;
+  final Color? color;
+  final EdgeInsets? margin;
+  final bool roundOnlyTop;
 
   const HabitInfoCard({
     Key? key,
     required this.child,
-    required this.vm,
+    this.color,
+    this.margin = const EdgeInsets.symmetric(vertical: 16, horizontal: 0),
+    this.roundOnlyTop = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: vm.isPerformedToday
-          ? Color(0xfff1fafa)
-          : null,
-      margin: EdgeInsets.symmetric(vertical: 16, horizontal: 0),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+      color: color,
+      margin: margin,
+      shape: RoundedRectangleBorder(
+        borderRadius: roundOnlyTop
+            ? BorderRadius.only(
+                topLeft: Radius.circular(32),
+                topRight: Radius.circular(32),
+              )
+            : BorderRadius.circular(32),
+      ),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: child,
