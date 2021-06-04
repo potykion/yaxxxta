@@ -16,6 +16,7 @@ import 'package:yaxxxta/ui/calendar/app/perform_habit_btn.dart';
 import 'package:yaxxxta/widgets/habit_performing_calendar.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
+import 'bottom_nav.dart';
 import 'habit_form.dart';
 
 FutureProvider<bool> _isPhysicalDeviceProvider = FutureProvider(
@@ -115,8 +116,7 @@ class CalendarAppPage extends HookWidget {
                               ),
                               IconButton(
                                 onPressed: () async {
-                                  var habit =
-                                      await showHabitFormBottomSheet(
+                                  var habit = await showHabitFormBottomSheet(
                                     context,
                                     initial: vm.habit,
                                   );
@@ -170,18 +170,7 @@ class CalendarAppPage extends HookWidget {
               },
               itemCount: vms.length,
             ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.today), label: "Календарь"),
-          BottomNavigationBarItem(icon: Icon(Icons.list), label: "Список"),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: "Настройки",
-          ),
-        ],
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-      ),
+      bottomNavigationBar: MyBottomNav(),
     );
   }
 }

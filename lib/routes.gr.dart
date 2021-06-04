@@ -11,10 +11,10 @@ import 'logic/core/web/controllers.dart' as _i3;
 import 'logic/habit/models.dart' as _i10;
 import 'pages/auth.dart' as _i5;
 import 'pages/form.dart' as _i7;
-import 'pages/list.dart' as _i8;
 import 'pages/loading.dart' as _i4;
 import 'pages/settings.dart' as _i9;
 import 'ui/calendar/page.dart' as _i6;
+import 'ui/list/page.dart' as _i8;
 
 class AppRouter extends _i1.RootStackRouter {
   AppRouter(

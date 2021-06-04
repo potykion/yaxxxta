@@ -2,10 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:yaxxxta/pages/auth.dart';
 import 'package:yaxxxta/pages/loading.dart';
 import 'package:yaxxxta/ui/calendar/page.dart';
+import 'package:yaxxxta/ui/list/page.dart';
 
 import 'logic/core/web/controllers.dart';
 import 'pages/form.dart';
-import 'pages/list.dart';
 import 'pages/settings.dart';
 
 @MaterialAutoRouter(
