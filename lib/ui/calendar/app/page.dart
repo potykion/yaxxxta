@@ -71,7 +71,7 @@ class CalendarAppPage extends HookWidget {
             padding: const EdgeInsets.only(right: 12, top: 8),
             child: FloatingActionButton(
               onPressed: () async {
-                var habit = await showHabitFormModalBottomSheet(context);
+                var habit = await showHabitFormBottomSheet(context);
                 if (habit != null) {
                   await context
                       .read(habitControllerProvider.notifier)
@@ -116,7 +116,7 @@ class CalendarAppPage extends HookWidget {
                               IconButton(
                                 onPressed: () async {
                                   var habit =
-                                      await showHabitFormModalBottomSheet(
+                                      await showHabitFormBottomSheet(
                                     context,
                                     initial: vm.habit,
                                   );

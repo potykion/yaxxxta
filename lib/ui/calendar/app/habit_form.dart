@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
 
 import 'bottom_sheet.dart';
@@ -41,7 +43,10 @@ class HabitForm extends HookWidget {
               opacity: habit.value.id != null ? 1 : 0,
               child: IconButton(
                 icon: Icon(Icons.more_vert),
-                onPressed: () {},
+                onPressed: () => showHabitActionsBottomSheet(
+                  context,
+                  habit.value,
+                ),
               ),
             )
           ],
@@ -89,7 +94,7 @@ class HabitForm extends HookWidget {
   }
 }
 
-Future<Habit?> showHabitFormModalBottomSheet(
+Future<Habit?> showHabitFormBottomSheet(
   BuildContext context, {
   Habit? initial,
 }) =>
@@ -103,6 +108,40 @@ Future<Habit?> showHabitFormModalBottomSheet(
           color: Theme.of(context).canvasColor,
           margin: EdgeInsets.zero,
           child: HabitForm(initial: initial),
+        ),
+      ),
+    );
+
+Future<void> showHabitActionsBottomSheet(
+  BuildContext context,
+  Habit habit,
+) =>
+    showModalBottomSheet<Habit>(
+      isScrollControlled: true,
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => BottomSheetContainer(
+        height: 100,
+        child: HabitInfoCard(
+          roundOnlyTop: true,
+          color: Theme.of(context).canvasColor,
+          margin: EdgeInsets.zero,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ButtonWithIconAndText(
+                text: "Отправить в архив",
+                icon: Icons.archive,
+                onPressed: () async {
+                  await context
+                      .read(habitControllerProvider.notifier)
+                      .archive(habit);
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          ),
         ),
       ),
     );
