@@ -6,8 +6,10 @@ import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/app_user_info/controllers.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
+import 'package:yaxxxta/logic/habit/models.dart';
 import 'package:yaxxxta/logic/habit/vms.dart';
 import 'package:yaxxxta/pages/form.dart';
+import 'package:yaxxxta/ui/calendar/app/bottom_sheet.dart';
 import 'package:yaxxxta/ui/calendar/app/habit_info_card.dart';
 import 'package:yaxxxta/ui/calendar/app/habit_stats.dart';
 import 'package:yaxxxta/ui/calendar/app/perform_habit_btn.dart';
@@ -68,19 +70,13 @@ class CalendarAppPage extends HookWidget {
           Padding(
             padding: const EdgeInsets.only(right: 12, top: 8),
             child: FloatingActionButton(
-              onPressed: () {
-                showModalBottomSheet<void>(
-                    context: context,
-                    builder: (context) => Container(
-                      height: 240,
-                      child: HabitInfoCard(
-                            roundOnlyTop: true,
-                            color: Theme.of(context).canvasColor,
-                            margin: EdgeInsets.zero,
-                            child: HabitForm(),
-                          ),
-                    ),
-                    backgroundColor: Colors.transparent);
+              onPressed: () async {
+                var habit = await showHabitFormModalBottomSheet(context);
+                if (habit != null) {
+                  await context
+                      .read(habitControllerProvider.notifier)
+                      .create(habit);
+                }
               },
               child: Icon(Icons.add),
               mini: true,
@@ -111,7 +107,6 @@ class CalendarAppPage extends HookWidget {
                         children: [
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
-                            // textBaseline: TextBaseline.alphabetic,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
@@ -119,7 +114,18 @@ class CalendarAppPage extends HookWidget {
                                 style: Theme.of(context).textTheme.headline5,
                               ),
                               IconButton(
-                                onPressed: () {},
+                                onPressed: () async {
+                                  var habit =
+                                      await showHabitFormModalBottomSheet(
+                                    context,
+                                    initial: vm.habit,
+                                  );
+                                  if (habit != null) {
+                                    await context
+                                        .read(habitControllerProvider.notifier)
+                                        .update(habit);
+                                  }
+                                },
                                 icon: Icon(Icons.edit),
                                 color: Theme.of(context).canvasColor,
                               ),

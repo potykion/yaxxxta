@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
 
+import 'bottom_sheet.dart';
 import 'button_with_icon_and_text.dart';
 import 'habit_info_card.dart';
 
@@ -26,10 +27,15 @@ class HabitForm extends HookWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               habit.value.id != null ? "Редактирование" : "Создание",
-              style: Theme.of(context).textTheme.headline4,
+              style: Theme.of(context)
+                  .textTheme
+                  .headline5
+                  ?.copyWith(color: Colors.white),
             ),
             Opacity(
               opacity: habit.value.id != null ? 1 : 0,
@@ -53,6 +59,7 @@ class HabitForm extends HookWidget {
             ),
             SizedBox(height: 8),
             TextFormField(
+              cursorColor: Colors.white,
               style: TextStyle(color: Colors.white),
               readOnly: habit.value.archived,
               controller: titleTec,
@@ -68,7 +75,11 @@ class HabitForm extends HookWidget {
             ButtonWithIconAndText(
               icon: Icons.save,
               text: "Сохранить",
-              onPressed: () {},
+              onPressed: () {
+                if (habit.value.title.isNotEmpty) {
+                  Navigator.of(context).pop(habit.value);
+                }
+              },
             ),
             SizedBox(height: 8),
           ],
@@ -77,3 +88,21 @@ class HabitForm extends HookWidget {
     );
   }
 }
+
+Future<Habit?> showHabitFormModalBottomSheet(
+  BuildContext context, {
+  Habit? initial,
+}) =>
+    showModalBottomSheet<Habit>(
+      isScrollControlled: true,
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => BottomSheetContainer(
+        child: HabitInfoCard(
+          roundOnlyTop: true,
+          color: Theme.of(context).canvasColor,
+          margin: EdgeInsets.zero,
+          child: HabitForm(initial: initial),
+        ),
+      ),
+    );
