@@ -37,7 +37,7 @@ class HabitForm extends HookWidget {
               style: Theme.of(context)
                   .textTheme
                   .headline5
-                  ?.copyWith(color: Colors.white),
+                  // ?.copyWith(color: Colors.white),
             ),
             Opacity(
               opacity: habit.value.id != null ? 1 : 0,
@@ -60,12 +60,10 @@ class HabitForm extends HookWidget {
               style: Theme.of(context)
                   .textTheme
                   .headline6
-                  ?.copyWith(color: Colors.white),
+                  // ?.copyWith(color: Colors.white),
             ),
             SizedBox(height: 8),
             TextFormField(
-              cursorColor: Colors.white,
-              style: TextStyle(color: Colors.white),
               readOnly: habit.value.archived,
               controller: titleTec,
               decoration: InputDecoration(
@@ -105,7 +103,7 @@ Future<Habit?> showHabitFormBottomSheet(
       builder: (context) => BottomSheetContainer(
         child: HabitInfoCard(
           roundOnlyTop: true,
-          color: Theme.of(context).canvasColor,
+          // color: Theme.of(context).canvasColor,
           margin: EdgeInsets.zero,
           child: HabitForm(initial: initial),
         ),

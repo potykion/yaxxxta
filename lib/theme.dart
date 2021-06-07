@@ -61,7 +61,13 @@ ThemeData buildThemeData(BuildContext context) {
           // color: Colors.grey,
           // fontWeight: FontWeight.bold,
         ),
+        bodyText1: TextStyle(color: Color(0xff272343)),
+        bodyText2: TextStyle(color: Color(0xff272343)),
+        subtitle1: TextStyle(color: Color(0xff272343)),
       ),
+    ),
+    textSelectionTheme: TextSelectionThemeData(
+      cursorColor: Color(0xff272343),
     ),
     inputDecorationTheme: InputDecorationTheme(
       isDense: true,
@@ -69,6 +75,7 @@ ThemeData buildThemeData(BuildContext context) {
         borderRadius: BorderRadius.circular(16),
         borderSide: BorderSide.none,
       ),
+      fillColor: Color(0xfff1fafa),
       hintStyle: TextStyle(
         color: Colors.grey,
       ),
