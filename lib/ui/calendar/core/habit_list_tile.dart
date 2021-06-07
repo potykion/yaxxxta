@@ -23,27 +23,19 @@ class HabitListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return ListTile(
       key: ValueKey(index),
-      decoration: BoxDecoration(
-        border: Border(
-          left: BorderSide(
-            color: isSelected
-                ? CustomColors.yellow
-                : vm.isPerformedToday
-                    ? CustomColors.green
-                    : CustomColors.lightGrey.withAlpha(31),
-            width: 8,
-          ),
-          bottom: BorderSide(color: CustomColors.lightGrey.withAlpha(31)),
-        ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
       ),
-      child: ListTile(
-        title: Text(vm.habit.title),
-        onTap: isReorder ? null : onTap,
-        onLongPress: onLongPress,
-        trailing: !kIsWeb && isReorder ? Icon(Icons.drag_handle) : null,
+      tileColor: vm.isPerformedToday ? Color(0xfff1fafa) : Colors.white,
+      title: Text(vm.habit.title),
+      subtitle: Text(
+        "Текущий стрик: ${vm.currentStrike} · Макс. стрик: ${vm.maxStrike}",
       ),
+      onTap: isReorder ? null : onTap,
+      onLongPress: onLongPress,
+      trailing: !kIsWeb && isReorder ? Icon(Icons.drag_handle) : null,
     );
   }
 }

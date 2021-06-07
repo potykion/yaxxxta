@@ -9,6 +9,7 @@ import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
 import 'package:yaxxxta/logic/habit/vms.dart';
 import 'package:yaxxxta/pages/form.dart';
+import 'package:yaxxxta/ui/calendar/app/app_bar_fab.dart';
 import 'package:yaxxxta/ui/calendar/app/bottom_sheet.dart';
 import 'package:yaxxxta/ui/calendar/app/habit_info_card.dart';
 import 'package:yaxxxta/ui/calendar/app/habit_stats.dart';
@@ -62,26 +63,22 @@ class CalendarAppPage extends HookWidget {
 
     return Scaffold(
       appBar: AppBar(
-        // toolbarHeight: kToolbarHeight + 16,
+        automaticallyImplyLeading: false,
         title: Text(
           "Календарь",
           style: Theme.of(context).textTheme.headline4,
         ),
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 12, top: 8),
-            child: FloatingActionButton(
-              onPressed: () async {
-                var habit = await showHabitFormBottomSheet(context);
-                if (habit != null) {
-                  await context
-                      .read(habitControllerProvider.notifier)
-                      .create(habit);
-                }
-              },
-              child: Icon(Icons.add),
-              mini: true,
-            ),
+          AppBarFab(
+            icon: Icons.add,
+            onPressed: () async {
+              var habit = await showHabitFormBottomSheet(context);
+              if (habit != null) {
+                await context
+                    .read(habitControllerProvider.notifier)
+                    .create(habit);
+              }
+            },
           )
         ],
       ),

@@ -32,16 +32,14 @@ class HabitForm extends HookWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              habit.value.id != null ? "Редактирование" : "Создание",
-              style: Theme.of(context)
-                  .textTheme
-                  .headline5
-                  // ?.copyWith(color: Colors.white),
-            ),
+            Text(habit.value.id != null ? "Редактирование" : "Создание",
+                style: Theme.of(context).textTheme.headline5
+                // ?.copyWith(color: Colors.white),
+                ),
             Opacity(
               opacity: habit.value.id != null ? 1 : 0,
               child: IconButton(
+                color: Theme.of(context).canvasColor,
                 icon: Icon(Icons.more_vert),
                 onPressed: () => showHabitActionsBottomSheet(
                   context,
@@ -55,13 +53,9 @@ class HabitForm extends HookWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 8),
-            Text(
-              "Название",
-              style: Theme.of(context)
-                  .textTheme
-                  .headline6
-                  // ?.copyWith(color: Colors.white),
-            ),
+            Text("Название", style: Theme.of(context).textTheme.headline6
+                // ?.copyWith(color: Colors.white),
+                ),
             SizedBox(height: 8),
             TextFormField(
               readOnly: habit.value.archived,
@@ -119,25 +113,50 @@ Future<void> showHabitActionsBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
       builder: (context) => BottomSheetContainer(
-        height: 100,
+        height: 140,
         child: HabitInfoCard(
           roundOnlyTop: true,
-          color: Theme.of(context).canvasColor,
           margin: EdgeInsets.zero,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ButtonWithIconAndText(
-                text: "Отправить в архив",
-                icon: Icons.archive,
-                onPressed: () async {
-                  await context
-                      .read(habitControllerProvider.notifier)
-                      .archive(habit);
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pop();
-                },
-              )
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Другие действия",
+                    style: Theme.of(context).textTheme.headline5,
+                    // ?.copyWith(color: Colors.white),
+                  ),
+                  Opacity(
+                    opacity: 0,
+                    child: IconButton(
+                      color: Theme.of(context).canvasColor,
+                      icon: Icon(Icons.more_vert),
+                      onPressed: () {},
+                    ),
+                  )
+                ],
+              ),
+              Column(
+                children: [
+                  SizedBox(height: 8),
+                  ButtonWithIconAndText(
+                    text: "Отправить в архив",
+                    icon: Icons.archive,
+                    onPressed: () async {
+                      await context
+                          .read(habitControllerProvider.notifier)
+                          .archive(habit);
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  SizedBox(height: 8),
+                ],
+              ),
             ],
           ),
         ),
