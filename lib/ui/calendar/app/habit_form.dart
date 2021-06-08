@@ -7,7 +7,7 @@ import 'package:yaxxxta/logic/habit/models.dart';
 import 'package:yaxxxta/ui/core/bottom_sheet.dart';
 import 'package:yaxxxta/ui/core/text.dart';
 
-import 'button_with_icon_and_text.dart';
+import '../../core/button.dart';
 import '../../core/card.dart';
 
 class HabitForm extends HookWidget {
@@ -55,7 +55,7 @@ class HabitForm extends HookWidget {
             ),
           ],
         ),
-        ButtonWithIconAndText(
+        CoreButton(
           icon: Icons.save,
           text: "Сохранить",
           onPressed: () {
@@ -89,7 +89,7 @@ Future<void> showHabitActionsBottomSheet(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Headline5("Другие действия"),
-          ButtonWithIconAndText(
+          CoreButton(
             text: "Отправить в архив",
             icon: Icons.archive,
             onPressed: () async {

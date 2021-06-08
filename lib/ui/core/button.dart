@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class ButtonWithIconAndText extends StatelessWidget {
+class CoreButton extends StatelessWidget {
   final String text;
   final IconData icon;
   final VoidCallback onPressed;
 
-  const ButtonWithIconAndText({
+  const CoreButton({
     Key? key,
     required this.text,
     required this.icon,
