@@ -30,18 +30,21 @@ class CalendarAppPage extends HookWidget {
       ),
       body: vms.isEmpty
           ? Center(child: Text("Привычки не найдены"))
-          : showList.value
-              ? HabitList(
-                  vms: vms,
-                  onHabitSelect: (index) {
-                    initialIndex.value = index;
-                    showList.value = false;
-                  },
-                )
-              : HabitSwiper(
-                  initialIndex: initialIndex.value,
-                  vms: vms,
-                ),
+          : AnimatedSwitcher(
+              duration: Duration(milliseconds: 500),
+              child: showList.value
+                  ? HabitList(
+                      vms: vms,
+                      onHabitSelect: (index) {
+                        initialIndex.value = index;
+                        showList.value = false;
+                      },
+                    )
+                  : HabitSwiper(
+                      initialIndex: initialIndex.value,
+                      vms: vms,
+                    ),
+            ),
       bottomNavigationBar: MyBottomNav(),
     );
   }

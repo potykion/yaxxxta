@@ -18,7 +18,7 @@ class HabitList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
       itemBuilder: (context, index) {
         var vm = vms[index];
 

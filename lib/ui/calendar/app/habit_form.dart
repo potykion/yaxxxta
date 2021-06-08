@@ -30,7 +30,7 @@ class HabitForm extends HookWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Headline5(
-          habit.value.id != null ? "Редактирование" : "Создание",
+          habit.value.id != null ? "Изменить привычку" : "Создать привычку",
           trailing: habit.value.id != null
               ? IconButton(
                   color: Theme.of(context).canvasColor,
