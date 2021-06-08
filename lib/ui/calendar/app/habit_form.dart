@@ -8,7 +8,7 @@ import 'package:yaxxxta/ui/core/bottom_sheet.dart';
 import 'package:yaxxxta/ui/core/text.dart';
 
 import 'button_with_icon_and_text.dart';
-import 'habit_info_card.dart';
+import '../../core/card.dart';
 
 class HabitForm extends HookWidget {
   final Habit? initial;
@@ -75,11 +75,7 @@ Future<Habit?> showHabitFormBottomSheet(
 }) =>
     showCoreBottomSheet<Habit>(
       context,
-      HabitInfoCard(
-        roundOnlyTop: true,
-        margin: EdgeInsets.zero,
-        child: HabitForm(initial: initial),
-      ),
+      HabitForm(initial: initial),
     );
 
 Future<void> showHabitActionsBottomSheet(
@@ -88,27 +84,23 @@ Future<void> showHabitActionsBottomSheet(
 ) =>
     showCoreBottomSheet(
       context,
-      HabitInfoCard(
-        roundOnlyTop: true,
-        margin: EdgeInsets.zero,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Headline5("Другие действия"),
-            ButtonWithIconAndText(
-              text: "Отправить в архив",
-              icon: Icons.archive,
-              onPressed: () async {
-                await context
-                    .read(habitControllerProvider.notifier)
-                    .archive(habit);
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        ),
+      Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Headline5("Другие действия"),
+          ButtonWithIconAndText(
+            text: "Отправить в архив",
+            icon: Icons.archive,
+            onPressed: () async {
+              await context
+                  .read(habitControllerProvider.notifier)
+                  .archive(habit);
+              Navigator.of(context).pop();
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
       ),
       height: 140,
     );

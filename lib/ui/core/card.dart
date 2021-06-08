@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class HabitInfoCard extends StatelessWidget {
+class CoreCard extends StatelessWidget {
   final Widget child;
   final Color? color;
   final EdgeInsets? margin;
   final bool roundOnlyTop;
 
-  const HabitInfoCard({
+  const CoreCard({
     Key? key,
     required this.child,
     this.color,

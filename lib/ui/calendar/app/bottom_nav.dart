@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:yaxxxta/routes.gr.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:yaxxxta/ui/profile/profile_bottom_sheet.dart';
 
 import 'habit_form.dart';
 
@@ -27,7 +28,7 @@ class MyBottomNav extends StatelessWidget {
           }
         }
         if (index == 2) {
-          
+          showProfileBottomSheet(context);
         }
       },
       items: [

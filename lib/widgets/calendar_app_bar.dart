@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import '../routes.gr.dart';
-import 'user_avatar.dart';
+import '../ui/core/user_avatar.dart';
 
 AppBar buildCalendarAppBar(
   BuildContext context, {

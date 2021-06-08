@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yaxxxta/ui/core/card.dart';
 
 Future<T?> showCoreBottomSheet<T>(
   BuildContext context,
@@ -10,7 +11,11 @@ Future<T?> showCoreBottomSheet<T>(
       context: context,
       backgroundColor: Colors.transparent,
       builder: (context) => _CoreBottomSheet(
-        child: child,
+        child: CoreCard(
+          roundOnlyTop: true,
+          margin: EdgeInsets.zero,
+          child: child,
+        ),
         height: height,
       ),
     );

@@ -7,7 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/app_user_info/controllers.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:yaxxxta/logic/habit/vms.dart';
-import 'package:yaxxxta/ui/calendar/app/habit_info_card.dart';
+import 'package:yaxxxta/ui/core/card.dart';
 import 'package:yaxxxta/ui/calendar/app/habit_stats.dart';
 import 'package:yaxxxta/ui/core/text.dart';
 import 'package:yaxxxta/widgets/habit_performing_calendar.dart';
@@ -87,7 +87,7 @@ class CalendarAppPage extends HookWidget {
                 return Consumer(
                   builder: (context, watch, child) {
                     var ad = watch(_adProvider(index));
-                    return HabitInfoCard(
+                    return CoreCard(
                       color: vm.isPerformedToday ? Color(0xfff1fafa) : null,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

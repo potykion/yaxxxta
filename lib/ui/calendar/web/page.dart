@@ -11,7 +11,7 @@ import 'package:yaxxxta/ui/calendar/web/habit_list.dart';
 import 'package:yaxxxta/widgets/habit_performing_calendar.dart';
 import 'package:yaxxxta/widgets/calendar_app_bar.dart';
 import 'package:yaxxxta/widgets/perform_habit_btn.dart';
-import 'package:yaxxxta/widgets/user_avatar.dart';
+import 'package:yaxxxta/ui/core/user_avatar.dart';
 
 var selectedHabitIndexProvider = StateProvider((ref) => 0);
 

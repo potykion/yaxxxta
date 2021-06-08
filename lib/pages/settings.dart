@@ -8,7 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:yaxxxta/logic/app_user_info/controllers.dart';
-import 'package:yaxxxta/widgets/user_avatar.dart';
+import 'package:yaxxxta/ui/core/user_avatar.dart';
 
 class SettingsPage extends HookWidget {
   @override
