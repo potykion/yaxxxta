@@ -116,7 +116,7 @@ class ListHabitPage extends HookWidget {
               ),
               onTap: () =>
                   AutoRouter.of(context).push(
-                    ListHabitRoute(canReorder: false, archived: true),
+                    ListHabitRoute(),
                   ),
             ),
           ],

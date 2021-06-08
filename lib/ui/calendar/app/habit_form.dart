@@ -4,8 +4,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
+import 'package:yaxxxta/ui/core/bottom_sheet.dart';
+import 'package:yaxxxta/ui/core/text.dart';
 
-import 'bottom_sheet.dart';
 import 'button_with_icon_and_text.dart';
 import 'habit_info_card.dart';
 
@@ -28,35 +29,23 @@ class HabitForm extends HookWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(habit.value.id != null ? "Редактирование" : "Создание",
-                style: Theme.of(context).textTheme.headline5
-                // ?.copyWith(color: Colors.white),
-                ),
-            Opacity(
-              opacity: habit.value.id != null ? 1 : 0,
-              child: IconButton(
-                color: Theme.of(context).canvasColor,
-                icon: Icon(Icons.more_vert),
-                onPressed: () => showHabitActionsBottomSheet(
-                  context,
-                  habit.value,
-                ),
-              ),
-            )
-          ],
+        Headline5(
+          habit.value.id != null ? "Редактирование" : "Создание",
+          trailing: habit.value.id != null
+              ? IconButton(
+                  color: Theme.of(context).canvasColor,
+                  icon: Icon(Icons.more_vert),
+                  onPressed: () => showHabitActionsBottomSheet(
+                    context,
+                    habit.value,
+                  ),
+                )
+              : null,
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 8),
-            Text("Название", style: Theme.of(context).textTheme.headline6
-                // ?.copyWith(color: Colors.white),
-                ),
-            SizedBox(height: 8),
+            Headline6("Название"),
             TextFormField(
               readOnly: habit.value.archived,
               controller: titleTec,
@@ -66,21 +55,15 @@ class HabitForm extends HookWidget {
             ),
           ],
         ),
-        Column(
-          children: [
-            SizedBox(height: 8),
-            ButtonWithIconAndText(
-              icon: Icons.save,
-              text: "Сохранить",
-              onPressed: () {
-                if (habit.value.title.isNotEmpty) {
-                  Navigator.of(context).pop(habit.value);
-                }
-              },
-            ),
-            SizedBox(height: 8),
-          ],
-        )
+        ButtonWithIconAndText(
+          icon: Icons.save,
+          text: "Сохранить",
+          onPressed: () {
+            if (habit.value.title.isNotEmpty) {
+              Navigator.of(context).pop(habit.value);
+            }
+          },
+        ),
       ],
     );
   }
@@ -90,17 +73,12 @@ Future<Habit?> showHabitFormBottomSheet(
   BuildContext context, {
   Habit? initial,
 }) =>
-    showModalBottomSheet<Habit>(
-      isScrollControlled: true,
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (context) => BottomSheetContainer(
-        child: HabitInfoCard(
-          roundOnlyTop: true,
-          // color: Theme.of(context).canvasColor,
-          margin: EdgeInsets.zero,
-          child: HabitForm(initial: initial),
-        ),
+    showCoreBottomSheet<Habit>(
+      context,
+      HabitInfoCard(
+        roundOnlyTop: true,
+        margin: EdgeInsets.zero,
+        child: HabitForm(initial: initial),
       ),
     );
 
@@ -108,57 +86,29 @@ Future<void> showHabitActionsBottomSheet(
   BuildContext context,
   Habit habit,
 ) =>
-    showModalBottomSheet<Habit>(
-      isScrollControlled: true,
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (context) => BottomSheetContainer(
-        height: 140,
-        child: HabitInfoCard(
-          roundOnlyTop: true,
-          margin: EdgeInsets.zero,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Другие действия",
-                    style: Theme.of(context).textTheme.headline5,
-                    // ?.copyWith(color: Colors.white),
-                  ),
-                  Opacity(
-                    opacity: 0,
-                    child: IconButton(
-                      color: Theme.of(context).canvasColor,
-                      icon: Icon(Icons.more_vert),
-                      onPressed: () {},
-                    ),
-                  )
-                ],
-              ),
-              Column(
-                children: [
-                  SizedBox(height: 8),
-                  ButtonWithIconAndText(
-                    text: "Отправить в архив",
-                    icon: Icons.archive,
-                    onPressed: () async {
-                      await context
-                          .read(habitControllerProvider.notifier)
-                          .archive(habit);
-                      Navigator.of(context).pop();
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  SizedBox(height: 8),
-                ],
-              ),
-            ],
-          ),
+    showCoreBottomSheet(
+      context,
+      HabitInfoCard(
+        roundOnlyTop: true,
+        margin: EdgeInsets.zero,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Headline5("Другие действия"),
+            ButtonWithIconAndText(
+              text: "Отправить в архив",
+              icon: Icons.archive,
+              onPressed: () async {
+                await context
+                    .read(habitControllerProvider.notifier)
+                    .archive(habit);
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
         ),
       ),
+      height: 140,
     );

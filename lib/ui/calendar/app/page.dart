@@ -6,18 +6,15 @@ import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/app_user_info/controllers.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
-import 'package:yaxxxta/logic/habit/models.dart';
 import 'package:yaxxxta/logic/habit/vms.dart';
-import 'package:yaxxxta/pages/form.dart';
-import 'package:yaxxxta/ui/calendar/app/app_bar_fab.dart';
-import 'package:yaxxxta/ui/calendar/app/bottom_sheet.dart';
 import 'package:yaxxxta/ui/calendar/app/habit_info_card.dart';
 import 'package:yaxxxta/ui/calendar/app/habit_stats.dart';
-import 'package:yaxxxta/ui/calendar/app/perform_habit_btn.dart';
+import 'package:yaxxxta/ui/core/text.dart';
 import 'package:yaxxxta/widgets/habit_performing_calendar.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import 'bottom_nav.dart';
+import 'button_with_icon_and_text.dart';
 import 'habit_form.dart';
 
 FutureProvider<bool> _isPhysicalDeviceProvider = FutureProvider(
@@ -57,29 +54,21 @@ class CalendarAppPage extends HookWidget {
   Widget build(BuildContext context) {
     List<HabitVM> vms = useProvider(habitVMsProvider);
 
-    var controller = useMemoized(
-      () => SwiperController(),
-    );
+    var controller = useMemoized(() => SwiperController());
 
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text(
-          "Календарь",
-          style: Theme.of(context).textTheme.headline4,
-        ),
+        toolbarHeight: kToolbarHeight + 24,
+        title: Headline4("Календарь"),
         actions: [
-          AppBarFab(
-            icon: Icons.add,
-            onPressed: () async {
-              var habit = await showHabitFormBottomSheet(context);
-              if (habit != null) {
-                await context
-                    .read(habitControllerProvider.notifier)
-                    .create(habit);
-              }
-            },
-          )
+          Padding(
+            padding: const EdgeInsets.only(right: 12, top: 8),
+            child: IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.list),
+            ),
+          ),
         ],
       ),
       body: vms.isEmpty
@@ -87,8 +76,10 @@ class CalendarAppPage extends HookWidget {
           : Swiper(
               // В релиз-моде делаем скейл карточек красивый
               // В дебаг-моде он тормозит
-              viewportFraction: kReleaseMode ? 0.9 : 1,
-              scale: kReleaseMode ? 0.9 : 1,
+              // viewportFraction: kReleaseMode ? 0.9 : 1,
+              // scale: kReleaseMode ? 0.9 : 1,
+              viewportFraction: 0.9,
+              scale: 0.9,
               controller: controller,
               itemBuilder: (context, index) {
                 var vm = vms[index];
@@ -99,58 +90,44 @@ class CalendarAppPage extends HookWidget {
                     return HabitInfoCard(
                       color: vm.isPerformedToday ? Color(0xfff1fafa) : null,
                       child: Column(
-                        // mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                vm.habit.title,
-                                style: Theme.of(context).textTheme.headline5,
-                              ),
-                              IconButton(
-                                onPressed: () async {
-                                  var habit = await showHabitFormBottomSheet(
-                                    context,
-                                    initial: vm.habit,
-                                  );
-                                  if (habit != null) {
-                                    await context
-                                        .read(habitControllerProvider.notifier)
-                                        .update(habit);
-                                  }
-                                },
-                                icon: Icon(Icons.edit),
-                                color: Theme.of(context).canvasColor,
-                              ),
-                            ],
+                          Headline5(
+                            vm.habit.title,
+                            trailing: IconButton(
+                              onPressed: () async {
+                                var habit = await showHabitFormBottomSheet(
+                                  context,
+                                  initial: vm.habit,
+                                );
+                                if (habit != null) {
+                                  await context
+                                      .read(habitControllerProvider.notifier)
+                                      .update(habit);
+                                }
+                              },
+                              icon: Icon(Icons.edit),
+                            ),
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(height: 8),
-                              Text(
-                                "Прогресс",
-                                style: Theme.of(context).textTheme.headline6,
-                              ),
-                              SizedBox(height: 8),
+                              Headline6("Прогресс"),
                               HabitPerformingCalendar(vm: vm),
-                              SizedBox(height: 8),
-                              PerformHabitButton(habit: vm.habit),
+                              ButtonWithIconAndText(
+                                text: "Выполнить",
+                                icon: Icons.done,
+                                onPressed: () => context
+                                    .read(habitControllerProvider.notifier)
+                                    .perform(vm.habit),
+                              ),
                             ],
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(height: 8),
-                              Text(
-                                "Статистика",
-                                style: Theme.of(context).textTheme.headline6,
-                              ),
-                              SizedBox(height: 8),
+                              Headline6("Статистика"),
                               HabitStats(vm: vm),
                             ],
                           ),

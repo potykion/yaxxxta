@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:yaxxxta/logic/habit/vms.dart';
 
 class HabitInfoCard extends StatelessWidget {
   final Widget child;
@@ -11,7 +10,7 @@ class HabitInfoCard extends StatelessWidget {
     Key? key,
     required this.child,
     this.color,
-    this.margin = const EdgeInsets.symmetric(vertical: 16, horizontal: 0),
+    this.margin = const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
     this.roundOnlyTop = false,
   }) : super(key: key);
 

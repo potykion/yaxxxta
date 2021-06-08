@@ -81,5 +81,8 @@ ThemeData buildThemeData(BuildContext context) {
       ),
       filled: true,
     ),
+    iconTheme: IconThemeData(
+      color: Color(0xff272343),
+    ),
   );
 }

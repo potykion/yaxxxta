@@ -1,6 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:yaxxxta/routes.gr.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'habit_form.dart';
 
 class MyBottomNav extends StatelessWidget {
   const MyBottomNav({Key? key}) : super(key: key);
@@ -13,25 +17,30 @@ class MyBottomNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var currentRoute = AutoRouter.of(context).current.path;
-    var currentIndex =
-        routes.entries.where((e) => e.value.path == currentRoute).first.key;
-
     return BottomNavigationBar(
-      currentIndex: currentIndex,
-      onTap: (index) =>
-          AutoRouter.of(context).replaceNamed(routes[index]!.path),
+      currentIndex: 1,
+      onTap: (index) async {
+        if (index == 0) {
+          var habit = await showHabitFormBottomSheet(context);
+          if (habit != null) {
+            await context.read(habitControllerProvider.notifier).create(habit);
+          }
+        }
+        if (index == 2) {
+          
+        }
+      },
       items: [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.add_circle),
+          label: "Создание",
+        ),
         BottomNavigationBarItem(
           icon: Icon(Icons.today),
           label: "Календарь",
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.list),
-          label: "Список",
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.settings),
+          icon: Icon(Icons.account_circle),
           label: "Настройки",
         ),
       ],
