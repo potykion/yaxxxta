@@ -32,3 +32,26 @@ class AppBarFab extends StatelessWidget {
     );
   }
 }
+
+class AppBarIconButton extends StatelessWidget {
+  final VoidCallback onPressed;
+
+  final IconData icon;
+
+  const AppBarIconButton({
+    Key? key,
+    required this.onPressed,
+    required this.icon,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 12, top: 8),
+      child: IconButton(
+        onPressed: onPressed,
+        icon: Icon(icon),
+      ),
+    );
+  }
+}
