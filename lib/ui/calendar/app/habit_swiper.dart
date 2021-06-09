@@ -15,12 +15,10 @@ import 'habit_form.dart';
 import 'habit_stats.dart';
 
 class HabitSwiper extends StatelessWidget {
-  final int initialIndex;
   final List<HabitVM> vms;
 
   const HabitSwiper({
     Key? key,
-    this.initialIndex = 0,
     required this.vms,
   }) : super(key: key);
 
@@ -30,9 +28,6 @@ class HabitSwiper extends StatelessWidget {
         // В дебаг-моде он тормозит
         viewportFraction: kReleaseMode ? 0.9 : 1,
         scale: kReleaseMode ? 0.9 : 1,
-        // viewportFraction: 0.9,
-        // scale: 0.9,
-        index: initialIndex,
         itemBuilder: (context, index) {
           var vm = vms[index];
 

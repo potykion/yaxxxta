@@ -42,15 +42,20 @@ class Headline5 extends StatelessWidget {
 
 class Headline6 extends StatelessWidget {
   final String text;
+  final bool white;
 
-  const Headline6(this.text, {Key? key}) : super(key: key);
+  const Headline6(this.text, {Key? key, this.white = false}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: Text(
-          text,
-          style: Theme.of(context).textTheme.headline6,
-        ),
-      );
+  Widget build(BuildContext context) {
+    var style = Theme.of(context).textTheme.headline6!;
+    if (white) {
+      style = style.copyWith(color: Colors.white);
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Text(text, style: style),
+    );
+  }
 }
