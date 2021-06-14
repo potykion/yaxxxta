@@ -4,7 +4,7 @@ import 'package:yaxxxta/ui/core/card.dart';
 Future<T?> showCoreBottomSheet<T>(
   BuildContext context,
   Widget child, {
-  double height = 250,
+  double? height,
 }) =>
     showModalBottomSheet<T>(
       isScrollControlled: true,

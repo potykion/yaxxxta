@@ -11,10 +11,12 @@ import 'package:yaxxxta/ui/calendar/core/habit_list_tile.dart';
 import 'package:yaxxxta/routes.gr.dart';
 
 class ListHabitPage extends HookWidget {
+  final bool archived;
+
+  ListHabitPage({this.archived = false});
+
   @override
   Widget build(BuildContext context) {
-    var archivedState = useState(false);
-    var archived = archivedState.value;
     List<HabitVM> vms = useProvider(
       archived ? archivedHabitVMsProvider : habitVMsProvider,
     );
@@ -25,13 +27,6 @@ class ListHabitPage extends HookWidget {
           archived ? "Архив" : "Список",
           style: Theme.of(context).textTheme.headline4,
         ),
-        actions: [
-          AppBarFab(
-            icon: archived ? Icons.list : Icons.archive,
-            onPressed: () => archivedState.value = !archivedState.value,
-            text: archived ? "Список" : "Архив",
-          )
-        ],
       ),
       body: ListView.separated(
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),

@@ -27,6 +27,7 @@ class HabitForm extends HookWidget {
     });
 
     return Column(
+      mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Headline5(

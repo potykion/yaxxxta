@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:yaxxxta/pages/auth.dart';
 import 'package:yaxxxta/pages/loading.dart';
+import 'package:yaxxxta/ui/archive/page.dart';
 import 'package:yaxxxta/ui/calendar/page.dart';
 import 'package:yaxxxta/ui/list/page.dart';
 
@@ -22,6 +23,7 @@ import 'pages/settings.dart';
         AutoRoute<dynamic>(path: "calendar", page: CalendarPage),
         AutoRoute<dynamic>(path: "form", page: HabitFormPage),
         AutoRoute<int>(path: "list", page: ListHabitPage),
+        AutoRoute<dynamic>(path: "archive", page: HabitArchivePage),
         AutoRoute<dynamic>(path: "settings", page: SettingsPage),
       ],
     ),
