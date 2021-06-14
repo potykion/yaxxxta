@@ -58,6 +58,8 @@ dependencies:
   #  фаербейз база
   firebase_core: ^1.0.1
 
+  firebase_crashlytics: "^2.0.6"
+
   # фаербейз ауф + гугл ауф
   firebase_auth: ^1.0.1
   google_sign_in: ^5.0.0
