@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
@@ -14,7 +15,13 @@ class CalendarAppPage extends HookWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Headline4("*лого*"),
+        title: Headline4(
+          "Яхта",
+          style: TextStyle(
+            fontFamily: "mr_DopestyleG",
+            fontWeight: FontWeight.normal,
+          ),
+        ),
         centerTitle: true,
       ),
       body: vms.isEmpty

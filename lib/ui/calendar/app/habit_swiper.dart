@@ -26,8 +26,10 @@ class HabitSwiper extends StatelessWidget {
   Widget build(BuildContext context) => Swiper(
         // В релиз-моде делаем скейл карточек красивый
         // В дебаг-моде он тормозит
-        viewportFraction: kReleaseMode ? 0.9 : 1,
-        scale: kReleaseMode ? 0.9 : 1,
+        // viewportFraction: kReleaseMode ? 0.9 : 1,
+        // scale: kReleaseMode ? 0.9 : 1,
+        viewportFraction: 0.9,
+        scale: 0.9,
         itemBuilder: (context, index) {
           var vm = vms[index];
 
