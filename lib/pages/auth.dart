@@ -16,7 +16,7 @@ class AuthPage extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text("Надо бы войти"),
+          Text("Надо бы войти", style: TextStyle(color: Colors.white),),
           SizedBox(height: 10),
           SignInButton(
             Buttons.Google,
