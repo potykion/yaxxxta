@@ -35,7 +35,7 @@ class HabitSwiper extends StatelessWidget {
 
           return Consumer(
             builder: (context, watch, child) {
-              var ad = watch(adProvider(index));
+              var ad = watch(adProvider(DateTime.now().millisecondsSinceEpoch));
               return CoreCard(
                 color: vm.isPerformedToday ? Color(0xfff1fafa) : null,
                 child: Column(
