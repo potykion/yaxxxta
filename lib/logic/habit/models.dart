@@ -1,9 +1,29 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:intl/intl.dart';
 import 'package:yaxxxta/logic/core/models.dart';
 
 part 'models.freezed.dart';
 
 part 'models.g.dart';
+
+typedef NotificationId = int;
+
+@freezed
+abstract class HabitNotificationSettings
+    implements _$HabitNotificationSettings {
+
+  const HabitNotificationSettings._();
+
+  factory HabitNotificationSettings({
+    required NotificationId id,
+    required DateTime time,
+  }) = _HabitNotificationSettings;
+
+  factory HabitNotificationSettings.fromJson(Map<String, dynamic> json) =>
+      _$HabitNotificationSettingsFromJson(json);
+
+  String toTimeStr() => DateFormat.Hm().format(time);
+}
 
 @freezed
 abstract class Habit implements _$Habit, WithId {
@@ -15,6 +35,7 @@ abstract class Habit implements _$Habit, WithId {
     required String userId,
     required int order,
     @Default(false) bool archived,
+    HabitNotificationSettings? notification,
   }) = _Habit;
 
   factory Habit.fromJson(Map<String, dynamic> json) => _$HabitFromJson(json);

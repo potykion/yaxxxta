@@ -12,6 +12,182 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+HabitNotificationSettings _$HabitNotificationSettingsFromJson(
+    Map<String, dynamic> json) {
+  return _HabitNotificationSettings.fromJson(json);
+}
+
+/// @nodoc
+class _$HabitNotificationSettingsTearOff {
+  const _$HabitNotificationSettingsTearOff();
+
+  _HabitNotificationSettings call({required int id, required DateTime time}) {
+    return _HabitNotificationSettings(
+      id: id,
+      time: time,
+    );
+  }
+
+  HabitNotificationSettings fromJson(Map<String, Object> json) {
+    return HabitNotificationSettings.fromJson(json);
+  }
+}
+
+/// @nodoc
+const $HabitNotificationSettings = _$HabitNotificationSettingsTearOff();
+
+/// @nodoc
+mixin _$HabitNotificationSettings {
+  int get id => throw _privateConstructorUsedError;
+  DateTime get time => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $HabitNotificationSettingsCopyWith<HabitNotificationSettings> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $HabitNotificationSettingsCopyWith<$Res> {
+  factory $HabitNotificationSettingsCopyWith(HabitNotificationSettings value,
+          $Res Function(HabitNotificationSettings) then) =
+      _$HabitNotificationSettingsCopyWithImpl<$Res>;
+  $Res call({int id, DateTime time});
+}
+
+/// @nodoc
+class _$HabitNotificationSettingsCopyWithImpl<$Res>
+    implements $HabitNotificationSettingsCopyWith<$Res> {
+  _$HabitNotificationSettingsCopyWithImpl(this._value, this._then);
+
+  final HabitNotificationSettings _value;
+  // ignore: unused_field
+  final $Res Function(HabitNotificationSettings) _then;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? time = freezed,
+  }) {
+    return _then(_value.copyWith(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      time: time == freezed
+          ? _value.time
+          : time // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$HabitNotificationSettingsCopyWith<$Res>
+    implements $HabitNotificationSettingsCopyWith<$Res> {
+  factory _$HabitNotificationSettingsCopyWith(_HabitNotificationSettings value,
+          $Res Function(_HabitNotificationSettings) then) =
+      __$HabitNotificationSettingsCopyWithImpl<$Res>;
+  @override
+  $Res call({int id, DateTime time});
+}
+
+/// @nodoc
+class __$HabitNotificationSettingsCopyWithImpl<$Res>
+    extends _$HabitNotificationSettingsCopyWithImpl<$Res>
+    implements _$HabitNotificationSettingsCopyWith<$Res> {
+  __$HabitNotificationSettingsCopyWithImpl(_HabitNotificationSettings _value,
+      $Res Function(_HabitNotificationSettings) _then)
+      : super(_value, (v) => _then(v as _HabitNotificationSettings));
+
+  @override
+  _HabitNotificationSettings get _value =>
+      super._value as _HabitNotificationSettings;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? time = freezed,
+  }) {
+    return _then(_HabitNotificationSettings(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      time: time == freezed
+          ? _value.time
+          : time // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_HabitNotificationSettings extends _HabitNotificationSettings {
+  _$_HabitNotificationSettings({required this.id, required this.time})
+      : super._();
+
+  factory _$_HabitNotificationSettings.fromJson(Map<String, dynamic> json) =>
+      _$_$_HabitNotificationSettingsFromJson(json);
+
+  @override
+  final int id;
+  @override
+  final DateTime time;
+
+  @override
+  String toString() {
+    return 'HabitNotificationSettings(id: $id, time: $time)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _HabitNotificationSettings &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.time, time) ||
+                const DeepCollectionEquality().equals(other.time, time)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(id) ^
+      const DeepCollectionEquality().hash(time);
+
+  @JsonKey(ignore: true)
+  @override
+  _$HabitNotificationSettingsCopyWith<_HabitNotificationSettings>
+      get copyWith =>
+          __$HabitNotificationSettingsCopyWithImpl<_HabitNotificationSettings>(
+              this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$_HabitNotificationSettingsToJson(this);
+  }
+}
+
+abstract class _HabitNotificationSettings extends HabitNotificationSettings {
+  factory _HabitNotificationSettings(
+      {required int id, required DateTime time}) = _$_HabitNotificationSettings;
+  _HabitNotificationSettings._() : super._();
+
+  factory _HabitNotificationSettings.fromJson(Map<String, dynamic> json) =
+      _$_HabitNotificationSettings.fromJson;
+
+  @override
+  int get id => throw _privateConstructorUsedError;
+  @override
+  DateTime get time => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  _$HabitNotificationSettingsCopyWith<_HabitNotificationSettings>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
 Habit _$HabitFromJson(Map<String, dynamic> json) {
   return _Habit.fromJson(json);
 }
@@ -25,13 +201,15 @@ class _$HabitTearOff {
       required String title,
       required String userId,
       required int order,
-      bool archived = false}) {
+      bool archived = false,
+      HabitNotificationSettings? notification}) {
     return _Habit(
       id: id,
       title: title,
       userId: userId,
       order: order,
       archived: archived,
+      notification: notification,
     );
   }
 
@@ -50,6 +228,8 @@ mixin _$Habit {
   String get userId => throw _privateConstructorUsedError;
   int get order => throw _privateConstructorUsedError;
   bool get archived => throw _privateConstructorUsedError;
+  HabitNotificationSettings? get notification =>
+      throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -61,7 +241,14 @@ abstract class $HabitCopyWith<$Res> {
   factory $HabitCopyWith(Habit value, $Res Function(Habit) then) =
       _$HabitCopyWithImpl<$Res>;
   $Res call(
-      {String? id, String title, String userId, int order, bool archived});
+      {String? id,
+      String title,
+      String userId,
+      int order,
+      bool archived,
+      HabitNotificationSettings? notification});
+
+  $HabitNotificationSettingsCopyWith<$Res>? get notification;
 }
 
 /// @nodoc
@@ -79,6 +266,7 @@ class _$HabitCopyWithImpl<$Res> implements $HabitCopyWith<$Res> {
     Object? userId = freezed,
     Object? order = freezed,
     Object? archived = freezed,
+    Object? notification = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -101,7 +289,23 @@ class _$HabitCopyWithImpl<$Res> implements $HabitCopyWith<$Res> {
           ? _value.archived
           : archived // ignore: cast_nullable_to_non_nullable
               as bool,
+      notification: notification == freezed
+          ? _value.notification
+          : notification // ignore: cast_nullable_to_non_nullable
+              as HabitNotificationSettings?,
     ));
+  }
+
+  @override
+  $HabitNotificationSettingsCopyWith<$Res>? get notification {
+    if (_value.notification == null) {
+      return null;
+    }
+
+    return $HabitNotificationSettingsCopyWith<$Res>(_value.notification!,
+        (value) {
+      return _then(_value.copyWith(notification: value));
+    });
   }
 }
 
@@ -111,7 +315,15 @@ abstract class _$HabitCopyWith<$Res> implements $HabitCopyWith<$Res> {
       __$HabitCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String? id, String title, String userId, int order, bool archived});
+      {String? id,
+      String title,
+      String userId,
+      int order,
+      bool archived,
+      HabitNotificationSettings? notification});
+
+  @override
+  $HabitNotificationSettingsCopyWith<$Res>? get notification;
 }
 
 /// @nodoc
@@ -130,6 +342,7 @@ class __$HabitCopyWithImpl<$Res> extends _$HabitCopyWithImpl<$Res>
     Object? userId = freezed,
     Object? order = freezed,
     Object? archived = freezed,
+    Object? notification = freezed,
   }) {
     return _then(_Habit(
       id: id == freezed
@@ -152,6 +365,10 @@ class __$HabitCopyWithImpl<$Res> extends _$HabitCopyWithImpl<$Res>
           ? _value.archived
           : archived // ignore: cast_nullable_to_non_nullable
               as bool,
+      notification: notification == freezed
+          ? _value.notification
+          : notification // ignore: cast_nullable_to_non_nullable
+              as HabitNotificationSettings?,
     ));
   }
 }
@@ -164,7 +381,8 @@ class _$_Habit extends _Habit {
       required this.title,
       required this.userId,
       required this.order,
-      this.archived = false})
+      this.archived = false,
+      this.notification})
       : super._();
 
   factory _$_Habit.fromJson(Map<String, dynamic> json) =>
@@ -181,10 +399,12 @@ class _$_Habit extends _Habit {
   @JsonKey(defaultValue: false)
   @override
   final bool archived;
+  @override
+  final HabitNotificationSettings? notification;
 
   @override
   String toString() {
-    return 'Habit(id: $id, title: $title, userId: $userId, order: $order, archived: $archived)';
+    return 'Habit(id: $id, title: $title, userId: $userId, order: $order, archived: $archived, notification: $notification)';
   }
 
   @override
@@ -201,7 +421,10 @@ class _$_Habit extends _Habit {
                 const DeepCollectionEquality().equals(other.order, order)) &&
             (identical(other.archived, archived) ||
                 const DeepCollectionEquality()
-                    .equals(other.archived, archived)));
+                    .equals(other.archived, archived)) &&
+            (identical(other.notification, notification) ||
+                const DeepCollectionEquality()
+                    .equals(other.notification, notification)));
   }
 
   @override
@@ -211,7 +434,8 @@ class _$_Habit extends _Habit {
       const DeepCollectionEquality().hash(title) ^
       const DeepCollectionEquality().hash(userId) ^
       const DeepCollectionEquality().hash(order) ^
-      const DeepCollectionEquality().hash(archived);
+      const DeepCollectionEquality().hash(archived) ^
+      const DeepCollectionEquality().hash(notification);
 
   @JsonKey(ignore: true)
   @override
@@ -230,7 +454,8 @@ abstract class _Habit extends Habit {
       required String title,
       required String userId,
       required int order,
-      bool archived}) = _$_Habit;
+      bool archived,
+      HabitNotificationSettings? notification}) = _$_Habit;
   const _Habit._() : super._();
 
   factory _Habit.fromJson(Map<String, dynamic> json) = _$_Habit.fromJson;
@@ -245,6 +470,9 @@ abstract class _Habit extends Habit {
   int get order => throw _privateConstructorUsedError;
   @override
   bool get archived => throw _privateConstructorUsedError;
+  @override
+  HabitNotificationSettings? get notification =>
+      throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$HabitCopyWith<_Habit> get copyWith => throw _privateConstructorUsedError;

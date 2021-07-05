@@ -47,22 +47,39 @@ class HabitSwiper extends HookWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Headline5(
-                    vm.habit.title,
-                    trailing: IconButton(
-                      onPressed: () async {
-                        var habit = await showHabitFormBottomSheet(
-                          context,
-                          initial: vm.habit,
-                        );
-                        if (habit != null) {
-                          await context
-                              .read(habitControllerProvider.notifier)
-                              .update(habit);
-                        }
-                      },
-                      icon: Icon(Icons.edit),
-                    ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Headline5(
+                        vm.habit.title,
+                        trailing: IconButton(
+                          onPressed: () async {
+                            var habit = await showHabitFormBottomSheet(
+                              context,
+                              initial: vm.habit,
+                            );
+                            if (habit != null) {
+                              await context
+                                  .read(habitControllerProvider.notifier)
+                                  .update(habit);
+                            }
+                          },
+                          icon: Icon(Icons.edit),
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          // Chip(label: Text("Ежедневная")),
+                          // SizedBox(width: 4),
+                          if (vm.habit.notification != null)
+                            Chip(
+                              avatar: Icon(Icons.notifications,
+                                  color: Colors.white),
+                              label: Text(vm.habit.notification!.toTimeStr()),
+                            ),
+                        ],
+                      )
+                    ],
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
