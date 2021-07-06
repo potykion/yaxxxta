@@ -2,12 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
+import 'package:yaxxxta/logic/habit/state/calendar.dart';
 import 'package:yaxxxta/widgets/full_width_btn.dart';
 
 enum HabitExtraAction { archive }
 
+@Deprecated("Юзай lib/ui/calendar/app/habit_form.dart!!!!!!!!!!!!!!1")
 class HabitFormPage extends HookWidget {
   final Habit? initial;
 

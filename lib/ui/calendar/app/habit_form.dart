@@ -1,31 +1,26 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:yaxxxta/logic/habit/controllers.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:yaxxxta/logic/habit/state/calendar.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
-import 'package:yaxxxta/logic/notifications/daily.dart';
+import 'package:yaxxxta/logic/habit/state/form.dart';
 import 'package:yaxxxta/logic/core/utils/time.dart';
 import 'package:yaxxxta/ui/core/bottom_sheet.dart';
 import 'package:yaxxxta/ui/core/text.dart';
 
 import '../../core/button.dart';
-import '../../core/card.dart';
 
 class HabitForm extends HookWidget {
-  final Habit? initial;
-
-  HabitForm({this.initial});
-
   @override
   Widget build(BuildContext context) {
-    var habit = useState(
-      initial ?? Habit.blank(userId: FirebaseAuth.instance.currentUser!.uid),
-    );
+    var habit = useProvider(habitFormStateProvider);
 
-    var titleTec = useTextEditingController(text: habit.value.title);
+    var titleTec = useTextEditingController(text: habit.title);
     titleTec.addListener(() {
-      habit.value = habit.value.copyWith(title: titleTec.text);
+      context
+          .read(habitFormStateProvider.notifier)
+          .update(habit.copyWith(title: titleTec.text));
     });
 
     return Column(
@@ -33,14 +28,14 @@ class HabitForm extends HookWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Headline5(
-          habit.value.id != null ? "Изменить привычку" : "Создать привычку",
-          trailing: habit.value.id != null
+          habit.id != null ? "Изменить привычку" : "Создать привычку",
+          trailing: habit.id != null
               ? IconButton(
                   color: Theme.of(context).canvasColor,
                   icon: Icon(Icons.more_vert),
                   onPressed: () => showHabitActionsBottomSheet(
                     context,
-                    habit.value,
+                    habit,
                   ),
                 )
               : null,
@@ -50,7 +45,7 @@ class HabitForm extends HookWidget {
           children: [
             Headline6("Название"),
             TextFormField(
-              readOnly: habit.value.archived,
+              readOnly: habit.archived,
               controller: titleTec,
               decoration: InputDecoration(
                 hintText: 'Например, "Зайти в приложение"',
@@ -62,19 +57,18 @@ class HabitForm extends HookWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Headline6("Напоминалка"),
-            if (habit.value.notification != null)
+            if (habit.notification != null)
               TextFormField(
                 readOnly: true,
                 controller: TextEditingController(
-                  text: habit.value.notification!.toTimeStr(),
+                  text: habit.notification!.toTimeStr(),
                 ),
+                onTap: () {},
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
-                    onPressed: () async {
-                      await DailyHabitPerformNotifications.remove(
-                          habit.value.notification!.id);
-                      habit.value = habit.value.copyWith(notification: null);
-                    },
+                    onPressed: () => context
+                        .read(habitFormStateProvider.notifier)
+                        .removeNotification(),
                     icon: Icon(
                       Icons.clear,
                       color: Color(0xff272343),
@@ -95,18 +89,9 @@ class HabitForm extends HookWidget {
                     helpText: "Выбери время напоминалки",
                   );
                   if (time == null) return;
-                  var datetime = time.toDateTime();
-                  var notificationId =
-                      await DailyHabitPerformNotifications.create(
-                    habit.value,
-                    datetime,
-                  );
-                  habit.value = habit.value.copyWith(
-                    notification: HabitNotificationSettings(
-                      id: notificationId,
-                      time: datetime,
-                    ),
-                  );
+                  await context
+                      .read(habitFormStateProvider.notifier)
+                      .setNotification(time.toDateTime());
                 },
               ),
           ],
@@ -116,8 +101,8 @@ class HabitForm extends HookWidget {
           icon: Icons.save,
           text: "Сохранить",
           onPressed: () {
-            if (habit.value.title.isNotEmpty) {
-              Navigator.of(context).pop(habit.value);
+            if (habit.title.isNotEmpty) {
+              Navigator.of(context).pop(habit);
             }
           },
         ),
@@ -129,11 +114,15 @@ class HabitForm extends HookWidget {
 Future<Habit?> showHabitFormBottomSheet(
   BuildContext context, {
   Habit? initial,
-}) =>
-    showCoreBottomSheet<Habit>(
-      context,
-      HabitForm(initial: initial),
-    );
+}) {
+  if (initial != null) {
+    context.read(habitFormStateProvider.notifier).update(initial);
+  } else {
+    context.read(habitFormStateProvider.notifier).reset();
+  }
+
+  return showCoreBottomSheet<Habit>(context, HabitForm());
+}
 
 Future<void> showHabitActionsBottomSheet(
   BuildContext context,
