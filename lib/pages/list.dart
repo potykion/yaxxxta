@@ -112,7 +112,7 @@ class ListHabitPage extends HookWidget {
             ListTile(
               title: Text(
                 "Архив",
-                style: TextStyle(color: CustomColors.grey),
+                style: TextStyle(color: OldCustomColors.grey),
               ),
               onTap: () =>
                   AutoRouter.of(context).push(

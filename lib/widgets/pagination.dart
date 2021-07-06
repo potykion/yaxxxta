@@ -28,10 +28,10 @@ class HabitPagination extends StatelessWidget {
               height: 10,
               decoration: BoxDecoration(
                 color: i == currentIndex
-                    ? CustomColors.yellow
+                    ? OldCustomColors.yellow
                     : vms[i].isPerformedToday
-                        ? CustomColors.green
-                        : CustomColors.lightGrey.withAlpha(31),
+                        ? OldCustomColors.green
+                        : OldCustomColors.lightGrey.withAlpha(31),
                 borderRadius: BorderRadius.circular(20),
               ),
             ),

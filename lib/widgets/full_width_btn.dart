@@ -21,9 +21,9 @@ class FullWidthButton extends StatelessWidget {
           style: isDanger
               ? ButtonStyle(
                   backgroundColor:
-                      MaterialStateProperty.all<Color>(CustomColors.grey),
+                      MaterialStateProperty.all<Color>(OldCustomColors.grey),
                   foregroundColor:
-                      MaterialStateProperty.all<Color>(CustomColors.white),
+                      MaterialStateProperty.all<Color>(OldCustomColors.white),
                 )
               : null,
           onPressed: onPressed,

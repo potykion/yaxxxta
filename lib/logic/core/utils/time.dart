@@ -3,12 +3,18 @@ import 'package:flutter/material.dart';
 extension TimeExtenstions on TimeOfDay {
   DateTime toDateTime() {
     var now = DateTime.now();
-    return DateTime(
+
+    var dt = DateTime(
       now.year,
       now.month,
       now.day,
       this.hour,
       this.minute,
     );
+    if (dt.isBefore(now)) {
+      dt = dt.add(Duration(days: 1));
+    }
+
+    return dt;
   }
 }

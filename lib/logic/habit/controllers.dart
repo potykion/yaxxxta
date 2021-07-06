@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/src/foundation/change_notifier.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tuple/tuple.dart';
 import 'package:yaxxxta/logic/habit/db.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
 import 'package:yaxxxta/logic/habit/vms.dart';
+import 'package:yaxxxta/logic/core/utils/dt.dart';
+import 'package:yaxxxta/logic/notifications/daily.dart';
 
 class HabitController extends StateNotifier<List<HabitVM>> {
   final FirebaseHabitRepo habitRepo;
@@ -44,6 +44,7 @@ class HabitController extends StateNotifier<List<HabitVM>> {
   }
 
   Future<void> perform(Habit habit, [DateTime? performDatetime]) async {
+    performDatetime = performDatetime ?? DateTime.now();
     var performing = HabitPerforming.blank(
       habit.id!,
       habit.userId,
@@ -52,6 +53,25 @@ class HabitController extends StateNotifier<List<HabitVM>> {
     performing = performing.copyWith(
       id: await habitPerformingRepo.insert(performing),
     );
+
+    /// Если дата выполнения сегодняшняя,
+    /// то отменяем уведомление + создаем новое
+    if (performDatetime.isToday() && habit.notification != null) {
+      DailyHabitPerformNotifications.remove(habit.notification!.id);
+      var atDateTime = habit.notification!.time.setTomorrow();
+      var notificationId = await DailyHabitPerformNotifications.create(
+        habit,
+        atDateTime,
+      );
+      await update(
+        habit.copyWith(
+          notification: HabitNotificationSettings(
+            id: notificationId,
+            time: atDateTime,
+          ),
+        ),
+      );
+    }
 
     var vm = state.where((vm) => vm.habit.id == habit.id).first;
     state = [

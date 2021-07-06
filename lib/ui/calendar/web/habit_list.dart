@@ -52,10 +52,10 @@ class HabitList extends HookWidget {
               if (!archived.value)
                 ...children,
               ExpansionTile(
-                textColor: CustomColors.grey,
-                collapsedTextColor: CustomColors.grey,
-                collapsedIconColor: CustomColors.grey,
-                iconColor: CustomColors.grey,
+                textColor: OldCustomColors.grey,
+                collapsedTextColor: OldCustomColors.grey,
+                collapsedIconColor: OldCustomColors.grey,
+                iconColor: OldCustomColors.grey,
 
                 key: PageStorageKey(0),
                 title: Text("Архив"),

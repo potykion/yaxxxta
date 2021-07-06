@@ -26,15 +26,16 @@ class DailyHabitPerformNotifications {
   }) async {
     id = id ?? generateId();
     await localNotificationPlugin.zonedSchedule(
-        id,
-        habit.title,
-        "Пора выполнить привычку",
-        tz.TZDateTime.now(tz.local).add(atDateTime.difference(DateTime.now())),
-        NotificationDetails(android: _channel),
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime,
-        androidAllowWhileIdle: true,
-        matchDateTimeComponents: DateTimeComponents.time);
+      id,
+      habit.title,
+      "Пора выполнить привычку",
+      tz.TZDateTime.now(tz.local).add(atDateTime.difference(DateTime.now())),
+      NotificationDetails(android: _channel),
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      androidAllowWhileIdle: true,
+      matchDateTimeComponents: DateTimeComponents.time,
+    );
     return id;
   }
 

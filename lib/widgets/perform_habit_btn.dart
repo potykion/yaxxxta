@@ -34,14 +34,14 @@ class PerformHabitButton extends HookWidget {
         ConfettiWidget(
           confettiController: confettiController,
           blastDirectionality: BlastDirectionality.explosive,
-          colors: [CustomColors.yellow],
+          colors: [OldCustomColors.yellow],
           createParticlePath: drawStar,
         ),
         SizedBox(
           width: size + 10,
           height: size + 10,
           child: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(CustomColors.green),
+            valueColor: AlwaysStoppedAnimation<Color>(OldCustomColors.green),
             value: vm.isPerformedToday ? 1 : 0,
             strokeWidth: 10,
           ),

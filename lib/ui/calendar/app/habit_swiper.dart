@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/ads/state.dart';
 import 'package:yaxxxta/logic/habit/controllers.dart';
 import 'package:yaxxxta/logic/habit/vms.dart';
+import 'package:yaxxxta/theme.dart';
 import 'package:yaxxxta/ui/core/button.dart';
 import 'package:yaxxxta/ui/core/card.dart';
 import 'package:yaxxxta/ui/core/text.dart';
@@ -42,7 +43,7 @@ class HabitSwiper extends HookWidget {
             var ad = watch(adProvider(index));
             return CoreCard(
               margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-              color: vm.isPerformedToday ? Color(0xfff1fafa) : null,
+              color: vm.isPerformedToday ? CoreColors.lightGreen : null,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -73,9 +74,20 @@ class HabitSwiper extends HookWidget {
                           // SizedBox(width: 4),
                           if (vm.habit.notification != null)
                             Chip(
-                              avatar: Icon(Icons.notifications,
-                                  color: Colors.white),
-                              label: Text(vm.habit.notification!.toTimeStr()),
+                              avatar: Icon(
+                                Icons.notifications,
+                                color: vm.isPerformedToday
+                                    ? CoreColors.lightGreen
+                                    : CoreColors.white,
+                              ),
+                              label: Text(
+                                vm.habit.notification!.toTimeStr(),
+                                style: TextStyle(
+                                  color: vm.isPerformedToday
+                                      ? CoreColors.lightGreen
+                                      : CoreColors.white,
+                                ),
+                              ),
                             ),
                         ],
                       )
