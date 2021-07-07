@@ -9,6 +9,7 @@ import 'package:yaxxxta/logic/habit/vms.dart';
 import 'package:yaxxxta/theme.dart';
 import 'package:yaxxxta/ui/core/button.dart';
 import 'package:yaxxxta/ui/core/card.dart';
+import 'package:yaxxxta/ui/core/chip.dart';
 import 'package:yaxxxta/ui/core/text.dart';
 import 'package:yaxxxta/widgets/habit_performing_calendar.dart';
 
@@ -54,6 +55,7 @@ class HabitSwiper extends HookWidget {
                       Headline5(
                         vm.habit.title,
                         trailing: IconButton(
+                          visualDensity: VisualDensity.comfortable,
                           onPressed: () async {
                             var habit = await showHabitFormBottomSheet(
                               context,
@@ -68,26 +70,17 @@ class HabitSwiper extends HookWidget {
                           icon: Icon(Icons.edit),
                         ),
                       ),
-                      Row(
+                      Wrap(
                         children: [
                           // Chip(label: Text("Ежедневная")),
                           // SizedBox(width: 4),
                           if (vm.habit.notification != null)
-                            Chip(
-                              avatar: Icon(
-                                Icons.notifications,
-                                color: vm.isPerformedToday
-                                    ? CoreColors.lightGreen
-                                    : CoreColors.white,
-                              ),
-                              label: Text(
-                                vm.habit.notification!.toTimeStr(),
-                                style: TextStyle(
-                                  color: vm.isPerformedToday
-                                      ? CoreColors.lightGreen
-                                      : CoreColors.white,
-                                ),
-                              ),
+                            CoreChip(
+                              text: vm.habit.notification!.toTimeStr(),
+                              icon: Icons.notifications,
+                              color: vm.isPerformedToday
+                                  ? CoreColors.lightGreen
+                                  : CoreColors.white,
                             ),
                         ],
                       )
@@ -114,10 +107,12 @@ class HabitSwiper extends HookWidget {
                       HabitStats(vm: vm),
                     ],
                   ),
-                  Container(
-                    height: AdSize.banner.height.toDouble(),
-                    width: AdSize.banner.width.toDouble(),
-                    child: ad != null ? AdWidget(ad: ad) : null,
+                  Center(
+                    child: Container(
+                      height: AdSize.banner.height.toDouble(),
+                      width: AdSize.banner.width.toDouble(),
+                      child: ad != null ? AdWidget(ad: ad) : null,
+                    ),
                   ),
                 ],
               ),

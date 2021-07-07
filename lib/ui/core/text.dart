@@ -20,27 +20,29 @@ class Headline4 extends StatelessWidget {
 class Headline5 extends StatelessWidget {
   final String text;
   final Widget? trailing;
+  final TextStyle? style;
+  final bool center;
 
   const Headline5(
     this.text, {
     Key? key,
     this.trailing,
+    this.style,
+    this.center = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Row(
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment:
+            center ? MainAxisAlignment.center : MainAxisAlignment.spaceBetween,
         children: [
           Text(
             text,
-            style: Theme.of(context).textTheme.headline5,
+            style: Theme.of(context).textTheme.headline5!.merge(style),
           ),
-          Opacity(
-            opacity: trailing != null ? 1 : 0,
-            child:
-                trailing ?? IconButton(icon: Icon(Icons.add), onPressed: null),
-          )
+          if (trailing != null)
+            trailing!
         ],
       );
 }
