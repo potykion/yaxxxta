@@ -45,7 +45,7 @@ class HabitFormPage extends HookWidget {
                 switch (action) {
                   case HabitExtraAction.archive:
                     context
-                        .read(habitControllerProvider.notifier)
+                        .read(habitCalendarStateProvider.notifier)
                         .archive(habit.value);
                     return Navigator.of(context).pop(true);
                 }
@@ -77,11 +77,11 @@ class HabitFormPage extends HookWidget {
                   var created = false;
                   if (habit.value.id != null) {
                     await context
-                        .read(habitControllerProvider.notifier)
+                        .read(habitCalendarStateProvider.notifier)
                         .update(habit.value);
                   } else {
                     await context
-                        .read(habitControllerProvider.notifier)
+                        .read(habitCalendarStateProvider.notifier)
                         .create(habit.value);
                     created = true;
                   }
@@ -95,7 +95,7 @@ class HabitFormPage extends HookWidget {
                 text: "Разархивировать",
                 onPressed: () async {
                   await context
-                      .read(habitControllerProvider.notifier)
+                      .read(habitCalendarStateProvider.notifier)
                       .update(habit.value.copyWith(archived: false));
                   Navigator.of(context).pop();
                 },
@@ -106,7 +106,7 @@ class HabitFormPage extends HookWidget {
                 isDanger: true,
                 onPressed: () async {
                   await context
-                      .read(habitControllerProvider.notifier)
+                      .read(habitCalendarStateProvider.notifier)
                       .delete(habit.value);
                   Navigator.of(context).pop();
                 },

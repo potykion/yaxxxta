@@ -40,14 +40,14 @@ class HabitArchivePage extends HookWidget {
                 caption: "Вернуть",
                 icon: Icons.unarchive,
                 onTap: () async => await context
-                    .read(habitControllerProvider.notifier)
-                    .update(vm.habit.copyWith(archived: false)),
+                    .read(habitCalendarStateProvider.notifier)
+                    .unarchive(vm.habit),
               ),
               IconSlideAction(
                 caption: "Удалить",
                 icon: Icons.delete,
                 onTap: () async => await context
-                    .read(habitControllerProvider.notifier)
+                    .read(habitCalendarStateProvider.notifier)
                     .delete(vm.habit),
               ),
             ],

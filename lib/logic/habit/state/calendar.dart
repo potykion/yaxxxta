@@ -7,11 +7,11 @@ import 'package:yaxxxta/logic/habit/vms.dart';
 import 'package:yaxxxta/logic/core/utils/dt.dart';
 import 'package:yaxxxta/logic/notifications/daily.dart';
 
-class HabitController extends StateNotifier<List<HabitVM>> {
+class HabitCalendarState extends StateNotifier<List<HabitVM>> {
   final FirebaseHabitRepo habitRepo;
   final FirebaseHabitPerformingRepo habitPerformingRepo;
 
-  HabitController(this.habitRepo, this.habitPerformingRepo) : super([]);
+  HabitCalendarState(this.habitRepo, this.habitPerformingRepo) : super([]);
 
   Future<void> load(String userId) async {
     var habits = await habitRepo.listByUserId(userId);
@@ -57,20 +57,8 @@ class HabitController extends StateNotifier<List<HabitVM>> {
     /// Если дата выполнения сегодняшняя,
     /// то отменяем уведомление + создаем новое
     if (performDatetime.isToday() && habit.notification != null) {
-      DailyHabitPerformNotifications.remove(habit.notification!.id);
-      var atDateTime = habit.notification!.time.setTomorrow();
-      var notificationId = await DailyHabitPerformNotifications.create(
-        habit,
-        atDateTime,
-      );
-      await update(
-        habit.copyWith(
-          notification: HabitNotificationSettings(
-            id: notificationId,
-            time: atDateTime,
-          ),
-        ),
-      );
+      habit = await _rescheduleNotification(habit);
+      await update(habit);
     }
 
     var vm = state.where((vm) => vm.habit.id == habit.id).first;
@@ -78,6 +66,22 @@ class HabitController extends StateNotifier<List<HabitVM>> {
       ...state.where((vm) => vm.habit.id != habit.id),
       vm.copyWith(performings: [...vm.performings, performing]),
     ];
+  }
+
+  Future<Habit> _rescheduleNotification(Habit habit) async {
+    DailyHabitPerformNotifications.remove(habit.notification!.id);
+    var atDateTime = habit.notification!.time.setTomorrow();
+    var notificationId = await DailyHabitPerformNotifications.create(
+      habit,
+      atDateTime,
+    );
+    habit = habit.copyWith(
+      notification: HabitNotificationSettings(
+        id: notificationId,
+        time: atDateTime,
+      ),
+    );
+    return habit;
   }
 
   Future<void> reorder(
@@ -100,18 +104,31 @@ class HabitController extends StateNotifier<List<HabitVM>> {
   }
 
   Future<void> archive(Habit habit) async {
+    if (habit.notification != null) {
+      DailyHabitPerformNotifications.remove(habit.notification!.id);
+    }
+
     await update(habit.copyWith(archived: true));
   }
 
   Future<void> delete(Habit habit) async {
+    assert(habit.archived);
     await habitPerformingRepo.deleteById(habit.id!);
     state = [...state.where((vm) => vm.habit.id != habit.id!)];
   }
+
+  Future unarchive(Habit habit) async {
+    habit = habit.copyWith(archived: false);
+    if (habit.notification != null) {
+      habit = await _rescheduleNotification(habit);
+    }
+    await update(habit);
+  }
 }
 
-var habitControllerProvider =
-    StateNotifierProvider<HabitController, List<HabitVM>>(
-  (ref) => HabitController(
+var habitCalendarStateProvider =
+    StateNotifierProvider<HabitCalendarState, List<HabitVM>>(
+  (ref) => HabitCalendarState(
     FirebaseHabitRepo(
       FirebaseFirestore.instance.collection("FirebaseHabitRepo"),
       FirebaseFirestore.instance.batch,
@@ -124,7 +141,7 @@ var habitControllerProvider =
 
 var habitVMsProvider = Provider(
   (ref) => ref
-      .watch(habitControllerProvider)
+      .watch(habitCalendarStateProvider)
       .where((vm) => !vm.habit.archived)
       .toList()
         ..sort((vm1, vm2) => vm1.habit.order.compareTo(vm2.habit.order)),
@@ -132,7 +149,7 @@ var habitVMsProvider = Provider(
 
 var archivedHabitVMsProvider = Provider(
   (ref) => ref
-      .watch(habitControllerProvider)
+      .watch(habitCalendarStateProvider)
       .where((vm) => vm.habit.archived)
       .toList(),
 );

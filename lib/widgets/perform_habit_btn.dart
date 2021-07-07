@@ -61,7 +61,7 @@ class PerformHabitButton extends HookWidget {
             ),
             onPressed: () async {
               await context
-                  .read(habitControllerProvider.notifier)
+                  .read(habitCalendarStateProvider.notifier)
                   .perform(vm.habit);
               confettiController.play();
               await Future<void>.delayed(confettiController.duration);

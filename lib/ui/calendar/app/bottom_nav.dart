@@ -25,7 +25,7 @@ class MyBottomNav extends HookWidget {
         if (index == 0) {
           var habit = await showHabitFormBottomSheet(context);
           if (habit != null) {
-            await context.read(habitControllerProvider.notifier).create(habit);
+            await context.read(habitCalendarStateProvider.notifier).create(habit);
           }
         }
         if (index == 2) {

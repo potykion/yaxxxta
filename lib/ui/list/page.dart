@@ -50,7 +50,7 @@ class ListHabitPage extends HookWidget {
               if (archived) return;
 
               await context
-                  .read(habitControllerProvider.notifier)
+                  .read(habitCalendarStateProvider.notifier)
                   .perform(vm.habit);
               if (await Vibration.hasVibrator() ?? false) {
                 Vibration.vibrate(duration: 100);

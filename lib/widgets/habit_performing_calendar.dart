@@ -108,7 +108,7 @@ class _HabitPerformingsFor35Days extends StatelessWidget {
           child: InkWell(
             onLongPress: () async {
               await context
-                  .read(habitControllerProvider.notifier)
+                  .read(habitCalendarStateProvider.notifier)
                   .perform(habit, date);
               if (await Vibration.hasVibrator() ?? false) {
                 Vibration.vibrate(duration: 100);

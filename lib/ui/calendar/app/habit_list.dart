@@ -32,7 +32,7 @@ class HabitList extends StatelessWidget {
           },
           onLongPress: () async {
             await context
-                .read(habitControllerProvider.notifier)
+                .read(habitCalendarStateProvider.notifier)
                 .perform(vm.habit);
             if (await Vibration.hasVibrator() ?? false) {
               Vibration.vibrate(duration: 100);

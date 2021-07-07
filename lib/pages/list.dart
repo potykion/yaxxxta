@@ -50,7 +50,7 @@ class ListHabitPage extends HookWidget {
           oldOrders[index];
         }
       }
-      context.read(habitControllerProvider.notifier).reorder(habitsToUpdate);
+      context.read(habitCalendarStateProvider.notifier).reorder(habitsToUpdate);
     }
 
     List<Widget> children =
@@ -75,7 +75,7 @@ class ListHabitPage extends HookWidget {
               if (archived) return;
 
               await context
-                  .read(habitControllerProvider.notifier)
+                  .read(habitCalendarStateProvider.notifier)
                   .perform(vmsToReorder.value[index].habit);
               if (await Vibration.hasVibrator() ?? false) {
                 Vibration.vibrate(duration: 100);

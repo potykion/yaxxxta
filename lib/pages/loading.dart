@@ -94,7 +94,7 @@ class LoadingPage extends HookWidget {
         loadingTextState.value = "Грузим привычки...";
         // region
 
-        await context.read(habitControllerProvider.notifier).load(user.uid);
+        await context.read(habitCalendarStateProvider.notifier).load(user.uid);
         // endregion
 
         webContentLoaded = true;

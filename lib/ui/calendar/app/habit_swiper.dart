@@ -63,7 +63,7 @@ class HabitSwiper extends HookWidget {
                             );
                             if (habit != null) {
                               await context
-                                  .read(habitControllerProvider.notifier)
+                                  .read(habitCalendarStateProvider.notifier)
                                   .update(habit);
                             }
                           },
@@ -95,7 +95,7 @@ class HabitSwiper extends HookWidget {
                         text: "Выполнить",
                         icon: Icons.done,
                         onPressed: () => context
-                            .read(habitControllerProvider.notifier)
+                            .read(habitCalendarStateProvider.notifier)
                             .perform(vm.habit),
                       ),
                     ],

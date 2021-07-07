@@ -140,7 +140,7 @@ Future<void> showHabitActionsBottomSheet(
             icon: Icons.archive,
             onPressed: () async {
               await context
-                  .read(habitControllerProvider.notifier)
+                  .read(habitCalendarStateProvider.notifier)
                   .archive(habit);
               Navigator.of(context).pop();
               Navigator.of(context).pop();
