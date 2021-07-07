@@ -1,13 +1,10 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:yaxxxta/pages/auth.dart';
-import 'package:yaxxxta/pages/loading.dart';
+import 'package:yaxxxta/ui/auth/page.dart';
+import 'package:yaxxxta/ui/loading/page.dart';
 import 'package:yaxxxta/ui/archive/page.dart';
 import 'package:yaxxxta/ui/calendar/page.dart';
-import 'package:yaxxxta/ui/list/page.dart';
 
 import 'logic/core/web/controllers.dart';
-import 'pages/form.dart';
-import 'pages/settings.dart';
 
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',
@@ -21,10 +18,7 @@ import 'pages/settings.dart';
       path: "/habits",
       children: [
         AutoRoute<dynamic>(path: "calendar", page: CalendarPage),
-        AutoRoute<dynamic>(path: "form", page: HabitFormPage),
-        AutoRoute<int>(path: "list", page: ListHabitPage),
         AutoRoute<dynamic>(path: "archive", page: HabitArchivePage),
-        AutoRoute<dynamic>(path: "settings", page: SettingsPage),
       ],
     ),
   ],

@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:tuple/tuple.dart';
 import 'package:yaxxxta/logic/core/db.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
 

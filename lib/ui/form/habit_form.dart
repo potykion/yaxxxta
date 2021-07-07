@@ -9,7 +9,7 @@ import 'package:yaxxxta/logic/core/utils/time.dart';
 import 'package:yaxxxta/ui/core/bottom_sheet.dart';
 import 'package:yaxxxta/ui/core/text.dart';
 
-import '../../core/button.dart';
+import '../core/button.dart';
 
 class HabitForm extends HookWidget {
   @override
@@ -148,5 +148,4 @@ Future<void> showHabitActionsBottomSheet(
           ),
         ],
       ),
-      height: 140,
     );

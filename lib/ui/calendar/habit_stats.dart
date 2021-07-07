@@ -18,7 +18,8 @@ class HabitStats extends StatelessWidget {
           Expanded(
             child: Column(
               children: [
-                Text(vm.currentStrike.toString(), style: Theme.of(context).textTheme.headline5),
+                Text(vm.currentStrike.toString(),
+                    style: Theme.of(context).textTheme.headline5),
                 Text("Текущий стрик", style: TextStyle(color: Colors.grey))
               ],
             ),
@@ -27,7 +28,10 @@ class HabitStats extends StatelessWidget {
           Expanded(
             child: Column(
               children: [
-                Text(vm.maxStrike.toString(), style: Theme.of(context).textTheme.headline5),
+                Text(
+                  vm.maxStrike.toString(),
+                  style: Theme.of(context).textTheme.headline5,
+                ),
                 Text("Макс. стрик", style: TextStyle(color: Colors.grey))
               ],
             ),

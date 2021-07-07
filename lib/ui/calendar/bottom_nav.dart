@@ -1,21 +1,13 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:yaxxxta/logic/habit/state/calendar.dart';
-import 'package:yaxxxta/routes.gr.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yaxxxta/ui/profile/profile_bottom_sheet.dart';
 
-import 'habit_form.dart';
+import '../form/habit_form.dart';
 
-class MyBottomNav extends HookWidget {
-  const MyBottomNav({Key? key}) : super(key: key);
-
-  Map<int, PageRouteInfo> get routes => {
-        0: CalendarRoute(),
-        1: ListHabitRoute(),
-        2: SettingsRoute(),
-      };
+class CalendarBottomNav extends HookWidget {
+  const CalendarBottomNav({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +17,9 @@ class MyBottomNav extends HookWidget {
         if (index == 0) {
           var habit = await showHabitFormBottomSheet(context);
           if (habit != null) {
-            await context.read(habitCalendarStateProvider.notifier).create(habit);
+            await context
+                .read(habitCalendarStateProvider.notifier)
+                .create(habit);
           }
         }
         if (index == 2) {

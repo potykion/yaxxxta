@@ -11,9 +11,9 @@ import 'package:yaxxxta/ui/core/button.dart';
 import 'package:yaxxxta/ui/core/card.dart';
 import 'package:yaxxxta/ui/core/chip.dart';
 import 'package:yaxxxta/ui/core/text.dart';
-import 'package:yaxxxta/widgets/habit_performing_calendar.dart';
+import 'package:yaxxxta/ui/calendar/habit_performing_calendar.dart';
 
-import 'habit_form.dart';
+import '../form/habit_form.dart';
 import 'habit_stats.dart';
 
 class HabitSwiper extends HookWidget {
