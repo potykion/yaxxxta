@@ -1,7 +1,7 @@
 /// Раширения дейттайма
 extension DateTimeUtils on DateTime {
   /// Убирает время у дейттайма, то есть просто дата
-  DateTime date() => DateTime(year, month, day);
+  DateTime get date => DateTime(year, month, day);
 
   /// Чекает является ли дейттайм сегодняшним
   bool isToday() {
@@ -22,4 +22,32 @@ extension DateTimeUtils on DateTime {
   /// Двигает дейттайм на след день, относительно текущей даты
   DateTime setTomorrow() =>
       combine(DateTime.now().add(Duration(days: 1)), this);
+
+  DateRange get weekDateRange => DateRange(
+        add(Duration(days: 1 - weekday)).date,
+        add(Duration(days: 7 - weekday)).date,
+      );
+
+  DateTime get startOfMonth => DateTime(year, month, 1);
+
+  DateTime get endOfMonth => DateTime(year, month + 1, 0);
+}
+
+class DateRange {
+  final DateTime from;
+  final DateTime to;
+
+  DateRange(this.from, this.to);
+
+  List<DateTime> get dates => [
+        for (var day
+            in List.generate(to.difference(from).inDays, (index) => index))
+          from.add(Duration(days: day))
+      ];
+
+  DateTime? get firstMonthDay {
+    final monthStarts = dates.where((d) => d == d.startOfMonth);
+    if (monthStarts.isNotEmpty) return monthStarts.first;
+    return null;
+  }
 }

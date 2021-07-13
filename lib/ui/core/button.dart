@@ -24,7 +24,7 @@ class CoreButton extends StatelessWidget {
         width: double.infinity,
         child: ElevatedButton.icon(
           style: ButtonStyle(
-            elevation: MaterialStateProperty.all(0),
+            // elevation: MaterialStateProperty.all(0),
             padding: MaterialStateProperty.all(
                 EdgeInsets.symmetric(vertical: 16, horizontal: 12)),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(

@@ -14,7 +14,7 @@ Future<T?> showCoreBottomSheet<T>(
       builder: (context) => _CoreBottomSheet(
         child: CoreCard(
           roundOnlyTop: true,
-          margin: EdgeInsets.zero,
+          margin: EdgeInsets.symmetric(horizontal: 8),
           child: child,
         ),
         height: height,

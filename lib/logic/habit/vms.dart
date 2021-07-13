@@ -16,7 +16,7 @@ abstract class HabitVM implements _$HabitVM {
   }) = _HabitVM;
 
   bool get isPerformedToday =>
-      performings.any((hp) => hp.created.date() == DateTime.now().date());
+      performings.any((hp) => hp.created.date == DateTime.now().date);
 
   int get currentStrike {
     if (performings.isEmpty) return 0;
@@ -24,12 +24,12 @@ abstract class HabitVM implements _$HabitVM {
     var strike = 0;
 
     var performingDates = performings
-        .map((p) => p.created.date())
+        .map((p) => p.created.date)
         .toSet()
         .toList()
           ..sort((d1, d2) => -d1.compareTo(d2));
 
-    var currentDate = DateTime.now().date();
+    var currentDate = DateTime.now().date;
     if (performingDates.first == currentDate) {
       strike += 1;
       performingDates.removeAt(0);
@@ -52,14 +52,14 @@ abstract class HabitVM implements _$HabitVM {
     if (performings.isEmpty) return 0;
 
     var performingDates = performings
-        .map((p) => p.created.date())
+        .map((p) => p.created.date)
         .toSet()
         .toList()
           ..sort((d1, d2) => -d1.compareTo(d2));
 
     var maxStrike = 0;
 
-    var currentDate = DateTime.now().date();
+    var currentDate = DateTime.now().date;
     while (true) {
       if (performingDates.first == currentDate) break;
       currentDate = currentDate.subtract(Duration(days: 1));
