@@ -63,7 +63,9 @@ class HabitForm extends HookWidget {
                 controller: TextEditingController(
                   text: habit.notification!.toTimeStr(),
                 ),
-                onTap: () {},
+                onTap: () {
+                  setNotification(context, habit);
+                },
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
                     onPressed: () => context
@@ -80,18 +82,8 @@ class HabitForm extends HookWidget {
               CoreButton(
                 text: "Добавить",
                 icon: Icons.notifications,
-                onPressed: () async {
-                  var time = await showTimePicker(
-                    context: context,
-                    initialTime: TimeOfDay.fromDateTime(DateTime.now()),
-                    cancelText: "Отмена",
-                    confirmText: "Ок",
-                    helpText: "Выбери время напоминалки",
-                  );
-                  if (time == null) return;
-                  await context
-                      .read(habitFormStateProvider.notifier)
-                      .setNotification(time.toDateTime());
+                onPressed: () {
+                  setNotification(context, habit);
                 },
               ),
           ],
@@ -108,6 +100,21 @@ class HabitForm extends HookWidget {
         ),
       ],
     );
+  }
+
+  Future setNotification(BuildContext context, Habit habit) async {
+    var time = await showTimePicker(
+      context: context,
+      initialTime:
+          TimeOfDay.fromDateTime(habit.notification?.time ?? DateTime.now()),
+      cancelText: "Отмена",
+      confirmText: "Ок",
+      helpText: "Выбери время напоминалки",
+    );
+    if (time == null) return;
+    await context
+        .read(habitFormStateProvider.notifier)
+        .setNotification(time.toDateTime());
   }
 }
 
