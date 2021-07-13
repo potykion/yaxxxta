@@ -7,6 +7,7 @@ import 'package:yaxxxta/logic/habit/state/calendar.dart';
 import 'package:yaxxxta/logic/habit/vms.dart';
 import 'package:yaxxxta/routes.gr.dart';
 
+/// Страничка заархивированных привычек
 class HabitArchivePage extends HookWidget {
   @override
   Widget build(BuildContext context) {

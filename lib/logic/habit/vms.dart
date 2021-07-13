@@ -57,7 +57,7 @@ abstract class HabitVM implements _$HabitVM {
         .toList()
           ..sort((d1, d2) => -d1.compareTo(d2));
 
-    var maxStrike_ = 0;
+    var maxStrike = 0;
 
     var currentDate = DateTime.now().date();
     while (true) {
@@ -74,9 +74,9 @@ abstract class HabitVM implements _$HabitVM {
         currentStrike = 1;
         currentDate = date.subtract(Duration(days: 1));
       }
-      maxStrike_ = max(maxStrike_, currentStrike);
+      maxStrike = max(maxStrike, currentStrike);
     }
 
-    return maxStrike_;
+    return maxStrike;
   }
 }

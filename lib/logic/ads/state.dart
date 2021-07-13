@@ -12,7 +12,7 @@ FutureProvider<InitializationStatus?> _adsInitializedProvider = FutureProvider(
   },
 );
 
-var adProvider = Provider.family(
+ProviderFamily<BannerAd?, Object?> adProvider = Provider.family(
   (ref, __) => ref.watch(_adsInitializedProvider).maybeWhen(
         data: (status) => status != null
             ? (BannerAd(

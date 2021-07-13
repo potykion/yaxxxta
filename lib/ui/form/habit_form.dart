@@ -111,6 +111,7 @@ class HabitForm extends HookWidget {
   }
 }
 
+/// Показывает формочку привычки в щите
 Future<Habit?> showHabitFormBottomSheet(
   BuildContext context, {
   Habit? initial,

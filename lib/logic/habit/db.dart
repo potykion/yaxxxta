@@ -57,6 +57,8 @@ class FirebaseHabitPerformingRepo extends FirebaseRepo<HabitPerforming> {
     return entity.toJson()..["created"] = Timestamp.fromDate(entity.created);
   }
 
+  /// Выводит выполнения привычек
+  /// отфильтрованные по юзеру и отсортированные по дате
   Future<List<HabitPerforming>> listSortedByCreatedAndFilterByUserId(
     String userId,
   ) async =>

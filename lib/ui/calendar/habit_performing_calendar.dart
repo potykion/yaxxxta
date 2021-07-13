@@ -9,11 +9,15 @@ import 'package:yaxxxta/logic/habit/models.dart';
 import 'package:yaxxxta/logic/core/utils/dt.dart';
 import 'package:yaxxxta/logic/habit/vms.dart';
 
+/// Календарь, на котором отображатся выполнения привычек
 class HabitPerformingCalendar extends HookWidget {
+  /// Привычка
   final HabitVM vm;
 
+  /// Показывать скролбар
   final bool showScrollbar;
 
+  /// Календарь, на котором отображатся выполнения привычек
   const HabitPerformingCalendar({
     Key? key,
     required this.vm,

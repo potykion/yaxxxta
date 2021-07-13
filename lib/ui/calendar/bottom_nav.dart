@@ -6,7 +6,9 @@ import 'package:yaxxxta/ui/profile/profile_bottom_sheet.dart';
 
 import '../form/habit_form.dart';
 
+/// Боттом-нав на странице с календарем
 class CalendarBottomNav extends HookWidget {
+  /// Боттом-нав на странице с календарем
   const CalendarBottomNav({Key? key}) : super(key: key);
 
   @override

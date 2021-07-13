@@ -126,7 +126,7 @@ class HabitCalendarState extends StateNotifier<List<HabitVM>> {
   }
 }
 
-var habitCalendarStateProvider =
+StateNotifierProvider<HabitCalendarState, List<HabitVM>> habitCalendarStateProvider =
     StateNotifierProvider<HabitCalendarState, List<HabitVM>>(
   (ref) => HabitCalendarState(
     FirebaseHabitRepo(
@@ -139,7 +139,7 @@ var habitCalendarStateProvider =
   ),
 );
 
-var habitVMsProvider = Provider(
+Provider<List<HabitVM>> habitVMsProvider = Provider(
   (ref) => ref
       .watch(habitCalendarStateProvider)
       .where((vm) => !vm.habit.archived)
@@ -147,7 +147,7 @@ var habitVMsProvider = Provider(
         ..sort((vm1, vm2) => vm1.habit.order.compareTo(vm2.habit.order)),
 );
 
-var archivedHabitVMsProvider = Provider(
+Provider<List<HabitVM>> archivedHabitVMsProvider = Provider(
   (ref) => ref
       .watch(habitCalendarStateProvider)
       .where((vm) => vm.habit.archived)

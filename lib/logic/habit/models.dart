@@ -11,7 +11,6 @@ typedef NotificationId = int;
 @freezed
 abstract class HabitNotificationSettings
     implements _$HabitNotificationSettings {
-
   const HabitNotificationSettings._();
 
   factory HabitNotificationSettings({
@@ -19,16 +18,20 @@ abstract class HabitNotificationSettings
     required DateTime time,
   }) = _HabitNotificationSettings;
 
+  /// Создает из джсонки
   factory HabitNotificationSettings.fromJson(Map<String, dynamic> json) =>
       _$HabitNotificationSettingsFromJson(json);
 
+  /// Форматирует как время
   String toTimeStr() => DateFormat.Hm().format(time);
 }
 
+/// Привычка
 @freezed
 abstract class Habit implements _$Habit, WithId {
   const Habit._();
 
+  /// Привычка
   const factory Habit({
     String? id,
     required String title,

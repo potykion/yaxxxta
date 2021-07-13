@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 
 import '../../../routes.gr.dart';
 
-var webContentLoaded = false;
+bool webContentLoaded = false;
 
 class WebContentLoadedGuard extends AutoRouteGuard {
   @override

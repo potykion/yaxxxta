@@ -24,3 +24,4 @@ linter:
     avoid_catching_errors: false
     prefer_function_declarations_over_variables: false
     avoid_classes_with_only_static_members: false
+    omit_local_variable_types: false

@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:yaxxxta/logic/habit/vms.dart';
 import 'package:yaxxxta/ui/core/text.dart';
 
+/// Статы привычек
 class HabitStats extends StatelessWidget {
+  /// Привычка
   final HabitVM vm;
 
+  /// Статы привычек
   const HabitStats({
     Key? key,
     required this.vm,

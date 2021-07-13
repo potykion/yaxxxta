@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 
+/// Заголовок 4
 class Headline4 extends StatelessWidget {
+  /// Текст
   final String text;
+
+  /// Стиль
   final TextStyle? style;
 
+  /// Заголовок 4
   const Headline4(
     this.text, {
     Key? key,
@@ -17,12 +22,21 @@ class Headline4 extends StatelessWidget {
       );
 }
 
+/// Заголовок 5
 class Headline5 extends StatelessWidget {
+  /// Текст
   final String text;
+
+  /// Виджет в конце заголовка
   final Widget? trailing;
+
+  /// Стиль
   final TextStyle? style;
+
+  /// Центрирование заголовка
   final bool center;
 
+  /// Заголовок 5
   const Headline5(
     this.text, {
     Key? key,
@@ -46,10 +60,15 @@ class Headline5 extends StatelessWidget {
       );
 }
 
+/// Заголовок 6
 class Headline6 extends StatelessWidget {
+  /// Текст
   final String text;
+
+  /// Беленький текст
   final bool white;
 
+  /// Заголовок 6
   const Headline6(this.text, {Key? key, this.white = false}) : super(key: key);
 
   @override
@@ -66,9 +85,12 @@ class Headline6 extends StatelessWidget {
   }
 }
 
+/// Надпись маленькая
 class Caption extends StatelessWidget {
+  /// Текст
   final String text;
 
+  /// Надпись маленькая
   const Caption(
     this.text, {
     Key? key,

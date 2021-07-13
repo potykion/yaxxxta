@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yaxxxta/ui/core/card.dart';
 
+/// Показывает базовый щит
 Future<T?> showCoreBottomSheet<T>(
   BuildContext context,
   Widget child, {

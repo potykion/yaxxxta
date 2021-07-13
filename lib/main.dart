@@ -5,6 +5,7 @@ import 'package:yaxxxta/theme.dart';
 import 'logic/core/web/controllers.dart';
 import 'routes.gr.dart';
 
+/// Роутер
 final appRouter = AppRouter(webContentLoadedGuard: WebContentLoadedGuard());
 
 /// Логгер провайдеров

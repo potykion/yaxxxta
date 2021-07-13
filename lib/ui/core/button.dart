@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
+/// Базовая кнопочка
 class CoreButton extends StatelessWidget {
   final String text;
   final IconData icon;
   final VoidCallback onPressed;
 
+  /// Базовая кнопочка
   const CoreButton({
     Key? key,
     required this.text,
@@ -16,8 +18,8 @@ class CoreButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(
-        // vertical: 8.0,
-      ),
+          // vertical: 8.0,
+          ),
       child: SizedBox(
         width: double.infinity,
         child: ElevatedButton.icon(

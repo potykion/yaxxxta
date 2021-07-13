@@ -2,17 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-@Deprecated("New colors available")
-abstract class OldCustomColors {
-  static final Color white = Color(0xffFFFFFC);
-  static final Color grey = Color(0xff909590);
-  static final Color lightGrey = Color(0xff909590).withAlpha(191);
-  static final Color green = Color(0xffCAFFBF);
-  static final Color darkGreen = Color(0xff000F08);
-  static final Color yellow = Color(0xfff8f895);
-// static final Color yellow = Color(0xff3d3c03);
-}
-
+/// Базовые цвета
 abstract class CoreColors {
   static final Color darkPurple = Color(0xff272343);
   static final Color white = Colors.white;
@@ -21,6 +11,7 @@ abstract class CoreColors {
   static final Color lightGreen = Color(0xfff1fafa);
 }
 
+/// Базовые радиусы
 abstract class CoreBorderRadiuses {
   static final double small = 16;
   static final double big = 32;

@@ -2,7 +2,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
 import 'package:timezone/timezone.dart' as tz;
 
-var localNotificationPlugin = FlutterLocalNotificationsPlugin();
+FlutterLocalNotificationsPlugin localNotificationPlugin = FlutterLocalNotificationsPlugin();
 
 class DailyHabitPerformNotifications {
   static final _channel = AndroidNotificationDetails(

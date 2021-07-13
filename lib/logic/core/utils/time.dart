@@ -8,8 +8,8 @@ extension TimeExtenstions on TimeOfDay {
       now.year,
       now.month,
       now.day,
-      this.hour,
-      this.minute,
+      hour,
+      minute,
     );
     if (dt.isBefore(now)) {
       dt = dt.add(Duration(days: 1));

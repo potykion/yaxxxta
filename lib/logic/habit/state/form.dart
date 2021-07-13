@@ -11,6 +11,7 @@ class HabitFormState extends StateNotifier<Habit> {
     state = Habit.blank(userId: FirebaseAuth.instance.currentUser!.uid);
   }
 
+  // ignore: use_setters_to_change_properties
   void update(Habit habit) {
     state = habit;
   }
@@ -34,7 +35,8 @@ class HabitFormState extends StateNotifier<Habit> {
   }
 }
 
-var habitFormStateProvider = StateNotifierProvider<HabitFormState, Habit>(
+StateNotifierProvider<HabitFormState, Habit> habitFormStateProvider =
+    StateNotifierProvider<HabitFormState, Habit>(
   (_) => HabitFormState(
     Habit.blank(userId: FirebaseAuth.instance.currentUser!.uid),
   ),

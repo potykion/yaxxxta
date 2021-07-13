@@ -34,7 +34,7 @@ class AppUserInfoController extends StateNotifier<AppUserInfo> {
   }
 }
 
-var appUserInfoControllerProvider =
+StateNotifierProvider<AppUserInfoController, AppUserInfo> appUserInfoControllerProvider =
     StateNotifierProvider<AppUserInfoController, AppUserInfo>(
   (_) => AppUserInfoController(
     FirebaseAppUserInfoRepo(
@@ -46,4 +46,4 @@ var appUserInfoControllerProvider =
   ),
 );
 
-var subscriptionProductProvider = StateProvider<ProductDetails?>((_) => null);
+StateProvider<ProductDetails?> subscriptionProductProvider = StateProvider<ProductDetails?>((_) => null);

@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 
+/// Базовый чип
 class CoreChip extends StatelessWidget {
+  /// Цвет
   final Color? color;
+
+  /// Текст
   final String text;
+
+  /// Иконка
   final IconData? icon;
 
+  /// Базовый чип
   const CoreChip({
     Key? key,
     this.color,

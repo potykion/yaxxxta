@@ -6,6 +6,7 @@ import 'package:yaxxxta/ui/calendar/page.dart';
 
 import 'logic/core/web/controllers.dart';
 
+/// Роутер, который будет сгенерен кодогенерацией
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',
   routes: <AutoRoute>[

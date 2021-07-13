@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+/// Надпись о том, что нет привычек
 class NoHabitsLabel extends StatelessWidget {
+  /// Надпись о том, что нет привычек
   const NoHabitsLabel({Key? key}) : super(key: key);
 
   @override

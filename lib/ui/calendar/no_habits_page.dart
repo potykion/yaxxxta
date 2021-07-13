@@ -6,7 +6,9 @@ import 'package:yaxxxta/logic/ads/state.dart';
 
 import 'no_habits_label.dart';
 
+/// Страничка, на которой написано, что нет привычек + рекламка
 class NoHabitsPage extends HookWidget {
+  /// Страничка, на которой написано, что нет привычек + рекламка
   const NoHabitsPage({
     Key? key,
   }) : super(key: key);

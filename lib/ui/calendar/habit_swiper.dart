@@ -16,9 +16,12 @@ import 'package:yaxxxta/ui/calendar/habit_performing_calendar.dart';
 import '../form/habit_form.dart';
 import 'habit_stats.dart';
 
+/// Свайпер привычек
 class HabitSwiper extends HookWidget {
+  /// Привычки
   final List<HabitVM> vms;
 
+  /// Свайпер привычек
   const HabitSwiper({
     Key? key,
     required this.vms,
