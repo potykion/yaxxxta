@@ -131,10 +131,12 @@ Future<void> showHabitActionsBottomSheet(
     showCoreBottomSheet(
       context,
       Column(
+        mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Headline5("Другие действия"),
+          SizedBox(height: 8),
           CoreButton(
             text: "Отправить в архив",
             icon: Icons.archive,

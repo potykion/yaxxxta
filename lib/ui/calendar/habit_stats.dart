@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yaxxxta/logic/habit/vms.dart';
+import 'package:yaxxxta/ui/core/text.dart';
 
 class HabitStats extends StatelessWidget {
   final HabitVM vm;
@@ -18,9 +19,8 @@ class HabitStats extends StatelessWidget {
           Expanded(
             child: Column(
               children: [
-                Text(vm.currentStrike.toString(),
-                    style: Theme.of(context).textTheme.headline5),
-                Text("Текущий стрик", style: TextStyle(color: Colors.grey))
+                Headline5(vm.currentStrike.toString(), center: true),
+                Caption("Текущий рекорд"),
               ],
             ),
           ),
@@ -28,11 +28,8 @@ class HabitStats extends StatelessWidget {
           Expanded(
             child: Column(
               children: [
-                Text(
-                  vm.maxStrike.toString(),
-                  style: Theme.of(context).textTheme.headline5,
-                ),
-                Text("Макс. стрик", style: TextStyle(color: Colors.grey))
+                Headline5(vm.maxStrike.toString(), center: true),
+                Caption("Макс. рекорд"),
               ],
             ),
           ),

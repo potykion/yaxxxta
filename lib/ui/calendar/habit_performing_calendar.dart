@@ -35,15 +35,6 @@ class HabitPerformingCalendar extends HookWidget {
       ),
     );
 
-    // if (showScrollbar) {
-    //   pv = Scrollbar(
-    //     controller: scrollController,
-    //     child: pv,
-    //     isAlwaysShown: true,
-    //     // showTrackOnHover: true,
-    //   );
-    // }
-
     return SizedBox(
       height: 240,
       // width: 380,

@@ -41,8 +41,7 @@ class Headline5 extends StatelessWidget {
             text,
             style: Theme.of(context).textTheme.headline5!.merge(style),
           ),
-          if (trailing != null)
-            trailing!
+          if (trailing != null) trailing!
         ],
       );
 }
@@ -65,4 +64,17 @@ class Headline6 extends StatelessWidget {
       child: Text(text, style: style),
     );
   }
+}
+
+class Caption extends StatelessWidget {
+  final String text;
+
+  const Caption(
+    this.text, {
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) =>
+      Text(text, style: TextStyle(color: Colors.grey));
 }
