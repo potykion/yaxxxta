@@ -41,7 +41,7 @@ class DateRange {
 
   List<DateTime> get dates => [
         for (var day
-            in List.generate(to.difference(from).inDays, (index) => index))
+            in List.generate(to.difference(from).inDays + 1, (index) => index))
           from.add(Duration(days: day))
       ];
 

@@ -90,13 +90,18 @@ class Caption extends StatelessWidget {
   /// Текст
   final String text;
 
+  /// Жирный ли текст
+  final bool bold;
+
   /// Надпись маленькая
-  const Caption(
-    this.text, {
-    Key? key,
-  }) : super(key: key);
+  const Caption(this.text, {Key? key, this.bold = false}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) =>
-      Text(text, style: TextStyle(color: Colors.grey));
+  Widget build(BuildContext context) => Text(
+        text,
+        style: TextStyle(
+          color: Colors.grey,
+          fontWeight: bold ? FontWeight.bold : null,
+        ),
+      );
 }

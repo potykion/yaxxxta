@@ -20,6 +20,9 @@ class HabitPerformingCalendar extends HookWidget {
   /// Показывать скролбар
   final bool showScrollbar;
 
+  final int months = 12;
+  final int weeks = 5;
+
   /// Календарь, на котором отображатся выполнения привычек
   const HabitPerformingCalendar({
     Key? key,
@@ -29,30 +32,30 @@ class HabitPerformingCalendar extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    var months = 12;
     var scrollController =
         useMemoized(() => PageController(initialPage: months - 1));
 
     Widget pv = PageView.builder(
       controller: scrollController,
       itemCount: months,
-      scrollDirection: Axis.horizontal,
+      scrollDirection: Axis.vertical,
       itemBuilder: (context, index) {
         var now = DateTime.now();
         // Отматываем на 7 * 7 дней, где последний день будет вс
         var from = ((index == months - 1) ? now : now.weekDateRange.to)
-            .subtract(Duration(days: 7 * 7 * (months - 1 - index)));
+            .subtract(Duration(days: weeks * 7 * (months - 1 - index)));
 
         return _HabitPerformingsFor35Days(
           from: from,
           performings: vm.performings,
           habit: vm.habit,
+          weeks: weeks,
         );
       },
     );
 
     return SizedBox(
-      height: 8 * (32 + 4),
+      height: (weeks + 1) * (32 + 8),
       child: pv,
     );
   }
@@ -62,60 +65,35 @@ class _HabitPerformingsFor35Days extends StatelessWidget {
   final DateTime from;
   final List<HabitPerforming> performings;
   final Habit habit;
+  final int weeks;
 
   const _HabitPerformingsFor35Days({
     Key? key,
     required this.from,
     required this.performings,
     required this.habit,
+    required this.weeks,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _buildMonthRow(),
-              for (var weekday in List.generate(7, (index) => index + 1))
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    for (var week in List.generate(7, (index) => index + 1))
-                      _buildDateCell(
-                        context,
-                        from
-                            .add(Duration(days: weekday - from.weekday))
-                            .subtract(Duration(days: (7 - week) * 7))
-                            .date,
-                      ),
-                    Flexible(
-                      child: Center(
-                        child: Caption(
-                          DateFormat(DateFormat.ABBR_WEEKDAY).format(
-                            from.add(Duration(days: weekday - from.weekday)),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-            ],
-          ),
-        ),
-        SizedBox(height: 8),
+        _buildWeekdayRow(),
+        for (var week in List.generate(weeks, (index) => index + 1))
+          ..._buildMaybeMonthRowAndWeekRow(context, week)
       ],
     );
   }
 
   Widget _buildDateCell(BuildContext context, DateTime date) {
     return Flexible(
-      child: date.isAfter(from)
-          ? Container()
-          : Center(
-              child: Container(
+      child: Center(
+        child: date.isAfter(from)
+            ? Container()
+            : Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(CoreBorderRadiuses.small),
                   color: performings.any((hp) => hp.created.date == date)
@@ -148,32 +126,63 @@ class _HabitPerformingsFor35Days extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
+      ),
     );
   }
 
-  Row _buildMonthRow() {
-    List<DateTime?> monthRow = [
-      for (var week in List.generate(7, (index) => index + 1))
-        from
-            .subtract(Duration(days: (7 - week) * 7))
-            .date
-            .weekDateRange
-            .firstMonthDay,
-      null
-    ];
-
+  Row _buildWeekdayRow() {
     return Row(
-      children: monthRow
-          .map((firstMonthDay) => Flexible(
-                  child: Center(
-                child: firstMonthDay != null
-                    ? Caption(
-                        DateFormat(DateFormat.ABBR_MONTH).format(firstMonthDay),
-                      )
-                    : Container(),
-              )))
-          .toList(),
+      children: [
+        for (var weekday in List.generate(7, (index) => index + 1))
+          Expanded(
+            child: Center(
+              child: Caption(
+                DateFormat(DateFormat.ABBR_WEEKDAY).format(
+                  from.add(Duration(days: weekday - from.weekday)),
+                ),
+              ),
+            ),
+          )
+      ],
     );
+  }
+
+  List<Widget> _buildMaybeMonthRowAndWeekRow(BuildContext context, int week) {
+    var dates = [
+      for (var weekday in List.generate(7, (index) => index + 1))
+        from
+            .add(Duration(days: weekday - from.weekday))
+            .subtract(Duration(days: (weeks - week) * 7))
+            .date
+    ];
+    var firstMonthDay = dates[0].weekDateRange.firstMonthDay;
+
+    return [
+      if (firstMonthDay != null)
+        Row(
+          children: [
+            // )))
+            Expanded(
+              child: Center(
+                child: Caption(
+                    DateFormat(DateFormat.ABBR_MONTH).format(firstMonthDay),
+                    bold: true),
+              ),
+            ),
+            Expanded(child: Center(child: Container())),
+            Expanded(child: Center(child: Container())),
+            Expanded(child: Center(child: Container())),
+            Expanded(child: Center(child: Container())),
+            Expanded(child: Center(child: Container())),
+            Expanded(child: Center(child: Container())),
+          ],
+        ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          for (var date in dates) _buildDateCell(context, date),
+        ],
+      )
+    ];
   }
 }
