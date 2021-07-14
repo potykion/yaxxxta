@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:yaxxxta/logic/ads/state.dart';
 import 'package:yaxxxta/logic/habit/state/calendar.dart';
 import 'package:yaxxxta/logic/subscription/hooks.dart';
-import 'package:yaxxxta/ui/core/brand.dart';
 import 'package:yaxxxta/ui/calendar/habit_swiper.dart';
-
+import 'package:yaxxxta/ui/core/brand.dart';
 import 'bottom_nav.dart';
-import 'no_habits_page.dart';
+import 'no_habits_label.dart';
 
 class CalendarPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
+    var ad = useProvider(adProvider(0));
+
     var vms = useProvider(habitVMsProvider);
     // var vms = <HabitVM>[];
 
@@ -19,7 +22,22 @@ class CalendarPage extends HookWidget {
 
     return Scaffold(
       appBar: AppBar(title: Brand(), centerTitle: true),
-      body: vms.isEmpty ? NoHabitsPage() : HabitSwiper(vms: vms),
+      body: Column(
+        children: [
+          // SizedBox(height: MediaQuery.of(context).padding.top),
+          Expanded(
+            child: vms.isEmpty
+                ? Center(child: NoHabitsLabel())
+                : HabitSwiper(vms: vms),
+          ),
+          if (ad != null)
+            Container(
+              height: AdSize.banner.height.toDouble(),
+              width: AdSize.banner.width.toDouble(),
+              child: AdWidget(ad: ad),
+            ),
+        ],
+      ),
       bottomNavigationBar: CalendarBottomNav(),
     );
   }
