@@ -3,8 +3,9 @@ import 'package:yaxxxta/logic/core/db.dart';
 
 import 'models.dart';
 
-
+/// Фаерстор репо данных о юзере
 class FirebaseAppUserInfoRepo extends FirebaseRepo<AppUserInfo> {
+  /// Фаерстор репо данных о юзере
   FirebaseAppUserInfoRepo(
     CollectionReference collectionReference,
   ) : super(collectionReference: collectionReference);

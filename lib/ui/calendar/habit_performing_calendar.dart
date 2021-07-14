@@ -165,8 +165,9 @@ class _HabitPerformingsFor35Days extends StatelessWidget {
             Expanded(
               child: Center(
                 child: Caption(
-                    DateFormat(DateFormat.ABBR_MONTH).format(firstMonthDay),
-                    bold: true),
+                  DateFormat(DateFormat.ABBR_MONTH).format(firstMonthDay),
+                  bold: true,
+                ),
               ),
             ),
             Expanded(child: Center(child: Container())),

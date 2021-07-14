@@ -7,18 +7,22 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'db.dart';
 import 'models.dart';
 
+/// Стейт инфы о юзере
 class AppUserInfoController extends StateNotifier<AppUserInfo> {
   final FirebaseAppUserInfoRepo repo;
 
+  /// Стейт инфы о юзере
   AppUserInfoController(
     this.repo,
     AppUserInfo state,
   ) : super(state);
 
+  /// Грузит инфу о юзере
   Future<void> load(String userId) async {
     state = (await repo.listByUserId(userId)).firstOrNull ?? state;
   }
 
+  /// Создает иои обновляет инфу о юзере
   Future<void> insertOrUpdate(
       {required DateTime? subscriptionExpiration}) async {
     AppUserInfo appUserInfo = state.copyWith(
@@ -34,7 +38,9 @@ class AppUserInfoController extends StateNotifier<AppUserInfo> {
   }
 }
 
-StateNotifierProvider<AppUserInfoController, AppUserInfo> appUserInfoControllerProvider =
+/// Провайдер инфы о юзере
+StateNotifierProvider<AppUserInfoController, AppUserInfo>
+    appUserInfoControllerProvider =
     StateNotifierProvider<AppUserInfoController, AppUserInfo>(
   (_) => AppUserInfoController(
     FirebaseAppUserInfoRepo(
@@ -46,4 +52,6 @@ StateNotifierProvider<AppUserInfoController, AppUserInfo> appUserInfoControllerP
   ),
 );
 
-StateProvider<ProductDetails?> subscriptionProductProvider = StateProvider<ProductDetails?>((_) => null);
+/// Провайдер инфа о подписке
+StateProvider<ProductDetails?> subscriptionProductProvider =
+    StateProvider<ProductDetails?>((_) => null);

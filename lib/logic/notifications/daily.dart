@@ -2,8 +2,11 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
 import 'package:timezone/timezone.dart' as tz;
 
-FlutterLocalNotificationsPlugin localNotificationPlugin = FlutterLocalNotificationsPlugin();
+/// Плагин для отправки локальных пушей
+FlutterLocalNotificationsPlugin localNotificationPlugin =
+    FlutterLocalNotificationsPlugin();
 
+/// Ежедневные уведомления о выполнении привычки
 class DailyHabitPerformNotifications {
   static final _channel = AndroidNotificationDetails(
     'DailyHabitPerformNotifications',

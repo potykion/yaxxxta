@@ -30,6 +30,7 @@ class AuthPage extends StatelessWidget {
     ));
   }
 
+  /// Вход через гугл
   Future<User> signInByGoogle() async {
     final googleUser = await GoogleSignIn().signIn();
     var googleAuth = await googleUser!.authentication;

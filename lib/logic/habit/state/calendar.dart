@@ -7,12 +7,15 @@ import 'package:yaxxxta/logic/habit/vms.dart';
 import 'package:yaxxxta/logic/core/utils/dt.dart';
 import 'package:yaxxxta/logic/notifications/daily.dart';
 
+/// Стейт страницы календаря и привычек в целом
 class HabitCalendarState extends StateNotifier<List<HabitVM>> {
   final FirebaseHabitRepo habitRepo;
   final FirebaseHabitPerformingRepo habitPerformingRepo;
 
+  /// Стейт страницы календаря и привычек в целом
   HabitCalendarState(this.habitRepo, this.habitPerformingRepo) : super([]);
 
+  /// Загрузка стейта
   Future<void> load(String userId) async {
     var habits = await habitRepo.listByUserId(userId);
     var performings = groupBy<HabitPerforming, String>(
@@ -29,11 +32,13 @@ class HabitCalendarState extends StateNotifier<List<HabitVM>> {
         .toList();
   }
 
+  /// Создание привычки
   Future<void> create(Habit habit) async {
     habit = habit.copyWith(id: await habitRepo.insert(habit));
     state = [...state, HabitVM(habit: habit)];
   }
 
+  /// Обновление привычки
   Future<void> update(Habit habit) async {
     await habitRepo.update(habit);
     var habitToUpdate = state.where((vm) => vm.habit.id == habit.id).first;
@@ -43,6 +48,7 @@ class HabitCalendarState extends StateNotifier<List<HabitVM>> {
     ];
   }
 
+  /// Выполнение привычки
   Future<void> perform(Habit habit, [DateTime? performDatetime]) async {
     performDatetime = performDatetime ?? DateTime.now();
     var performing = HabitPerforming.blank(
@@ -68,6 +74,7 @@ class HabitCalendarState extends StateNotifier<List<HabitVM>> {
     ];
   }
 
+  /// Отменяет уведомление и назначает новое
   Future<Habit> _rescheduleNotification(Habit habit) async {
     DailyHabitPerformNotifications.remove(habit.notification!.id);
     var atDateTime = habit.notification!.time.setTomorrow();
@@ -84,25 +91,7 @@ class HabitCalendarState extends StateNotifier<List<HabitVM>> {
     return habit;
   }
 
-  Future<void> reorder(
-    Map<String, int> habitNewOrders,
-  ) async {
-    await habitRepo.reorder(habitNewOrders);
-    var newState = <HabitVM>[];
-    for (var vm in state) {
-      if (habitNewOrders.containsKey(vm.habit.id)) {
-        vm = vm.copyWith(
-          habit: vm.habit.copyWith(
-            order: habitNewOrders[vm.habit.id]!,
-          ),
-        );
-      }
-      newState.add(vm);
-    }
-
-    state = newState;
-  }
-
+  /// Отправляет привычку в архив
   Future<void> archive(Habit habit) async {
     if (habit.notification != null) {
       DailyHabitPerformNotifications.remove(habit.notification!.id);
@@ -111,12 +100,14 @@ class HabitCalendarState extends StateNotifier<List<HabitVM>> {
     await update(habit.copyWith(archived: true));
   }
 
+  /// Удаляет привычку
   Future<void> delete(Habit habit) async {
     assert(habit.archived);
     await habitPerformingRepo.deleteById(habit.id!);
     state = [...state.where((vm) => vm.habit.id != habit.id!)];
   }
 
+  /// Возвращает привычку из архива
   Future unarchive(Habit habit) async {
     habit = habit.copyWith(archived: false);
     if (habit.notification != null) {
@@ -126,7 +117,9 @@ class HabitCalendarState extends StateNotifier<List<HabitVM>> {
   }
 }
 
-StateNotifierProvider<HabitCalendarState, List<HabitVM>> habitCalendarStateProvider =
+/// Провайдер стейта страницы календаря
+StateNotifierProvider<HabitCalendarState, List<HabitVM>>
+    habitCalendarStateProvider =
     StateNotifierProvider<HabitCalendarState, List<HabitVM>>(
   (ref) => HabitCalendarState(
     FirebaseHabitRepo(
@@ -139,6 +132,7 @@ StateNotifierProvider<HabitCalendarState, List<HabitVM>> habitCalendarStateProvi
   ),
 );
 
+/// Провайдер привычек
 Provider<List<HabitVM>> habitVMsProvider = Provider(
   (ref) => ref
       .watch(habitCalendarStateProvider)
@@ -147,43 +141,10 @@ Provider<List<HabitVM>> habitVMsProvider = Provider(
         ..sort((vm1, vm2) => vm1.habit.order.compareTo(vm2.habit.order)),
 );
 
+/// Заархивированные привычки
 Provider<List<HabitVM>> archivedHabitVMsProvider = Provider(
   (ref) => ref
       .watch(habitCalendarStateProvider)
       .where((vm) => vm.habit.archived)
       .toList(),
 );
-
-int getNextUnperformedHabitIndex(
-  List<HabitVM> habits, {
-  int initialIndex = 0,
-  bool includeInitial = false,
-}) {
-  var index = habits.indexWhere(
-    (h) => !h.isPerformedToday,
-    includeInitial ? initialIndex : (initialIndex + 1) % habits.length,
-  );
-  return index == -1 ? habits.indexWhere((h) => !h.isPerformedToday) : index;
-}
-
-int getPreviousUnperformedHabitIndex(
-  List<HabitVM> habits, {
-  int initialIndex = 0,
-  bool includeInitial = false,
-}) {
-  if (includeInitial) {
-    if (!habits[initialIndex].isPerformedToday) return initialIndex;
-  }
-
-  var index = -1;
-
-  index = habits
-      .sublist(0, initialIndex)
-      .lastIndexWhere((h) => !h.isPerformedToday);
-
-  if (index == -1) {
-    index = habits.lastIndexWhere((h) => !h.isPerformedToday);
-  }
-
-  return index;
-}

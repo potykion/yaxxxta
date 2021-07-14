@@ -7,6 +7,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:yaxxxta/logic/app_user_info/controllers.dart';
 
+/// Хук, который чекает куплена ли подписка
+/// Если куплена, то обновляем инфу о юзере
 void useSubscription(BuildContext context) {
   var appUserInfo = useProvider(appUserInfoControllerProvider);
 
