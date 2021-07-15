@@ -28,7 +28,7 @@ class CoreCard extends StatelessWidget {
             : BorderRadius.circular(32),
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: child,
       ),
     );

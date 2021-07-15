@@ -4,6 +4,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/ads/state.dart';
 import 'package:yaxxxta/logic/habit/state/calendar.dart';
+import 'package:yaxxxta/logic/habit/vms.dart';
 import 'package:yaxxxta/logic/subscription/hooks.dart';
 import 'package:yaxxxta/ui/calendar/habit_swiper.dart';
 import 'package:yaxxxta/ui/core/brand.dart';
@@ -13,10 +14,11 @@ import 'no_habits_label.dart';
 class CalendarPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    var ad = useProvider(adProvider(0));
+    // BannerAd? ad = useProvider(adProvider(0));
+    BannerAd? ad = null;
 
-    var vms = useProvider(habitVMsProvider);
-    // var vms = <HabitVM>[];
+    List<HabitVM> vms = useProvider(habitVMsProvider);
+    // List<HabitVM> vms = [];
 
     useSubscription(context);
 
@@ -30,12 +32,11 @@ class CalendarPage extends HookWidget {
                 ? Center(child: NoHabitsLabel())
                 : HabitSwiper(vms: vms),
           ),
-          if (ad != null)
-            Container(
-              height: AdSize.banner.height.toDouble(),
-              width: AdSize.banner.width.toDouble(),
-              child: AdWidget(ad: ad),
-            ),
+          Container(
+            height: AdSize.banner.height.toDouble(),
+            width: AdSize.banner.width.toDouble(),
+            child: ad != null ? AdWidget(ad: ad) : null,
+          ),
         ],
       ),
       bottomNavigationBar: CalendarBottomNav(),
