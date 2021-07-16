@@ -17,6 +17,12 @@ abstract class CoreBorderRadiuses {
   static final double big = 32;
 }
 
+/// Базовые паддинги
+abstract class CorePaddings {
+  static final double small = 8;
+  static final double big = 16;
+}
+
 ThemeData buildThemeData(BuildContext context) {
   final textTheme = Theme.of(context).textTheme;
 

@@ -80,7 +80,11 @@ class Headline6 extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Text(text, style: style),
+      child: Row(
+        children: [
+          Text(text, style: style),
+        ],
+      ),
     );
   }
 }

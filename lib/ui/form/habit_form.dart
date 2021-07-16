@@ -10,6 +10,7 @@ import 'package:yaxxxta/ui/core/bottom_sheet.dart';
 import 'package:yaxxxta/ui/core/text.dart';
 
 import '../core/button.dart';
+import 'habit_frequency_type_input.dart';
 
 class HabitForm extends HookWidget {
   @override
@@ -41,7 +42,6 @@ class HabitForm extends HookWidget {
               : null,
         ),
         Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Headline6("Название"),
             TextFormField(
@@ -54,7 +54,17 @@ class HabitForm extends HookWidget {
           ],
         ),
         Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Headline6("Периодичность"),
+            HabitFrequencyTypeInput(
+              initial: habit.frequencyType,
+              change: (freqType) => context
+                  .read(habitFormStateProvider.notifier)
+                  .update(habit.copyWith(frequencyType: freqType)),
+            ),
+          ],
+        ),
+        Column(
           children: [
             Headline6("Напоминалка"),
             if (habit.notification != null)
