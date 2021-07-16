@@ -6,6 +6,42 @@ part 'models.freezed.dart';
 
 part 'models.g.dart';
 
+/// Периодичность привычки
+enum HabitFrequencyType {
+  /// Ежедневная
+  daily,
+
+  /// Еженедельная
+  weekly,
+}
+
+/// Привычка
+@freezed
+abstract class Habit implements _$Habit, WithId {
+  const Habit._();
+
+  /// Привычка
+  const factory Habit({
+    String? id,
+    required String title,
+    required String userId,
+    required int order,
+    @Default(false) bool archived,
+    HabitNotificationSettings? notification,
+    @Default(HabitFrequencyType.daily) HabitFrequencyType frequencyType,
+  }) = _Habit;
+
+  factory Habit.fromJson(Map<String, dynamic> json) => _$HabitFromJson(json);
+
+  factory Habit.blank({required String userId}) {
+    return Habit(
+      title: "",
+      userId: userId,
+      order: DateTime.now().millisecondsSinceEpoch,
+    );
+  }
+}
+
 typedef NotificationId = int;
 
 @freezed
@@ -24,32 +60,6 @@ abstract class HabitNotificationSettings
 
   /// Форматирует как время
   String toTimeStr() => DateFormat.Hm().format(time);
-}
-
-/// Привычка
-@freezed
-abstract class Habit implements _$Habit, WithId {
-  const Habit._();
-
-  /// Привычка
-  const factory Habit({
-    String? id,
-    required String title,
-    required String userId,
-    required int order,
-    @Default(false) bool archived,
-    HabitNotificationSettings? notification,
-  }) = _Habit;
-
-  factory Habit.fromJson(Map<String, dynamic> json) => _$HabitFromJson(json);
-
-  factory Habit.blank({required String userId}) {
-    return Habit(
-      title: "",
-      userId: userId,
-      order: DateTime.now().millisecondsSinceEpoch,
-    );
-  }
 }
 
 @freezed

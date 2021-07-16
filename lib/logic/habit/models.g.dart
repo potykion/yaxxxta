@@ -6,6 +6,75 @@ part of 'models.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+_$_Habit _$_$_HabitFromJson(Map json) {
+  return _$_Habit(
+    id: json['id'] as String?,
+    title: json['title'] as String,
+    userId: json['userId'] as String,
+    order: json['order'] as int,
+    archived: json['archived'] as bool? ?? false,
+    notification: json['notification'] == null
+        ? null
+        : HabitNotificationSettings.fromJson(
+            Map<String, dynamic>.from(json['notification'] as Map)),
+    frequencyType: _$enumDecodeNullable(
+            _$HabitFrequencyTypeEnumMap, json['frequencyType']) ??
+        HabitFrequencyType.daily,
+  );
+}
+
+Map<String, dynamic> _$_$_HabitToJson(_$_Habit instance) => <String, dynamic>{
+      'id': instance.id,
+      'title': instance.title,
+      'userId': instance.userId,
+      'order': instance.order,
+      'archived': instance.archived,
+      'notification': instance.notification?.toJson(),
+      'frequencyType': _$HabitFrequencyTypeEnumMap[instance.frequencyType],
+    };
+
+K _$enumDecode<K, V>(
+  Map<K, V> enumValues,
+  Object? source, {
+  K? unknownValue,
+}) {
+  if (source == null) {
+    throw ArgumentError(
+      'A value must be provided. Supported values: '
+      '${enumValues.values.join(', ')}',
+    );
+  }
+
+  return enumValues.entries.singleWhere(
+    (e) => e.value == source,
+    orElse: () {
+      if (unknownValue == null) {
+        throw ArgumentError(
+          '`$source` is not one of the supported values: '
+          '${enumValues.values.join(', ')}',
+        );
+      }
+      return MapEntry(unknownValue, enumValues.values.first);
+    },
+  ).key;
+}
+
+K? _$enumDecodeNullable<K, V>(
+  Map<K, V> enumValues,
+  dynamic source, {
+  K? unknownValue,
+}) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
+}
+
+const _$HabitFrequencyTypeEnumMap = {
+  HabitFrequencyType.daily: 'daily',
+  HabitFrequencyType.weekly: 'weekly',
+};
+
 _$_HabitNotificationSettings _$_$_HabitNotificationSettingsFromJson(Map json) {
   return _$_HabitNotificationSettings(
     id: json['id'] as int,
@@ -18,29 +87,6 @@ Map<String, dynamic> _$_$_HabitNotificationSettingsToJson(
     <String, dynamic>{
       'id': instance.id,
       'time': instance.time.toIso8601String(),
-    };
-
-_$_Habit _$_$_HabitFromJson(Map json) {
-  return _$_Habit(
-    id: json['id'] as String?,
-    title: json['title'] as String,
-    userId: json['userId'] as String,
-    order: json['order'] as int,
-    archived: json['archived'] as bool? ?? false,
-    notification: json['notification'] == null
-        ? null
-        : HabitNotificationSettings.fromJson(
-            Map<String, dynamic>.from(json['notification'] as Map)),
-  );
-}
-
-Map<String, dynamic> _$_$_HabitToJson(_$_Habit instance) => <String, dynamic>{
-      'id': instance.id,
-      'title': instance.title,
-      'userId': instance.userId,
-      'order': instance.order,
-      'archived': instance.archived,
-      'notification': instance.notification?.toJson(),
     };
 
 _$_HabitPerforming _$_$_HabitPerformingFromJson(Map json) {

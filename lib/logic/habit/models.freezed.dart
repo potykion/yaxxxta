@@ -12,6 +12,322 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+Habit _$HabitFromJson(Map<String, dynamic> json) {
+  return _Habit.fromJson(json);
+}
+
+/// @nodoc
+class _$HabitTearOff {
+  const _$HabitTearOff();
+
+  _Habit call(
+      {String? id,
+      required String title,
+      required String userId,
+      required int order,
+      bool archived = false,
+      HabitNotificationSettings? notification,
+      HabitFrequencyType frequencyType = HabitFrequencyType.daily}) {
+    return _Habit(
+      id: id,
+      title: title,
+      userId: userId,
+      order: order,
+      archived: archived,
+      notification: notification,
+      frequencyType: frequencyType,
+    );
+  }
+
+  Habit fromJson(Map<String, Object> json) {
+    return Habit.fromJson(json);
+  }
+}
+
+/// @nodoc
+const $Habit = _$HabitTearOff();
+
+/// @nodoc
+mixin _$Habit {
+  String? get id => throw _privateConstructorUsedError;
+  String get title => throw _privateConstructorUsedError;
+  String get userId => throw _privateConstructorUsedError;
+  int get order => throw _privateConstructorUsedError;
+  bool get archived => throw _privateConstructorUsedError;
+  HabitNotificationSettings? get notification =>
+      throw _privateConstructorUsedError;
+  HabitFrequencyType get frequencyType => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $HabitCopyWith<Habit> get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $HabitCopyWith<$Res> {
+  factory $HabitCopyWith(Habit value, $Res Function(Habit) then) =
+      _$HabitCopyWithImpl<$Res>;
+  $Res call(
+      {String? id,
+      String title,
+      String userId,
+      int order,
+      bool archived,
+      HabitNotificationSettings? notification,
+      HabitFrequencyType frequencyType});
+
+  $HabitNotificationSettingsCopyWith<$Res>? get notification;
+}
+
+/// @nodoc
+class _$HabitCopyWithImpl<$Res> implements $HabitCopyWith<$Res> {
+  _$HabitCopyWithImpl(this._value, this._then);
+
+  final Habit _value;
+  // ignore: unused_field
+  final $Res Function(Habit) _then;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? title = freezed,
+    Object? userId = freezed,
+    Object? order = freezed,
+    Object? archived = freezed,
+    Object? notification = freezed,
+    Object? frequencyType = freezed,
+  }) {
+    return _then(_value.copyWith(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      title: title == freezed
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: userId == freezed
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      order: order == freezed
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as int,
+      archived: archived == freezed
+          ? _value.archived
+          : archived // ignore: cast_nullable_to_non_nullable
+              as bool,
+      notification: notification == freezed
+          ? _value.notification
+          : notification // ignore: cast_nullable_to_non_nullable
+              as HabitNotificationSettings?,
+      frequencyType: frequencyType == freezed
+          ? _value.frequencyType
+          : frequencyType // ignore: cast_nullable_to_non_nullable
+              as HabitFrequencyType,
+    ));
+  }
+
+  @override
+  $HabitNotificationSettingsCopyWith<$Res>? get notification {
+    if (_value.notification == null) {
+      return null;
+    }
+
+    return $HabitNotificationSettingsCopyWith<$Res>(_value.notification!,
+        (value) {
+      return _then(_value.copyWith(notification: value));
+    });
+  }
+}
+
+/// @nodoc
+abstract class _$HabitCopyWith<$Res> implements $HabitCopyWith<$Res> {
+  factory _$HabitCopyWith(_Habit value, $Res Function(_Habit) then) =
+      __$HabitCopyWithImpl<$Res>;
+  @override
+  $Res call(
+      {String? id,
+      String title,
+      String userId,
+      int order,
+      bool archived,
+      HabitNotificationSettings? notification,
+      HabitFrequencyType frequencyType});
+
+  @override
+  $HabitNotificationSettingsCopyWith<$Res>? get notification;
+}
+
+/// @nodoc
+class __$HabitCopyWithImpl<$Res> extends _$HabitCopyWithImpl<$Res>
+    implements _$HabitCopyWith<$Res> {
+  __$HabitCopyWithImpl(_Habit _value, $Res Function(_Habit) _then)
+      : super(_value, (v) => _then(v as _Habit));
+
+  @override
+  _Habit get _value => super._value as _Habit;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? title = freezed,
+    Object? userId = freezed,
+    Object? order = freezed,
+    Object? archived = freezed,
+    Object? notification = freezed,
+    Object? frequencyType = freezed,
+  }) {
+    return _then(_Habit(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      title: title == freezed
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: userId == freezed
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      order: order == freezed
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as int,
+      archived: archived == freezed
+          ? _value.archived
+          : archived // ignore: cast_nullable_to_non_nullable
+              as bool,
+      notification: notification == freezed
+          ? _value.notification
+          : notification // ignore: cast_nullable_to_non_nullable
+              as HabitNotificationSettings?,
+      frequencyType: frequencyType == freezed
+          ? _value.frequencyType
+          : frequencyType // ignore: cast_nullable_to_non_nullable
+              as HabitFrequencyType,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_Habit extends _Habit {
+  const _$_Habit(
+      {this.id,
+      required this.title,
+      required this.userId,
+      required this.order,
+      this.archived = false,
+      this.notification,
+      this.frequencyType = HabitFrequencyType.daily})
+      : super._();
+
+  factory _$_Habit.fromJson(Map<String, dynamic> json) =>
+      _$_$_HabitFromJson(json);
+
+  @override
+  final String? id;
+  @override
+  final String title;
+  @override
+  final String userId;
+  @override
+  final int order;
+  @JsonKey(defaultValue: false)
+  @override
+  final bool archived;
+  @override
+  final HabitNotificationSettings? notification;
+  @JsonKey(defaultValue: HabitFrequencyType.daily)
+  @override
+  final HabitFrequencyType frequencyType;
+
+  @override
+  String toString() {
+    return 'Habit(id: $id, title: $title, userId: $userId, order: $order, archived: $archived, notification: $notification, frequencyType: $frequencyType)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _Habit &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.title, title) ||
+                const DeepCollectionEquality().equals(other.title, title)) &&
+            (identical(other.userId, userId) ||
+                const DeepCollectionEquality().equals(other.userId, userId)) &&
+            (identical(other.order, order) ||
+                const DeepCollectionEquality().equals(other.order, order)) &&
+            (identical(other.archived, archived) ||
+                const DeepCollectionEquality()
+                    .equals(other.archived, archived)) &&
+            (identical(other.notification, notification) ||
+                const DeepCollectionEquality()
+                    .equals(other.notification, notification)) &&
+            (identical(other.frequencyType, frequencyType) ||
+                const DeepCollectionEquality()
+                    .equals(other.frequencyType, frequencyType)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(id) ^
+      const DeepCollectionEquality().hash(title) ^
+      const DeepCollectionEquality().hash(userId) ^
+      const DeepCollectionEquality().hash(order) ^
+      const DeepCollectionEquality().hash(archived) ^
+      const DeepCollectionEquality().hash(notification) ^
+      const DeepCollectionEquality().hash(frequencyType);
+
+  @JsonKey(ignore: true)
+  @override
+  _$HabitCopyWith<_Habit> get copyWith =>
+      __$HabitCopyWithImpl<_Habit>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$_HabitToJson(this);
+  }
+}
+
+abstract class _Habit extends Habit {
+  const factory _Habit(
+      {String? id,
+      required String title,
+      required String userId,
+      required int order,
+      bool archived,
+      HabitNotificationSettings? notification,
+      HabitFrequencyType frequencyType}) = _$_Habit;
+  const _Habit._() : super._();
+
+  factory _Habit.fromJson(Map<String, dynamic> json) = _$_Habit.fromJson;
+
+  @override
+  String? get id => throw _privateConstructorUsedError;
+  @override
+  String get title => throw _privateConstructorUsedError;
+  @override
+  String get userId => throw _privateConstructorUsedError;
+  @override
+  int get order => throw _privateConstructorUsedError;
+  @override
+  bool get archived => throw _privateConstructorUsedError;
+  @override
+  HabitNotificationSettings? get notification =>
+      throw _privateConstructorUsedError;
+  @override
+  HabitFrequencyType get frequencyType => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  _$HabitCopyWith<_Habit> get copyWith => throw _privateConstructorUsedError;
+}
+
 HabitNotificationSettings _$HabitNotificationSettingsFromJson(
     Map<String, dynamic> json) {
   return _HabitNotificationSettings.fromJson(json);
@@ -186,296 +502,6 @@ abstract class _HabitNotificationSettings extends HabitNotificationSettings {
   @JsonKey(ignore: true)
   _$HabitNotificationSettingsCopyWith<_HabitNotificationSettings>
       get copyWith => throw _privateConstructorUsedError;
-}
-
-Habit _$HabitFromJson(Map<String, dynamic> json) {
-  return _Habit.fromJson(json);
-}
-
-/// @nodoc
-class _$HabitTearOff {
-  const _$HabitTearOff();
-
-  _Habit call(
-      {String? id,
-      required String title,
-      required String userId,
-      required int order,
-      bool archived = false,
-      HabitNotificationSettings? notification}) {
-    return _Habit(
-      id: id,
-      title: title,
-      userId: userId,
-      order: order,
-      archived: archived,
-      notification: notification,
-    );
-  }
-
-  Habit fromJson(Map<String, Object> json) {
-    return Habit.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $Habit = _$HabitTearOff();
-
-/// @nodoc
-mixin _$Habit {
-  String? get id => throw _privateConstructorUsedError;
-  String get title => throw _privateConstructorUsedError;
-  String get userId => throw _privateConstructorUsedError;
-  int get order => throw _privateConstructorUsedError;
-  bool get archived => throw _privateConstructorUsedError;
-  HabitNotificationSettings? get notification =>
-      throw _privateConstructorUsedError;
-
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $HabitCopyWith<Habit> get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $HabitCopyWith<$Res> {
-  factory $HabitCopyWith(Habit value, $Res Function(Habit) then) =
-      _$HabitCopyWithImpl<$Res>;
-  $Res call(
-      {String? id,
-      String title,
-      String userId,
-      int order,
-      bool archived,
-      HabitNotificationSettings? notification});
-
-  $HabitNotificationSettingsCopyWith<$Res>? get notification;
-}
-
-/// @nodoc
-class _$HabitCopyWithImpl<$Res> implements $HabitCopyWith<$Res> {
-  _$HabitCopyWithImpl(this._value, this._then);
-
-  final Habit _value;
-  // ignore: unused_field
-  final $Res Function(Habit) _then;
-
-  @override
-  $Res call({
-    Object? id = freezed,
-    Object? title = freezed,
-    Object? userId = freezed,
-    Object? order = freezed,
-    Object? archived = freezed,
-    Object? notification = freezed,
-  }) {
-    return _then(_value.copyWith(
-      id: id == freezed
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String?,
-      title: title == freezed
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String,
-      userId: userId == freezed
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String,
-      order: order == freezed
-          ? _value.order
-          : order // ignore: cast_nullable_to_non_nullable
-              as int,
-      archived: archived == freezed
-          ? _value.archived
-          : archived // ignore: cast_nullable_to_non_nullable
-              as bool,
-      notification: notification == freezed
-          ? _value.notification
-          : notification // ignore: cast_nullable_to_non_nullable
-              as HabitNotificationSettings?,
-    ));
-  }
-
-  @override
-  $HabitNotificationSettingsCopyWith<$Res>? get notification {
-    if (_value.notification == null) {
-      return null;
-    }
-
-    return $HabitNotificationSettingsCopyWith<$Res>(_value.notification!,
-        (value) {
-      return _then(_value.copyWith(notification: value));
-    });
-  }
-}
-
-/// @nodoc
-abstract class _$HabitCopyWith<$Res> implements $HabitCopyWith<$Res> {
-  factory _$HabitCopyWith(_Habit value, $Res Function(_Habit) then) =
-      __$HabitCopyWithImpl<$Res>;
-  @override
-  $Res call(
-      {String? id,
-      String title,
-      String userId,
-      int order,
-      bool archived,
-      HabitNotificationSettings? notification});
-
-  @override
-  $HabitNotificationSettingsCopyWith<$Res>? get notification;
-}
-
-/// @nodoc
-class __$HabitCopyWithImpl<$Res> extends _$HabitCopyWithImpl<$Res>
-    implements _$HabitCopyWith<$Res> {
-  __$HabitCopyWithImpl(_Habit _value, $Res Function(_Habit) _then)
-      : super(_value, (v) => _then(v as _Habit));
-
-  @override
-  _Habit get _value => super._value as _Habit;
-
-  @override
-  $Res call({
-    Object? id = freezed,
-    Object? title = freezed,
-    Object? userId = freezed,
-    Object? order = freezed,
-    Object? archived = freezed,
-    Object? notification = freezed,
-  }) {
-    return _then(_Habit(
-      id: id == freezed
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String?,
-      title: title == freezed
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String,
-      userId: userId == freezed
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String,
-      order: order == freezed
-          ? _value.order
-          : order // ignore: cast_nullable_to_non_nullable
-              as int,
-      archived: archived == freezed
-          ? _value.archived
-          : archived // ignore: cast_nullable_to_non_nullable
-              as bool,
-      notification: notification == freezed
-          ? _value.notification
-          : notification // ignore: cast_nullable_to_non_nullable
-              as HabitNotificationSettings?,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$_Habit extends _Habit {
-  const _$_Habit(
-      {this.id,
-      required this.title,
-      required this.userId,
-      required this.order,
-      this.archived = false,
-      this.notification})
-      : super._();
-
-  factory _$_Habit.fromJson(Map<String, dynamic> json) =>
-      _$_$_HabitFromJson(json);
-
-  @override
-  final String? id;
-  @override
-  final String title;
-  @override
-  final String userId;
-  @override
-  final int order;
-  @JsonKey(defaultValue: false)
-  @override
-  final bool archived;
-  @override
-  final HabitNotificationSettings? notification;
-
-  @override
-  String toString() {
-    return 'Habit(id: $id, title: $title, userId: $userId, order: $order, archived: $archived, notification: $notification)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other is _Habit &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.title, title) ||
-                const DeepCollectionEquality().equals(other.title, title)) &&
-            (identical(other.userId, userId) ||
-                const DeepCollectionEquality().equals(other.userId, userId)) &&
-            (identical(other.order, order) ||
-                const DeepCollectionEquality().equals(other.order, order)) &&
-            (identical(other.archived, archived) ||
-                const DeepCollectionEquality()
-                    .equals(other.archived, archived)) &&
-            (identical(other.notification, notification) ||
-                const DeepCollectionEquality()
-                    .equals(other.notification, notification)));
-  }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(title) ^
-      const DeepCollectionEquality().hash(userId) ^
-      const DeepCollectionEquality().hash(order) ^
-      const DeepCollectionEquality().hash(archived) ^
-      const DeepCollectionEquality().hash(notification);
-
-  @JsonKey(ignore: true)
-  @override
-  _$HabitCopyWith<_Habit> get copyWith =>
-      __$HabitCopyWithImpl<_Habit>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$_$_HabitToJson(this);
-  }
-}
-
-abstract class _Habit extends Habit {
-  const factory _Habit(
-      {String? id,
-      required String title,
-      required String userId,
-      required int order,
-      bool archived,
-      HabitNotificationSettings? notification}) = _$_Habit;
-  const _Habit._() : super._();
-
-  factory _Habit.fromJson(Map<String, dynamic> json) = _$_Habit.fromJson;
-
-  @override
-  String? get id => throw _privateConstructorUsedError;
-  @override
-  String get title => throw _privateConstructorUsedError;
-  @override
-  String get userId => throw _privateConstructorUsedError;
-  @override
-  int get order => throw _privateConstructorUsedError;
-  @override
-  bool get archived => throw _privateConstructorUsedError;
-  @override
-  HabitNotificationSettings? get notification =>
-      throw _privateConstructorUsedError;
-  @override
-  @JsonKey(ignore: true)
-  _$HabitCopyWith<_Habit> get copyWith => throw _privateConstructorUsedError;
 }
 
 HabitPerforming _$HabitPerformingFromJson(Map<String, dynamic> json) {
