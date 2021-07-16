@@ -14,8 +14,8 @@ import 'no_habits_label.dart';
 class CalendarPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    // BannerAd? ad = useProvider(adProvider(0));
-    BannerAd? ad = null;
+    BannerAd? ad = useProvider(adProvider(0));
+    // BannerAd? ad = null;
 
     List<HabitVM> vms = useProvider(habitVMsProvider);
     // List<HabitVM> vms = [];
