@@ -11,6 +11,7 @@ import 'package:yaxxxta/ui/core/text.dart';
 
 import '../core/button.dart';
 import 'habit_frequency_type_input.dart';
+import 'habit_perform_weekday_input.dart';
 
 class HabitForm extends HookWidget {
   @override
@@ -64,6 +65,19 @@ class HabitForm extends HookWidget {
             ),
           ],
         ),
+        if (habit.frequencyType == HabitFrequencyType.weekly)
+          Column(
+            children: [
+              Headline6("Когда выполняется привычка?"),
+
+              HabitPerformWeekdayInput(
+                initial: habit.performWeekday,
+                change: (weekday) => context
+                    .read(habitFormStateProvider.notifier)
+                    .update(habit.copyWith(performWeekday: weekday)),
+              ),
+            ],
+          ),
         Column(
           children: [
             Headline6("Напоминалка"),

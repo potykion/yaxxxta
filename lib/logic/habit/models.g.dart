@@ -20,6 +20,8 @@ _$_Habit _$_$_HabitFromJson(Map json) {
     frequencyType: _$enumDecodeNullable(
             _$HabitFrequencyTypeEnumMap, json['frequencyType']) ??
         HabitFrequencyType.daily,
+    performWeekday:
+        _$enumDecodeNullable(_$WeekdayEnumMap, json['performWeekday']),
   );
 }
 
@@ -31,6 +33,7 @@ Map<String, dynamic> _$_$_HabitToJson(_$_Habit instance) => <String, dynamic>{
       'archived': instance.archived,
       'notification': instance.notification?.toJson(),
       'frequencyType': _$HabitFrequencyTypeEnumMap[instance.frequencyType],
+      'performWeekday': _$WeekdayEnumMap[instance.performWeekday],
     };
 
 K _$enumDecode<K, V>(
@@ -73,6 +76,16 @@ K? _$enumDecodeNullable<K, V>(
 const _$HabitFrequencyTypeEnumMap = {
   HabitFrequencyType.daily: 'daily',
   HabitFrequencyType.weekly: 'weekly',
+};
+
+const _$WeekdayEnumMap = {
+  Weekday.Monday: 'Monday',
+  Weekday.Tuesday: 'Tuesday',
+  Weekday.Wednesday: 'Wednesday',
+  Weekday.Thursday: 'Thursday',
+  Weekday.Friday: 'Friday',
+  Weekday.Saturday: 'Saturday',
+  Weekday.Sunday: 'Sunday',
 };
 
 _$_HabitNotificationSettings _$_$_HabitNotificationSettingsFromJson(Map json) {

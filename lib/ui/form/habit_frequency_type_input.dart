@@ -50,7 +50,7 @@ class HabitFrequencyTypeInput extends HookWidget {
     }
 
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _buildHabitFrequencyTypeChip(HabitFrequencyType.daily),
         _buildHabitFrequencyTypeChip(HabitFrequencyType.weekly),

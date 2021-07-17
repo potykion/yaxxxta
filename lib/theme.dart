@@ -19,6 +19,7 @@ abstract class CoreBorderRadiuses {
 
 /// Базовые паддинги
 abstract class CorePaddings {
+  static final double smallest = 4;
   static final double small = 8;
   static final double big = 16;
 }

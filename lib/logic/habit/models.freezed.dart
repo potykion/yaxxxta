@@ -27,7 +27,8 @@ class _$HabitTearOff {
       required int order,
       bool archived = false,
       HabitNotificationSettings? notification,
-      HabitFrequencyType frequencyType = HabitFrequencyType.daily}) {
+      HabitFrequencyType frequencyType = HabitFrequencyType.daily,
+      Weekday? performWeekday}) {
     return _Habit(
       id: id,
       title: title,
@@ -36,6 +37,7 @@ class _$HabitTearOff {
       archived: archived,
       notification: notification,
       frequencyType: frequencyType,
+      performWeekday: performWeekday,
     );
   }
 
@@ -58,6 +60,10 @@ mixin _$Habit {
       throw _privateConstructorUsedError;
   HabitFrequencyType get frequencyType => throw _privateConstructorUsedError;
 
+  /// В какой день выполняется привычка?
+  /// Актуально только для еженедельных привычек
+  Weekday? get performWeekday => throw _privateConstructorUsedError;
+
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $HabitCopyWith<Habit> get copyWith => throw _privateConstructorUsedError;
@@ -74,7 +80,8 @@ abstract class $HabitCopyWith<$Res> {
       int order,
       bool archived,
       HabitNotificationSettings? notification,
-      HabitFrequencyType frequencyType});
+      HabitFrequencyType frequencyType,
+      Weekday? performWeekday});
 
   $HabitNotificationSettingsCopyWith<$Res>? get notification;
 }
@@ -96,6 +103,7 @@ class _$HabitCopyWithImpl<$Res> implements $HabitCopyWith<$Res> {
     Object? archived = freezed,
     Object? notification = freezed,
     Object? frequencyType = freezed,
+    Object? performWeekday = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -126,6 +134,10 @@ class _$HabitCopyWithImpl<$Res> implements $HabitCopyWith<$Res> {
           ? _value.frequencyType
           : frequencyType // ignore: cast_nullable_to_non_nullable
               as HabitFrequencyType,
+      performWeekday: performWeekday == freezed
+          ? _value.performWeekday
+          : performWeekday // ignore: cast_nullable_to_non_nullable
+              as Weekday?,
     ));
   }
 
@@ -154,7 +166,8 @@ abstract class _$HabitCopyWith<$Res> implements $HabitCopyWith<$Res> {
       int order,
       bool archived,
       HabitNotificationSettings? notification,
-      HabitFrequencyType frequencyType});
+      HabitFrequencyType frequencyType,
+      Weekday? performWeekday});
 
   @override
   $HabitNotificationSettingsCopyWith<$Res>? get notification;
@@ -178,6 +191,7 @@ class __$HabitCopyWithImpl<$Res> extends _$HabitCopyWithImpl<$Res>
     Object? archived = freezed,
     Object? notification = freezed,
     Object? frequencyType = freezed,
+    Object? performWeekday = freezed,
   }) {
     return _then(_Habit(
       id: id == freezed
@@ -208,6 +222,10 @@ class __$HabitCopyWithImpl<$Res> extends _$HabitCopyWithImpl<$Res>
           ? _value.frequencyType
           : frequencyType // ignore: cast_nullable_to_non_nullable
               as HabitFrequencyType,
+      performWeekday: performWeekday == freezed
+          ? _value.performWeekday
+          : performWeekday // ignore: cast_nullable_to_non_nullable
+              as Weekday?,
     ));
   }
 }
@@ -222,7 +240,8 @@ class _$_Habit extends _Habit {
       required this.order,
       this.archived = false,
       this.notification,
-      this.frequencyType = HabitFrequencyType.daily})
+      this.frequencyType = HabitFrequencyType.daily,
+      this.performWeekday})
       : super._();
 
   factory _$_Habit.fromJson(Map<String, dynamic> json) =>
@@ -244,10 +263,15 @@ class _$_Habit extends _Habit {
   @JsonKey(defaultValue: HabitFrequencyType.daily)
   @override
   final HabitFrequencyType frequencyType;
+  @override
+
+  /// В какой день выполняется привычка?
+  /// Актуально только для еженедельных привычек
+  final Weekday? performWeekday;
 
   @override
   String toString() {
-    return 'Habit(id: $id, title: $title, userId: $userId, order: $order, archived: $archived, notification: $notification, frequencyType: $frequencyType)';
+    return 'Habit(id: $id, title: $title, userId: $userId, order: $order, archived: $archived, notification: $notification, frequencyType: $frequencyType, performWeekday: $performWeekday)';
   }
 
   @override
@@ -270,7 +294,10 @@ class _$_Habit extends _Habit {
                     .equals(other.notification, notification)) &&
             (identical(other.frequencyType, frequencyType) ||
                 const DeepCollectionEquality()
-                    .equals(other.frequencyType, frequencyType)));
+                    .equals(other.frequencyType, frequencyType)) &&
+            (identical(other.performWeekday, performWeekday) ||
+                const DeepCollectionEquality()
+                    .equals(other.performWeekday, performWeekday)));
   }
 
   @override
@@ -282,7 +309,8 @@ class _$_Habit extends _Habit {
       const DeepCollectionEquality().hash(order) ^
       const DeepCollectionEquality().hash(archived) ^
       const DeepCollectionEquality().hash(notification) ^
-      const DeepCollectionEquality().hash(frequencyType);
+      const DeepCollectionEquality().hash(frequencyType) ^
+      const DeepCollectionEquality().hash(performWeekday);
 
   @JsonKey(ignore: true)
   @override
@@ -303,7 +331,8 @@ abstract class _Habit extends Habit {
       required int order,
       bool archived,
       HabitNotificationSettings? notification,
-      HabitFrequencyType frequencyType}) = _$_Habit;
+      HabitFrequencyType frequencyType,
+      Weekday? performWeekday}) = _$_Habit;
   const _Habit._() : super._();
 
   factory _Habit.fromJson(Map<String, dynamic> json) = _$_Habit.fromJson;
@@ -323,6 +352,11 @@ abstract class _Habit extends Habit {
       throw _privateConstructorUsedError;
   @override
   HabitFrequencyType get frequencyType => throw _privateConstructorUsedError;
+  @override
+
+  /// В какой день выполняется привычка?
+  /// Актуально только для еженедельных привычек
+  Weekday? get performWeekday => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$HabitCopyWith<_Habit> get copyWith => throw _privateConstructorUsedError;

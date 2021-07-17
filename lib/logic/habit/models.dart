@@ -6,6 +6,31 @@ part 'models.freezed.dart';
 
 part 'models.g.dart';
 
+enum Weekday {
+  Monday,
+  Tuesday,
+  Wednesday,
+  Thursday,
+  Friday,
+  Saturday,
+  Sunday
+}
+
+extension WeekdayUtils  on Weekday{
+   String toAbbrString() {
+     if (this == Weekday.Monday) return "пн";
+     if (this == Weekday.Tuesday) return "вт";
+     if (this == Weekday.Wednesday) return "ср";
+     if (this == Weekday.Thursday) return "чт";
+     if (this == Weekday.Friday) return "пт";
+     if (this == Weekday.Saturday) return "сб";
+     if (this == Weekday.Sunday) return "вс";
+     throw "Weekday.toAbbrString() failed for $this";
+   }
+}
+
+
+
 /// Периодичность привычки
 enum HabitFrequencyType {
   /// Ежедневная
@@ -29,6 +54,10 @@ abstract class Habit implements _$Habit, WithId {
     @Default(false) bool archived,
     HabitNotificationSettings? notification,
     @Default(HabitFrequencyType.daily) HabitFrequencyType frequencyType,
+
+    /// В какой день выполняется привычка?
+    /// Актуально только для еженедельных привычек
+    Weekday? performWeekday,
   }) = _Habit;
 
   factory Habit.fromJson(Map<String, dynamic> json) => _$HabitFromJson(json);
