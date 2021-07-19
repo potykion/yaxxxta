@@ -107,16 +107,35 @@ class _HabitPerformingCalendarImpl extends StatelessWidget {
   }
 
   Widget _buildDateCell(BuildContext context, DateTime date) {
+    late bool stopDrawDateCells;
+    if (habit.frequencyType == HabitFrequencyType.daily) {
+      stopDrawDateCells = date.isAfter(from);
+    } else {
+      stopDrawDateCells = false;
+    }
+
+    bool showPerformed;
+    if (habit.frequencyType == HabitFrequencyType.daily) {
+      showPerformed = performings.any((hp) => hp.created.date == date);
+    } else {
+      showPerformed = false;
+    }
+
+    bool boldWeekday = false;
+    if (habit.frequencyType == HabitFrequencyType.weekly) {
+      if (habit.performWeekday != null) {
+        boldWeekday = date.weekday == habit.performWeekday!.index + 1;
+      }
+    }
+
     return Flexible(
       child: Center(
-        child: date.isAfter(from)
+        child: stopDrawDateCells
             ? Container()
             : Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(CoreBorderRadiuses.small),
-                  color: performings.any((hp) => hp.created.date == date)
-                      ? Theme.of(context).accentColor
-                      : null,
+                  color: showPerformed ? Theme.of(context).accentColor : null,
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(CoreBorderRadiuses.small),
@@ -137,6 +156,9 @@ class _HabitPerformingCalendarImpl extends StatelessWidget {
                         child: Center(
                           child: Text(
                             DateFormat("dd").format(date),
+                            style: TextStyle(
+                              fontWeight: boldWeekday ? FontWeight.bold : null,
+                            ),
                           ),
                         ),
                       ),
@@ -160,11 +182,34 @@ class _HabitPerformingCalendarImpl extends StatelessWidget {
     var currentMonthDates = monthDates.first;
     var nextMonthDates = monthDates.skip(1).firstOrNull ?? [];
 
+    bool showPerformed;
+    if (habit.frequencyType == HabitFrequencyType.daily) {
+      showPerformed = false;
+    } else {
+      showPerformed = performings.any((hp) => dates.contains(hp.created.date));
+    }
+
     return [
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          for (var date in currentMonthDates) _buildDateCell(context, date),
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: currentMonthDates.length == 7
+                    ? CoreBorderRadiuses.smallFullBorder
+                    : CoreBorderRadiuses.smallLeftBorder,
+                color: showPerformed ? CoreColors.green : null,
+              ),
+              child: Row(
+                children: [
+                  for (var date in currentMonthDates)
+                    _buildDateCell(context, date),
+                ],
+              ),
+            ),
+            flex: currentMonthDates.length,
+          ),
           for (var _ in nextMonthDates)
             Expanded(child: Center(child: Container())),
         ],
@@ -172,7 +217,6 @@ class _HabitPerformingCalendarImpl extends StatelessWidget {
       if (nextMonthDates.isNotEmpty)
         Row(
           children: [
-            // )))
             Expanded(
               child: Center(
                 child: Caption(
@@ -182,20 +226,31 @@ class _HabitPerformingCalendarImpl extends StatelessWidget {
                 ),
               ),
             ),
-            Expanded(child: Center(child: Container())),
-            Expanded(child: Center(child: Container())),
-            Expanded(child: Center(child: Container())),
-            Expanded(child: Center(child: Container())),
-            Expanded(child: Center(child: Container())),
-            Expanded(child: Center(child: Container())),
+            Expanded(child: Center(child: Container()), flex: 6),
           ],
         ),
       Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           for (var _ in currentMonthDates)
             Expanded(child: Center(child: Container())),
-          for (var date in nextMonthDates) _buildDateCell(context, date),
+          Expanded(
+            flex: nextMonthDates.length,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: currentMonthDates.length == 7
+                    ? CoreBorderRadiuses.smallFullBorder
+                    : CoreBorderRadiuses.smallRightBorder,
+                color: showPerformed ? CoreColors.green : null,
+              ),
+              child: Row(
+                children: [
+                  for (var date in nextMonthDates)
+                    _buildDateCell(context, date),
+                ],
+              ),
+            ),
+          )
         ],
       )
     ];

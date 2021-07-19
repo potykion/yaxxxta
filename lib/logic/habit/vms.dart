@@ -49,6 +49,8 @@ abstract class HabitVM implements _$HabitVM {
   }
 
   int get maxStrike {
+    if (habit.frequencyType == HabitFrequencyType.weekly) return 0;
+
     if (performings.isEmpty) return 0;
 
     var performingDates = performings

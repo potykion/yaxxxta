@@ -15,6 +15,19 @@ abstract class CoreColors {
 abstract class CoreBorderRadiuses {
   static final double small = 16;
   static final double big = 32;
+
+  static BorderRadius get smallLeftBorder => BorderRadius.only(
+        topLeft: Radius.circular(CoreBorderRadiuses.small),
+        bottomLeft: Radius.circular(CoreBorderRadiuses.small),
+      );
+
+  static BorderRadius get smallRightBorder => BorderRadius.only(
+        topRight: Radius.circular(CoreBorderRadiuses.small),
+        bottomRight: Radius.circular(CoreBorderRadiuses.small),
+      );
+
+  static BorderRadius get smallFullBorder =>
+      BorderRadius.circular(CoreBorderRadiuses.small);
 }
 
 /// Базовые паддинги
