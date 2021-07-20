@@ -26,6 +26,7 @@ class DailyHabitPerformNotifications {
     Habit habit,
     DateTime atDateTime, {
     NotificationId? id,
+    bool repeatWeekly = false,
   }) async {
     id = id ?? generateId();
     await localNotificationPlugin.zonedSchedule(
@@ -37,7 +38,9 @@ class DailyHabitPerformNotifications {
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
       androidAllowWhileIdle: true,
-      matchDateTimeComponents: DateTimeComponents.time,
+      matchDateTimeComponents: repeatWeekly
+          ? DateTimeComponents.dayOfWeekAndTime
+          : DateTimeComponents.time,
     );
     return id;
   }

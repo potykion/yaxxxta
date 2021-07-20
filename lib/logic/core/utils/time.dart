@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:yaxxxta/logic/habit/models.dart';
 
 extension TimeExtenstions on TimeOfDay {
-  DateTime toDateTime() {
-    var now = DateTime.now();
+  DateTime toDateTime({DateTime? now, Weekday? weekday}) {
+    now = now ?? DateTime.now();
 
     var dt = DateTime(
       now.year,
@@ -13,6 +14,15 @@ extension TimeExtenstions on TimeOfDay {
     );
     if (dt.isBefore(now)) {
       dt = dt.add(Duration(days: 1));
+    }
+
+    if (weekday != null) {
+      while (true) {
+        if (dt.weekday == weekday.index + 1) {
+          break;
+        }
+        dt = dt.add(Duration(days: 1));
+      }
     }
 
     return dt;

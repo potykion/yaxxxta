@@ -5,9 +5,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/habit/state/calendar.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
 import 'package:yaxxxta/logic/habit/state/form.dart';
-import 'package:yaxxxta/logic/core/utils/time.dart';
 import 'package:yaxxxta/ui/core/bottom_sheet.dart';
 import 'package:yaxxxta/ui/core/text.dart';
+import 'package:yaxxxta/ui/form/habit_notification_input.dart';
+import 'package:yaxxxta/logic/core/utils/time.dart';
 
 import '../core/button.dart';
 import 'habit_frequency_type_input.dart';
@@ -69,47 +70,36 @@ class HabitForm extends HookWidget {
           Column(
             children: [
               Headline6("Когда выполняется привычка?"),
-
               HabitPerformWeekdayInput(
                 initial: habit.performWeekday,
-                change: (weekday) => context
-                    .read(habitFormStateProvider.notifier)
-                    .update(habit.copyWith(performWeekday: weekday)),
+                change: (weekday) {
+                  context
+                      .read(habitFormStateProvider.notifier)
+                      .update(habit.copyWith(performWeekday: weekday));
+
+                  if (habit.notification != null) {
+                    context
+                        .read(habitFormStateProvider.notifier)
+                        .setNotification(
+                          TimeOfDay.fromDateTime(habit.notification!.time)
+                              .toDateTime(weekday: weekday),
+                        );
+                  }
+                },
               ),
             ],
           ),
         Column(
           children: [
             Headline6("Напоминалка"),
-            if (habit.notification != null)
-              TextFormField(
-                readOnly: true,
-                controller: TextEditingController(
-                  text: habit.notification!.toTimeStr(),
-                ),
-                onTap: () {
-                  setNotification(context, habit);
-                },
-                decoration: InputDecoration(
-                  suffixIcon: IconButton(
-                    onPressed: () => context
-                        .read(habitFormStateProvider.notifier)
-                        .removeNotification(),
-                    icon: Icon(
-                      Icons.clear,
-                      color: Color(0xff272343),
-                    ),
-                  ),
-                ),
-              )
-            else
-              CoreButton(
-                text: "Добавить",
-                icon: Icons.notifications,
-                onPressed: () {
-                  setNotification(context, habit);
-                },
-              ),
+            HabitNotificationInput(
+              habit: habit,
+              setNotification:
+                  context.read(habitFormStateProvider.notifier).setNotification,
+              removeNotification: context
+                  .read(habitFormStateProvider.notifier)
+                  .removeNotification,
+            ),
           ],
         ),
         SizedBox(height: 16),
@@ -124,21 +114,6 @@ class HabitForm extends HookWidget {
         ),
       ],
     );
-  }
-
-  Future setNotification(BuildContext context, Habit habit) async {
-    var time = await showTimePicker(
-      context: context,
-      initialTime:
-          TimeOfDay.fromDateTime(habit.notification?.time ?? DateTime.now()),
-      cancelText: "Отмена",
-      confirmText: "Ок",
-      helpText: "Выбери время напоминалки",
-    );
-    if (time == null) return;
-    await context
-        .read(habitFormStateProvider.notifier)
-        .setNotification(time.toDateTime());
   }
 }
 

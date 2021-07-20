@@ -28,9 +28,14 @@ class HabitFormState extends StateNotifier<Habit> {
 
   /// Высталяет уведомление
   Future setNotification(DateTime atDateTime) async {
+    if (state.notification != null) {
+      DailyHabitPerformNotifications.remove(state.notification!.id);
+    }
+
     var notificationId = await DailyHabitPerformNotifications.create(
       state,
       atDateTime,
+      repeatWeekly: state.frequencyType == HabitFrequencyType.weekly,
     );
     state = state.copyWith(
       notification: HabitNotificationSettings(
