@@ -40,6 +40,14 @@ enum HabitFrequencyType {
   weekly,
 }
 
+extension HabitFreqTypeExt on HabitFrequencyType {
+  String toVerboseStr() {
+    if (this == HabitFrequencyType.daily) return "Ежедневная";
+    if (this == HabitFrequencyType.weekly) return "Еженедельная";
+    throw "HabitFrequencyType.toVerboseStr failed for ${this}";
+  }
+}
+
 /// Привычка
 @freezed
 abstract class Habit implements _$Habit, WithId {

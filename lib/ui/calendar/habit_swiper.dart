@@ -15,6 +15,7 @@ import 'package:yaxxxta/ui/calendar/habit_performing_calendar.dart';
 
 import '../form/habit_form.dart';
 import 'habit_stats.dart';
+import 'package:yaxxxta/logic/habit/models.dart';
 
 /// Свайпер привычек
 class HabitSwiper extends HookWidget {
@@ -71,8 +72,8 @@ class HabitSwiper extends HookWidget {
                   ),
                   Wrap(
                     children: [
-                      // Chip(label: Text("Ежедневная")),
-                      // SizedBox(width: 4),
+                      CoreChip(text: vm.habit.frequencyType.toVerboseStr()),
+                      SizedBox(width: 4),
                       if (vm.habit.notification != null)
                         CoreChip(
                           text: vm.habit.notification!.toTimeStr(),
