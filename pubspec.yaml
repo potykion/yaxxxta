@@ -126,6 +126,8 @@ dev_dependencies:
   # Сплеш
   flutter_native_splash: ^1.1.7+1
 
+  analyzer: ^1.7.0
+
 # https://pub.dev/packages/flutter_launcher_icons
 # flutter pub run flutter_launcher_icons:main
 flutter_icons:

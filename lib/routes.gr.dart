@@ -7,29 +7,24 @@
 import 'package:auto_route/auto_route.dart' as _i1;
 import 'package:flutter/material.dart' as _i2;
 
-import 'logic/core/web/controllers.dart' as _i3;
-import 'ui/archive/page.dart' as _i7;
-import 'ui/auth/page.dart' as _i5;
-import 'ui/calendar/page.dart' as _i6;
-import 'ui/loading/page.dart' as _i4;
+import 'ui/archive/page.dart' as _i6;
+import 'ui/auth/page.dart' as _i4;
+import 'ui/calendar/page.dart' as _i5;
+import 'ui/loading/page.dart' as _i3;
 
 class AppRouter extends _i1.RootStackRouter {
-  AppRouter(
-      {_i2.GlobalKey<_i2.NavigatorState>? navigatorKey,
-      required this.webContentLoadedGuard})
+  AppRouter([_i2.GlobalKey<_i2.NavigatorState>? navigatorKey])
       : super(navigatorKey);
-
-  final _i3.WebContentLoadedGuard webContentLoadedGuard;
 
   @override
   final Map<String, _i1.PageFactory> pagesMap = {
     LoadingRoute.name: (routeData) {
       return _i1.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i4.LoadingPage());
+          routeData: routeData, child: _i3.LoadingPage());
     },
     AuthRoute.name: (routeData) {
       return _i1.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i5.AuthPage());
+          routeData: routeData, child: _i4.AuthPage());
     },
     HabitRouter.name: (routeData) {
       return _i1.MaterialPageX<dynamic>(
@@ -37,11 +32,11 @@ class AppRouter extends _i1.RootStackRouter {
     },
     CalendarRoute.name: (routeData) {
       return _i1.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i6.CalendarPage());
+          routeData: routeData, child: _i5.CalendarPage());
     },
     HabitArchiveRoute.name: (routeData) {
       return _i1.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i7.HabitArchivePage());
+          routeData: routeData, child: _i6.HabitArchivePage());
     }
   };
 
@@ -51,9 +46,7 @@ class AppRouter extends _i1.RootStackRouter {
             path: '/', redirectTo: '/loading', fullMatch: true),
         _i1.RouteConfig(LoadingRoute.name, path: '/loading'),
         _i1.RouteConfig(AuthRoute.name, path: '/auth'),
-        _i1.RouteConfig(HabitRouter.name, path: '/habits', guards: [
-          webContentLoadedGuard
-        ], children: [
+        _i1.RouteConfig(HabitRouter.name, path: '/habits', children: [
           _i1.RouteConfig(CalendarRoute.name, path: 'calendar'),
           _i1.RouteConfig(HabitArchiveRoute.name, path: 'archive')
         ])

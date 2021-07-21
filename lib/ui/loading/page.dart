@@ -12,7 +12,6 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:yaxxxta/logic/app_user_info/controllers.dart';
-import 'package:yaxxxta/logic/core/web/controllers.dart';
 import 'package:yaxxxta/logic/habit/state/calendar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yaxxxta/logic/notifications/daily.dart';
@@ -95,8 +94,6 @@ class LoadingPage extends HookWidget {
 
         await context.read(habitCalendarStateProvider.notifier).load(user.uid);
         // endregion
-
-        webContentLoaded = true;
 
         AutoRouter.of(context)
             .replace(HabitRouter(children: [CalendarRoute()]));

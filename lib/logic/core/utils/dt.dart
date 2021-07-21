@@ -1,3 +1,7 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'dt.freezed.dart';
+
 /// Раширения дейттайма
 extension DateTimeUtils on DateTime {
   /// Убирает время у дейттайма, то есть просто дата
@@ -33,21 +37,33 @@ extension DateTimeUtils on DateTime {
   DateTime get endOfMonth => DateTime(year, month + 1, 0);
 }
 
-class DateRange {
-  final DateTime from;
-  final DateTime to;
+@freezed
+abstract class DateRange implements _$DateRange {
+  const DateRange._();
 
-  DateRange(this.from, this.to);
+  const factory DateRange(
+    DateTime from,
+    DateTime to,
+  ) = _DateRange;
 
-  List<DateTime> get dates => [
-        for (var day
-            in List.generate(to.difference(from).inDays + 1, (index) => index))
-          from.add(Duration(days: day))
-      ];
+  List<DateTime> get dates {
+    return [
+      for (var day
+          in List.generate(to.difference(from).inDays + 1, (index) => index))
+        from.add(Duration(days: day))
+    ];
+  }
 
   DateTime? get firstMonthDay {
     final monthStarts = dates.where((d) => d == d.startOfMonth);
     if (monthStarts.isNotEmpty) return monthStarts.first;
     return null;
+  }
+
+  DateRange get previous {
+    return DateRange(
+      from.subtract(Duration(days: 7)),
+      to.subtract(Duration(days: 7)),
+    );
   }
 }

@@ -4,7 +4,6 @@ import 'package:yaxxxta/ui/loading/page.dart';
 import 'package:yaxxxta/ui/archive/page.dart';
 import 'package:yaxxxta/ui/calendar/page.dart';
 
-import 'logic/core/web/controllers.dart';
 
 /// Роутер, который будет сгенерен кодогенерацией
 @MaterialAutoRouter(
@@ -14,7 +13,6 @@ import 'logic/core/web/controllers.dart';
     AutoRoute<dynamic>(path: "/auth", page: AuthPage),
     AutoRoute<dynamic>(
       page: EmptyRouterPage,
-      guards: [WebContentLoadedGuard],
       name: "HabitRouter",
       path: "/habits",
       children: [

@@ -22,7 +22,7 @@ class HabitStats extends StatelessWidget {
           Expanded(
             child: Column(
               children: [
-                Headline5(vm.currentStrike.toString(), center: true),
+                Headline5(vm.currentRecord.toString(), center: true),
                 // Headline5("1", center: true),
                 Caption("Текущий рекорд"),
               ],
@@ -32,7 +32,7 @@ class HabitStats extends StatelessWidget {
           Expanded(
             child: Column(
               children: [
-                Headline5(vm.maxStrike.toString(), center: true),
+                Headline5(vm.maxRecord.toString(), center: true),
                 Caption("Макс. рекорд"),
               ],
             ),

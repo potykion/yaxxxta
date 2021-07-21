@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/theme.dart';
-import 'logic/core/web/controllers.dart';
 import 'routes.gr.dart';
 
 /// Роутер
-final appRouter = AppRouter(webContentLoadedGuard: WebContentLoadedGuard());
+final appRouter = AppRouter();
 
 /// Логгер провайдеров
 /// Нужно для логгирования изменений стейта
