@@ -23,10 +23,10 @@ class CalendarPage extends HookWidget {
     useSubscription(context);
 
     return Scaffold(
-      appBar: AppBar(title: Brand(), centerTitle: true),
+      // appBar: AppBar(title: Brand(), centerTitle: true),
       body: Column(
         children: [
-          // SizedBox(height: MediaQuery.of(context).padding.top),
+          SizedBox(height: MediaQuery.of(context).padding.top),
           Expanded(
             child: vms.isEmpty
                 ? Center(child: NoHabitsLabel())
