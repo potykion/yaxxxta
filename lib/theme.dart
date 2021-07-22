@@ -41,7 +41,7 @@ ThemeData buildThemeData(BuildContext context) {
   final textTheme = Theme.of(context).textTheme;
 
   return ThemeData(
-    brightness: Brightness.dark,
+    brightness: Brightness.light,
     appBarTheme: AppBarTheme(
       backgroundColor: CoreColors.darkPurple,
       elevation: 0,
@@ -82,9 +82,15 @@ ThemeData buildThemeData(BuildContext context) {
         bodyText1: TextStyle(color: CoreColors.darkPurple),
         bodyText2: TextStyle(color: CoreColors.darkPurple),
         subtitle1: TextStyle(color: CoreColors.darkPurple),
+
+          subtitle2: TextStyle(color: CoreColors.darkPurple),
+          caption: TextStyle(color: CoreColors.darkPurple),
+          button: TextStyle(color: CoreColors.darkPurple),
+          overline: TextStyle(color: CoreColors.darkPurple),
       ),
     ),
     textSelectionTheme: TextSelectionThemeData(
+      selectionHandleColor: CoreColors.darkPurple,
       cursorColor: CoreColors.darkPurple,
     ),
     inputDecorationTheme: InputDecorationTheme(
@@ -117,9 +123,12 @@ ThemeData buildThemeData(BuildContext context) {
     ),
     textButtonTheme: TextButtonThemeData(
       style: ButtonStyle(
+        textStyle: MaterialStateProperty.all<TextStyle>(
+            TextStyle(color: CoreColors.darkPurple)),
         foregroundColor:
             MaterialStateProperty.all<Color>(CoreColors.darkPurple),
       ),
     ),
+
   );
 }

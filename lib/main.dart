@@ -43,5 +43,6 @@ class MyApp extends StatelessWidget {
         routeInformationParser: (appRouter).defaultRouteParser(),
         debugShowCheckedModeBanner: false,
         theme: buildThemeData(context),
+        themeMode: ThemeMode.light,
       );
 }
