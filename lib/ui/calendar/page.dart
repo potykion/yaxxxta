@@ -7,7 +7,6 @@ import 'package:yaxxxta/logic/habit/state/calendar.dart';
 import 'package:yaxxxta/logic/habit/vms.dart';
 import 'package:yaxxxta/logic/subscription/hooks.dart';
 import 'package:yaxxxta/ui/calendar/habit_swiper.dart';
-import 'package:yaxxxta/ui/core/brand.dart';
 import 'bottom_nav.dart';
 import 'no_habits_label.dart';
 
@@ -32,11 +31,12 @@ class CalendarPage extends HookWidget {
                 ? Center(child: NoHabitsLabel())
                 : HabitSwiper(vms: vms),
           ),
-          Container(
-            height: AdSize.banner.height.toDouble(),
-            width: AdSize.banner.width.toDouble(),
-            child: ad != null ? AdWidget(ad: ad) : null,
-          ),
+          if (ad != null)
+            Container(
+              height: AdSize.banner.height.toDouble(),
+              width: AdSize.banner.width.toDouble(),
+              child: AdWidget(ad: ad),
+            ),
         ],
       ),
       bottomNavigationBar: CalendarBottomNav(),
