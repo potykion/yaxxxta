@@ -1,4 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flutter/material.dart';
+import 'package:yaxxxta/logic/habit/models.dart';
 
 part 'dt.freezed.dart';
 
@@ -65,5 +67,33 @@ abstract class DateRange implements _$DateRange {
       from.subtract(Duration(days: 7)),
       to.subtract(Duration(days: 7)),
     );
+  }
+}
+
+extension TimeExtenstions on TimeOfDay {
+  DateTime toDateTime({DateTime? now, Weekday? weekday}) {
+    now = now ?? DateTime.now();
+
+    var dt = DateTime(
+      now.year,
+      now.month,
+      now.day,
+      hour,
+      minute,
+    );
+    if (dt.isBefore(now)) {
+      dt = dt.add(Duration(days: 1));
+    }
+
+    if (weekday != null) {
+      while (true) {
+        if (dt.weekday == weekday.index + 1) {
+          break;
+        }
+        dt = dt.add(Duration(days: 1));
+      }
+    }
+
+    return dt;
   }
 }

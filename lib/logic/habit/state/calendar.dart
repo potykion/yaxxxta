@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/habit/db.dart';
@@ -75,9 +76,19 @@ class HabitCalendarState extends StateNotifier<List<HabitVM>> {
   }
 
   /// Отменяет уведомление и назначает новое
-  Future<Habit> _rescheduleNotification(Habit habit) async {
+  Future<Habit> _rescheduleNotification(Habit habit,
+      {bool tomorrow = true}) async {
     DailyHabitPerformNotifications.remove(habit.notification!.id);
-    var atDateTime = habit.notification!.time.setTomorrow();
+
+    // Новая напоминалка создается на следующий день
+    // (с учетом дня недели если указан)
+    var atDateTime = TimeOfDay.fromDateTime(
+      habit.notification!.time,
+    ).toDateTime(
+      now: DateTime.now().add(Duration(days: tomorrow ? 1 : 0)),
+      weekday: habit.performWeekday,
+    );
+
     var notificationId = await DailyHabitPerformNotifications.create(
       habit,
       atDateTime,
@@ -114,6 +125,26 @@ class HabitCalendarState extends StateNotifier<List<HabitVM>> {
       habit = await _rescheduleNotification(habit);
     }
     await update(habit);
+  }
+
+  /// Создает напоминалки для привычек, у которых они есть в бд,
+  /// но они не запланированы
+  /// Напр. при переустановке аппа
+  Future scheduleNotificationsForHabitsWithoutNotifications() async {
+    /// Берем все напоминалки
+    var pendingNotificationIds = await DailyHabitPerformNotifications.pending();
+
+    /// Фильтруем привычки без напоминалок
+    var habitsWithoutNotifications = state.map((vm) => vm.habit).where(
+          (habit) =>
+              habit.notification != null &&
+              !pendingNotificationIds.contains(habit.notification!.id),
+        );
+
+    /// Для каждой такой привычки выставляем новую напоминалку
+    for (var habit in habitsWithoutNotifications) {
+      await _rescheduleNotification(habit, tomorrow: false);
+    }
   }
 }
 

@@ -65,10 +65,7 @@ class LoadingPage extends HookWidget {
           /// Врубаем уведомленя на мобилке
           await localNotificationPlugin.initialize(
             InitializationSettings(
-                android: AndroidInitializationSettings(
-                  "app_icon"
-                )
-            ),
+                android: AndroidInitializationSettings("app_icon")),
           );
         }
 
@@ -93,6 +90,10 @@ class LoadingPage extends HookWidget {
         // region
 
         await context.read(habitCalendarStateProvider.notifier).load(user.uid);
+        await context
+            .read(habitCalendarStateProvider.notifier)
+            .scheduleNotificationsForHabitsWithoutNotifications();
+
         // endregion
 
         AutoRouter.of(context)

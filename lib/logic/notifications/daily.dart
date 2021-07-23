@@ -47,4 +47,9 @@ class DailyHabitPerformNotifications {
 
   static Future remove(NotificationId id) async =>
       await localNotificationPlugin.cancel(id);
+
+  static Future<List<NotificationId>> pending() async =>
+      (await localNotificationPlugin.pendingNotificationRequests())
+          .map((n) => n.id)
+          .toList();
 }
