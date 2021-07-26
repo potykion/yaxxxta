@@ -22,7 +22,7 @@ class HabitPerformingCalendar extends HookWidget {
   final bool showScrollbar;
 
   final int months = 12;
-  final int weeks = 5;
+  final int weeks = 4;
 
   /// Календарь, на котором отображатся выполнения привычек
   const HabitPerformingCalendar({
@@ -56,7 +56,7 @@ class HabitPerformingCalendar extends HookWidget {
     );
 
     return SizedBox(
-      height: (weeks + 1) * (32 + 8),
+      height: (weeks + 1) * (32 + 16),
       child: Column(
         children: [
           Row(
@@ -106,10 +106,17 @@ class _HabitPerformingCalendarImpl extends StatelessWidget {
     );
   }
 
-  Widget _buildDateCell(BuildContext context, DateTime date) {
+  Widget _buildDateCell(
+    BuildContext context,
+    DateTime date, {
+    bool isWeeklyPerformed = false,
+  }) {
+    bool isToday = date == DateTime.now().date;
+
     late bool stopDrawDateCells;
     if (habit.frequencyType == HabitFrequencyType.daily) {
-      stopDrawDateCells = date.isAfter(from);
+      // stopDrawDateCells = date.isAfter(from);
+      stopDrawDateCells = false;
     } else {
       stopDrawDateCells = false;
     }
@@ -135,7 +142,14 @@ class _HabitPerformingCalendarImpl extends StatelessWidget {
             : Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(CoreBorderRadiuses.small),
-                  color: showPerformed ? Theme.of(context).accentColor : null,
+                  color: isToday
+                      ? CoreColors.darkPurple
+                      : showPerformed
+                          ? Theme.of(context).accentColor
+                          : null,
+                  // border: isToday
+                  //     ? Border.all(width: 2, color: CoreColors.darkPurple)
+                  //     : null,
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(CoreBorderRadiuses.small),
@@ -158,6 +172,11 @@ class _HabitPerformingCalendarImpl extends StatelessWidget {
                             DateFormat("dd").format(date),
                             style: TextStyle(
                               fontWeight: boldWeekday ? FontWeight.bold : null,
+                              color: isToday
+                                  ? (showPerformed || isWeeklyPerformed)
+                                      ? CoreColors.green
+                                      : CoreColors.white
+                                  : null,
                             ),
                           ),
                         ),
@@ -204,7 +223,11 @@ class _HabitPerformingCalendarImpl extends StatelessWidget {
               child: Row(
                 children: [
                   for (var date in currentMonthDates)
-                    _buildDateCell(context, date),
+                    _buildDateCell(
+                      context,
+                      date,
+                      isWeeklyPerformed: showPerformed,
+                    ),
                 ],
               ),
             ),
@@ -246,7 +269,11 @@ class _HabitPerformingCalendarImpl extends StatelessWidget {
               child: Row(
                 children: [
                   for (var date in nextMonthDates)
-                    _buildDateCell(context, date),
+                    _buildDateCell(
+                      context,
+                      date,
+                      isWeeklyPerformed: showPerformed,
+                    ),
                 ],
               ),
             ),
