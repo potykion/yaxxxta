@@ -7,6 +7,7 @@ import 'package:yaxxxta/logic/ads/state.dart';
 import 'package:yaxxxta/logic/habit/state/calendar.dart';
 import 'package:yaxxxta/logic/habit/vms.dart';
 import 'package:yaxxxta/theme.dart';
+import 'package:yaxxxta/ui/calendar/perform_habit_btn.dart';
 import 'package:yaxxxta/ui/core/button.dart';
 import 'package:yaxxxta/ui/core/card.dart';
 import 'package:yaxxxta/ui/core/chip.dart';
@@ -87,6 +88,7 @@ class HabitSwiper extends HookWidget {
                 ],
               ),
               // SizedBox(height: 8),
+
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -101,14 +103,8 @@ class HabitSwiper extends HookWidget {
                   HabitPerformingCalendar(vm: vm),
                 ],
               ),
+              PerformHabitButton(vm.habit),
 
-              CoreButton(
-                text: "Выполнить",
-                icon: Icons.done,
-                onPressed: () => context
-                    .read(habitCalendarStateProvider.notifier)
-                    .perform(vm.habit),
-              )
             ],
           ),
         );
