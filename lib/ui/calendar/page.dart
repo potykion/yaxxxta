@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -13,8 +14,13 @@ import 'no_habits_label.dart';
 class CalendarPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    BannerAd? ad = useProvider(adProvider(0));
-    // BannerAd? ad = null;
+    late BannerAd? ad;
+    if (kReleaseMode) {
+      ad = useProvider(adProvider(0));
+    } else {
+      ad = useProvider(adProvider(0));
+      // ad = null;
+    }
 
     List<HabitVM> vms = useProvider(habitVMsProvider);
     // List<HabitVM> vms = [];
