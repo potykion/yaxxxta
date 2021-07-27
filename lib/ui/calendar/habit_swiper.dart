@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/ads/state.dart';
+import 'package:yaxxxta/logic/core/utils/list.dart';
 import 'package:yaxxxta/logic/habit/state/calendar.dart';
 import 'package:yaxxxta/logic/habit/vms.dart';
 import 'package:yaxxxta/theme.dart';
@@ -47,8 +48,8 @@ class HabitSwiper extends HookWidget {
         return CoreCard(
           margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
           color: vm.isPerformedToday ? CoreColors.lightGreen : null,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: ListView(
+            padding: EdgeInsets.zero,
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,7 +88,6 @@ class HabitSwiper extends HookWidget {
                   )
                 ],
               ),
-              // SizedBox(height: 8),
 
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,7 +105,7 @@ class HabitSwiper extends HookWidget {
               ),
               PerformHabitButton(vm.habit),
 
-            ],
+            ].joinObject(SizedBox(height: 16)).toList(),
           ),
         );
       },
