@@ -1,4 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
 import 'package:timezone/timezone.dart' as tz;
 
@@ -6,9 +7,19 @@ import 'package:timezone/timezone.dart' as tz;
 FlutterLocalNotificationsPlugin localNotificationPlugin =
     FlutterLocalNotificationsPlugin();
 
-/// Ежедневные уведомления о выполнении привычки
-class DailyHabitPerformNotifications {
-  static final _channel = AndroidNotificationDetails(
+/// Айди должен быть в ренже [-2^31, 2^31 - 1]
+/// flutter_local_notifications/lib/src/helpers > validateId
+int generateNotificationId() {
+  return DateTime.now().millisecondsSinceEpoch.toSigned(31);
+}
+
+/// Класс работает с уведомлениями о выполнении привычек
+class HabitPerformNotificationService {
+  final FlutterLocalNotificationsPlugin _localNotificationPlugin;
+
+  HabitPerformNotificationService(this._localNotificationPlugin);
+
+  final _channel = AndroidNotificationDetails(
     'DailyHabitPerformNotifications',
     'Уведомления о привычках',
     'Уведомления, которые юзер устанавливает для привычки',
@@ -16,20 +27,14 @@ class DailyHabitPerformNotifications {
     priority: Priority.high,
   );
 
-  static NotificationId generateId() {
-    /// Айди должен быть в ренже [-2^31, 2^31 - 1]
-    /// flutter_local_notifications/lib/src/helpers > validateId
-    return DateTime.now().millisecondsSinceEpoch.toSigned(31);
-  }
-
-  static Future<NotificationId> create(
+  Future<NotificationId> create(
     Habit habit,
     DateTime atDateTime, {
     NotificationId? id,
     bool repeatWeekly = false,
   }) async {
-    id = id ?? generateId();
-    await localNotificationPlugin.zonedSchedule(
+    id = id ?? generateNotificationId();
+    await _localNotificationPlugin.zonedSchedule(
       id,
       habit.title,
       "Пора выполнить привычку",
@@ -45,11 +50,15 @@ class DailyHabitPerformNotifications {
     return id;
   }
 
-  static Future remove(NotificationId id) async =>
-      await localNotificationPlugin.cancel(id);
+  Future<void> remove(NotificationId id) async =>
+      await _localNotificationPlugin.cancel(id);
 
-  static Future<List<NotificationId>> pending() async =>
-      (await localNotificationPlugin.pendingNotificationRequests())
+  Future<List<NotificationId>> pending() async =>
+      (await _localNotificationPlugin.pendingNotificationRequests())
           .map((n) => n.id)
           .toList();
 }
+
+Provider<HabitPerformNotificationService>
+    habitPerformNotificationServiceProvider =
+    Provider((_) => HabitPerformNotificationService(localNotificationPlugin));

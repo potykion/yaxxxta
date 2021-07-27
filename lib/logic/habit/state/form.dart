@@ -6,8 +6,11 @@ import '../models.dart';
 
 /// Стейт формочки привычки
 class HabitFormState extends StateNotifier<Habit> {
+  final HabitPerformNotificationService habitPerformNotificationService;
+
   /// Стейт формочки привычки
-  HabitFormState(Habit state) : super(state);
+  HabitFormState(Habit state, this.habitPerformNotificationService)
+      : super(state);
 
   /// Сброс стейта
   void reset() {
@@ -22,17 +25,17 @@ class HabitFormState extends StateNotifier<Habit> {
 
   /// Удаляет уведомление
   Future removeNotification() async {
-    await DailyHabitPerformNotifications.remove(state.notification!.id);
+    await habitPerformNotificationService.remove(state.notification!.id);
     state = state.copyWith(notification: null);
   }
 
   /// Высталяет уведомление
   Future setNotification(DateTime atDateTime) async {
     if (state.notification != null) {
-      DailyHabitPerformNotifications.remove(state.notification!.id);
+      habitPerformNotificationService.remove(state.notification!.id);
     }
 
-    var notificationId = await DailyHabitPerformNotifications.create(
+    var notificationId = await habitPerformNotificationService.create(
       state,
       atDateTime,
       repeatWeekly: state.frequencyType == HabitFrequencyType.weekly,
@@ -48,7 +51,8 @@ class HabitFormState extends StateNotifier<Habit> {
 
 StateNotifierProvider<HabitFormState, Habit> habitFormStateProvider =
     StateNotifierProvider<HabitFormState, Habit>(
-  (_) => HabitFormState(
+  (ref) => HabitFormState(
     Habit.blank(userId: FirebaseAuth.instance.currentUser!.uid),
+    ref.read(habitPerformNotificationServiceProvider),
   ),
 );

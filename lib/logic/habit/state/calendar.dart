@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/habit/db.dart';
@@ -12,9 +13,15 @@ import 'package:yaxxxta/logic/notifications/daily.dart';
 class HabitCalendarState extends StateNotifier<List<HabitVM>> {
   final FirebaseHabitRepo habitRepo;
   final FirebaseHabitPerformingRepo habitPerformingRepo;
+  final HabitPerformNotificationService habitPerformNotificationService;
 
   /// Стейт страницы календаря и привычек в целом
-  HabitCalendarState(this.habitRepo, this.habitPerformingRepo) : super([]);
+  HabitCalendarState(
+    this.habitRepo,
+    this.habitPerformingRepo,
+    this.habitPerformNotificationService, [
+    List<HabitVM> state = const [],
+  ]) : super(state);
 
   /// Загрузка стейта
   Future<void> load(String userId) async {
@@ -78,7 +85,7 @@ class HabitCalendarState extends StateNotifier<List<HabitVM>> {
   /// Отменяет уведомление и назначает новое
   Future<Habit> _rescheduleNotification(Habit habit,
       {bool tomorrow = true}) async {
-    DailyHabitPerformNotifications.remove(habit.notification!.id);
+    habitPerformNotificationService.remove(habit.notification!.id);
 
     // Новая напоминалка создается на следующий день
     // (с учетом дня недели если указан)
@@ -89,7 +96,7 @@ class HabitCalendarState extends StateNotifier<List<HabitVM>> {
       weekday: habit.performWeekday,
     );
 
-    var notificationId = await DailyHabitPerformNotifications.create(
+    var notificationId = await habitPerformNotificationService.create(
       habit,
       atDateTime,
     );
@@ -105,7 +112,7 @@ class HabitCalendarState extends StateNotifier<List<HabitVM>> {
   /// Отправляет привычку в архив
   Future<void> archive(Habit habit) async {
     if (habit.notification != null) {
-      DailyHabitPerformNotifications.remove(habit.notification!.id);
+      habitPerformNotificationService.remove(habit.notification!.id);
     }
 
     await update(habit.copyWith(archived: true));
@@ -132,7 +139,8 @@ class HabitCalendarState extends StateNotifier<List<HabitVM>> {
   /// Напр. при переустановке аппа
   Future scheduleNotificationsForHabitsWithoutNotifications() async {
     /// Берем все напоминалки
-    var pendingNotificationIds = await DailyHabitPerformNotifications.pending();
+    var pendingNotificationIds =
+        await habitPerformNotificationService.pending();
 
     /// Фильтруем привычки без напоминалок
     var habitsWithoutNotifications = state.map((vm) => vm.habit).where(
@@ -143,7 +151,8 @@ class HabitCalendarState extends StateNotifier<List<HabitVM>> {
 
     /// Для каждой такой привычки выставляем новую напоминалку
     for (var habit in habitsWithoutNotifications) {
-      await _rescheduleNotification(habit, tomorrow: false);
+      var newHabit = await _rescheduleNotification(habit, tomorrow: false);
+      await update(newHabit);
     }
   }
 }
@@ -153,13 +162,9 @@ StateNotifierProvider<HabitCalendarState, List<HabitVM>>
     habitCalendarStateProvider =
     StateNotifierProvider<HabitCalendarState, List<HabitVM>>(
   (ref) => HabitCalendarState(
-    FirebaseHabitRepo(
-      FirebaseFirestore.instance.collection("FirebaseHabitRepo"),
-      FirebaseFirestore.instance.batch,
-    ),
-    FirebaseHabitPerformingRepo(
-      FirebaseFirestore.instance.collection("FirebaseHabitPerformingRepo"),
-    ),
+    ref.read(habitRepoProvider),
+    ref.read(habitPerformingRepoProvider),
+    ref.read(habitPerformNotificationServiceProvider),
   ),
 );
 

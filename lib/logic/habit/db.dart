@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/core/db.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
 
@@ -70,3 +71,16 @@ class FirebaseHabitPerformingRepo extends FirebaseRepo<HabitPerforming> {
           .map(entityFromFirebase)
           .toList();
 }
+
+var habitRepoProvider = Provider(
+  (ref) => FirebaseHabitRepo(
+    FirebaseFirestore.instance.collection("FirebaseHabitRepo"),
+    FirebaseFirestore.instance.batch,
+  ),
+);
+
+var habitPerformingRepoProvider = Provider(
+  (ref) => FirebaseHabitPerformingRepo(
+    FirebaseFirestore.instance.collection("FirebaseHabitPerformingRepo"),
+  ),
+);
