@@ -4,10 +4,14 @@ import 'package:yaxxxta/logic/habit/models.dart';
 
 import '../../theme.dart';
 
+/// Инпут выбора дня недели
 class HabitPerformWeekdayInput extends HookWidget {
+  /// Начальный день недели
   final Weekday? initial;
+  /// Событие выбора дня недели
   final void Function(Weekday weekday) change;
 
+  /// Инпут выбора дня недели
   const HabitPerformWeekdayInput({
     required this.initial,
     required this.change,

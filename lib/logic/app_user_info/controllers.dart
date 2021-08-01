@@ -9,6 +9,7 @@ import 'models.dart';
 
 /// Стейт инфы о юзере
 class AppUserInfoController extends StateNotifier<AppUserInfo> {
+  /// Репо инфы о юзере
   final FirebaseAppUserInfoRepo repo;
 
   /// Стейт инфы о юзере

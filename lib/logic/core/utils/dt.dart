@@ -29,25 +29,31 @@ extension DateTimeUtils on DateTime {
   DateTime setTomorrow() =>
       combine(DateTime.now().add(Duration(days: 1)), this);
 
+  /// Недельный дейтренж
   DateRange get weekDateRange => DateRange(
         add(Duration(days: 1 - weekday)).date,
         add(Duration(days: 7 - weekday)).date,
       );
 
+  /// Начало месяца
   DateTime get startOfMonth => DateTime(year, month, 1);
 
+  /// Конец месяца
   DateTime get endOfMonth => DateTime(year, month + 1, 0);
 }
 
+/// Дейтренж - промежуток между 2 датами
 @freezed
 abstract class DateRange implements _$DateRange {
   const DateRange._();
 
+  /// Дейтренж - промежуток между 2 датами
   const factory DateRange(
     DateTime from,
     DateTime to,
   ) = _DateRange;
 
+  /// Даты, которые входят в дейтренж
   List<DateTime> get dates {
     return [
       for (var day
@@ -56,13 +62,15 @@ abstract class DateRange implements _$DateRange {
     ];
   }
 
+  /// Если дейтренж содержит первое число месяца, то возвращает его
   DateTime? get firstMonthDay {
     final monthStarts = dates.where((d) => d == d.startOfMonth);
     if (monthStarts.isNotEmpty) return monthStarts.first;
     return null;
   }
 
-  DateRange get previous {
+  /// Дейтренж предыдущей недели
+  DateRange get previousWeek {
     return DateRange(
       from.subtract(Duration(days: 7)),
       to.subtract(Duration(days: 7)),
@@ -70,7 +78,18 @@ abstract class DateRange implements _$DateRange {
   }
 }
 
+/// TimeOfDay расширения
 extension TimeExtenstions on TimeOfDay {
+  /// Конвертит в дейттайм
+  ///
+  /// Полученный дейттайм всегда позже текущего времени
+  /// Например. сейчас 2021-08-01 08:40, а тайм-ой-дей = 08:00 =>
+  /// Функция вернет 2021-08-02 08:00
+  ///
+  /// Если указан день недели, то считается дейттайм с указанным днем
+  /// Например. сейчас 2021-08-01 (вс) 08:40, тайм-ой-дей = 08:00,
+  /// день недели - пн =>
+  /// Функция вернет 2021-08-02 (пн) 08:00
   DateTime toDateTime({DateTime? now, Weekday? weekday}) {
     now = now ?? DateTime.now();
 

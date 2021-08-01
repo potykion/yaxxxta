@@ -14,6 +14,7 @@ import '../core/button.dart';
 import 'habit_frequency_type_input.dart';
 import 'habit_perform_weekday_input.dart';
 
+/// Форма привычки
 class HabitForm extends HookWidget {
   @override
   Widget build(BuildContext context) {
@@ -131,6 +132,8 @@ Future<Habit?> showHabitFormBottomSheet(
   return showCoreBottomSheet<Habit>(context, HabitForm());
 }
 
+/// Показывает боттом шит с другими действиями над привычками
+/// напр. отправка в архив
 Future<void> showHabitActionsBottomSheet(
   BuildContext context,
   Habit habit,

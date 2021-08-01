@@ -11,6 +11,7 @@ import 'package:yaxxxta/ui/calendar/habit_swiper.dart';
 import 'bottom_nav.dart';
 import 'no_habits_label.dart';
 
+/// Страничка с календарем привычек
 class CalendarPage extends HookWidget {
   @override
   Widget build(BuildContext context) {

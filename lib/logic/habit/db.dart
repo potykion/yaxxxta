@@ -3,13 +3,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/core/db.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
 
+/// Фаерстор репо для привычек
 class FirebaseHabitRepo extends FirebaseRepo<Habit> {
-  final WriteBatch Function() getWriteBatch;
-
   /// Фаерстор репо для привычек
   FirebaseHabitRepo(
     CollectionReference collectionReference,
-    this.getWriteBatch,
   ) : super(collectionReference: collectionReference);
 
   @override
@@ -24,21 +22,11 @@ class FirebaseHabitRepo extends FirebaseRepo<Habit> {
   Map<String, dynamic> entityToFirebase(Habit entity) {
     return entity.toJson();
   }
-
-  Future<void> reorder(Map<String, int> habitNewOrders) async {
-    var writeBatch = getWriteBatch();
-
-    for (var habitIdAndOrder in habitNewOrders.entries) {
-      writeBatch.update(
-        collectionReference.doc(habitIdAndOrder.key),
-        <String, int>{"order": habitIdAndOrder.value},
-      );
-    }
-    await writeBatch.commit();
-  }
 }
 
+/// Фаерстор репо для выполнений привычек
 class FirebaseHabitPerformingRepo extends FirebaseRepo<HabitPerforming> {
+  /// Фаерстор репо для выполнений привычек
   FirebaseHabitPerformingRepo(
     CollectionReference collectionReference,
   ) : super(
@@ -72,14 +60,15 @@ class FirebaseHabitPerformingRepo extends FirebaseRepo<HabitPerforming> {
           .toList();
 }
 
-var habitRepoProvider = Provider(
+/// Провайдер репо привычек
+Provider<FirebaseHabitRepo> habitRepoProvider = Provider(
   (ref) => FirebaseHabitRepo(
     FirebaseFirestore.instance.collection("FirebaseHabitRepo"),
-    FirebaseFirestore.instance.batch,
   ),
 );
 
-var habitPerformingRepoProvider = Provider(
+/// Провайдер репо выполнений привычек
+Provider<FirebaseHabitPerformingRepo> habitPerformingRepoProvider = Provider(
   (ref) => FirebaseHabitPerformingRepo(
     FirebaseFirestore.instance.collection("FirebaseHabitPerformingRepo"),
   ),

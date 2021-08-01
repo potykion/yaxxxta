@@ -21,7 +21,10 @@ class HabitPerformingCalendar extends HookWidget {
   /// Показывать скролбар
   final bool showScrollbar;
 
+  /// За сколько меняцев показазывть каледарик
   final int months = 12;
+
+  /// За сколько недель показазывть каледарик
   final int weeks = 4;
 
   /// Календарь, на котором отображатся выполнения привычек
@@ -145,7 +148,7 @@ class _HabitPerformingCalendarImpl extends StatelessWidget {
                   color: isToday
                       ? CoreColors.darkPurple
                       : showPerformed
-                          ? Theme.of(context).accentColor
+                          ? Theme.of(context).colorScheme.secondary
                           : null,
                   // border: isToday
                   //     ? Border.all(width: 2, color: CoreColors.darkPurple)

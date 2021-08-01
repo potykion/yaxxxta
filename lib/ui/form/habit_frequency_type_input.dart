@@ -4,10 +4,14 @@ import 'package:yaxxxta/logic/habit/models.dart';
 
 import '../../theme.dart';
 
+/// Инпут типа привычки
 class HabitFrequencyTypeInput extends HookWidget {
+  /// Начальное значение инпута
   final HabitFrequencyType initial;
+  /// Событие выбора типа привычки
   final void Function(HabitFrequencyType habitFrequencyType) change;
 
+  /// Инпут типа привычки
   const HabitFrequencyTypeInput({
     required this.initial,
     required this.change,

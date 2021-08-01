@@ -4,39 +4,58 @@ import 'package:google_fonts/google_fonts.dart';
 
 /// Базовые цвета
 abstract class CoreColors {
+  /// Темно-фиолетовый
   static final Color darkPurple = Color(0xff272343);
+
+  /// Беленький
   static final Color white = Colors.white;
+
+  /// Серый
   static final Color grey = Colors.grey;
+
+  /// Зеленый
   static final Color green = Color(0xffbae8e8);
+
+  /// Слегка зеленый
   static final Color lightGreen = Color(0xfff1fafa);
 }
 
 /// Базовые радиусы
 abstract class CoreBorderRadiuses {
+  /// Маленький радиус
   static final double small = 16;
+  /// Большой радиус
   static final double big = 32;
 
+  /// Слегка закругленная граница слева
+  /// (звучит как машинный перевод лол)
   static BorderRadius get smallLeftBorder => BorderRadius.only(
         topLeft: Radius.circular(CoreBorderRadiuses.small),
         bottomLeft: Radius.circular(CoreBorderRadiuses.small),
       );
 
+  /// Слегка закругленная граница справа
   static BorderRadius get smallRightBorder => BorderRadius.only(
         topRight: Radius.circular(CoreBorderRadiuses.small),
         bottomRight: Radius.circular(CoreBorderRadiuses.small),
       );
 
+  /// Слегка закругленная граница со всех сторон
   static BorderRadius get smallFullBorder =>
       BorderRadius.circular(CoreBorderRadiuses.small);
 }
 
-/// Базовые паддинги
+/// Базовые паддинги / отступы
 abstract class CorePaddings {
+  /// Совсем малюсенький отступ
   static final double smallest = 4;
+  /// Маленький отступ
   static final double small = 8;
+  /// Большой отступ
   static final double big = 16;
 }
 
+/// Создает тему
 ThemeData buildThemeData(BuildContext context) {
   final textTheme = Theme.of(context).textTheme;
 
@@ -82,11 +101,10 @@ ThemeData buildThemeData(BuildContext context) {
         bodyText1: TextStyle(color: CoreColors.darkPurple),
         bodyText2: TextStyle(color: CoreColors.darkPurple),
         subtitle1: TextStyle(color: CoreColors.darkPurple),
-
-          subtitle2: TextStyle(color: CoreColors.darkPurple),
-          caption: TextStyle(color: CoreColors.darkPurple),
-          button: TextStyle(color: CoreColors.darkPurple),
-          overline: TextStyle(color: CoreColors.darkPurple),
+        subtitle2: TextStyle(color: CoreColors.darkPurple),
+        caption: TextStyle(color: CoreColors.darkPurple),
+        button: TextStyle(color: CoreColors.darkPurple),
+        overline: TextStyle(color: CoreColors.darkPurple),
       ),
     ),
     textSelectionTheme: TextSelectionThemeData(
@@ -129,6 +147,5 @@ ThemeData buildThemeData(BuildContext context) {
             MaterialStateProperty.all<Color>(CoreColors.darkPurple),
       ),
     ),
-
   );
 }

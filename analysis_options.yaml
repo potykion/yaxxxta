@@ -28,3 +28,6 @@ linter:
     prefer_function_declarations_over_variables: false
     avoid_classes_with_only_static_members: false
     omit_local_variable_types: false
+    # Енам Weekday был написан неправильно (Monday, а не monday)
+    # Но менять уже поздно, надо миграцию делать, но это заеба
+    constant_identifier_names: false

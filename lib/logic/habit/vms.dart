@@ -6,39 +6,44 @@ import 'package:yaxxxta/logic/core/utils/dt.dart';
 
 part 'vms.freezed.dart';
 
+/// ВМка привычки
 @freezed
 abstract class HabitVM implements _$HabitVM {
   const HabitVM._();
 
+  /// ВМка привычки
   const factory HabitVM({
     required Habit habit,
     @Default(<HabitPerforming>[]) List<HabitPerforming> performings,
   }) = _HabitVM;
 
+  /// Выполнена ли привычка сегодня
   bool get isPerformedToday =>
       performings.any((hp) => hp.created.date == DateTime.now().date);
 
+  /// Текущий рекорд
   int get currentRecord {
     switch (habit.frequencyType) {
       case HabitFrequencyType.daily:
-        return ComputeStatsForDailyHabit(habit, performings).currentRecord;
+        return _ComputeStatsForDailyHabit(habit, performings).currentRecord;
       case HabitFrequencyType.weekly:
-        return ComputeStatsForWeeklyHabit(habit, performings).currentRecord;
+        return _ComputeStatsForWeeklyHabit(habit, performings).currentRecord;
     }
   }
 
+  /// Максимальный рекорд
   int get maxRecord {
     switch (habit.frequencyType) {
       case HabitFrequencyType.daily:
-        return ComputeStatsForDailyHabit(habit, performings).maxRecord;
+        return _ComputeStatsForDailyHabit(habit, performings).maxRecord;
       case HabitFrequencyType.weekly:
-        return ComputeStatsForWeeklyHabit(habit, performings).maxRecord;
+        return _ComputeStatsForWeeklyHabit(habit, performings).maxRecord;
     }
   }
 }
 
-class ComputeStatsForWeeklyHabit extends ComputeStats {
-  ComputeStatsForWeeklyHabit(Habit habit, List<HabitPerforming> performings)
+class _ComputeStatsForWeeklyHabit extends _ComputeStats {
+  _ComputeStatsForWeeklyHabit(Habit habit, List<HabitPerforming> performings)
       : super(habit, performings);
 
   @override
@@ -61,7 +66,7 @@ class ComputeStatsForWeeklyHabit extends ComputeStats {
 
     if (performingWeeks.contains(currentWeek)) {
     } else {
-      currentWeek = currentWeek.previous;
+      currentWeek = currentWeek.previousWeek;
     }
 
     while (true) {
@@ -71,7 +76,7 @@ class ComputeStatsForWeeklyHabit extends ComputeStats {
         break;
       }
 
-      currentWeek = currentWeek.previous;
+      currentWeek = currentWeek.previousWeek;
     }
 
     return record;
@@ -82,7 +87,7 @@ class ComputeStatsForWeeklyHabit extends ComputeStats {
     if (performings.isEmpty) return 0;
 
     var record = 0;
-    var maxRecord_ = 0;
+    var maxRecord = 0;
 
     var performingDates = performings
         .map((p) => p.created.date)
@@ -100,33 +105,35 @@ class ComputeStatsForWeeklyHabit extends ComputeStats {
     while (true) {
       if (performingWeeks.contains(currentWeek)) {
         record += 1;
-        maxRecord_ = max(maxRecord_, record);
+        maxRecord = max(maxRecord, record);
       } else {
         record = 0;
       }
 
       if (firstWeek == currentWeek) break;
 
-      currentWeek = currentWeek.previous;
+      currentWeek = currentWeek.previousWeek;
     }
 
-    return maxRecord_;
+    return maxRecord;
   }
 }
 
-abstract class ComputeStats {
+/// Интерфейс для подсчета статистик привычки,
+/// таких как текущий рекорд, максимальный рекорд
+abstract class _ComputeStats {
   final Habit habit;
   final List<HabitPerforming> performings;
 
-  ComputeStats(this.habit, this.performings);
+  _ComputeStats(this.habit, this.performings);
 
   int get currentRecord;
 
   int get maxRecord;
 }
 
-class ComputeStatsForDailyHabit extends ComputeStats {
-  ComputeStatsForDailyHabit(Habit habit, List<HabitPerforming> performings)
+class _ComputeStatsForDailyHabit extends _ComputeStats {
+  _ComputeStatsForDailyHabit(Habit habit, List<HabitPerforming> performings)
       : super(habit, performings);
 
   @override
@@ -161,7 +168,6 @@ class ComputeStatsForDailyHabit extends ComputeStats {
   }
 
   @override
-  // TODO: implement maxRecord
   int get maxRecord {
     if (habit.frequencyType == HabitFrequencyType.weekly) return 0;
 
