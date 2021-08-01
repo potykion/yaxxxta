@@ -31,7 +31,7 @@ class PerformHabitButton extends HookWidget {
         ConfettiWidget(
           confettiController: confettiController,
           blastDirectionality: BlastDirectionality.explosive,
-          colors: [CoreColors.green],
+          colors: [Theme.of(context).colorScheme.primary],
           createParticlePath: drawStar,
         ),
         CoreButton(

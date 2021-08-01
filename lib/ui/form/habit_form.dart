@@ -35,7 +35,6 @@ class HabitForm extends HookWidget {
           habit.id != null ? "Изменить привычку" : "Создать привычку",
           trailing: habit.id != null
               ? IconButton(
-                  color: Theme.of(context).canvasColor,
                   icon: Icon(Icons.more_vert),
                   onPressed: () => showHabitActionsBottomSheet(
                     context,

@@ -13,7 +13,7 @@ import 'package:yaxxxta/ui/core/text.dart';
 
 import '../../theme.dart';
 
-/// Календарь, на котором отображатся выполнения привычек
+/// Календарь, на котором отображаются выполнения привычек
 class HabitPerformingCalendar extends HookWidget {
   /// Привычка
   final HabitVM vm;
@@ -21,13 +21,13 @@ class HabitPerformingCalendar extends HookWidget {
   /// Показывать скролбар
   final bool showScrollbar;
 
-  /// За сколько меняцев показазывть каледарик
+  /// За сколько месяцев показывать календарик
   final int months = 12;
 
-  /// За сколько недель показазывть каледарик
+  /// За сколько недель показывать календарик
   final int weeks = 4;
 
-  /// Календарь, на котором отображатся выполнения привычек
+  /// Календарь, на котором отображаются выполнения привычек
   const HabitPerformingCalendar({
     Key? key,
     required this.vm,
@@ -146,13 +146,10 @@ class _HabitPerformingCalendarImpl extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(CoreBorderRadiuses.small),
                   color: isToday
-                      ? CoreColors.darkPurple
+                      ? Theme.of(context).colorScheme.secondary
                       : showPerformed
-                          ? Theme.of(context).colorScheme.secondary
+                          ? Theme.of(context).colorScheme.primary
                           : null,
-                  // border: isToday
-                  //     ? Border.all(width: 2, color: CoreColors.darkPurple)
-                  //     : null,
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(CoreBorderRadiuses.small),
@@ -177,8 +174,10 @@ class _HabitPerformingCalendarImpl extends StatelessWidget {
                               fontWeight: boldWeekday ? FontWeight.bold : null,
                               color: isToday
                                   ? (showPerformed || isWeeklyPerformed)
-                                      ? CoreColors.green
-                                      : CoreColors.white
+                                      ? Theme.of(context).colorScheme.primary
+                                      : Theme.of(context)
+                                          .colorScheme
+                                          .onBackground
                                   : null,
                             ),
                           ),
@@ -221,7 +220,9 @@ class _HabitPerformingCalendarImpl extends StatelessWidget {
                 borderRadius: currentMonthDates.length == 7
                     ? CoreBorderRadiuses.smallFullBorder
                     : CoreBorderRadiuses.smallLeftBorder,
-                color: showPerformed ? CoreColors.green : null,
+                color: showPerformed
+                    ? Theme.of(context).colorScheme.primary
+                    : null,
               ),
               child: Row(
                 children: [
@@ -267,7 +268,9 @@ class _HabitPerformingCalendarImpl extends StatelessWidget {
                 borderRadius: currentMonthDates.length == 7
                     ? CoreBorderRadiuses.smallFullBorder
                     : CoreBorderRadiuses.smallRightBorder,
-                color: showPerformed ? CoreColors.green : null,
+                color: showPerformed
+                    ? Theme.of(context).colorScheme.primary
+                    : null,
               ),
               child: Row(
                 children: [

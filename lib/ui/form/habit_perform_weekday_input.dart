@@ -36,10 +36,7 @@ class HabitPerformWeekdayInput extends HookWidget {
         label: Text(weekday.toAbbrString()),
         selected: selectedWeekday == weekday,
         onSelected: (_) => setHabitFreqType(weekday),
-        selectedColor: CoreColors.green,
-        backgroundColor: CoreColors.lightGreen,
         labelStyle: TextStyle(
-          color: CoreColors.darkPurple,
           fontSize: 16,
         ),
       );

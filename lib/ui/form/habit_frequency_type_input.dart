@@ -44,10 +44,9 @@ class HabitFrequencyTypeInput extends HookWidget {
         label: Text(text),
         selected: habitFreqType == chipType,
         onSelected: (_) => setHabitFreqType(chipType),
-        selectedColor: CoreColors.green,
-        backgroundColor: CoreColors.lightGreen,
+        // selectedColor: Theme.of(context).colorScheme.primary,
+        // backgroundColor: Theme.of(context).colorScheme.primaryVariant,
         labelStyle: TextStyle(
-          color: CoreColors.darkPurple,
           fontSize: 16,
         ),
       );

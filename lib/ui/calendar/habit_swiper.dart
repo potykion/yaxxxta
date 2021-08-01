@@ -44,7 +44,9 @@ class HabitSwiper extends HookWidget {
 
         return CoreCard(
           margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-          color: vm.isPerformedToday ? CoreColors.lightGreen : null,
+          color: vm.isPerformedToday
+              ? Theme.of(context).colorScheme.secondaryVariant
+              : null,
           child: ListView(
             padding: EdgeInsets.zero,
             children: [
@@ -78,14 +80,13 @@ class HabitSwiper extends HookWidget {
                           text: vm.habit.notification!.toTimeStr(),
                           icon: Icons.notifications,
                           color: vm.isPerformedToday
-                              ? CoreColors.lightGreen
-                              : CoreColors.white,
+                              ? Theme.of(context).colorScheme.primaryVariant
+                              : null,
                         ),
                     ],
                   )
                 ],
               ),
-
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -101,7 +102,6 @@ class HabitSwiper extends HookWidget {
                 ],
               ),
               PerformHabitButton(vm.habit),
-
             ].joinObject(SizedBox(height: 16)).toList(),
           ),
         );
