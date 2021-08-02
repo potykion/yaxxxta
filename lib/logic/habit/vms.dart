@@ -18,8 +18,21 @@ abstract class HabitVM implements _$HabitVM {
   }) = _HabitVM;
 
   /// Выполнена ли привычка сегодня
-  bool get isPerformedToday =>
-      performings.any((hp) => hp.created.date == DateTime.now().date);
+  /// Если привычка еженелельная, то выполнена ли привычка на этой неделе
+  bool computeIsPerformed({DateTime? date}) {
+    date = (date ?? DateTime.now()).date;
+    if (habit.frequencyType == HabitFrequencyType.daily) {
+      return performings.any(
+        (hp) => hp.created.date == date,
+      );
+    }
+    if (habit.frequencyType == HabitFrequencyType.weekly) {
+      return performings.any(
+        (hp) => date!.weekDateRange.includes(hp.created.date),
+      );
+    }
+    return false;
+  }
 
   /// Текущий рекорд
   int get currentRecord {

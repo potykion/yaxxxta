@@ -7,7 +7,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:vibration/vibration.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
 import 'package:yaxxxta/logic/habit/state/calendar.dart';
-import 'package:yaxxxta/theme.dart';
 import 'package:yaxxxta/ui/core/button.dart';
 
 /// Кнопа выполнения привычки

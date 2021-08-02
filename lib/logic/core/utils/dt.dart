@@ -76,6 +76,9 @@ abstract class DateRange implements _$DateRange {
       to.subtract(Duration(days: 7)),
     );
   }
+
+  /// Включена ли дата в промежуток
+  bool includes(DateTime date) => dates.contains(date);
 }
 
 /// TimeOfDay расширения

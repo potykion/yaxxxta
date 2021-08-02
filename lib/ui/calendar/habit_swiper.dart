@@ -5,7 +5,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/core/utils/list.dart';
 import 'package:yaxxxta/logic/habit/state/calendar.dart';
 import 'package:yaxxxta/logic/habit/vms.dart';
-import 'package:yaxxxta/theme.dart';
 import 'package:yaxxxta/ui/calendar/perform_habit_btn.dart';
 import 'package:yaxxxta/ui/core/card.dart';
 import 'package:yaxxxta/ui/core/chip.dart';
@@ -44,7 +43,7 @@ class HabitSwiper extends HookWidget {
 
         return CoreCard(
           margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-          color: vm.isPerformedToday
+          color: vm.computeIsPerformed()
               ? Theme.of(context).colorScheme.secondaryVariant
               : null,
           child: ListView(
@@ -79,7 +78,7 @@ class HabitSwiper extends HookWidget {
                         CoreChip(
                           text: vm.habit.notification!.toTimeStr(),
                           icon: Icons.notifications,
-                          color: vm.isPerformedToday
+                          color: vm.computeIsPerformed()
                               ? Theme.of(context).colorScheme.primaryVariant
                               : null,
                         ),
