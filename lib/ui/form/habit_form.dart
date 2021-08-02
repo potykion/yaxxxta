@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,6 +21,9 @@ class HabitForm extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var habit = useProvider(habitFormStateProvider);
+    var habits = useProvider(habitVMsProvider);
+    var showTooManyHabitsLabel =
+        useMemoized(() => habits.length > 10 && Random().nextBool());
 
     var titleTec = useTextEditingController(text: habit.title);
     titleTec.addListener(() {
@@ -102,7 +107,13 @@ class HabitForm extends HookWidget {
             ),
           ],
         ),
-        SizedBox(height: 16),
+        SizedBox(height: 8),
+        if (showTooManyHabitsLabel)
+          Text(
+            "Уже больше 10 привычек, может хватит?",
+            style: TextStyle(fontStyle: FontStyle.italic),
+          ),
+        SizedBox(height: 8),
         CoreButton(
           icon: Icons.save,
           text: "Сохранить",
