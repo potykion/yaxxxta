@@ -109,7 +109,7 @@ class LoadingPage extends HookWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             CircularProgressIndicator(
-              color: Theme.of(context).colorScheme.secondary,
+              color: Theme.of(context).colorScheme.primary,
             ),
             SizedBox(height: 8),
             Text(
