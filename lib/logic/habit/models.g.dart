@@ -90,7 +90,6 @@ const _$WeekdayEnumMap = {
 
 _$_HabitNotificationSettings _$_$_HabitNotificationSettingsFromJson(Map json) {
   return _$_HabitNotificationSettings(
-    id: json['id'] as int,
     time: DateTime.parse(json['time'] as String),
   );
 }
@@ -98,7 +97,6 @@ _$_HabitNotificationSettings _$_$_HabitNotificationSettingsFromJson(Map json) {
 Map<String, dynamic> _$_$_HabitNotificationSettingsToJson(
         _$_HabitNotificationSettings instance) =>
     <String, dynamic>{
-      'id': instance.id,
       'time': instance.time.toIso8601String(),
     };
 

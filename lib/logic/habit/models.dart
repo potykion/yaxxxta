@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:intl/intl.dart';
 import 'package:yaxxxta/logic/core/models.dart';
+import 'package:yaxxxta/logic/notifications/models.dart';
 
 part 'models.freezed.dart';
 
@@ -97,9 +98,6 @@ abstract class Habit implements _$Habit, WithId {
   }
 }
 
-/// Айди уведомления
-typedef NotificationId = int;
-
 /// Настройки уведомлений привычки
 @freezed
 abstract class HabitNotificationSettings
@@ -108,7 +106,6 @@ abstract class HabitNotificationSettings
 
   /// Настройки уведомлений привычки
   factory HabitNotificationSettings({
-    required NotificationId id,
     required DateTime time,
   }) = _HabitNotificationSettings;
 

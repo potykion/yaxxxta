@@ -11,8 +11,10 @@ import 'package:yaxxxta/logic/notifications/daily.dart';
 class HabitCalendarState extends StateNotifier<List<HabitVM>> {
   /// Репо привычек
   final FirebaseHabitRepo habitRepo;
+
   /// Репо выполнений привычек
   final FirebaseHabitPerformingRepo habitPerformingRepo;
+
   /// Сервис для отправки напоминалок
   final HabitPerformNotificationService habitPerformNotificationService;
 
@@ -84,9 +86,12 @@ class HabitCalendarState extends StateNotifier<List<HabitVM>> {
   }
 
   /// Отменяет уведомление и назначает новое
-  Future<Habit> _rescheduleNotification(Habit habit,
-      {bool tomorrow = true}) async {
-    habitPerformNotificationService.remove(habit.notification!.id);
+  /// Нужно если напоминалка стоит на 11, а привычку сделали в 10
+  Future<Habit> _rescheduleNotification(
+    Habit habit, {
+    bool tomorrow = true,
+  }) async {
+    habitPerformNotificationService.removeByHabitId(habit.id!);
 
     // Новая напоминалка создается на следующий день
     // (с учетом дня недели если указан)
@@ -97,15 +102,9 @@ class HabitCalendarState extends StateNotifier<List<HabitVM>> {
       weekday: habit.performWeekday,
     );
 
-    var notificationId = await habitPerformNotificationService.create(
-      habit,
-      atDateTime,
-    );
+    await habitPerformNotificationService.create(habit, atDateTime);
     habit = habit.copyWith(
-      notification: HabitNotificationSettings(
-        id: notificationId,
-        time: atDateTime,
-      ),
+      notification: HabitNotificationSettings(time: atDateTime),
     );
     return habit;
   }
@@ -113,7 +112,7 @@ class HabitCalendarState extends StateNotifier<List<HabitVM>> {
   /// Отправляет привычку в архив
   Future<void> archive(Habit habit) async {
     if (habit.notification != null) {
-      habitPerformNotificationService.remove(habit.notification!.id);
+      habitPerformNotificationService.removeByHabitId(habit.id!);
     }
 
     await update(habit.copyWith(archived: true));
@@ -139,9 +138,12 @@ class HabitCalendarState extends StateNotifier<List<HabitVM>> {
   /// но они не запланированы
   /// Напр. при переустановке аппа
   Future scheduleNotificationsForHabitsWithoutNotifications() async {
+    await habitPerformNotificationService.removeNotificationsWithoutHabitId();
+
     /// Берем все напоминалки
-    var pendingNotificationIds =
-        await habitPerformNotificationService.pending();
+    var pendingNotificationHabitIds =
+        (await habitPerformNotificationService.getPendingWithHabitId())
+            .map((n) => n.habitId);
 
     /// Фильтруем привычки без напоминалок
     var habitsWithoutNotifications = state
@@ -149,8 +151,9 @@ class HabitCalendarState extends StateNotifier<List<HabitVM>> {
         .where((habit) => !habit.archived)
         .where((habit) => habit.notification != null)
         .where(
-          (habit) => !pendingNotificationIds.contains(habit.notification!.id),
-        );
+          (habit) => !pendingNotificationHabitIds.contains(habit.id),
+        )
+        .toList();
 
     /// Для каждой такой привычки выставляем новую напоминалку
     for (var habit in habitsWithoutNotifications) {

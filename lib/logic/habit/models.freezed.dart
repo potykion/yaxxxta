@@ -371,9 +371,8 @@ HabitNotificationSettings _$HabitNotificationSettingsFromJson(
 class _$HabitNotificationSettingsTearOff {
   const _$HabitNotificationSettingsTearOff();
 
-  _HabitNotificationSettings call({required int id, required DateTime time}) {
+  _HabitNotificationSettings call({required DateTime time}) {
     return _HabitNotificationSettings(
-      id: id,
       time: time,
     );
   }
@@ -388,7 +387,6 @@ const $HabitNotificationSettings = _$HabitNotificationSettingsTearOff();
 
 /// @nodoc
 mixin _$HabitNotificationSettings {
-  int get id => throw _privateConstructorUsedError;
   DateTime get time => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -402,7 +400,7 @@ abstract class $HabitNotificationSettingsCopyWith<$Res> {
   factory $HabitNotificationSettingsCopyWith(HabitNotificationSettings value,
           $Res Function(HabitNotificationSettings) then) =
       _$HabitNotificationSettingsCopyWithImpl<$Res>;
-  $Res call({int id, DateTime time});
+  $Res call({DateTime time});
 }
 
 /// @nodoc
@@ -416,14 +414,9 @@ class _$HabitNotificationSettingsCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? id = freezed,
     Object? time = freezed,
   }) {
     return _then(_value.copyWith(
-      id: id == freezed
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
       time: time == freezed
           ? _value.time
           : time // ignore: cast_nullable_to_non_nullable
@@ -439,7 +432,7 @@ abstract class _$HabitNotificationSettingsCopyWith<$Res>
           $Res Function(_HabitNotificationSettings) then) =
       __$HabitNotificationSettingsCopyWithImpl<$Res>;
   @override
-  $Res call({int id, DateTime time});
+  $Res call({DateTime time});
 }
 
 /// @nodoc
@@ -456,14 +449,9 @@ class __$HabitNotificationSettingsCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? id = freezed,
     Object? time = freezed,
   }) {
     return _then(_HabitNotificationSettings(
-      id: id == freezed
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
       time: time == freezed
           ? _value.time
           : time // ignore: cast_nullable_to_non_nullable
@@ -475,37 +463,30 @@ class __$HabitNotificationSettingsCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_HabitNotificationSettings extends _HabitNotificationSettings {
-  _$_HabitNotificationSettings({required this.id, required this.time})
-      : super._();
+  _$_HabitNotificationSettings({required this.time}) : super._();
 
   factory _$_HabitNotificationSettings.fromJson(Map<String, dynamic> json) =>
       _$_$_HabitNotificationSettingsFromJson(json);
 
   @override
-  final int id;
-  @override
   final DateTime time;
 
   @override
   String toString() {
-    return 'HabitNotificationSettings(id: $id, time: $time)';
+    return 'HabitNotificationSettings(time: $time)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _HabitNotificationSettings &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.time, time) ||
                 const DeepCollectionEquality().equals(other.time, time)));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(time);
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(time);
 
   @JsonKey(ignore: true)
   @override
@@ -521,15 +502,13 @@ class _$_HabitNotificationSettings extends _HabitNotificationSettings {
 }
 
 abstract class _HabitNotificationSettings extends HabitNotificationSettings {
-  factory _HabitNotificationSettings(
-      {required int id, required DateTime time}) = _$_HabitNotificationSettings;
+  factory _HabitNotificationSettings({required DateTime time}) =
+      _$_HabitNotificationSettings;
   _HabitNotificationSettings._() : super._();
 
   factory _HabitNotificationSettings.fromJson(Map<String, dynamic> json) =
       _$_HabitNotificationSettings.fromJson;
 
-  @override
-  int get id => throw _privateConstructorUsedError;
   @override
   DateTime get time => throw _privateConstructorUsedError;
   @override

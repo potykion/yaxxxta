@@ -26,14 +26,14 @@ class HabitFormState extends StateNotifier<Habit> {
 
   /// Удаляет уведомление
   Future removeNotification() async {
-    await habitPerformNotificationService.remove(state.notification!.id);
+    await habitPerformNotificationService.removeByHabitId(state.id!);
     state = state.copyWith(notification: null);
   }
 
   /// Высталяет уведомление
   Future setNotification(DateTime atDateTime) async {
     if (state.notification != null) {
-      habitPerformNotificationService.remove(state.notification!.id);
+      await habitPerformNotificationService.removeByHabitId(state.id!);
     }
 
     var notificationId = await habitPerformNotificationService.create(
@@ -43,7 +43,6 @@ class HabitFormState extends StateNotifier<Habit> {
     );
     state = state.copyWith(
       notification: HabitNotificationSettings(
-        id: notificationId,
         time: atDateTime,
       ),
     );

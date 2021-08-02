@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
 import 'package:timezone/timezone.dart' as tz;
+import 'models.dart';
 
 /// Плагин для отправки локальных пушей
 FlutterLocalNotificationsPlugin localNotificationPlugin =
@@ -40,18 +43,18 @@ class HabitPerformNotificationService {
   }) async {
     id = id ?? generateNotificationId();
     await _localNotificationPlugin.zonedSchedule(
-      id,
-      habit.title,
-      "Пора выполнить привычку",
-      tz.TZDateTime.now(tz.local).add(atDateTime.difference(DateTime.now())),
-      NotificationDetails(android: _channel),
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-      androidAllowWhileIdle: true,
-      matchDateTimeComponents: repeatWeekly
-          ? DateTimeComponents.dayOfWeekAndTime
-          : DateTimeComponents.time,
-    );
+        id,
+        habit.title,
+        "Пора выполнить привычку",
+        tz.TZDateTime.now(tz.local).add(atDateTime.difference(DateTime.now())),
+        NotificationDetails(android: _channel),
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+        androidAllowWhileIdle: true,
+        matchDateTimeComponents: repeatWeekly
+            ? DateTimeComponents.dayOfWeekAndTime
+            : DateTimeComponents.time,
+        payload: jsonEncode({"habit": habit.id}));
     return id;
   }
 
@@ -59,11 +62,32 @@ class HabitPerformNotificationService {
   Future<void> remove(NotificationId id) async =>
       await _localNotificationPlugin.cancel(id);
 
-  /// Получает напоминалки, которые еще не отправлены
-  Future<List<NotificationId>> pending() async =>
-      (await _localNotificationPlugin.pendingNotificationRequests())
-          .map((n) => n.id)
-          .toList();
+  /// Получает запланированные напоминалки с айди привычки
+  Future<List<HabitNotification>> getPendingWithHabitId() async =>
+      (await getPending()).where((n) => n.habitId != null).toList();
+
+  /// Удаляет напоминалки, у которых не указан айди привычки
+  Future<void> removeByHabitId(String habitId) async {
+    var notifications = (await getPending()).where((n) => n.habitId == habitId);
+    for (var n in notifications) {
+      await remove(n.id);
+    }
+  }
+
+  /// Получает запланированные привычки
+  Future<List<HabitNotification>> getPending() async {
+    return (await _localNotificationPlugin.pendingNotificationRequests())
+        .map((n) => HabitNotification.fromPending(n))
+        .toList();
+  }
+
+  /// Удаляет уведомления, для которых не выставлены айди привычек
+  Future<void> removeNotificationsWithoutHabitId() async {
+    var notifications = (await getPending()).where((n) => n.habitId == null);
+    for (var n in notifications) {
+      await remove(n.id);
+    }
+  }
 }
 
 /// Провайдер сервиса напоминалок о привычке

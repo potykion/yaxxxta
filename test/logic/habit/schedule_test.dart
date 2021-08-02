@@ -6,6 +6,7 @@ import 'package:yaxxxta/logic/habit/models.dart';
 import 'package:yaxxxta/logic/habit/state/calendar.dart';
 import 'package:yaxxxta/logic/habit/vms.dart';
 import 'package:yaxxxta/logic/notifications/daily.dart';
+import 'package:yaxxxta/logic/notifications/models.dart';
 
 class FakeHabitPerformNotificationService extends Mock
     implements HabitPerformNotificationService {}
@@ -24,7 +25,6 @@ void main() {
         userId: '',
         notification: HabitNotificationSettings(
           time: DateTime(2020, 1, 1, 13),
-          id: 1,
         ),
       ),
     );
@@ -32,6 +32,7 @@ void main() {
 
   group("Тестируем скедулинг уведомлений", () {
     test("Ежедневная привычка без заскедуленых уведомлений", () async {
+      var notifications = <HabitNotification>[];
       HabitPerformNotificationService habitPerformNotificationService =
           FakeHabitPerformNotificationService();
       FirebaseHabitRepo habitRepo = FakeHabitRepo();
@@ -39,12 +40,12 @@ void main() {
           FakeHabitPerformingRepo();
 
       var habit = Habit(
+        id: "1",
         title: '',
         order: 1,
         userId: '',
         notification: HabitNotificationSettings(
           time: DateTime(2020, 1, 1, 13),
-          id: 1,
         ),
       );
       final container = ProviderContainer(
@@ -63,22 +64,38 @@ void main() {
       );
       addTearDown(container.dispose);
 
-      when(() => habitPerformNotificationService.pending())
-          .thenAnswer((_) async => <int>[]);
+
       when(() => habitPerformNotificationService.remove(any()))
           .thenAnswer((_) async {});
+      when(() => habitPerformNotificationService.removeByHabitId(any()))
+          .thenAnswer((_) async {});
+      when(() => habitPerformNotificationService
+          .removeNotificationsWithoutHabitId()).thenAnswer((_) async {});
       var newNotificationId = 2;
       when(() => habitPerformNotificationService.create(habit, any()))
-          .thenAnswer((_) async => newNotificationId);
+          .thenAnswer((_) async {
+        notifications
+            .add(HabitNotification(id: newNotificationId, habitId: habit.id!));
+        return newNotificationId;
+      });
+      when(() => habitPerformNotificationService.getPending())
+          .thenAnswer((_) async => notifications);
+      when(() => habitPerformNotificationService.getPendingWithHabitId())
+          .thenAnswer((_) async => notifications);
       when(() => habitRepo.update(any())).thenAnswer((_) async {});
 
       await container
           .read(habitCalendarStateProvider.notifier)
           .scheduleNotificationsForHabitsWithoutNotifications();
 
+      var pending = await container
+          .read(habitCalendarStateProvider.notifier)
+          .habitPerformNotificationService
+          .getPending();
+
       expect(
-        container.read(habitCalendarStateProvider).first.habit.notification!.id,
-        newNotificationId,
+        pending.where((n) => n.habitId == habit.id).isNotEmpty,
+        true,
       );
     });
   });
