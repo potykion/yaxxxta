@@ -143,10 +143,12 @@ class HabitCalendarState extends StateNotifier<List<HabitVM>> {
         await habitPerformNotificationService.pending();
 
     /// Фильтруем привычки без напоминалок
-    var habitsWithoutNotifications = state.map((vm) => vm.habit).where(
-          (habit) =>
-              habit.notification != null &&
-              !pendingNotificationIds.contains(habit.notification!.id),
+    var habitsWithoutNotifications = state
+        .map((vm) => vm.habit)
+        .where((habit) => !habit.archived)
+        .where((habit) => habit.notification != null)
+        .where(
+          (habit) => !pendingNotificationIds.contains(habit.notification!.id),
         );
 
     /// Для каждой такой привычки выставляем новую напоминалку
