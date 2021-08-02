@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 
 /// Базовая кнопочка
 class CoreButton extends StatelessWidget {
+  /// Текст
   final String text;
+  /// Иконка
   final IconData icon;
+  /// Событие нажатия
   final VoidCallback onPressed;
 
   /// Базовая кнопочка

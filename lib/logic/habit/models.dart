@@ -6,30 +6,44 @@ part 'models.freezed.dart';
 
 part 'models.g.dart';
 
+/// День недели
 enum Weekday {
+  /// Понедельник
   Monday,
+
+  /// Вторник
   Tuesday,
+
+  /// Среда
   Wednesday,
+
+  /// Четверг
   Thursday,
+
+  /// Пятница
   Friday,
+
+  /// Суббота
   Saturday,
+
+  /// Воскресенье
   Sunday
 }
 
-extension WeekdayUtils  on Weekday{
-   String toAbbrString() {
-     if (this == Weekday.Monday) return "пн";
-     if (this == Weekday.Tuesday) return "вт";
-     if (this == Weekday.Wednesday) return "ср";
-     if (this == Weekday.Thursday) return "чт";
-     if (this == Weekday.Friday) return "пт";
-     if (this == Weekday.Saturday) return "сб";
-     if (this == Weekday.Sunday) return "вс";
-     throw "Weekday.toAbbrString() failed for $this";
-   }
+/// Расширения над Weekday
+extension WeekdayUtils on Weekday {
+  /// Конвертит в строку-сокращение, типа пн для понедельника
+  String toAbbrString() {
+    if (this == Weekday.Monday) return "пн";
+    if (this == Weekday.Tuesday) return "вт";
+    if (this == Weekday.Wednesday) return "ср";
+    if (this == Weekday.Thursday) return "чт";
+    if (this == Weekday.Friday) return "пт";
+    if (this == Weekday.Saturday) return "сб";
+    if (this == Weekday.Sunday) return "вс";
+    throw "Weekday.toAbbrString() failed for $this";
+  }
 }
-
-
 
 /// Периодичность привычки
 enum HabitFrequencyType {
@@ -40,7 +54,9 @@ enum HabitFrequencyType {
   weekly,
 }
 
+/// Расширения над HabitFrequencyType
 extension HabitFreqTypeExt on HabitFrequencyType {
+  /// Конвертит в строку
   String toVerboseStr() {
     if (this == HabitFrequencyType.daily) return "Ежедневная";
     if (this == HabitFrequencyType.weekly) return "Еженедельная";
@@ -68,8 +84,10 @@ abstract class Habit implements _$Habit, WithId {
     Weekday? performWeekday,
   }) = _Habit;
 
+  /// Создает из джсона
   factory Habit.fromJson(Map<String, dynamic> json) => _$HabitFromJson(json);
 
+  /// Создает пустышку
   factory Habit.blank({required String userId}) {
     return Habit(
       title: "",
@@ -79,13 +97,16 @@ abstract class Habit implements _$Habit, WithId {
   }
 }
 
+/// Айди уведомления
 typedef NotificationId = int;
 
+/// Настройки уведомлений привычки
 @freezed
 abstract class HabitNotificationSettings
     implements _$HabitNotificationSettings {
   const HabitNotificationSettings._();
 
+  /// Настройки уведомлений привычки
   factory HabitNotificationSettings({
     required NotificationId id,
     required DateTime time,
@@ -99,10 +120,12 @@ abstract class HabitNotificationSettings
   String toTimeStr() => DateFormat.Hm().format(time);
 }
 
+/// Выполнение привычки
 @freezed
 abstract class HabitPerforming implements _$HabitPerforming, WithId {
   const HabitPerforming._();
 
+  /// Выполнение привычки
   const factory HabitPerforming({
     String? id,
     required DateTime created,
@@ -110,9 +133,11 @@ abstract class HabitPerforming implements _$HabitPerforming, WithId {
     required String userId,
   }) = _HabitPerforming;
 
+  /// Создает из джсона
   factory HabitPerforming.fromJson(Map<String, dynamic> json) =>
       _$HabitPerformingFromJson(json);
 
+  /// Создает пустышку
   factory HabitPerforming.blank(String habitId, String userId,
       [DateTime? performDatetime]) {
     return HabitPerforming(

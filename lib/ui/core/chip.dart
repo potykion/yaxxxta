@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../theme.dart';
-
 /// Базовый чип
 class CoreChip extends StatelessWidget {
   /// Цвет
@@ -23,12 +21,18 @@ class CoreChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Chip(
+        backgroundColor: Theme.of(context).chipTheme.selectedColor,
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        avatar: icon != null ? Icon(icon, color: color) : null,
+        avatar: icon != null
+            ? Icon(
+                icon,
+                color: color ?? Theme.of(context).colorScheme.onBackground,
+              )
+            : null,
         label: Text(
           text,
           style: TextStyle(
-            color: color ?? CoreColors.white,
+            color: color ?? Theme.of(context).colorScheme.onBackground,
           ),
         ),
       );

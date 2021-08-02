@@ -6,6 +6,7 @@ import '../models.dart';
 
 /// Стейт формочки привычки
 class HabitFormState extends StateNotifier<Habit> {
+  /// Сервис для отправки напоминалок
   final HabitPerformNotificationService habitPerformNotificationService;
 
   /// Стейт формочки привычки
@@ -49,6 +50,7 @@ class HabitFormState extends StateNotifier<Habit> {
   }
 }
 
+/// Провайдер стейта формы привычки
 StateNotifierProvider<HabitFormState, Habit> habitFormStateProvider =
     StateNotifierProvider<HabitFormState, Habit>(
   (ref) => HabitFormState(

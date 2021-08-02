@@ -6,6 +6,7 @@ import 'package:flutter_signin_button/button_view.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:yaxxxta/routes.gr.dart';
 
+/// Страничка авторизации
 class AuthPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

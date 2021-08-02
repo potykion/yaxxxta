@@ -1,15 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:yaxxxta/logic/ads/state.dart';
 import 'package:yaxxxta/logic/core/utils/list.dart';
 import 'package:yaxxxta/logic/habit/state/calendar.dart';
 import 'package:yaxxxta/logic/habit/vms.dart';
 import 'package:yaxxxta/theme.dart';
 import 'package:yaxxxta/ui/calendar/perform_habit_btn.dart';
-import 'package:yaxxxta/ui/core/button.dart';
 import 'package:yaxxxta/ui/core/card.dart';
 import 'package:yaxxxta/ui/core/chip.dart';
 import 'package:yaxxxta/ui/core/text.dart';
@@ -47,7 +44,9 @@ class HabitSwiper extends HookWidget {
 
         return CoreCard(
           margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-          color: vm.isPerformedToday ? CoreColors.lightGreen : null,
+          color: vm.isPerformedToday
+              ? Theme.of(context).colorScheme.secondaryVariant
+              : null,
           child: ListView(
             padding: EdgeInsets.zero,
             children: [
@@ -81,14 +80,13 @@ class HabitSwiper extends HookWidget {
                           text: vm.habit.notification!.toTimeStr(),
                           icon: Icons.notifications,
                           color: vm.isPerformedToday
-                              ? CoreColors.lightGreen
-                              : CoreColors.white,
+                              ? Theme.of(context).colorScheme.primaryVariant
+                              : null,
                         ),
                     ],
                   )
                 ],
               ),
-
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -104,7 +102,6 @@ class HabitSwiper extends HookWidget {
                 ],
               ),
               PerformHabitButton(vm.habit),
-
             ].joinObject(SizedBox(height: 16)).toList(),
           ),
         );

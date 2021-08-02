@@ -51,9 +51,12 @@ class Headline5 extends StatelessWidget {
         mainAxisAlignment:
             center ? MainAxisAlignment.center : MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            text,
-            style: Theme.of(context).textTheme.headline5!.merge(style),
+          Expanded(
+            child: Text(
+              text,
+              style: Theme.of(context).textTheme.headline5!.merge(style),
+              textAlign: center ? TextAlign.center : null,
+            ),
           ),
           if (trailing != null) trailing!
         ],

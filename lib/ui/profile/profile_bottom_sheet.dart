@@ -16,7 +16,9 @@ import 'package:yaxxxta/ui/core/user_avatar.dart';
 import '../../routes.gr.dart';
 import 'package:yaxxxta/logic/core/utils/list.dart';
 
+/// Боттом-шит профиля (инфа об акке, отключение рекламы, архив привычек)
 class ProfileBottomSheet extends HookWidget {
+  /// Боттом-шит профиля (инфа об акке, отключение рекламы, архив привычек)
   const ProfileBottomSheet({Key? key}) : super(key: key);
 
   @override
@@ -67,5 +69,6 @@ class ProfileBottomSheet extends HookWidget {
   }
 }
 
+/// Показывает боттом шит профиля
 Future<void> showProfileBottomSheet(BuildContext context) =>
     showCoreBottomSheet<void>(context, ProfileBottomSheet());

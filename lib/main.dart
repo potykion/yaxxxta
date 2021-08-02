@@ -23,7 +23,7 @@ class Logger extends ProviderObserver {
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
-      systemNavigationBarColor: Color(0xff1b192f),
+      // systemNavigationBarColor: Color(0xff1b192f),
       statusBarColor: Colors.transparent,
       statusBarBrightness: Brightness.light,
     ),

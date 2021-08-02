@@ -1,6 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/habit/db.dart';
@@ -11,8 +9,11 @@ import 'package:yaxxxta/logic/notifications/daily.dart';
 
 /// Стейт страницы календаря и привычек в целом
 class HabitCalendarState extends StateNotifier<List<HabitVM>> {
+  /// Репо привычек
   final FirebaseHabitRepo habitRepo;
+  /// Репо выполнений привычек
   final FirebaseHabitPerformingRepo habitPerformingRepo;
+  /// Сервис для отправки напоминалок
   final HabitPerformNotificationService habitPerformNotificationService;
 
   /// Стейт страницы календаря и привычек в целом

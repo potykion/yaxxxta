@@ -4,10 +4,14 @@ import 'package:yaxxxta/logic/habit/models.dart';
 
 import '../../theme.dart';
 
+/// Инпут типа привычки
 class HabitFrequencyTypeInput extends HookWidget {
+  /// Начальное значение инпута
   final HabitFrequencyType initial;
+  /// Событие выбора типа привычки
   final void Function(HabitFrequencyType habitFrequencyType) change;
 
+  /// Инпут типа привычки
   const HabitFrequencyTypeInput({
     required this.initial,
     required this.change,
@@ -40,10 +44,9 @@ class HabitFrequencyTypeInput extends HookWidget {
         label: Text(text),
         selected: habitFreqType == chipType,
         onSelected: (_) => setHabitFreqType(chipType),
-        selectedColor: CoreColors.green,
-        backgroundColor: CoreColors.lightGreen,
+        // selectedColor: Theme.of(context).colorScheme.primary,
+        // backgroundColor: Theme.of(context).colorScheme.primaryVariant,
         labelStyle: TextStyle(
-          color: CoreColors.darkPurple,
           fontSize: 16,
         ),
       );

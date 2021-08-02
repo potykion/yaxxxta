@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yaxxxta/logic/habit/models.dart';
-import 'package:yaxxxta/logic/habit/state/form.dart';
 import 'package:yaxxxta/logic/core/utils/dt.dart';
 
 import 'package:yaxxxta/ui/core/button.dart';
 
+/// Инпут напоминалки о привычки
 class HabitNotificationInput extends StatelessWidget {
+  /// Привычка
   final Habit habit;
+
+  /// Событие установки напоминалки
   final void Function(DateTime atDatetime) setNotification;
+
+  /// Событие удаления напоминалки
   final void Function() removeNotification;
 
+  /// Инпут напоминалки о привычки
   const HabitNotificationInput({
     Key? key,
     required this.habit,

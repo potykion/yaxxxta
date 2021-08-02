@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 
+/// Базовая карточка
 class CoreCard extends StatelessWidget {
+  /// Ребенок
   final Widget child;
+  /// Цвет карточки
   final Color? color;
+  /// Отступы
   final EdgeInsets? margin;
+  /// Загруглять только верхушку
   final bool roundOnlyTop;
 
+  /// Базовая карточка
   const CoreCard({
     Key? key,
     required this.child,

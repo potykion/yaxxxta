@@ -17,6 +17,7 @@ int generateNotificationId() {
 class HabitPerformNotificationService {
   final FlutterLocalNotificationsPlugin _localNotificationPlugin;
 
+  /// Класс работает с уведомлениями о выполнении привычек
   HabitPerformNotificationService(this._localNotificationPlugin);
 
   final _channel = AndroidNotificationDetails(
@@ -27,6 +28,10 @@ class HabitPerformNotificationService {
     priority: Priority.high,
   );
 
+  /// Создает напоминалку на определенное время
+  /// Напоминалка будет срабатывать ежедневно
+  /// Если указано {repeatWeekly},
+  /// то напоминалка будет срабатывать только по дням недели
   Future<NotificationId> create(
     Habit habit,
     DateTime atDateTime, {
@@ -50,15 +55,18 @@ class HabitPerformNotificationService {
     return id;
   }
 
+  /// Удаляет напоминалку
   Future<void> remove(NotificationId id) async =>
       await _localNotificationPlugin.cancel(id);
 
+  /// Получает напоминалки, которые еще не отправлены
   Future<List<NotificationId>> pending() async =>
       (await _localNotificationPlugin.pendingNotificationRequests())
           .map((n) => n.id)
           .toList();
 }
 
+/// Провайдер сервиса напоминалок о привычке
 Provider<HabitPerformNotificationService>
     habitPerformNotificationServiceProvider =
     Provider((_) => HabitPerformNotificationService(localNotificationPlugin));

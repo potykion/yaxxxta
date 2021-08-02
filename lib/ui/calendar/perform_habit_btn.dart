@@ -10,9 +10,12 @@ import 'package:yaxxxta/logic/habit/state/calendar.dart';
 import 'package:yaxxxta/theme.dart';
 import 'package:yaxxxta/ui/core/button.dart';
 
+/// Кнопа выполнения привычки
 class PerformHabitButton extends HookWidget {
+  /// Привычка
   final Habit habit;
 
+  /// Кнопа выполнения привычки
   const PerformHabitButton(this.habit, {Key? key}) : super(key: key);
 
   @override
@@ -28,7 +31,7 @@ class PerformHabitButton extends HookWidget {
         ConfettiWidget(
           confettiController: confettiController,
           blastDirectionality: BlastDirectionality.explosive,
-          colors: [CoreColors.green],
+          colors: [Theme.of(context).colorScheme.primary],
           createParticlePath: drawStar,
         ),
         CoreButton(

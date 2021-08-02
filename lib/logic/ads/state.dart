@@ -3,7 +3,6 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yaxxxta/logic/app_user_info/controllers.dart';
 
-
 FutureProvider<InitializationStatus?> _adsInitializedProvider = FutureProvider(
   (ref) async {
     if (kIsWeb) return null;
@@ -12,6 +11,7 @@ FutureProvider<InitializationStatus?> _adsInitializedProvider = FutureProvider(
   },
 );
 
+/// Провайдер рекламы
 ProviderFamily<BannerAd?, Object?> adProvider = Provider.family(
   (ref, __) => ref.watch(_adsInitializedProvider).maybeWhen(
         data: (status) => status != null
